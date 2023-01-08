@@ -5,6 +5,9 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+/**
+ * This class provide language support for UI
+ */
 public class Shell {
     private final MainWin parentFrame;
     /**
@@ -57,11 +60,8 @@ public class Shell {
                 titles.put("MWupdateMessage", " updates have been made");
                 titles.put("MWloadCatalogTitle", "Choosing a coordinate catalog");
                 titles.put("MWopenFileTitle", "Open file");
-
                 titles.put("MWsaveTahTitle", "Save measurements to file");
                 titles.put("MWsavePolTitle", "Save polygon to file");
-
-
                 titles.put("TAHlblStationTitle", "Station parameters");
                 titles.put("TAHlblStationI", "Tool height i =  ");
                 titles.put("TAHlblStationListTitle", "Station list");
@@ -168,9 +168,8 @@ public class Shell {
                 titles.put("SHtnPolygon", "\"Polygon\" Tab");
                 titles.put("SHtnFiles", "File types");
                 titles.put("SHtnOptions", "Settings");
-
-
             }
+
             case 1 -> {
                 titles.put("MWmFile", "Файл");
                 titles.put("MWmTools", "Инструменты");
@@ -204,10 +203,8 @@ public class Shell {
                 titles.put("MWupdateMessage", " обновлений было произведено");
                 titles.put("MWloadCatalogTitle", "Выбор каталога координат");
                 titles.put("MWopenFileTitle", "Открыть файл");
-
                 titles.put("MWsaveTahTitle", "Сохранить измерения в файл");
                 titles.put("MWsavePolTitle", "Сохранить полигон в файл");
-
                 titles.put("TAHlblStationTitle", "Параметры станции");
                 titles.put("TAHlblStationI", "Высота инструмента i =  ");
                 titles.put("TAHlblStationListTitle", "Список станций");
