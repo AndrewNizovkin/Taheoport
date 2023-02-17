@@ -1,19 +1,23 @@
 package taheoport;
 
+/**
+ * This class encapsulates the geodesic tasks
+ */
 public class GeoCalc {
 
     /**
      * gets direction AB in radians
-     * @param xA
-     * @param yA
-     * @param xB
-     * @param yB
-     * @return
+     * @param xA x-coordinate of A-point
+     * @param yA y-coordinate of A-point
+     * @param xB x-coordinate of B-point
+     * @param yB y-coordinate of B-point
+     * @return double direction
      */
     public double getDirAB(String xA, String yA, String xB, String yB) {
         double dir = 0.0;
         double dX = Double.parseDouble(xB) - Double.parseDouble(xA);
         double dY = Double.parseDouble(yB) - Double.parseDouble(yA);
+
         if (dX == 0.0) {
             if (dY > 0) {
                 dir = Math.PI / 2;
@@ -30,12 +34,14 @@ public class GeoCalc {
                 } else {
                     dir = 0.0;
                 }
+
             } if ( dY < 0) {
                 if (dX < 0) {
                     dir += Math.PI;
                 } else {
                     dir += 2 *Math.PI;
                 }
+
             } else {
                 if (dX < 0) {
                     dir += Math.PI;
@@ -49,9 +55,9 @@ public class GeoCalc {
 
     /**
      * gets horizontal line projection
-     * @param line
-     * @param vert
-     * @return
+     * @param line measured inclined length
+     * @param vert tilt angle of line
+     * @return double length of line
      */
     public double getHorLine(String line, String vert) {
         return Double.parseDouble(line) * Math.cos(new DataHandler(vert).dmsToRad());
@@ -61,7 +67,7 @@ public class GeoCalc {
      * gets DX
      * @param horLine horizontal line in meters
      * @param direction direction in radians
-     * @return
+     * @return double DX
      */
     public double getDX(double horLine, double direction) {
         return horLine * Math.cos(direction);
@@ -71,7 +77,7 @@ public class GeoCalc {
      * gets DY
      * @param horLine horizontal line in meters
      * @param direction direction in radians
-     * @return
+     * @return double DY
      */
     public double getDY(double horLine, double direction) {
         return horLine * Math.sin(direction);

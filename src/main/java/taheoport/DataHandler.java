@@ -59,6 +59,7 @@ public class DataHandler {
         str = str.substring(str.length() - width);
         return this;
     }
+
     /**
      * Replaces multiple duplicate separators with one
      * @param sep String separator
@@ -98,7 +99,7 @@ public class DataHandler {
      */
     public boolean isPositiveNumber() {
         int points = 0;
-        for(int i = 0; i < str.length(); i++) {
+        for (int i = 0; i < str.length(); i++) {
             char ch = str.charAt(i);
             if (ch == '.') {
                 points ++;
@@ -133,9 +134,6 @@ public class DataHandler {
         }
         return new DataHandler(s).isPositiveNumber();
     }
-
-
-
 
     /**
      * Converts zenith (D.MS) to vertical angle (D.MS)

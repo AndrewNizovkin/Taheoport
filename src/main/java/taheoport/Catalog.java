@@ -1,7 +1,11 @@
 package taheoport;
+
 import java.util.LinkedList;
-public class Catalog extends LinkedList <CatalogPoint>{
-//    private LinkedList <CatalogPoint> llCatalog;
+
+/**
+ * This class encapsulates base points coordinates
+ */
+    public class Catalog extends LinkedList <CatalogPoint>{
     private String absoluteCatalogPath;
 
     /**
@@ -9,10 +13,8 @@ public class Catalog extends LinkedList <CatalogPoint>{
      * @param l LinkedList
      */
     public Catalog loadCatalogList(LinkedList<String> l) {
-//        LinkedList <String> l = new MyChooser().readTextFile(path, "kat", "Выбор каталога координат");
         if (l != null) {
             this.absoluteCatalogPath = l.removeFirst();
-//            llCatalog = new LinkedList<CatalogPoint>();
             int i = 0;
             while (l.size() > 0) {
                 String s = new DataHandler(l.removeFirst()).compress(" ").getStr();
@@ -30,15 +32,9 @@ public class Catalog extends LinkedList <CatalogPoint>{
         return this;
     }
 
-    public Catalog addCatalogPoint (String name, String x, String y, String z) {
-
-
-        return this;
-    }
-
     /**
      * Returns a Catalog item by index
-     * @param index
+     * @param index int index of catalog
      * @return CatalogPoint
      */
     public CatalogPoint getCatalogPoint(int index) {
@@ -53,6 +49,10 @@ public class Catalog extends LinkedList <CatalogPoint>{
             return this.size();
     }
 
+    /**
+     * Gets absolute path of file with basic point catalog
+     * @return string absoluteCatalogPath
+     */
     public String getAbsoluteCatalogPath() {
         return absoluteCatalogPath;
     }

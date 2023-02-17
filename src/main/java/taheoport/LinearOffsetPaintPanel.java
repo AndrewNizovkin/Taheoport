@@ -4,9 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
 
+/**
+ * This class encapsulates GUI for entered linear offset to measured lenth
+ */
 public class LinearOffsetPaintPanel extends JPanel {
-    private PaintProject paintPoints;
-    private MainWin parentFrame;
+    private final MainWin parentFrame;
     private LinkedList<PaintPoint> ll;
     private PaintPoint paintPoint;
 
@@ -18,16 +20,16 @@ public class LinearOffsetPaintPanel extends JPanel {
         super();
         this.parentFrame = parentFrame;
         setPreferredSize(new Dimension(110, 110));
-
-
-// The END of constructor
     }
 
+    /**
+     * gets scheme of measurement
+     * @param g graphics
+     */
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-
-        paintPoints = new PaintProject(ll, this.getWidth(), this.getHeight());
+        PaintProject paintPoints = new PaintProject(ll, this.getWidth(), this.getHeight());
         g.setColor(Color.RED);
         switch (parentFrame.getOptions().getOffsetDistanceType()) {
             case 0 -> {
@@ -52,7 +54,5 @@ public class LinearOffsetPaintPanel extends JPanel {
         g.setColor(Color.GRAY);
         g.drawLine(64, 110, 64, 10);
     }
-
-// The END of OffsetPaintPanel
 }
 

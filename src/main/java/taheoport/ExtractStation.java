@@ -1,5 +1,8 @@
 package taheoport;
 
+/**
+ * This class encapsulates params of station, extracted from measurements
+ */
 public class ExtractStation {
     private String name = "Not";
     private String horBack = "0.000";
@@ -10,7 +13,6 @@ public class ExtractStation {
     private String dZForward = "0.000";
 
 // Setters_____________________________________
-
 
     public void setName(String name) {
         this.name = name;
@@ -81,7 +83,7 @@ public class ExtractStation {
 
     /**
      * returns the horizontal angle between horForward and horBack
-     * @return String
+     * @return String horizontal angle between rear and front direction
      */
     public String getHorTrue() {
         double horTrue;
@@ -110,10 +112,9 @@ public class ExtractStation {
 
     /**
      * returns the difference between dZForward and dZBack in mm.
-     * @return
+     * @return string DDZ
      */
     public String getDDZ() {
         return new DataHandler((Double.parseDouble(dZForward) + Double.parseDouble(dZBack)) * 1000).format(0).getStr();
     }
-
 }

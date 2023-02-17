@@ -2,6 +2,9 @@
 
     import java.util.LinkedList;
 
+    /**
+     * This class encapsulates result of extracting the polygon from measurements
+     */
     public class ExtractProject extends LinkedList<ExtractStation> {
         private MainWin parentFrame;
 
