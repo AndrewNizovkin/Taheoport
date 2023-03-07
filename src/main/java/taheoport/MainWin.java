@@ -49,8 +49,8 @@ public class MainWin extends JFrame{
     private final JButton btnView;
     private final JButton btnLoadCat;
     private final JButton btnImport;
-    private SurveyEditorStandart tahEditor;
-    private PolygonEditorStandart theoEditor;
+    private SurveyEditorStandart surveyEditor;
+    private PolygonEditorStandart polygonEditor;
     private final JLabel lblCatalog;
     private JPopupMenu ppImport;
 
@@ -60,7 +60,6 @@ public class MainWin extends JFrame{
      */
     public MainWin() {
         super("Taheoport");
-
 /*
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -84,16 +83,12 @@ public class MainWin extends JFrame{
         Image im = kit.getImage("images/teo.png");
         this.setIconImage(im);
 
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         isCatalog = false;
-//        wMain = screenSize.width / 3;
-//        hMain = screenSize.height / 6 * 4;
         wMain = 640;
         hMain = 650;
 
-        // main frame menu bar
         JMenuBar mbr = new JMenuBar();
 
 //mFile_______________________________________________________________
@@ -161,11 +156,11 @@ public class MainWin extends JFrame{
                 switch (tpMain.getSelectedIndex()) {
                     case 0 -> {
                         updateSurveyStations();
-                        reloadTahEditor();
+                        reloadSurveyEditor();
                     }
                     case 1 -> {
                         updateTheoStations();
-                        reloadTheoEditor();
+                        reloadPolygonEditor();
                     }
                 }
             });
@@ -261,7 +256,6 @@ public class MainWin extends JFrame{
         JMenuItem ppiTopcon = new JMenuItem("Topcon");
         ppiTopcon.addActionListener(e -> importTopcon());
 
-
         ppImport.add(ppiLeica);
         ppImport.add(ppiNicon);
         ppImport.add(ppiTopcon);
@@ -287,7 +281,6 @@ public class MainWin extends JFrame{
                         new ShowViewResults(this);
                     }
                     case 1 -> {
-//                        System.out.println("action from pnlPolygonometry");
                         processSourceData();
                         if (polygonProject.getPerimeter() > 0.0) {
                             new ShowViewAdjustment(this);
@@ -306,8 +299,6 @@ public class MainWin extends JFrame{
         lblCatalog.setEnabled(false);
         lblCatalog.setBorder(BorderFactory.createBevelBorder(1));
 
-
-
         tb.add(btnNew);
         tb.add(btnOpen);
         tb.add(btnImport);
@@ -323,10 +314,7 @@ public class MainWin extends JFrame{
 
         this.add(tb, BorderLayout.NORTH);
 
-//tpMain_pnlTaheometry_pnlPolygonometry_________________________________________
-
         tpMain = new JTabbedPane();
-//        tpMain.setFont(fontMain);
 
         pnlMeasurements = new JPanel();
         pnlMeasurements.setLayout(new BorderLayout());
@@ -371,26 +359,24 @@ public class MainWin extends JFrame{
 
         polygonProject = new PolygonProject(this);
         polygonProject.addStation(new PolygonStation());
-        reloadTheoEditor();
+        reloadPolygonEditor();
         setControlsOn();
         setTitle("Taheoport: " + polygonProject.getAbsolutePolPath());
-        theoEditor.setFocusTable();
-
+        polygonEditor.setFocusTable();
 
         surveyProject = new SurveyProject(this);
         SurveyStation st = surveyProject.addStation();
         st.addPicket(st);
-        reloadTahEditor();
+        reloadSurveyEditor();
         setControlsOn();
-        tahEditor.setFocusStations();
-
-
+        surveyEditor.setFocusStations();
         setVisible(true);
-
-// The END of Constructor MainWin_____________________________________________________________
     }
 
-
+    /**
+     * Main
+     * @param args String[] args
+     */
     public static void main(String [] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -398,7 +384,6 @@ public class MainWin extends JFrame{
                 new MainWin();
             }
         });
-//        new MainWin();
     }
 
     /**
@@ -515,16 +500,12 @@ public class MainWin extends JFrame{
         }
         tpMain.setTitleAt(0, titles.get("MWtpMain0"));
         tpMain.setTitleAt(1,titles.get("MWtpMain1"));
-        if (tahEditor != null) {
-            tahEditor.translate();
+        if (surveyEditor != null) {
+            surveyEditor.translate();
         }
-        if (theoEditor != null) {
-            reloadTheoEditor();
-//            theoEditor.translate();
+        if (polygonEditor != null) {
+            reloadPolygonEditor();
         }
-
-
-
         revalidate();
     }
 
@@ -537,17 +518,15 @@ public class MainWin extends JFrame{
                 LinkedList <String>  llLeicaList = new MyChooser(this).readTextFile(pathWorkDir, "gsi", titles.get("MWopenFileTitle"));
                 if (llLeicaList != null) {
                     surveyProject = new SurveyProject(this).loadLeicaList(llLeicaList);
-//                surveyProject.setPath(pathWorkDir);
-                    reloadTahEditor();
+                    reloadSurveyEditor();
                     setControlsOn();
                     surveyProject.setAbsoluteTahPath(new MyChooser(this).writeTextFile(pathWorkDir, "tah", "Write Tah", surveyProject.getTahList()));
                     setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
-                    tahEditor.setFocusStations();
+                    surveyEditor.setFocusStations();
                 }
             }
             case 1 -> System.out.println("action from pnlPolygonometry");
         }
-
     }
 
     /**
@@ -559,13 +538,11 @@ public class MainWin extends JFrame{
                 LinkedList <String>  llNiconList = new MyChooser(this).readTextFile(pathWorkDir, "raw", titles.get("MWopenFileTitle"));
                 if (llNiconList != null) {
                 surveyProject = new SurveyProject(this).loadNiconList(llNiconList);
-//                surveyProject.setPath(pathWorkDir);
-//                if (surveyProject.loadNiconList() != null) {
-                    reloadTahEditor();
+                    reloadSurveyEditor();
                     setControlsOn();
                     surveyProject.setAbsoluteTahPath(new MyChooser(this).writeTextFile(pathWorkDir, "tah", "write Tah", surveyProject.getTahList()));
                     setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
-                    tahEditor.setFocusStations();
+                    surveyEditor.setFocusStations();
                 }
             }
             case 1 -> System.out.println("action from pnlPolygonometry");
@@ -581,11 +558,11 @@ public class MainWin extends JFrame{
                 LinkedList<String> llTopconList = new MyChooser(this).readTextFile(pathWorkDir, "txt", titles.get("MWopenFileTitle"));
                 if (llTopconList != null) {
                     surveyProject = new SurveyProject(this).loadTopconList(llTopconList);
-                    reloadTahEditor();
+                    reloadSurveyEditor();
                     setControlsOn();
                     surveyProject.setAbsoluteTahPath(new MyChooser(this).writeTextFile(pathWorkDir, "tah", "write Tah", surveyProject.getTahList()));
                     setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
-                    tahEditor.setFocusStations();
+                    surveyEditor.setFocusStations();
                 }
             }
             case 1 -> System.out.println("action from pnlPolygonometry");
@@ -601,17 +578,17 @@ public class MainWin extends JFrame{
                 surveyProject = new SurveyProject(this);
                 SurveyStation st = surveyProject.addStation();
                 st.addPicket(st);
-                reloadTahEditor();
+                reloadSurveyEditor();
                 setControlsOn();
-                tahEditor.setFocusStations();
+                surveyEditor.setFocusStations();
             }
             case 1 -> {
                 polygonProject = new PolygonProject(this);
                 polygonProject.addStation(new PolygonStation());
-                reloadTheoEditor();
+                reloadPolygonEditor();
                 setControlsOn();
                 setTitle("Taheoport: " + polygonProject.getAbsolutePolPath());
-                theoEditor.setFocusTable();
+                polygonEditor.setFocusTable();
             }
         }
     }
@@ -625,19 +602,19 @@ public class MainWin extends JFrame{
                 LinkedList<String> llTahList = new MyChooser(this).readTextFile(pathWorkDir, "tah", titles.get("MWopenFileTitle"));
                 if (llTahList != null) {
                     surveyProject = new SurveyProject(this).loadTahList(llTahList);
-                    reloadTahEditor();
+                    reloadSurveyEditor();
                     setControlsOn();
-                    tahEditor.setFocusStations();
+                    surveyEditor.setFocusStations();
             }
             }
             case 1 -> {
                 LinkedList<String> llPolList = new MyChooser(this).readTextFile(pathWorkDir, "pol", titles.get("MWopenFileTitle"));
                 if (llPolList != null) {
                     polygonProject = new PolygonProject(this).loadPolList(llPolList);
-                    reloadTheoEditor();
+                    reloadPolygonEditor();
                     setControlsOn();
                     setTitle("Taheoport: " + polygonProject.getAbsolutePolPath());
-                    theoEditor.setFocusTable();
+                    polygonEditor.setFocusTable();
                 }
             }
         }
@@ -653,10 +630,10 @@ public class MainWin extends JFrame{
                 extractProject = new ExtractProject(this);
                 polygonProject = new PolygonProject(this).loadPolList(extractProject.extractTheoProject());
                 tpMain.setSelectedIndex(1);
-                reloadTheoEditor();
+                reloadPolygonEditor();
                 setControlsOn();
                 setTitle("Taheoport: " + polygonProject.getAbsolutePolPath());
-                theoEditor.setFocusTable();
+                polygonEditor.setFocusTable();
                 new ShowViewExtractPol(this);
             } else {
                 JOptionPane.showMessageDialog(this,"Недостаточно данных", "Ошибка", JOptionPane.ERROR_MESSAGE);
@@ -725,14 +702,12 @@ public class MainWin extends JFrame{
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
                 surveyProject.processSourceData();
-//                surveyProject.writeDat();
                 new MyChooser(this).writeTextFile(pathWorkDir, "dat", "Write DAT", surveyProject.getPicketsList());
             }
-//                new MyChooser().writeTextFile(pathWorkDir, "txt", "Write TaheoReport", surveyProject.getListReport());
             case 1 -> {
                 polygonProject.processSourceData();
-                reloadTheoEditor();
-                theoEditor.setBindings();
+                reloadPolygonEditor();
+                polygonEditor.setBindings();
             }
         }
     }
@@ -740,25 +715,27 @@ public class MainWin extends JFrame{
     /**
      * Reload tahEditorStandart
      */
-    private void reloadTahEditor() {
-        if (tahEditor != null) {
-            pnlMeasurements.remove(tahEditor);
+    private void reloadSurveyEditor() {
+        if (surveyEditor != null) {
+            pnlMeasurements.remove(surveyEditor);
         }
-        tahEditor = new SurveyEditorStandart(this, 0);
-        pnlMeasurements.add(tahEditor);
+        surveyEditor = new SurveyEditorStandart(this, 0);
+        pnlMeasurements.add(surveyEditor);
         setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
-        setFocusTraversalPolicy(new TahEditorFocusTransversalPolicy(tahEditor.getOrder()));
+        setFocusTraversalPolicy(new TahEditorFocusTransversalPolicy(surveyEditor.getOrder()));
         revalidate();
     }
 
-    private void reloadTheoEditor() {
-        if (theoEditor != null) {
-            pnlPolygon.remove(theoEditor);
+    /**
+     * Reload TheoEditor
+     */
+    private void reloadPolygonEditor() {
+        if (polygonEditor != null) {
+            pnlPolygon.remove(polygonEditor);
         }
-        theoEditor = new PolygonEditorStandart(this);
-        pnlPolygon.add(theoEditor);
+        polygonEditor = new PolygonEditorStandart(this);
+        pnlPolygon.add(polygonEditor);
         revalidate();
-
     }
 
     /**
@@ -771,14 +748,10 @@ public class MainWin extends JFrame{
         btnSave.setEnabled(true);
         btnRun.setEnabled(true);
         tRun.setEnabled(true);
-        //actionLoadCatalog.setEnabled(true);
         btnLoadCat.setEnabled(true);
         btnView.setEnabled(true);
         tLoadCat.setEnabled(true);
         tView.setEnabled(true);
-//        tUpdate.setEnabled(true);
-//        tahEditorStandart.setFocusStations();
-
     }
 
     /**
@@ -791,7 +764,6 @@ public class MainWin extends JFrame{
         btnSave.setEnabled(false);
         btnRun.setEnabled(false);
         tRun.setEnabled(false);
-//        actionLoadCatalog.setEnabled(false);
         btnLoadCat.setEnabled(false);
         btnView.setEnabled(false);
         tLoadCat.setEnabled(false);
@@ -824,9 +796,7 @@ public class MainWin extends JFrame{
                 }
             }
             JOptionPane.showMessageDialog(this, q + titles.get("MWupdateMessage"), titles.get("MWupdateMessageTitle"), JOptionPane.INFORMATION_MESSAGE);
-
         }
-//        return surveyProject;
     }
 
     private void updateTheoStations() {
@@ -856,9 +826,9 @@ public class MainWin extends JFrame{
             lblCatalog.setText(catalog.getAbsoluteCatalogPath());
             tUpdate.setEnabled(true);
             isCatalog = true;
-            if(tahEditor != null) {
-                tahEditor.getBtnStationName().setEnabled(true);
-                tahEditor.getBtnOrName().setEnabled(true);
+            if(surveyEditor != null) {
+                surveyEditor.getBtnStationName().setEnabled(true);
+                surveyEditor.getBtnOrName().setEnabled(true);
             }
         } else {
             lblCatalog.setEnabled(false);
