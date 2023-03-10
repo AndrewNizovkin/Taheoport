@@ -9,7 +9,7 @@ import java.util.LinkedList;
     private String absoluteCatalogPath;
 
     /**
-     * Constructor
+     * Downloads catalog from list
      * @param l LinkedList
      */
     public Catalog loadCatalogList(LinkedList<String> l) {
