@@ -203,7 +203,7 @@ public class DataHandler {
 
     /**
      * Removes leading zeros
-     * @return String Еhe string in which the leading zeros are removed
+     * @return This
      */
     public DataHandler removeFirstZero() {
         StringBuilder s = new StringBuilder(str);
