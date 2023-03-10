@@ -62,13 +62,13 @@ public class DataHandler {
 
     /**
      * Replaces multiple duplicate separators with one
-     * @param sep String separator
+     * @param separator String separator
      * @return this
      */
-    public DataHandler compress(String sep) {
-            String ss = sep + sep;
+    public DataHandler compress(String separator) {
+            String ss = separator + separator;
             while (str.contains(ss)) {
-                str = str.replaceAll(ss, sep);
+                str = str.replaceAll(ss, separator);
             }
         return this;
     }
@@ -238,7 +238,7 @@ public class DataHandler {
      * Get Double str
      * @return Double str
      */
-    public Double getDbl() {
+    public double getDbl() {
         return Double.parseDouble(str);
     }
 
@@ -246,7 +246,7 @@ public class DataHandler {
      * Converts String str d.ms to Double radians
      * @return Double
      */
-    public Double dmsToRad() {
+    public double dmsToRad() {
         return Math.toRadians(dmsToDeg());
     }
 
@@ -255,7 +255,7 @@ public class DataHandler {
      * @param dbl angle in radians
      * @return this
      */
-    public DataHandler radToDms(Double dbl) {
+    public DataHandler radToDms(double dbl) {
         return this.degToDms(Math.toDegrees(dbl));
     }
 
