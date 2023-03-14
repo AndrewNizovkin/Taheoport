@@ -1,12 +1,12 @@
 package taheoport;
 
-import javax.swing.*;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
  * This class provide language support for UI
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
  */
 public class Shell {
     private final MainWin parentFrame;

@@ -1,5 +1,10 @@
 package taheoport;
 
+/**
+ * This class encapsulates fields of PolygonStation
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
+ */
 public class PolygonStation {
     private String name = "noname";
     private Boolean status = false;

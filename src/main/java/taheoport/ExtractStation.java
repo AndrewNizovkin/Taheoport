@@ -2,6 +2,8 @@ package taheoport;
 
 /**
  * This class encapsulates params of station, extracted from measurements
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
  */
 public class ExtractStation {
     private String name = "Not";

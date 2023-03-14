@@ -4,12 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
 
+/**
+ * This class encapsulates form for display result of polygon adjustment
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
+ */
 public class ShowViewAdjustment extends JDialog {
-    private MainWin parentFrame;
-    private int widthFrame;
-    private int heightFrame;
+    private final MainWin parentFrame;
     private PolygonPaintPanel pnlViewNXYZ;
-    private JPanel pnlNXYZ;
+    private final JPanel pnlNXYZ;
     private int sellRow;
     private JTabbedPane tp;
 
@@ -25,8 +28,8 @@ public class ShowViewAdjustment extends JDialog {
 //        setDefaultLookAndFeelDecorated(false);
         setUndecorated(true);
         getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
-        widthFrame = parentFrame.getWidthMain() * 3 / 2;
-        heightFrame = parentFrame.getHeightMain();
+        int widthFrame = parentFrame.getWidthMain() * 3 / 2;
+        int heightFrame = parentFrame.getHeightMain();
         setBounds(parentFrame.getX() + parentFrame.getWidth() / 2 - widthFrame / 2,
                 parentFrame.getY() + parentFrame.getHeight() / 2 - heightFrame / 2, widthFrame, heightFrame);
         Toolkit kit = Toolkit.getDefaultToolkit();

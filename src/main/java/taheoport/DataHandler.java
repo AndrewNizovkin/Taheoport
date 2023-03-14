@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 
 /**
  * Provides methods for parsing, analyzing, and converting a string str
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
  */
 public class DataHandler {
     private String str;

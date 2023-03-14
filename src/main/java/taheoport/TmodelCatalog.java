@@ -2,6 +2,11 @@ package taheoport;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 
+/**
+ * This class encapsulates table model of catalog
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
+ */
 public class TmodelCatalog extends AbstractTableModel {
     private int columnCount = 4;
     private ArrayList<String []> dataArrayList;
@@ -54,6 +59,5 @@ public class TmodelCatalog extends AbstractTableModel {
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return false;
     }
-
 
 }

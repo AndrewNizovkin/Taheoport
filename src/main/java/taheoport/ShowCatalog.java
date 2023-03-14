@@ -5,8 +5,9 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 
 /**
- * Этот класс предоставляет возможность вставить параметры
- * станции из раннее установленного каталога
+ * This class display external coordinate catalog
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
  */
 public class ShowCatalog extends JDialog {
     private SurveyProject sp;

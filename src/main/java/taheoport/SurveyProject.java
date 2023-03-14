@@ -1,22 +1,20 @@
 package taheoport;
-/**
- * Classname
- * This class represents a total station survey model.
- * It provides various methods for importing field information
- * from various types of storage devices (total stations).
- * Version information
- *@version 1.0
- * Date
- * @author Andrey Nizovkin
- * Copyright Nizovkin A.V. 2022
- */
 
 import java.io.File;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * This class represents a total station survey model.
+ * It provides various methods for importing field information
+ * from various types of storage devices (total stations).
+ * Version information
+ * @version 1.0
+ * Date
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
+ */
 public class SurveyProject {
     private String path = new File("").getAbsolutePath(); // Path to the working directory
     private String absoluteTahPath = "";

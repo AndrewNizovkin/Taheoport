@@ -4,6 +4,8 @@
 
     /**
      * This class encapsulates result of extracting the polygon from measurements
+     * @author Andrey Nizovkin
+     * Copyright Nizovkin A.V. 2022
      */
     public class ExtractProject extends LinkedList<ExtractStation> {
         private MainWin parentFrame;

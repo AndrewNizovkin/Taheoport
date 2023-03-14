@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>TaheoPort</artifactId>
-    <version>4.5-SNAPSHOT</version>
+    <version>4.6-SNAPSHOT</version>
     <build>
         <plugins>
             <plugin>

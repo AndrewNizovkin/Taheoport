@@ -1,17 +1,24 @@
 package taheoport;
+
 import java.util.LinkedList;
+
+/**
+ * This class encapsulates parameters of SurveyStation
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
+ */
 public class SurveyStation {
-    private String name;   // Наименование станции
-    private String x;    // Координата X станции
-    private String y;    // Координата Y станции
-    private String z;    // Координата Z станции
-    private String nameOr; // Наименование ориентира
-    private String xOr;    // Координата X ориентира
-    private String yOr;    // Координата Y ориентира
-    private String zOr;    // Координата Z ориентира
-    private String vi;  // Высота инструмента
-    private LinkedList <Picket> sll; // Список пикетов
-//    private Picket p;   // Ссылочная переменная класса Picket
+    private String name;
+    private String x;
+    private String y;
+    private String z;
+    private String nameOr;
+    private String xOr;
+    private String yOr;
+    private String zOr;
+    private String vi;
+    private LinkedList <Picket> sll;
+
     /**
      * Constructor
      * @param name Наименование станции

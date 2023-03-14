@@ -3,10 +3,14 @@ package taheoport;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * This class encapsulates panel for display the polygon
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
+ */
 public class PolygonPaintPanel extends JPanel {
-    private PaintProject ppTheoPaintPoints;
-    private PolygonProject theoProject;
-    private int index;
+    private final PolygonProject theoProject;
+    private final int index;
 
     public PolygonPaintPanel(PolygonProject theoProject, int idx) {
         this.theoProject = theoProject;
@@ -16,7 +20,7 @@ public class PolygonPaintPanel extends JPanel {
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        ppTheoPaintPoints = new PaintProject(theoProject, this.getWidth(), this.getHeight());
+        PaintProject ppTheoPaintPoints = new PaintProject(theoProject, this.getWidth(), this.getHeight());
         if (ppTheoPaintPoints.getScale() < 10) {
             g.setColor(Color.BLUE);
             for (PaintPoint ppTheoPintPoint : ppTheoPaintPoints) {

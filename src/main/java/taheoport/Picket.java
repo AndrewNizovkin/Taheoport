@@ -1,23 +1,11 @@
 package taheoport;
-/*
- * Класс описывает набор полей для определения
- * съёмочной точки (пикета). Включает следующие поля
- * для результатов измерений
- * входящие параметры:
- * @param pName название пикета (номер или код)
- * @param pLine измеренная наклонная длина линии
- * @param pHor левый горизонтальный угол
- * @param pVert вертикальный угол
- * @param pV высота наведения
- * результаты математической обработки:
- * @param pX коорината X пикета
- * @param pY координата Y пикета
- * @param pZ координата Z пикета
- *
+
+/**
+ * This class encapsulated measurement to picket
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
  */
 public class Picket{
-
-    private SurveyStation parentStation;
     private String pName = "Not";
     private String pAltName = "Not";
     private String line = "0.000";
@@ -32,6 +20,7 @@ public class Picket{
     private double y = 0.0;
     private double z = 0.0;
     private double horLine =0.0;
+
     /**
      * Constructor
      * входящие параметры:
@@ -42,7 +31,6 @@ public class Picket{
      * @param pV высота наведения
      */
     public Picket(String pName, String pLine, String pHor, String pVert, String pV, String pAltName, SurveyStation st) {
-        parentStation = st;
         if (new DataHandler(pName).isValidName()) {
             this.pName = pName;
         } else {
@@ -79,9 +67,8 @@ public class Picket{
             this.pAltName = "noname";
         }
     }
-    //---Test--Возвращает строку параметров с разделителем \t
+
     public String toString(){
-//        String txt = pName + "\t" + pAltName + "\t" + pLine + "\t" + pHor + "\t" + pVert + "\t" + pV;
         return pName + "\t" + pAltName + "\t" + line + "\t" + hor + "\t" + vert + "\t" + v;
     }
 
@@ -231,8 +218,6 @@ public class Picket{
      * @return double
      */
     public String getDZ() {
-//        return String.format("%.3f", dZ);
-//        return new DataHandler(String.format("%.3f", dZ)).commaToPoint().getStr();
         return new DataHandler(dZ).format(3).getStr();
     }
 

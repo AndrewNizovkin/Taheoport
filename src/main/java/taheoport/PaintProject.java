@@ -2,8 +2,12 @@ package taheoport;
 
 import java.util.LinkedList;
 
+/**
+ * This class converts coordinates for displayed on a panel
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
+ */
 public class PaintProject extends LinkedList<PaintPoint>{
-//    LinkedList <Point> llPoints;
     private Double xMin;
     private Double xMax;
     private Double yMin;
@@ -34,8 +38,6 @@ public class PaintProject extends LinkedList<PaintPoint>{
                 sPoint.setyOr(sp.getStation(i).getY());
                 sPoint.setStatus(false);
                 add(sPoint);
-
-
 
                 for (int j = 0; j < sp.getStation(i).sizePickets(); j++) {
                     PaintPoint pPoint = new PaintPoint(sp.getStation(i).getPicket(j).getpName(),
@@ -71,13 +73,9 @@ public class PaintProject extends LinkedList<PaintPoint>{
                     scale = 1.0;
                 }
 
-//            }
-
-            //--->>
             PaintPoint point;
-            for (int i = 0; i < this.size(); i++) {
-
-                point = this.get(i);
+            for (PaintPoint paintPoint : this) {
+                point = paintPoint;
                 point.setxPaint(x0 + 10 + (int) ((point.getyDbl() - yMin) / scale));
                 point.setxOrPaint(x0 + 10 + (int) ((point.getyOrDbl() - yMin) / scale));
                 point.setyPaint(pHeight - y0 - 10 - (int) ((point.getxDbl() - xMin) / scale));
@@ -88,7 +86,7 @@ public class PaintProject extends LinkedList<PaintPoint>{
 
     /**
      * Constructor with TheoProject
-     * @param theoProject
+     * @param theoProject TheoProject
      * @param pWidth width of panel
      * @param pHeight height of panel
      */
@@ -128,12 +126,9 @@ public class PaintProject extends LinkedList<PaintPoint>{
             if (scale == 0) {
                 scale = 1.0;
             }
-//            PaintPoint point;
             for (PaintPoint paintPoint : this) {
-//                point = paintPoint;
                 paintPoint.setxPaint(x0 + 10 + (int) ((paintPoint.getyDbl() - yMin) / scale));
                 paintPoint.setyPaint(pHeight - y0 - 10 - (int) ((paintPoint.getxDbl() - xMin) / scale));
-
             }
         }
     }

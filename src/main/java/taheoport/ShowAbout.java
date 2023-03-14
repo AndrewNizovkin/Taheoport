@@ -4,6 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
 
+/**
+ * This class encapsulates form about program
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
+ */
 public class ShowAbout extends JDialog {
 
     public ShowAbout(MainWin parentFrame) {

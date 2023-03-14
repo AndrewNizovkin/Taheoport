@@ -13,6 +13,11 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This class encapsulates panel for display editing survey measurement
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
+ */
 public class SurveyEditorStandart extends JPanel  {
     private MainWin parentFrame;
     private Vector<Component> order;

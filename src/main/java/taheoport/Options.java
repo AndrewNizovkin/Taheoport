@@ -3,6 +3,11 @@ package taheoport;
 import java.io.File;
 import java.util.LinkedList;
 
+/**
+ * This class encapsulates settings of program
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
+ */
 public class Options {
     private Boolean isChanged = false;
     private String pathWorkDir;
@@ -28,7 +33,7 @@ public class Options {
 
     /**
      * Constructor
-     * @param frame
+     * @param frame MainWin
      */
     public Options(MainWin frame) {
         this.parentFrame = frame;

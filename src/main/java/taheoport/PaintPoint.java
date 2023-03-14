@@ -1,13 +1,16 @@
 package taheoport;
+
 /**
  * This class defines a point by the 3D coordinates
  * and height of the measurements
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
  */
 public class PaintPoint {
-    private String name = "Not";   // Point name
-    private String x = "0.000";    // x coordinate of the point
-    private String y = "0.000";    // y coordinate of the point
-    private String z = "0.000";    // z coordinate of the point
+    private String name = "Not";
+    private String x = "0.000";
+    private String y = "0.000";
+    private String z = "0.000";
     private String xOr = "0.000";
     private String yOr = "0.000";
     private Boolean status = false;
@@ -25,7 +28,6 @@ public class PaintPoint {
     }
 
     // Setters
-
 
     public void setxPaint(int xPaint) {
         this.xPaint = xPaint;

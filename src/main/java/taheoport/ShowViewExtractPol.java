@@ -4,6 +4,11 @@
     import java.awt.*;
     import java.util.LinkedList;
 
+    /**
+     * This class encapsulates form for display results of extracting polygon from measurement
+     * @author Andrey Nizovkin
+     * Copyright Nizovkin A.V. 2022
+     */
     public class ShowViewExtractPol extends JDialog {
         private final MainWin parentFrame;
 
@@ -70,11 +75,5 @@
             add(spExtractReport, BorderLayout.CENTER);
             setResizable(true);
             setVisible(true);
-
-
-// The END of constructor
         }
-
-
-// The END of ShowViewExtractPol
     }

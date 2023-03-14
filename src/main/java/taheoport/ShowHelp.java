@@ -6,6 +6,12 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.util.HashMap;
 
+/**
+ * This class encapsulates form for users guid
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
+ */
+
 public class ShowHelp extends JDialog {
     private final Manual manual;
     private final JTree tContent;

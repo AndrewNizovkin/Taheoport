@@ -2,20 +2,22 @@ package taheoport;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedList;
 
+/**
+ * Display results of processing and highlights current position
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
+ */
 public class PaintPanel extends JPanel {
-
-    private Insets insets;
-    private ShowViewResults parentFrame;
+    private final ShowViewResults parentFrame;
     private PaintProject ppPaintPoints;
-    private int index;
+    private final int index;
 //    private LinkedList <JLabel> llLabel;
 
     /**
      * Constructor
-     * @param frame
-     * @param sellRow
+     * @param frame ShowViewResults
+     * @param sellRow index of selected row
      */
     public PaintPanel(ShowViewResults frame, int sellRow) {
         super();
@@ -29,7 +31,7 @@ public class PaintPanel extends JPanel {
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        insets = getInsets();
+        Insets insets = getInsets();
         ppPaintPoints = new PaintProject(parentFrame.getSurveyProject(), this.getWidth(), this.getHeight());
         if (ppPaintPoints.getScale() < 10) {
             for (PaintPoint paintPoint : ppPaintPoints) {

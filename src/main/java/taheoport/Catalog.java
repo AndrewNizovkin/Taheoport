@@ -3,7 +3,9 @@ package taheoport;
 import java.util.LinkedList;
 
 /**
- * This class encapsulates base points coordinates
+ *This class encapsulates base points coordinates
+ *@author Andrey Nizovkin
+ *Copyright Nizovkin A.V. 2022
  */
     public class Catalog extends LinkedList <CatalogPoint>{
     private String absoluteCatalogPath;

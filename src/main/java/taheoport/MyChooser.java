@@ -6,6 +6,8 @@ import java.util.LinkedList;
 
 /**
  * Provides methods for reading and writing text files
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
  */
 public class MyChooser {
     MainWin parentFrame;

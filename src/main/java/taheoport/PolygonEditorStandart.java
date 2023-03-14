@@ -1,13 +1,16 @@
 package taheoport;
 
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
+/**
+ * This class encapsulated panel for displaying and editing of polygon
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
+ */
 public class PolygonEditorStandart extends JPanel {
     private int selRow;
     private int selColumn;
@@ -225,12 +228,10 @@ public class PolygonEditorStandart extends JPanel {
                 GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
         add(pnlBottom, BorderLayout.SOUTH);
 
-
 //tblTheoStations__________________________________________________________
 
         tmTheoStations = new TmodelTheoStations();
         tblStations = new JTable(tmTheoStations);
-//            String [] array = new String[4];
         Object[] array;
         for (int i = 0; i < parentFrame.getPolygonProject().getSizeTheoStations(); i++) {
             array = new Object[8];
@@ -280,8 +281,6 @@ public class PolygonEditorStandart extends JPanel {
             tmTheoStations.addRow(array);
 
         }
-
-
         tblStations.getTableHeader().setReorderingAllowed(false);
         tblStations.setColumnSelectionAllowed(true);
         ListSelectionModel columnSelectionModel = tblStations.getColumnModel().getSelectionModel();
@@ -289,7 +288,6 @@ public class PolygonEditorStandart extends JPanel {
         tblStations.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tblStations.getSelectionModel().addListSelectionListener(e -> {
             selRow = tblStations.getSelectedRow();
-
         });
         tblStations.getColumnModel().getSelectionModel().addListSelectionListener(e -> {
             selColumn = tblStations.getSelectedColumn();
@@ -297,8 +295,6 @@ public class PolygonEditorStandart extends JPanel {
 
         JScrollPane scpTheoStations = new JScrollPane(tblStations);
         add(scpTheoStations, BorderLayout.CENTER);
-
-//-->> The END of Constructor
     }
 
     /**
@@ -405,7 +401,7 @@ public class PolygonEditorStandart extends JPanel {
      */
     private class TmodelTheoStations extends AbstractTableModel {
         private final int columnCount = 8;
-        private ArrayList <Object []> dataArrayList;
+        private final ArrayList <Object []> dataArrayList;
 
         public TmodelTheoStations() {
             dataArrayList = new ArrayList<Object[]>();
@@ -663,12 +659,5 @@ public class PolygonEditorStandart extends JPanel {
             parentFrame.getPolygonProject().removeStation(index);
             fireTableRowsDeleted(index, index);
         }
-
-//-->> The END of class TmodelTheoStations
     }
-
-
-
-
-//-->> The END of class TheoEditorStandart
 }

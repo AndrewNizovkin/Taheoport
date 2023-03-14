@@ -6,6 +6,11 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
 
+/**
+ * This class encapsulates form for changes program settings
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
+ */
 public class ShowOptions extends JDialog {
     private final MainWin parentFrame;
     private final Options options;

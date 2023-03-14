@@ -6,10 +6,11 @@
 
     /**
      * this class encapsulates data in a list of stations llTeoStation and
-     * provides methods for
+     * provides methods for editing, adjustment
+     * @author Andrey Nizovkin
+     * Copyright Nizovkin A.V. 2022
      */
     public class PolygonProject {
-
     private final MainWin parentFrame;
     private String absolutePolPath = "";
     private BindType bindType = BindType.ZZ;
@@ -21,7 +22,6 @@
     private String fOtn = "Not";
     private double perimeter = 0.0;
     private final LinkedList<PolygonStation> llTheoStatons = new LinkedList<PolygonStation>();
-    // This enum describes options for possible ways to bind the network
     public enum BindType {ZZ,TT, TO, OT, OO, TZ, ZT}
 
         /**

@@ -6,6 +6,8 @@ import java.util.LinkedList;
 
 /**
  * This class encapsulates GUI for entered linear offset to measured lenth
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
  */
 public class LinearOffsetPaintPanel extends JPanel {
     private final MainWin parentFrame;

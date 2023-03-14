@@ -1,4 +1,5 @@
 package taheoport;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -10,6 +11,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Vector;
 
+/**
+ * This main window of program
+ * @author Andrey Nizovkin
+ * Copyright Nizovkin A.V. 2022
+ */
 public class MainWin extends JFrame{
     private static TahEditorFocusTransversalPolicy focusPolicy;
     private JTabbedPane tpMain;
