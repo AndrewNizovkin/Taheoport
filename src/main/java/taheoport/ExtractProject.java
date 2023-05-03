@@ -26,7 +26,8 @@
         LinkedList<String> llPolList = new LinkedList<String>();
         SurveyProject surveyProject = new SurveyProject(parentFrame);
         for (int i = 0; i < parentFrame.getSurveyProject().sizeStations(); i++) {
-            if (parentFrame.getSurveyProject().getStation(i).getName().charAt(0) != (char) parentFrame.getOptions().getPrefixEX() &
+            if (parentFrame.getSurveyProject().getStation(i).getName().charAt(0)
+                    != (char) parentFrame.getOptions().getPrefixEX() &
                     parentFrame.getSurveyProject().getStation(i).sizePickets() >= 2) {
                 surveyProject.addStation(parentFrame.getSurveyProject().getStation(i));
             }
@@ -36,10 +37,12 @@
         extractStation.setName(surveyProject.getStation(0).getPicket(0).getpName());
         extractStation.setHorBack(surveyProject.getStation(0).getPicket(0).getHor());
         extractStation.setHorForward(surveyProject.getStation(0).getPicket(0).getHor());
-        extractStation.setLineBack(surveyProject.getStation(0).getPicket(0).getLine());
-        extractStation.setLineForward(surveyProject.getStation(0).getPicket(0).getLine());
-        extractStation.setdZBack(new DataHandler(surveyProject.getStation(0).getPicket(0).getDZ()).format(3).getStr());
-        extractStation.setdZForward(new DataHandler(-1 * Double.parseDouble(surveyProject.getStation(0).getPicket(0).getDZ())).format(3).getStr());
+        extractStation.setLineBack(surveyProject.getStation(0).getPicket(0).getpHorLine());
+        extractStation.setLineForward(surveyProject.getStation(0).getPicket(0).getpHorLine());
+        extractStation.setdZBack(new DataHandler(surveyProject.getStation(0).
+                getPicket(0).getDZ()).format(3).getStr());
+        extractStation.setdZForward(new DataHandler(-1 * Double.parseDouble(surveyProject.getStation(0).
+                getPicket(0).getDZ())).format(3).getStr());
         add(extractStation);
 
         for (int i = 0; i <= surveyProject.sizeStations() - 2; i++) {
@@ -47,21 +50,29 @@
             extractStation.setName(surveyProject.getStation(i).getName());
             extractStation.setHorBack(surveyProject.getStation(i).getPicket(0).getHor());
             extractStation.setHorForward(surveyProject.getStation(i).getPicket(1).getHor());
-            extractStation.setLineBack(surveyProject.getStation(i + 1).getPicket(0).getLine());
-            extractStation.setLineForward(surveyProject.getStation(i).getPicket(1).getLine());
-            extractStation.setdZBack(new DataHandler(surveyProject.getStation(i + 1).getPicket(0).getDZ()).format(3).getStr());
-            extractStation.setdZForward(new DataHandler( surveyProject.getStation(i).getPicket(1).getDZ()).format(3).getStr());
+            extractStation.setLineBack(surveyProject.getStation(i + 1).getPicket(0).getpHorLine());
+            extractStation.setLineForward(surveyProject.getStation(i).getPicket(1).getpHorLine());
+            extractStation.setdZBack(new DataHandler(surveyProject.getStation(i + 1).
+                    getPicket(0).getDZ()).format(3).getStr());
+            extractStation.setdZForward(new DataHandler( surveyProject.getStation(i).
+                    getPicket(1).getDZ()).format(3).getStr());
             add(extractStation);
         }
 
             extractStation = new ExtractStation();
             extractStation.setName(surveyProject.getStation(surveyProject.sizeStations() - 1).getName());
-            extractStation.setHorBack(surveyProject.getStation(surveyProject.sizeStations() - 1).getPicket(0).getHor());
-            extractStation.setHorForward(surveyProject.getStation(surveyProject.sizeStations() - 1).getPicket(1).getHor());
-            extractStation.setLineBack(surveyProject.getStation(surveyProject.sizeStations() - 1).getPicket(1).getLine());
-            extractStation.setLineForward(surveyProject.getStation(surveyProject.sizeStations() - 1).getPicket(1).getLine());
-            extractStation.setdZBack(new DataHandler(-1 * Double.parseDouble(surveyProject.getStation(surveyProject.sizeStations() - 1).getPicket(1).getDZ())).format(3).getStr());
-            extractStation.setdZForward(new DataHandler(surveyProject.getStation(surveyProject.sizeStations() - 1).getPicket(1).getDZ()).format(3).getStr());
+            extractStation.setHorBack(surveyProject.getStation(surveyProject.sizeStations() - 1).
+                    getPicket(0).getHor());
+            extractStation.setHorForward(surveyProject.getStation(surveyProject.sizeStations() - 1).
+                    getPicket(1).getHor());
+            extractStation.setLineBack(surveyProject.getStation(surveyProject.sizeStations() - 1).
+                    getPicket(1).getpHorLine());
+            extractStation.setLineForward(surveyProject.getStation(surveyProject.sizeStations() - 1).
+                    getPicket(1).getpHorLine());
+            extractStation.setdZBack(new DataHandler(-1 * Double.parseDouble(surveyProject.getStation(surveyProject.sizeStations() - 1).
+                    getPicket(1).getDZ())).format(3).getStr());
+            extractStation.setdZForward(new DataHandler(surveyProject.getStation(surveyProject.sizeStations() - 1).
+                    getPicket(1).getDZ()).format(3).getStr());
             add(extractStation);
 
             llPolList.add("");
@@ -71,7 +82,8 @@
                         get(i).getLineTrue() + " " +
                         get(i).getDZTrue() + " Not Not Not");
             }
-            llPolList.add(surveyProject.getStation(surveyProject.sizeStations() - 1).getPicket(1).getpName() + " Not Not Not Not Not Not");
+            llPolList.add(surveyProject.getStation(surveyProject.sizeStations() - 1).
+                    getPicket(1).getpName() + " Not Not Not Not Not Not");
         return llPolList;
     }
 
@@ -99,7 +111,9 @@
                                 new DataHandler(get(i).getDZTrue()).toTable(8).getStr() + " | " +
                                 new DataHandler(get(i).getDDZ()).toTable(6).getStr() + " |");
             }
-        llExtractReport.add("| " + new DataHandler(parentFrame.getSurveyProject().getStation(parentFrame.getSurveyProject().sizeStations() - 1).getPicket(1).getpName()).toTable(10).getStr() +
+        llExtractReport.add("| " + new DataHandler(parentFrame.getSurveyProject().
+                getStation(parentFrame.getSurveyProject().sizeStations() - 1).
+                getPicket(1).getpName()).toTable(10).getStr() +
                 " |          |          |          |        |          |          |          |        |");
             llExtractReport.add("--------------------------------------------------------------------------------------------------");
             return llExtractReport;

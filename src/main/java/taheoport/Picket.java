@@ -209,7 +209,7 @@ public class Picket{
      * Get horizontal distance
      * @return double
      */
-    private String getpHorLine() {
+    public String getpHorLine() {
         return new DataHandler(horLine).format(3).getStr();
     }
 

@@ -7,8 +7,8 @@ package taheoport;
  */
 public class ExtractStation {
     private String name = "Not";
-    private String horBack = "0.000";
-    private String horForward = "0.000";
+    private String horBack = "0.0000";
+    private String horForward = "0.0000";
     private String lineBack = "0.000";
     private String lineForward = "0.000";
     private String dZBack = "0.000";
@@ -49,14 +49,6 @@ public class ExtractStation {
 
     public String getName() {
         return name;
-    }
-
-    public String getHorBack() {
-        return horBack;
-    }
-
-    public String getHorForward() {
-        return horForward;
     }
 
     public String getLineBack() {
