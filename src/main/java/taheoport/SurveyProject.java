@@ -33,10 +33,6 @@ public class SurveyProject {
      *  Import from *.txt file Topcon
      */
     public SurveyProject loadTopconList(LinkedList<String> l) {
-//        LinkedList <String> l = new MyChooser().readTextFile(path, "txt", "Import from Topcon");
-//        if (l == null) {
-//            return null;
-//        }
         l.removeFirst();
         String str = l.removeFirst();
         String [] array = str.split("_'");
@@ -45,7 +41,8 @@ public class SurveyProject {
             if (m.find()) {
                 st = addStation();
                 st.setName(s.substring(0, s.indexOf("_", 0)));
-                st.setVi(new DataHandler(s.substring(s.indexOf(")", 0) + 1, s.indexOf("_", s.indexOf(")", 0)))).format(3).getStr());
+                st.setVi(new DataHandler(s.substring(s.indexOf(")", 0) + 1,
+                        s.indexOf("_", s.indexOf(")", 0)))).format(3).getStr());
                 String[] pickets = s.substring(m.end()).split("_\\+");
                 for (String s1 : pickets) {
                     p = st.addPicket(st);
@@ -65,12 +62,9 @@ public class SurveyProject {
 
     /**
      * Import from *.row file Nicon
+     * @param l list
      */
     public SurveyProject loadNiconList(LinkedList<String> l) {
-//        LinkedList <String>  l = new MyChooser().readTextFile(path, "raw", "Import From Nicon");
-//        if (l == null) {
-//            return null;
-//        }
         l.removeFirst();
         try {
             while (l.size() > 0){
@@ -106,10 +100,6 @@ public class SurveyProject {
         DataHandler[] lh;
         int res = 0;
         String [] array;
-//        LinkedList <String>  l = new MyChooser().readTextFile(path, "gsi", "Import From Leica");
-//        if (l == null) {
-//            return null;
-//        }
         l.removeFirst();
         try {
             while (l.size() > 0) {
@@ -293,19 +283,6 @@ public class SurveyProject {
             while ((str = llTopReport.pollFirst()) != null) {
                 llReport.add(str);
             }
-
-/*
-            llReport.add("");
-            llReport.add("                           В  Е  Д  О  М  О  С  Т  Ь    В  Ы  Ч  И  С  Л  Е  Н  И  Я    К  О  О  Р  Д  И  Н  А  Т");
-            llReport.add("-----------------------------------------------------------------------------------------------------------------------------------------------");
-            llReport.add("|  Название   |  Длина  | Направ-  |  Угол   |  Высота  |   Дир.   |      Приращения координат       |              Координаты                |");
-            llReport.add("|   точки     |  линии  |  ление   | наклона | наведения|   угол   |---------------------------------|----------------------------------------|");
-            llReport.add("|             |    м.   |  г.мс    |   г.мс  |     м.   |   г.мс   |   DX, м. |   DY, м. |   DZ, м.  |     X, м.   |    Y, м.    |     Z, м.  |");
-            llReport.add("|-------------|---------|----------|---------|----------|----------|----------|----------|-----------|--------- ---|-------------|------------|");
-            llReport.add("|      1      |     2   |     3    |    4    |     5    |     6    |     7    |     8    |      9    |     10      |      11     |      12    |");
-            llReport.add("-----------------------------------------------------------------------------------------------------------------------------------------------");
-*/
-
         for (SurveyStation llStation : llStations) {
             llReport.add("                                   " + titlesReports.get("SPstation") +
                     llStation.getName() +
@@ -350,20 +327,6 @@ public class SurveyProject {
             return llReport;
         }
 
-/*
-        public LinkedList <String> getListStations() {
-            String sep = " ";
-            LinkedList <String> l = new LinkedList<String >();
-            for (int i = 0; i < sizeStations(); i++) {
-                l.add(getStation(i).getName() + sep +
-                        getStation(i).getX() + sep +
-                        getStation(i).getY() + sep +
-                        getStation(i).getY());
-            }
-
-            return l;
-        }
-*/
     /**
      * Appends new element Station to the end of list ll
      * @param sName Station name
@@ -423,11 +386,9 @@ public class SurveyProject {
     /**
      * Removes the element (Station) at the specified position of list ll
      * @param i element index
-     * @return element (Station)
      */
-    public SurveyStation removeStation(int i){
-            st = llStations.remove(i);
-            return st;
+    public void removeStation(int i){
+        llStations.remove(i);
     }
 
     /**
@@ -486,43 +447,43 @@ public class SurveyProject {
         double dY;
         double dZ;
         Picket picket;
-        for (int i = 0; i < llStations.size(); i++) {
+        for (SurveyStation llStation : llStations) {
             dirBase = geoCalc.getDirAB(
-                    llStations.get(i).getX(),
-                    llStations.get(i).getY(),
-                    llStations.get(i).getxOr(),
-                    llStations.get(i).getyOr());
-            for (int j = 0; j < llStations.get(i).sizePickets(); j++) {
-                picket = llStations.get(i).getPicket(j);
+                    llStation.getX(),
+                    llStation.getY(),
+                    llStation.getxOr(),
+                    llStation.getyOr());
+            for (int j = 0; j < llStation.sizePickets(); j++) {
+                picket = llStation.getPicket(j);
 
 
                 if (frameParent.getOptions().getOrientStation() == 1) {
-                    dirPicket = dirBase + new DataHandler(picket.getHor()).dmsToRad() - new DataHandler(llStations.get(i).getPicket(0).getHor()).dmsToRad();
+                    dirPicket = dirBase + new DataHandler(picket.getHor()).dmsToRad() - new DataHandler(llStation.getPicket(0).getHor()).dmsToRad();
                     while (dirPicket < 0) {
-                        dirPicket += 2 *Math.PI;
+                        dirPicket += 2 * Math.PI;
                     }
-                }else {
+                } else {
                     dirPicket = dirBase + new DataHandler(picket.getHor()).dmsToRad();
                 }
 
 
-                while (dirPicket  > 2 * Math.PI) {
-                    dirPicket -= 2 *Math.PI;
+                while (dirPicket > 2 * Math.PI) {
+                    dirPicket -= 2 * Math.PI;
                 }
                 horLine = geoCalc.getHorLine(picket.getLine(), picket.getVert());
                 dX = geoCalc.getDX(horLine, dirPicket);
                 dY = geoCalc.getDY(horLine, dirPicket);
-                dZ = Double.parseDouble(llStations.get(i).getVi()) -
-                        Double.parseDouble(llStations.get(i).getPicket(j).getV()) +
+                dZ = Double.parseDouble(llStation.getVi()) -
+                        Double.parseDouble(llStation.getPicket(j).getV()) +
                         Double.parseDouble(picket.getLine()) * Math.sin(new DataHandler(picket.getVert()).dmsToRad());
                 picket.setDirection(dirPicket);
                 picket.setHorLine(horLine);
                 picket.setdX(dX);
                 picket.setdY(dY);
                 picket.setdZ(dZ);
-                picket.setX(Double.parseDouble(llStations.get(i).getX()) + dX);
-                picket.setY(Double.parseDouble(llStations.get(i).getY()) + dY);
-                picket.setZ(Double.parseDouble(llStations.get(i).getZ()) + dZ);
+                picket.setX(Double.parseDouble(llStation.getX()) + dX);
+                picket.setY(Double.parseDouble(llStation.getY()) + dY);
+                picket.setZ(Double.parseDouble(llStation.getZ()) + dZ);
             }
         }
     }
@@ -532,11 +493,6 @@ public class SurveyProject {
      * @return boolean
      */
     public boolean haveTheo() {
-/*
-        if (llStations.size() < 3) {
-            return false;
-        }
-*/
         for (SurveyStation llStation : llStations) {
             if (llStation.sizePickets() < 2) {
                 return false;

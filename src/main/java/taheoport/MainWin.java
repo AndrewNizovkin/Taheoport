@@ -111,13 +111,13 @@ public class MainWin extends JFrame{
 // mImport______________________________________________________
 
             mImport = new JMenu(titles.get("MWmImport"));
-        JMenuItem iLeica = new JMenuItem("Leica");
+                JMenuItem iLeica = new JMenuItem("Leica");
                 iLeica.addActionListener(e -> importLeica());
 
-        JMenuItem iNicon = new JMenuItem("Nicon");
+                JMenuItem iNicon = new JMenuItem("Nicon");
                 iNicon.addActionListener(e -> importNicon());
 
-        JMenuItem iTopcon = new JMenuItem("Topcon");
+                JMenuItem iTopcon = new JMenuItem("Topcon");
                 iTopcon.addActionListener(e -> importTopcon());
 
             mImport.add(iLeica);
@@ -521,12 +521,14 @@ public class MainWin extends JFrame{
     private void importLeica() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                LinkedList <String>  llLeicaList = new MyChooser(this).readTextFile(pathWorkDir, "gsi", titles.get("MWopenFileTitle"));
+                LinkedList <String>  llLeicaList = new MyChooser(this).readTextFile(pathWorkDir, "gsi",
+                        titles.get("MWopenFileTitle"));
                 if (llLeicaList != null) {
                     surveyProject = new SurveyProject(this).loadLeicaList(llLeicaList);
                     reloadSurveyEditor();
                     setControlsOn();
-                    surveyProject.setAbsoluteTahPath(new MyChooser(this).writeTextFile(pathWorkDir, "tah", "Write Tah", surveyProject.getTahList()));
+                    surveyProject.setAbsoluteTahPath(new MyChooser(this).writeTextFile(pathWorkDir,
+                            "tah", "Write Tah", surveyProject.getTahList()));
                     setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
                     surveyEditor.setFocusStations();
                 }
@@ -634,7 +636,7 @@ public class MainWin extends JFrame{
             if (surveyProject.haveTheo()) {
                 surveyProject.processSourceData();
                 extractProject = new ExtractProject(this);
-                polygonProject = new PolygonProject(this).loadPolList(extractProject.extractTheoProject());
+                polygonProject = new PolygonProject(this).loadPolList(extractProject.extractPolygonProject());
                 tpMain.setSelectedIndex(1);
                 reloadPolygonEditor();
                 setControlsOn();

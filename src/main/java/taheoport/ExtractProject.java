@@ -20,9 +20,9 @@
 
         /**
          * extracts PolList from SurveyProject
-         * @return
+         * @return LinkedList<String>
          */
-        public LinkedList<String> extractTheoProject() {
+        public LinkedList<String> extractPolygonProject() {
         LinkedList<String> llPolList = new LinkedList<String>();
         SurveyProject surveyProject = new SurveyProject(parentFrame);
         for (int i = 0; i < parentFrame.getSurveyProject().sizeStations(); i++) {
