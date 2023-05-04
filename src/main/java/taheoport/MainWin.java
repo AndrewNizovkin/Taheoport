@@ -17,7 +17,7 @@ import java.util.Vector;
  * Copyright Nizovkin A.V. 2022
  */
 public class MainWin extends JFrame{
-    private static TahEditorFocusTransversalPolicy focusPolicy;
+//    private static TahEditorFocusTransversalPolicy focusPolicy;
     private JTabbedPane tpMain;
     private final JPanel pnlMeasurements;
     private final JPanel pnlPolygon;

@@ -2,7 +2,6 @@ package taheoport;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedList;
 
 /**
  * This class encapsulates GUI for entered linear offset to measured lenth
@@ -11,8 +10,6 @@ import java.util.LinkedList;
  */
 public class LinearOffsetPaintPanel extends JPanel {
     private final MainWin parentFrame;
-    private LinkedList<PaintPoint> ll;
-    private PaintPoint paintPoint;
 
     /**
      * Constructor
@@ -31,7 +28,6 @@ public class LinearOffsetPaintPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        PaintProject paintPoints = new PaintProject(ll, this.getWidth(), this.getHeight());
         g.setColor(Color.RED);
         switch (parentFrame.getOptions().getOffsetDistanceType()) {
             case 0 -> {
