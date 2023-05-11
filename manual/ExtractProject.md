@@ -38,8 +38,8 @@
 
 Модификатор и тип | Метод | Описание
 --- | --- | ---
-`public LinkedList<String>` | `extractPolygonProject` |  Извлекает данные из parentFrame.getSurveyProject. Добавляет экземпляры ExtractStation как элементы списка.
-`public LinkedList` | `getExtractReport` |  Возвращает отчёт о результатах извлечения полигона в виде очереди строк.
+`public LinkedList<String>` | `extractPolygonProject()` |  Извлекает данные из parentFrame.getSurveyProject. Добавляет экземпляры ExtractStation как элементы списка.
+`public LinkedList` | `getExtractReport()` |  Возвращает отчёт о результатах извлечения полигона в виде очереди строк.
 
 
 

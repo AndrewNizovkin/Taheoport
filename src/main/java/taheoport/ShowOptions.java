@@ -331,7 +331,7 @@ public class ShowOptions extends JDialog {
             btnApprove.setToolTipText(parentFrame.getTitles().get("SObtnApproveTT"));
             btnApprove.addActionListener(e -> {
                     options.saveOptions();
-                    parentFrame.setOptions();
+//                    parentFrame.setOptions();
                 this.dispose();
             });
             pnlControl.add(btnApprove);

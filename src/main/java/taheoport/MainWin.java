@@ -158,19 +158,7 @@ public class MainWin extends JFrame{
 
             tUpdate = new JMenuItem(titles.get("MWtUpdate"));
             tUpdate.setEnabled(false);
-            tUpdate.addActionListener(e -> {
-                switch (tpMain.getSelectedIndex()) {
-                    case 0 -> {
-                        updateSurveyStations();
-                        reloadSurveyEditor();
-                    }
-                    case 1 -> {
-                        updateTheoStations();
-                        reloadPolygonEditor();
-                    }
-                }
-            });
-
+            tUpdate.addActionListener(e -> updateBasePoints());
 
             tRun = new JMenuItem(titles.get("MWtRun"), new ImageIcon("images/run.png"));
             tRun.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));
@@ -180,22 +168,7 @@ public class MainWin extends JFrame{
             tView = new JMenuItem(titles.get("MWtView"), new ImageIcon("images/view.png"));
             tView.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
             tView.setEnabled(false);
-            tView.addActionListener(e -> {
-                switch (tpMain.getSelectedIndex()) {
-                    case 0 -> {
-                        surveyProject.processSourceData();
-                        new ShowViewResults(this);
-                    }
-                    case 1 -> {
-                        processSourceData();
-                        if (polygonProject.getPerimeter() > 0.0) {
-                            new ShowViewAdjustment(this);
-                        }
-
-                    }
-
-                }
-            });
+            tView.addActionListener(e -> viewResult());
 
             tExtractPol = new JMenuItem(titles.get("MWtExtractPol"));
             tExtractPol.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_DOWN_MASK));
@@ -280,20 +253,7 @@ public class MainWin extends JFrame{
             btnView = new JButton(new ImageIcon("images/view.png"));
             btnView.setToolTipText(titles.get("MWbtnVewTT"));
             btnView.setEnabled(false);
-            btnView.addActionListener(e -> {
-                switch (tpMain.getSelectedIndex()) {
-                    case 0 -> {
-                        surveyProject.processSourceData();
-                        new ShowViewResults(this);
-                    }
-                    case 1 -> {
-                        processSourceData();
-                        if (polygonProject.getPerimeter() > 0.0) {
-                            new ShowViewAdjustment(this);
-                        }
-                    }
-                }
-            });
+            btnView.addActionListener(e -> viewResult());
 
             btnLoadCat = new JButton(new ImageIcon("images/database.png"));
             btnLoadCat.setToolTipText(titles.get("MWbtnLoadCatTT"));
@@ -403,9 +363,11 @@ public class MainWin extends JFrame{
     /**
      * sets options
      */
+/*
     public   void setOptions() {
         pathWorkDir = options.getPathWorkDir();
     }
+*/
 
     /**
      * gets width of MainWin
@@ -779,48 +741,76 @@ public class MainWin extends JFrame{
     }
 
     /**
-     * Updates Stations coordinates from current catalog
+     * Show result of processing or Adjustments
      */
-    private void updateSurveyStations() {
-
-        if (catalog != null & surveyProject != null) {
-            int q = 0;
-            for (int i = 0; i < surveyProject.sizeStations(); i++) {
-                for (int j = 0; j < catalog.getSizeCatalog(); j++) {
-                    if (surveyProject.getStation(i).getName().equals(catalog.get(j).getName())) {
-                        surveyProject.getStation(i).setName(catalog.get(j).getName());
-                        surveyProject.getStation(i).setX(catalog.get(j).getX());
-                        surveyProject.getStation(i).setY(catalog.get(j).getY());
-                        surveyProject.getStation(i).setZ(catalog.get(j).getZ());
-                        q++;
-                    }
-                    if (surveyProject.getStation(i).getNameOr().equals(catalog.get(j).getName())) {
-                        surveyProject.getStation(i).setNameOr(catalog.get(j).getName());
-                        surveyProject.getStation(i).setxOr(catalog.get(j).getX());
-                        surveyProject.getStation(i).setyOr(catalog.get(j).getY());
-                        surveyProject.getStation(i).setzOr(catalog.get(j).getZ());
-                        q++;
-                    }
-                }
+    private void viewResult() {
+        switch (tpMain.getSelectedIndex()) {
+            case 0 -> {
+                surveyProject.processSourceData();
+                new ShowViewResults(this);
             }
-            JOptionPane.showMessageDialog(this, q + titles.get("MWupdateMessage"), titles.get("MWupdateMessageTitle"), JOptionPane.INFORMATION_MESSAGE);
+            case 1 -> {
+                processSourceData();
+                if (polygonProject.getPerimeter() > 0.0) {
+                    new ShowViewAdjustment(this);
+                }
+
+            }
+
         }
+
     }
 
-    private void updateTheoStations() {
-        int q = 0;
-        for (int i = 0; i < polygonProject.getSizeTheoStations(); i++) {
-            for (int j = 0; j < catalog.getSizeCatalog(); j++) {
-                if (polygonProject.getTheoStation(i).getName().equals(catalog.get(j).getName()) & polygonProject.getTheoStation(i).getStatus()) {
-                    polygonProject.getTheoStation(i).setName(catalog.get(j).getName());
-                    polygonProject.getTheoStation(i).setX(catalog.get(j).getX());
-                    polygonProject.getTheoStation(i).setY(catalog.get(j).getY());
-                    polygonProject.getTheoStation(i).setZ(catalog.get(j).getZ());
-                    q++;
+    /**
+     * Updates base points with current catalog
+     */
+    private void updateBasePoints() {
+        switch (tpMain.getSelectedIndex()) {
+            case 0 -> {
+                if (catalog != null & surveyProject != null) {
+                    int q = 0;
+                    for (int i = 0; i < surveyProject.sizeStations(); i++) {
+                        for (int j = 0; j < catalog.getSizeCatalog(); j++) {
+                            if (surveyProject.getStation(i).getName().equals(catalog.get(j).getName())) {
+                                surveyProject.getStation(i).setName(catalog.get(j).getName());
+                                surveyProject.getStation(i).setX(catalog.get(j).getX());
+                                surveyProject.getStation(i).setY(catalog.get(j).getY());
+                                surveyProject.getStation(i).setZ(catalog.get(j).getZ());
+                                q++;
+                            }
+                            if (surveyProject.getStation(i).getNameOr().equals(catalog.get(j).getName())) {
+                                surveyProject.getStation(i).setNameOr(catalog.get(j).getName());
+                                surveyProject.getStation(i).setxOr(catalog.get(j).getX());
+                                surveyProject.getStation(i).setyOr(catalog.get(j).getY());
+                                surveyProject.getStation(i).setzOr(catalog.get(j).getZ());
+                                q++;
+                            }
+                        }
+                    }
+                    JOptionPane.showMessageDialog(this, q + titles.get("MWupdateMessage"), titles.get("MWupdateMessageTitle"), JOptionPane.INFORMATION_MESSAGE);
                 }
+
+                reloadSurveyEditor();
+            }
+            case 1 -> {
+                int q = 0;
+                for (int i = 0; i < polygonProject.getSizeTheoStations(); i++) {
+                    for (int j = 0; j < catalog.getSizeCatalog(); j++) {
+                        if (polygonProject.getTheoStation(i).getName().equals(catalog.get(j).getName()) & polygonProject.getTheoStation(i).getStatus()) {
+                            polygonProject.getTheoStation(i).setName(catalog.get(j).getName());
+                            polygonProject.getTheoStation(i).setX(catalog.get(j).getX());
+                            polygonProject.getTheoStation(i).setY(catalog.get(j).getY());
+                            polygonProject.getTheoStation(i).setZ(catalog.get(j).getZ());
+                            q++;
+                        }
+                    }
+                }
+                JOptionPane.showMessageDialog(this, q + titles.get("MWupdateMessage"), titles.get("MWupdateMessageTitle"), JOptionPane.INFORMATION_MESSAGE);
+
+                reloadPolygonEditor();
             }
         }
-        JOptionPane.showMessageDialog(this, q + titles.get("MWupdateMessage"), titles.get("MWupdateMessageTitle"), JOptionPane.INFORMATION_MESSAGE);
+
     }
 
     /**
