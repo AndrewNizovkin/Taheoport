@@ -22,28 +22,25 @@ public class MyChooser {
      * @param path String
      * @param filter String
      * @param title String
-     * @param l LinkedList
+     * @param list LinkedList
      */
-    public String writeTextFile(String path, String filter, String title, LinkedList <String> l) {
+    public String writeTextFile(String path, String filter, String title, LinkedList <String> list) {
         String absolutePath;
-        int res = 0;
-        String str;
-        JFileChooser fch = new JFileChooser(path);
+        int result;
+        JFileChooser fileChooser = new JFileChooser(path);
         FileNameExtensionFilter fileNameFilter = new FileNameExtensionFilter("*."+filter, filter);
-        fch.setFileFilter(fileNameFilter);
-        fch.setDialogTitle(title);
-        res = fch.showSaveDialog(parentFrame);
-        if (res != JFileChooser.APPROVE_OPTION) {
-            fch.cancelSelection();
+        fileChooser.setFileFilter(fileNameFilter);
+        fileChooser.setDialogTitle(title);
+        result = fileChooser.showSaveDialog(parentFrame);
+        if (result != JFileChooser.APPROVE_OPTION) {
+            fileChooser.cancelSelection();
             return null;
         }
-        File f = fch.getSelectedFile();
+        File f = fileChooser.getSelectedFile();
         if (f.isFile()) {
             f.delete();
         }
         absolutePath = f.getAbsolutePath();
-//        f.setWritable(true);
-//        System.out.println(f.canWrite());
         try {
             BufferedWriter output;
             if (!f.getAbsolutePath().endsWith(filter)) {
@@ -51,12 +48,11 @@ public class MyChooser {
             } else {
                 output = new BufferedWriter(new FileWriter(f.getAbsolutePath()));
             }
-            while (l.size() > 0) {
-                output.write(l.removeFirst());
+            while (list.size() > 0) {
+                output.write(list.removeFirst());
                 output.newLine();
             }
             output.close();
-            fch = null;
         } catch (FileNotFoundException e) {
             System.out.println("file not found");
         } catch (IOException e) {
@@ -65,14 +61,20 @@ public class MyChooser {
         return absolutePath;
     }
 
-    public String writeTextFile(String absolutePath, LinkedList <String> l) {
-        if (!(l == null)) {
+    /**
+     * Writes the list items to a text file of the specified type.
+     * @param absolutePath String path to file
+     * @param list LinkedList<String>
+     * @return String absolutePath
+     */
+    public String writeTextFile(String absolutePath, LinkedList<String> list) {
+        if (!(list == null)) {
             File f = new File(absolutePath);
 
             try {
                 BufferedWriter output = new BufferedWriter(new FileWriter(f.getAbsolutePath()));
-                while (l.size() > 0) {
-                    output.write(l.removeFirst());
+                while (list.size() > 0) {
+                    output.write(list.removeFirst());
                     output.newLine();
                 }
                 output.close();
@@ -98,35 +100,34 @@ public class MyChooser {
      */
 //    public LinkedList<String> readTextFile(String path, String filter, String title) {
     public LinkedList<String> readTextFile(String ... array) {
-        LinkedList <String> l = new LinkedList<String>();
-        File f = new File("noname.txt");
+        LinkedList <String> list = new LinkedList<String>();
+        File file = new File("noname.txt");
         int res = 0;
         String str;
         if (array != null) {
             if (array.length == 3) {
-                JFileChooser fch = new JFileChooser(array[0]);
-
+                JFileChooser fileChooser = new JFileChooser(array[0]);
 
                 FileNameExtensionFilter fileNameFilter = new FileNameExtensionFilter("*." + array[1], array[1]);
-                fch.setFileFilter(fileNameFilter);
-                fch.setDialogTitle(array[2]);
-                res = fch.showOpenDialog(parentFrame);
+                fileChooser.setFileFilter(fileNameFilter);
+                fileChooser.setDialogTitle(array[2]);
+                res = fileChooser.showOpenDialog(parentFrame);
                 if (res != JFileChooser.APPROVE_OPTION) {
-                    fch.cancelSelection();
+                    fileChooser.cancelSelection();
                     return null;
                 }
-                f = fch.getSelectedFile();
-                l.add(f.getAbsolutePath());
+                file = fileChooser.getSelectedFile();
+                list.add(file.getAbsolutePath());
             }
             if (array.length == 1) {
-                l.add(array[0]);
-                f = new File(array[0]);
+                list.add(array[0]);
+                file = new File(array[0]);
             }
 
             try {
-                BufferedReader input = new BufferedReader(new FileReader(f.getAbsoluteFile()));
+                BufferedReader input = new BufferedReader(new FileReader(file.getAbsoluteFile()));
                 while ((str = input.readLine()) != null) {
-                    l.addLast(str);
+                    list.addLast(str);
                 }
                 input.close();
 //            fch = null;
@@ -137,6 +138,6 @@ public class MyChooser {
             }
 
         }
-            return l;
+            return list;
         }
     }
