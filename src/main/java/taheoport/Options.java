@@ -9,26 +9,26 @@ import java.util.LinkedList;
  * Copyright Nizovkin A.V. 2022
  */
 public class Options {
-    private Boolean isChanged = false;
-    private String pathWorkDir;
+    private final String[] FHs = new String[] {"5√L", "10√L", "20√L", "30√L", "40√L", "50√L"};
+    private final String[] FHors = new String[] {"2√n", "5√n", "10√n", "20√n", "30√n", "60√n"};
+    private final String[] FAbss = new String[] {"0.01", "0.05", "0.10", "0.20", "0.30"};
+    private final String[] FOtns = new String[] {"1:1000", "1:2000", "1:5000", "1:10000", "1:20000"};
+    private boolean isChanged = false;
     private int idxFH = 0;
     private int idxFHor = 0;
     private int idxFAbs = 0;
     private int idxFOtn = 0;
-    private final MainWin parentFrame;
-    private int prefixEX = 86;
-    private int orientStation = 0;
     private int language = 0;
+    private String pathWorkDir;
+    private int orientStation = 0;
     private int offsetDistanceType = 0;
     private int offsetDirectionType = 0;
     private int offsetTiltType = 0;
     private String offsetDistance = "0.000";
     private String offsetDirection = "0.0000";
     private String offsetTiltAngle = "0.0000";
-    private final String[] FHs = new String[] {"5√L", "10√L", "20√L", "30√L", "40√L", "50√L"};
-    private final String[] FHors = new String[] {"2√n", "5√n", "10√n", "20√n", "30√n", "60√n"};
-    private final String[] FAbss = new String[] {"0.01", "0.05", "0.10", "0.20", "0.30"};
-    private final String[] FOnts = new String[] {"1:1000", "1:2000", "1:5000", "1:10000", "1:20000"};
+    private final MainWin parentFrame;
+    private int prefixEX = 86;
 
 
     /**
@@ -43,17 +43,17 @@ public class Options {
             saveOptions();
         }
 
-        LinkedList <String > ll = new MyChooser(parentFrame).readTextFile("taheoport.ini");
-        ll.pollFirst();
+        LinkedList <String > list = new MyChooser(parentFrame).readTextFile("taheoport.ini");
+        list.pollFirst();
         String s;
-        s = ll.pollFirst();
+        s = list.pollFirst();
 
         if (s  == null ) {
             this.pathWorkDir = new File("").getAbsolutePath();
             saveOptions();
-            ll = new MyChooser(parentFrame).readTextFile("taheoport.ini");
-            ll.pollFirst();
-            s = ll.pollFirst();
+            list = new MyChooser(parentFrame).readTextFile("taheoport.ini");
+            list.pollFirst();
+            s = list.pollFirst();
         }
 
 
@@ -61,13 +61,13 @@ public class Options {
         if (!s.equals("taheoport_ini")) {
             this.pathWorkDir = new File("").getAbsolutePath();
             saveOptions();
-            ll = new MyChooser(parentFrame).readTextFile("taheoport.ini");
-            ll.pollFirst();
+            list = new MyChooser(parentFrame).readTextFile("taheoport.ini");
+            list.pollFirst();
         }
 
 
         String [] array;
-            while ((s = ll.pollFirst()) != null) {
+            while ((s = list.pollFirst()) != null) {
                 array = s.split("=");
                 switch (array[0]) {
                     case "pathWorkDir" -> pathWorkDir = array[1];
@@ -137,24 +137,24 @@ public class Options {
         this.offsetTiltAngle = offsetTiltAngle;
     }
 
-    public void setChanged(Boolean changed) {
+    public void setChanged(boolean changed) {
         isChanged = changed;
     }
 
-    public double getRatioFH() {
+    public double getValueFH() {
         return Double.parseDouble(FHs[idxFH].substring(0, FHs[idxFH].length() - 2));
     }
 
-    public double getRatioFHor() {
+    public double getValueFHor() {
         return Double.parseDouble(FHors[idxFHor].substring(0, FHors[idxFHor].length() - 2));
     }
 
-    public double getRatioFAbs() {
+    public double getValueFAbs() {
         return Double.parseDouble(FAbss[idxFAbs]);
     }
 
-    public String getRatioFOtn() {
-        return FOnts[idxFOtn].substring(2);
+    public String getValueFOtn() {
+        return FOtns[idxFOtn].substring(2);
     }
 
     public int getOrientStation() {
@@ -197,8 +197,8 @@ public class Options {
         return FAbss;
     }
 
-    public String[] getFOnts() {
-        return FOnts;
+    public String[] getFOtns() {
+        return FOtns;
     }
 
     public int getPrefixEX() {
@@ -229,7 +229,7 @@ public class Options {
         return offsetTiltAngle;
     }
 
-    public Boolean getChanged() {
+    public boolean isChanged() {
         return isChanged;
     }
 
@@ -241,26 +241,25 @@ public class Options {
         this.language = language;
     }
 
+    /**
+     * Writes settings to file taheoport.ini
+     */
     public void saveOptions() {
-        LinkedList <String> ll = new LinkedList<>();
-        ll.add("taheoport_ini");
-        ll.add("pathWorkDir=" + pathWorkDir);
-        ll.add("idxFH=" + idxFH);
-        ll.add("idxFHor=" + idxFHor);
-        ll.add("idxFAbs=" + idxFAbs);
-        ll.add("idxFOtn=" + idxFOtn);
-        ll.add("prefixEX=" + prefixEX);
-        ll.add("orientStation=" + orientStation);
-        ll.add("language=" + language);
-        ll.add("offsetDistanceType=" + offsetDistanceType);
-        ll.add("offsetDirectionType=" + offsetDirectionType);
-        ll.add("offsetTiltAngleType=" + offsetTiltType);
+        LinkedList <String> list = new LinkedList<>();
+        list.add("taheoport_ini");
+        list.add("pathWorkDir=" + pathWorkDir);
+        list.add("idxFH=" + idxFH);
+        list.add("idxFHor=" + idxFHor);
+        list.add("idxFAbs=" + idxFAbs);
+        list.add("idxFOtn=" + idxFOtn);
+        list.add("prefixEX=" + prefixEX);
+        list.add("orientStation=" + orientStation);
+        list.add("language=" + language);
+        list.add("offsetDistanceType=" + offsetDistanceType);
+        list.add("offsetDirectionType=" + offsetDirectionType);
+        list.add("offsetTiltAngleType=" + offsetTiltType);
 
-        new MyChooser(parentFrame).writeTextFile("taheoport.ini", ll);
-    }
-
-    public void setOptions() {
-
+        new MyChooser(parentFrame).writeTextFile("taheoport.ini", list);
     }
 
 }

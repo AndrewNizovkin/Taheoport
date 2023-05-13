@@ -323,7 +323,7 @@
         if (bindType == BindType.TT) {
             llReportXY.add(titlesReports.get("TPactual") + new DataHandler(fHor).format(2).getStr() + titlesReports.get("TPsek"));
             llReportXY.add(titlesReports.get("TPacceptable") +
-                    new DataHandler(parentFrame.getOptions().getRatioFHor() * Math.sqrt(llTheoStatons.size() - 2)).format(0).getStr() +
+                    new DataHandler(parentFrame.getOptions().getValueFHor() * Math.sqrt(llTheoStatons.size() - 2)).format(0).getStr() +
                     titlesReports.get("TPsek"));
         } else {
             llReportXY.add(titlesReports.get("TPactual") + "-.-");
@@ -342,7 +342,7 @@
             llReportXY.add(titlesReports.get("TPlineDY") + new DataHandler(fY).format(3).getStr() + "м.");
             llReportXY.add(titlesReports.get("TPabsoluteDeviation") + new DataHandler(fAbs).format(3).getStr() + "м.");
             llReportXY.add(titlesReports.get("TPactualRelativeDeviation") + "1:" + fOtn);
-            llReportXY.add(titlesReports.get("TPacceptableRelativeDeviation") + "1:" + parentFrame.getOptions().getRatioFOtn());
+            llReportXY.add(titlesReports.get("TPacceptableRelativeDeviation") + "1:" + parentFrame.getOptions().getValueFOtn());
 
         }
         return llReportXY;
@@ -437,7 +437,7 @@
                         new DataHandler(fZ * 1000).format(0).getStr() +
                         titlesReports.get("TPmm"));
                 llReportZ.add(titlesReports.get("TPacceptableResidue") +
-                        new DataHandler(parentFrame.getOptions().getRatioFH() * Math.sqrt(perimeter / 1000)).format(0).getStr() +
+                        new DataHandler(parentFrame.getOptions().getValueFH() * Math.sqrt(perimeter / 1000)).format(0).getStr() +
                         titlesReports.get("TPmm"));
             }
             return llReportZ;

@@ -300,7 +300,7 @@ public class ShowOptions extends JDialog {
 
 // cbFOtn_______________________________________________________________
 
-            cbFOtn = new JComboBox<String>(parentFrame.getOptions().getFOnts());
+            cbFOtn = new JComboBox<String>(parentFrame.getOptions().getFOtns());
             cbFOtn.setSelectedIndex(parentFrame.getOptions().getIdxFOtn());
             cbFOtn.addActionListener(e -> parentFrame.getOptions().setIdxFOtn(cbFOtn.getSelectedIndex()));
             pnlAcceptable.add(cbFOtn, new GridBagConstraints(4, 3, 1, 1, 1, 0,

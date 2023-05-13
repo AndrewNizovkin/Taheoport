@@ -840,7 +840,7 @@ public class SurveyEditorStandart extends JPanel  {
      */
     private void changeDistance() {
         new ShowChangeDistance(parentFrame);
-        if (parentFrame.getOptions().getChanged()) {
+        if (parentFrame.getOptions().isChanged()) {
             String str;
             double line = Double.parseDouble((String) tm.getValueAt(selRow, 1));
             double tilt = new DataHandler((String) tm.getValueAt(selRow, 3)).dmsToRad();
@@ -868,7 +868,7 @@ public class SurveyEditorStandart extends JPanel  {
      */
     private void changeDirection() {
         new ShowChangeAngle(parentFrame,parentFrame.getTitles().get("SCAtitleChangeDirection"));
-        if (parentFrame.getOptions().getChanged()) {
+        if (parentFrame.getOptions().isChanged()) {
             switch (parentFrame.getOptions().getOffsetDirectionType()) {
                 case 0 -> {
                     if (selRow < tm.getRowCount() - 1) {
@@ -901,7 +901,7 @@ public class SurveyEditorStandart extends JPanel  {
      */
     private void changeTilt() {
         new ShowChangeAngle(parentFrame, parentFrame.getTitles().get("SCAtitleChangeTiltAngle"));
-        if (parentFrame.getOptions().getChanged()) {
+        if (parentFrame.getOptions().isChanged()) {
             double line = Double.parseDouble((String) tm.getValueAt(selRow, 1));
             double tilt = new DataHandler((String) tm.getValueAt(selRow, 3)).dmsToRad();
             switch (parentFrame.getOptions().getOffsetTiltType()) {

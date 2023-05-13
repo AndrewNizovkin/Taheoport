@@ -324,19 +324,19 @@ public class PolygonEditorStandart extends JPanel {
                 lblPerValue.setText("-.-");
             }
             case TT -> {
-                if (parentFrame.getOptions().getRatioFHor() * Math.sqrt(parentFrame.getPolygonProject().getSizeTheoStations()) > Math.abs(parentFrame.getPolygonProject().getfHor())) {
+                if (parentFrame.getOptions().getValueFHor() * Math.sqrt(parentFrame.getPolygonProject().getSizeTheoStations()) > Math.abs(parentFrame.getPolygonProject().getfHor())) {
                     lblAngleResidue.setForeground(Color.GREEN);
                 } else {
                     lblAngleResidue.setForeground(Color.RED);
                 }
                 lblAngleResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfHor()).format(2).getStr());
-                if (parentFrame.getOptions().getRatioFH() * Math.sqrt(parentFrame.getPolygonProject().getPerimeter() / 1000) > Math.abs(parentFrame.getPolygonProject().getfZ() * 1000)) {
+                if (parentFrame.getOptions().getValueFH() * Math.sqrt(parentFrame.getPolygonProject().getPerimeter() / 1000) > Math.abs(parentFrame.getPolygonProject().getfZ() * 1000)) {
                     lblHeightResidue.setForeground(Color.GREEN);
                 } else {
                     lblHeightResidue.setForeground(Color.RED);
                 }
                 lblHeightResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfZ()).format(3).getStr());
-                if (parentFrame.getOptions().getRatioFAbs() > parentFrame.getPolygonProject().getfAbs()) {
+                if (parentFrame.getOptions().getValueFAbs() > parentFrame.getPolygonProject().getfAbs()) {
                     lblFXResidue.setForeground(Color.GREEN);
                     lblFYResidue.setForeground(Color.GREEN);
                     lblFAbsoluteResidue.setForeground(Color.GREEN);
@@ -348,7 +348,7 @@ public class PolygonEditorStandart extends JPanel {
                 lblFXResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfX()).format(3).getStr());
                 lblFYResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfY()).format(3).getStr());
                 lblFAbsoluteResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfAbs()).format(3).getStr());
-                if (Double.parseDouble(parentFrame.getOptions().getRatioFOtn()) < Double.parseDouble(parentFrame.getPolygonProject().getfOtn())) {
+                if (Double.parseDouble(parentFrame.getOptions().getValueFOtn()) < Double.parseDouble(parentFrame.getPolygonProject().getfOtn())) {
                     lblFRelativeResidue.setForeground(Color.GREEN);
                 } else {
                     lblFRelativeResidue.setForeground(Color.RED);
@@ -358,13 +358,13 @@ public class PolygonEditorStandart extends JPanel {
             }
             case OO, OT, TO -> {
                 lblAngleResidue.setText("-.-");
-                if (parentFrame.getOptions().getRatioFH() * Math.sqrt(parentFrame.getPolygonProject().getPerimeter() / 1000) > Math.abs(parentFrame.getPolygonProject().getfZ() * 1000)) {
+                if (parentFrame.getOptions().getValueFH() * Math.sqrt(parentFrame.getPolygonProject().getPerimeter() / 1000) > Math.abs(parentFrame.getPolygonProject().getfZ() * 1000)) {
                     lblHeightResidue.setForeground(Color.GREEN);
                 } else {
                     lblHeightResidue.setForeground(Color.RED);
                 }
                 lblHeightResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfZ()).format(3).getStr());
-                if (parentFrame.getOptions().getRatioFAbs() > parentFrame.getPolygonProject().getfAbs()) {
+                if (parentFrame.getOptions().getValueFAbs() > parentFrame.getPolygonProject().getfAbs()) {
                     lblFXResidue.setForeground(Color.GREEN);
                     lblFYResidue.setForeground(Color.GREEN);
                     lblFAbsoluteResidue.setForeground(Color.GREEN);
@@ -376,7 +376,7 @@ public class PolygonEditorStandart extends JPanel {
                 lblFXResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfX()).format(3).getStr());
                 lblFYResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfY()).format(3).getStr());
                 lblFAbsoluteResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfAbs()).format(3).getStr());
-                if (Double.parseDouble(parentFrame.getOptions().getRatioFOtn()) < Double.parseDouble(parentFrame.getPolygonProject().getfOtn())) {
+                if (Double.parseDouble(parentFrame.getOptions().getValueFOtn()) < Double.parseDouble(parentFrame.getPolygonProject().getfOtn())) {
                     lblFRelativeResidue.setForeground(Color.GREEN);
                 } else {
                     lblFRelativeResidue.setForeground(Color.RED);
