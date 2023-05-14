@@ -9,9 +9,10 @@ import java.awt.*;
  * Copyright Nizovkin A.V. 2022
  */
 public class PaintPanel extends JPanel {
+    private final int index;
     private final ShowViewResults parentFrame;
     private PaintProject ppPaintPoints;
-    private final int index;
+
 //    private LinkedList <JLabel> llLabel;
 
     /**
@@ -25,13 +26,15 @@ public class PaintPanel extends JPanel {
         index = sellRow;
     }
 
+/*
     public PaintProject getPpPaintPoints() {
         return ppPaintPoints;
     }
+*/
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Insets insets = getInsets();
+//        Insets insets = getInsets();
         ppPaintPoints = new PaintProject(parentFrame.getSurveyProject(), this.getWidth(), this.getHeight());
         if (ppPaintPoints.getScale() < 10) {
             for (PaintPoint paintPoint : ppPaintPoints) {

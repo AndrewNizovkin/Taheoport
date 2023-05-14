@@ -13,11 +13,19 @@ public class PaintPoint {
     private String z = "0.000";
     private String xOr = "0.000";
     private String yOr = "0.000";
-    private Boolean status = false;
+    private boolean status = false;
     private int xPaint = 0;
     private int yPaint = 0;
     private int xOrPaint = 0;
     private int yOrPaint = 0;
+
+    /**
+     * Constructor
+     * @param name String points name
+     * @param x Coordinate X, m.
+     * @param y Coordinate Y, m.
+     * @param z Coordinate Z, m.
+     */
     public PaintPoint(String name, String x, String y, String z) {
        if (!(x == null) & !(y == null) & !(z == null)) {
            this.name = name;
@@ -53,7 +61,7 @@ public class PaintPoint {
         this.yOr = new DataHandler(yOr).format(3).getStr();
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
@@ -85,7 +93,7 @@ public class PaintPoint {
         return xPaint;
     }
 
-    public Double getxDbl() {
+    public double getxDbl() {
         return Double.parseDouble(x);
     }
 
@@ -94,7 +102,7 @@ public class PaintPoint {
         return yPaint;
     }
 
-    public Double getyDbl() {
+    public double getyDbl() {
         return Double.parseDouble(y);
     }
 
@@ -102,7 +110,7 @@ public class PaintPoint {
         return xOrPaint;
     }
 
-    public Double getxOrDbl() {
+    public double getxOrDbl() {
         return Double.parseDouble(xOr);
     }
 
@@ -122,7 +130,7 @@ public class PaintPoint {
         return yOr;
     }
 
-    public Boolean getStatus() {
+    public boolean getStatus() {
         return status;
     }
 

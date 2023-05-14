@@ -195,7 +195,7 @@ public class PaintProject extends LinkedList<PaintPoint>{
      * Gets scale
      * @return Scale
      */
-    public Double getScale() {
+    public double getScale() {
         return scale;
     }
 }
