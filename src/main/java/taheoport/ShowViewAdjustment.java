@@ -117,11 +117,11 @@ public class ShowViewAdjustment extends JDialog {
 // tblNXYZ_______________________________________________________________________
 
             Catalog catalogNXYZ = new Catalog();
-            for (int i = 0; i < parentFrame.getPolygonProject().getSizeTheoStations(); i++) {
-                catalogNXYZ.add(new CatalogPoint(parentFrame.getPolygonProject().getTheoStation(i).getName(),
-                        parentFrame.getPolygonProject().getTheoStation(i).getX(),
-                        parentFrame.getPolygonProject().getTheoStation(i).getY(),
-                        parentFrame.getPolygonProject().getTheoStation(i).getZ()));
+            for (int i = 0; i < parentFrame.getPolygonProject().getSizePolygonStations(); i++) {
+                catalogNXYZ.add(new CatalogPoint(parentFrame.getPolygonProject().getPolygonStation(i).getName(),
+                        parentFrame.getPolygonProject().getPolygonStation(i).getX(),
+                        parentFrame.getPolygonProject().getPolygonStation(i).getY(),
+                        parentFrame.getPolygonProject().getPolygonStation(i).getZ()));
             }
             JTable tblNXYZ = new JTable(new TmodelCatalog(catalogNXYZ));
             tblNXYZ.getTableHeader().setReorderingAllowed(false);

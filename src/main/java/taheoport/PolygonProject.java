@@ -10,23 +10,24 @@
      * @author Andrey Nizovkin
      * Copyright Nizovkin A.V. 2022
      */
-    public class PolygonProject {
-    private final MainWin parentFrame;
-    private String absolutePolPath = "";
-    private BindType bindType = BindType.ZZ;
-    private double fHor = 0.0;
-    private double fX = 0.0;
-    private double fY = 0.0;
-    private double fZ = 0.0;
-    private double fAbs = 0.0;
-    private String fOtn = "Not";
-    private double perimeter = 0.0;
-    private final LinkedList<PolygonStation> llTheoStatons = new LinkedList<PolygonStation>();
+public class PolygonProject {
+        private String absolutePolPath = "";
+        private BindType bindType = BindType.ZZ;
+        private double fHor = 0.0;
+        private double fX = 0.0;
+        private double fY = 0.0;
+        private double fZ = 0.0;
+        private double fAbs = 0.0;
+        private String fOtn = "Not";
+        private final LinkedList<PolygonStation> listPolygonStatons = new LinkedList<>();
+        private final MainWin parentFrame;
+        private double perimeter = 0.0;
+
     public enum BindType {ZZ,TT, TO, OT, OO, TZ, ZT}
 
         /**
          * Constructor
-         * @param frame
+         * @param frame parent MainWin
          */
     public PolygonProject(MainWin frame) {
         parentFrame = frame;
@@ -34,14 +35,14 @@
 
         /**
          * sets absolutePolPath
-         * @param absolutePolPath
+         * @param absolutePolPath String path
          */
         public void setAbsolutePolPath(String absolutePolPath) {
             this.absolutePolPath = absolutePolPath;
         }
 
         /**
-         * return absolutePolPath
+         * Return this.absolutePolPath
          * @return String absolutePolPath
          */
     public String getAbsolutePolPath() {
@@ -53,54 +54,78 @@
          * @param idx int index
          * @return
          */
-        public PolygonStation getTheoStation(int idx) {
-        return llTheoStatons.get(idx);
+        public PolygonStation getPolygonStation(int idx) {
+        return listPolygonStatons.get(idx);
         }
 
         /**
          * return size of llStations
          * @return int size
          */
-        public int getSizeTheoStations() {
-            return llTheoStatons.size();
+        public int getSizePolygonStations() {
+            return listPolygonStatons.size();
         }
 
         /**
          * get perimeter
-         * @return String perimeter
+         * @return double perimeter
          */
         public double getPerimeter() {
             return perimeter;
         }
 
         /**
-         * get fHor
-         * @return String fHor
+         * Gets this.fHor
+         * @return double fHor
          */
         public double getfHor() {
             return fHor;
         }
 
+        /**
+         * Gets this.fX
+         * @return double
+         */
         public double getfX() {
             return fX;
         }
 
+        /**
+         * Gets this.fY
+         * @return double
+         */
         public double getfY() {
             return fY;
         }
 
+        /**
+         * Gets this.fZ
+         * @return double
+         */
         public double getfZ() {
             return fZ;
         }
 
+        /**
+         * Gets this.fAbs
+         * @return double
+         */
         public double getfAbs() {
             return fAbs;
         }
 
+        /**
+         * Gets this.fOtn
+         * @return String
+         */
         public String getfOtn() {
             return fOtn;
         }
 
+        /**
+         * Gets this.bindType
+         * @return BindType
+         */
         public BindType getBindType() {
             return bindType;
         }
@@ -110,42 +135,43 @@
          * @param idx int index removed element
          */
         public void removeStation(int idx) {
-            llTheoStatons.remove(idx);
+            listPolygonStatons.remove(idx);
         }
 
         /**
-         * adds EMPTY Station at idx position
+         * Adds EMPTY Station at idx position
          * @param idx int idx
          */
         public void addStation(int idx) {
-            llTheoStatons.add(idx, new PolygonStation());
+            listPolygonStatons.add(idx, new PolygonStation());
         }
 
         /**
-         * adds theoStation to llTheoStations
-         * @param theoStation
+         * Adds polygonStation to end of listPolygonStations
+         * @param polygonStation instance of PolygonStation
          */
-        public void addStation(PolygonStation theoStation) {
-            llTheoStatons.add(theoStation);
+        public void addStation(PolygonStation polygonStation) {
+            listPolygonStatons.add(polygonStation);
         }
+
         /**
-         * Load llTheoStaions from LinkedList<String> llPolList
-         * @param llPolList
-         * @return
+         * Load listPolygonStaions from LinkedList<String> list
+         * @param list list
+         * @return PolygonProject
          */
-    public PolygonProject loadPolList(LinkedList<String> llPolList) {
+    public PolygonProject loadPolList(LinkedList<String> list) {
         String sep = " ";
         String str = "";
         String[] array;
-        if (llPolList == null) {
+        if (list == null) {
             return null;
         }
 
 //        LinkedList<String> l = new MyChooser().readTextFile(pathWorkDir, "pol", "Выберите файл *.pol");
-//        if (llPolList != null) {
-            absolutePolPath = llPolList.removeFirst();
-            while (llPolList.size() > 0) {
-                str = new DataHandler(llPolList.removeFirst()).compress(sep).getStr();
+//        if (list != null) {
+            absolutePolPath = list.removeFirst();
+            while (list.size() > 0) {
+                str = new DataHandler(list.removeFirst()).compress(sep).getStr();
                 array = str.split(sep);
                 if (array.length == 7) {
                     PolygonStation ts = new PolygonStation();
@@ -159,7 +185,7 @@
                     if (new DataHandler(ts.getX()).isNumber() & new DataHandler(ts.getY()).isNumber() & new DataHandler(ts.getZ()).isNumber()) {
                         ts.setStatus(true);
                     }
-                    llTheoStatons.add(ts);
+                    listPolygonStatons.add(ts);
                 }
 
             }
@@ -175,7 +201,7 @@
         String sep = " ";
         String s = "";
         LinkedList <String> llPol = new LinkedList<String>();
-        for (PolygonStation llTheoStaton : llTheoStatons) {
+        for (PolygonStation llTheoStaton : listPolygonStatons) {
             s = llTheoStaton.getName() + sep +
                     llTheoStaton.getHor() + sep +
                     llTheoStaton.getLine() + sep +
@@ -223,97 +249,97 @@
 
         switch (bindType) {
             case TZ, TO, TT -> {
-                llReportXY.add("| " + new DataHandler(llTheoStatons.get(0).getName()).toTable(10).getStr() +
+                llReportXY.add("| " + new DataHandler(listPolygonStatons.get(0).getName()).toTable(10).getStr() +
                         " |          |          |         |          |          |        |          |        | " +
-                        new DataHandler(llTheoStatons.get(0).getX()).toTable(12).getStr() +
+                        new DataHandler(listPolygonStatons.get(0).getX()).toTable(12).getStr() +
                         " | " +
-                        new DataHandler(llTheoStatons.get(0).getY()).toTable(12).getStr() +
+                        new DataHandler(listPolygonStatons.get(0).getY()).toTable(12).getStr() +
                         " |");
                 llReportXY.add("|            |          |          |         |          |          |        |          |        |              |              |");
             }
             case ZT, OT, OO -> {
-                llReportXY.add("| " + new DataHandler(llTheoStatons.get(0).getName()).toTable(10).getStr() +
+                llReportXY.add("| " + new DataHandler(listPolygonStatons.get(0).getName()).toTable(10).getStr() +
                         " | " +
-                        new DataHandler(llTheoStatons.get(0).getHor()).toTable(8).getStr() +
+                        new DataHandler(listPolygonStatons.get(0).getHor()).toTable(8).getStr() +
                         " |          | " +
-                        new DataHandler(llTheoStatons.get(0).getDDHor()).format(2).toTable(7).getStr() +
+                        new DataHandler(listPolygonStatons.get(0).getDDHor()).format(2).toTable(7).getStr() +
                         " |          |          |        |          |        | " +
-                        new DataHandler(llTheoStatons.get(0).getX()).toTable(12).getStr() +
+                        new DataHandler(listPolygonStatons.get(0).getX()).toTable(12).getStr() +
                         " | " +
-                        new DataHandler(llTheoStatons.get(0).getY()).toTable(12).getStr() +
+                        new DataHandler(listPolygonStatons.get(0).getY()).toTable(12).getStr() +
                         " |");
                 llReportXY.add("|            |          | " +
-                        new DataHandler(llTheoStatons.get(0).getLine()).toTable(8).getStr() +
+                        new DataHandler(listPolygonStatons.get(0).getLine()).toTable(8).getStr() +
                         " |         | " +
-                        new DataHandler(llTheoStatons.get(0).getDirection()).format(4).toTable(8).getStr() +
+                        new DataHandler(listPolygonStatons.get(0).getDirection()).format(4).toTable(8).getStr() +
                         " | " +
-                        new DataHandler(llTheoStatons.get(0).getDX()).format(3).toTable(8).getStr() +
+                        new DataHandler(listPolygonStatons.get(0).getDX()).format(3).toTable(8).getStr() +
                         " | " +
-                        new DataHandler(llTheoStatons.get(0).getDDX()).format(3).toTable(6).getStr() +
+                        new DataHandler(listPolygonStatons.get(0).getDDX()).format(3).toTable(6).getStr() +
                         " | " +
-                        new DataHandler(llTheoStatons.get(0).getDY()).format(3).toTable(8).getStr() +
+                        new DataHandler(listPolygonStatons.get(0).getDY()).format(3).toTable(8).getStr() +
                         " | " +
-                        new DataHandler(llTheoStatons.get(0).getDDY()).format(3).toTable(6).getStr() +
+                        new DataHandler(listPolygonStatons.get(0).getDDY()).format(3).toTable(6).getStr() +
                         " |              |              |");
             }
         }
-        for (int i = 1; i < llTheoStatons.size() -2; i++) {
-            llReportXY.add("| " + new DataHandler(llTheoStatons.get(i).getName()).toTable(10).getStr() +
+        for (int i = 1; i < listPolygonStatons.size() -2; i++) {
+            llReportXY.add("| " + new DataHandler(listPolygonStatons.get(i).getName()).toTable(10).getStr() +
                     " | " +
-                    new DataHandler(llTheoStatons.get(i).getHor()).toTable(8).getStr() +
+                    new DataHandler(listPolygonStatons.get(i).getHor()).toTable(8).getStr() +
                     " |          | " +
-                    new DataHandler(llTheoStatons.get(i).getDDHor()).format(2).toTable(7).getStr() +
+                    new DataHandler(listPolygonStatons.get(i).getDDHor()).format(2).toTable(7).getStr() +
                     " |          |          |        |          |        | " +
-                    new DataHandler(llTheoStatons.get(i).getX()).toTable(12).getStr() +
+                    new DataHandler(listPolygonStatons.get(i).getX()).toTable(12).getStr() +
                     " | " +
-                    new DataHandler(llTheoStatons.get(i).getY()).toTable(12).getStr() +
+                    new DataHandler(listPolygonStatons.get(i).getY()).toTable(12).getStr() +
                     " |");
             llReportXY.add("|            |          | " +
-                    new DataHandler(llTheoStatons.get(i).getLine()).toTable(8).getStr() +
+                    new DataHandler(listPolygonStatons.get(i).getLine()).toTable(8).getStr() +
                     " |         | " +
-                    new DataHandler(llTheoStatons.get(i).getDirection()).format(4).toTable(8).getStr() +
+                    new DataHandler(listPolygonStatons.get(i).getDirection()).format(4).toTable(8).getStr() +
                     " | " +
-                    new DataHandler(llTheoStatons.get(i).getDX()).format(3).toTable(8).getStr() +
+                    new DataHandler(listPolygonStatons.get(i).getDX()).format(3).toTable(8).getStr() +
                     " | " +
-                    new DataHandler(llTheoStatons.get(i).getDDX()).format(3).toTable(6).getStr() +
+                    new DataHandler(listPolygonStatons.get(i).getDDX()).format(3).toTable(6).getStr() +
                     " | " +
-                    new DataHandler(llTheoStatons.get(i).getDY()).format(3).toTable(8).getStr() +
+                    new DataHandler(listPolygonStatons.get(i).getDY()).format(3).toTable(8).getStr() +
                     " | " +
-                    new DataHandler(llTheoStatons.get(i).getDDY()).format(3).toTable(6).getStr() +
+                    new DataHandler(listPolygonStatons.get(i).getDDY()).format(3).toTable(6).getStr() +
                     " |              |              |");
         }
-        llReportXY.add("| " + new DataHandler(llTheoStatons.get(llTheoStatons.size() - 2).getName()).toTable(10).getStr() +
+        llReportXY.add("| " + new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 2).getName()).toTable(10).getStr() +
                 " | " +
-                new DataHandler(llTheoStatons.get(llTheoStatons.size() - 2).getHor()).toTable(8).getStr() +
+                new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 2).getHor()).toTable(8).getStr() +
                 " |          | " +
-                new DataHandler(llTheoStatons.get(llTheoStatons.size() - 2).getDDHor()).format(2).toTable(7).getStr() +
+                new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 2).getDDHor()).format(2).toTable(7).getStr() +
                 " |          |          |        |          |        | " +
-                new DataHandler(llTheoStatons.get(llTheoStatons.size() - 2).getX()).toTable(12).getStr() +
+                new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 2).getX()).toTable(12).getStr() +
                 " | " +
-                new DataHandler(llTheoStatons.get(llTheoStatons.size() - 2).getY()).toTable(12).getStr() +
+                new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 2).getY()).toTable(12).getStr() +
                 " |");
 
         switch (bindType) {
             case OO, TO, TZ -> llReportXY.add("|            |          | " +
-                    new DataHandler(llTheoStatons.get(llTheoStatons.size() - 2).getLine()).toTable(8).getStr() +
+                    new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 2).getLine()).toTable(8).getStr() +
                     " |         | " +
-                    new DataHandler(llTheoStatons.get(llTheoStatons.size() - 2).getDirection()).format(4).toTable(8).getStr() +
+                    new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 2).getDirection()).format(4).toTable(8).getStr() +
                     " | " +
-                    new DataHandler(llTheoStatons.get(llTheoStatons.size() - 2).getDX()).format(3).toTable(8).getStr() +
+                    new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 2).getDX()).format(3).toTable(8).getStr() +
                     " | " +
-                    new DataHandler(llTheoStatons.get(llTheoStatons.size() - 2).getDDX()).format(3).toTable(6).getStr() +
+                    new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 2).getDDX()).format(3).toTable(6).getStr() +
                     " | " +
-                    new DataHandler(llTheoStatons.get(llTheoStatons.size() - 2).getDY()).format(3).toTable(8).getStr() +
+                    new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 2).getDY()).format(3).toTable(8).getStr() +
                     " | " +
-                    new DataHandler(llTheoStatons.get(llTheoStatons.size() - 2).getDDY()).format(3).toTable(6).getStr() +
+                    new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 2).getDDY()).format(3).toTable(6).getStr() +
                     " |              |              |");
             case TT, ZT, OT -> llReportXY.add("|            |          |          |         |          |          |        |          |        |              |              |");
         }
-        llReportXY.add("| " + new DataHandler(llTheoStatons.get(llTheoStatons.size() - 1).getName()).toTable(10).getStr() +
+        llReportXY.add("| " + new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 1).getName()).toTable(10).getStr() +
                 " |          |          |         |          |          |        |          |        | " +
-                new DataHandler(llTheoStatons.get(llTheoStatons.size() - 1).getX()).toTable(12).getStr() +
+                new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 1).getX()).toTable(12).getStr() +
                 " | " +
-                new DataHandler(llTheoStatons.get(llTheoStatons.size() - 1).getY()).toTable(12).getStr() +
+                new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 1).getY()).toTable(12).getStr() +
                 " |");
         llReportXY.add("-------------------------------------------------------------------------------------------------------------------------------");
         llReportXY.add("");
@@ -323,7 +349,7 @@
         if (bindType == BindType.TT) {
             llReportXY.add(titlesReports.get("TPactual") + new DataHandler(fHor).format(2).getStr() + titlesReports.get("TPsek"));
             llReportXY.add(titlesReports.get("TPacceptable") +
-                    new DataHandler(parentFrame.getOptions().getValueFHor() * Math.sqrt(llTheoStatons.size() - 2)).format(0).getStr() +
+                    new DataHandler(parentFrame.getOptions().getValueFHor() * Math.sqrt(listPolygonStatons.size() - 2)).format(0).getStr() +
                     titlesReports.get("TPsek"));
         } else {
             llReportXY.add(titlesReports.get("TPactual") + "-.-");
@@ -358,7 +384,7 @@
             double sumDDZ = 0.0;
             double sumDZCorrected = 0.0;
             int start = 0;
-            int finish = llTheoStatons.size() - 1;
+            int finish = listPolygonStatons.size() - 1;
             LinkedList<String> llReportZ = new LinkedList<String>();
             LinkedList<String> llTopReportZ = new Shell(parentFrame).getTopReportZ();
             HashMap<String, String> titlesReports = new Shell(parentFrame).getTitlesReports();
@@ -386,30 +412,30 @@
                 start = 1;
             }
             if (bindType == BindType.ZT | bindType == BindType.OT | bindType == BindType.TT) {
-                finish = llTheoStatons.size() - 2;
+                finish = listPolygonStatons.size() - 2;
             }
             for (int i = start; i < finish; i++) {
-                dZCorrected = Double.parseDouble(llTheoStatons.get(i).getDZ()) + llTheoStatons.get(i).getDDZ();
+                dZCorrected = Double.parseDouble(listPolygonStatons.get(i).getDZ()) + listPolygonStatons.get(i).getDDZ();
                 sumDZCorrected += dZCorrected;
-                sumDDZ += llTheoStatons.get(i).getDDZ();
-                sumDZ += Double.parseDouble(llTheoStatons.get(i).getDZ());
-                llReportZ.add("| " + new DataHandler(llTheoStatons.get(i).getName()).toTable(10).getStr() +
+                sumDDZ += listPolygonStatons.get(i).getDDZ();
+                sumDZ += Double.parseDouble(listPolygonStatons.get(i).getDZ());
+                llReportZ.add("| " + new DataHandler(listPolygonStatons.get(i).getName()).toTable(10).getStr() +
                         " |          |            |        |            | " +
-                        new DataHandler(llTheoStatons.get(i).getZ()).toTable(8).getStr() + " |");
+                        new DataHandler(listPolygonStatons.get(i).getZ()).toTable(8).getStr() + " |");
                 llReportZ.add("|            | " +
-                        new DataHandler(llTheoStatons.get(i).getLine()).toTable(8).getStr() +
+                        new DataHandler(listPolygonStatons.get(i).getLine()).toTable(8).getStr() +
                         " | " +
-                                new DataHandler(llTheoStatons.get(i).getDZ()).toTable(10).getStr() +
+                                new DataHandler(listPolygonStatons.get(i).getDZ()).toTable(10).getStr() +
                         " | " +
-                                new DataHandler(llTheoStatons.get(i).getDDZ() * 1000).format(2).toTable(6).getStr() +
+                                new DataHandler(listPolygonStatons.get(i).getDDZ() * 1000).format(2).toTable(6).getStr() +
                         " | " +
                                 new DataHandler(dZCorrected).format(3).toTable(10).getStr() +
                         " |          |"
                         );
             }
-            llReportZ.add("| " + new DataHandler(llTheoStatons.get(finish).getName()).toTable(10).getStr() +
+            llReportZ.add("| " + new DataHandler(listPolygonStatons.get(finish).getName()).toTable(10).getStr() +
                     " |          |            |        |            | " +
-                    new DataHandler(llTheoStatons.get(finish).getZ()).toTable(8).getStr() + " |");
+                    new DataHandler(listPolygonStatons.get(finish).getZ()).toTable(8).getStr() + " |");
             llReportZ.add("|------------|----------|------------|--------|------------|----------|");
             llReportZ.add("|" + titlesReports.get("TPcontrol") +" | " +
                     new DataHandler(perimeter).format(3).toTable(8).getStr() +
@@ -450,7 +476,7 @@
         public LinkedList<String> getReportNXYZ() {
             String sep = " ";
             LinkedList<String> llReportNXYZ = new LinkedList<String>();
-            for (PolygonStation llTheoStaton : llTheoStatons) {
+            for (PolygonStation llTheoStaton : listPolygonStatons) {
                 llReportNXYZ.add(llTheoStaton.getName() + sep +
                         llTheoStaton.getX() + sep +
                         llTheoStaton.getY() + sep +
@@ -465,9 +491,9 @@
          * @return boolean
          */
     public Boolean isInsertBefore(int idx) {
-        if (!llTheoStatons.get(idx).getStatus()) return true;
-        if (llTheoStatons.get(idx).getStatus() & idx > 0) {
-            return !llTheoStatons.get(idx - 1).getStatus();
+        if (!listPolygonStatons.get(idx).getStatus()) return true;
+        if (listPolygonStatons.get(idx).getStatus() & idx > 0) {
+            return !listPolygonStatons.get(idx - 1).getStatus();
         }
         return false;
     }
@@ -475,31 +501,31 @@
         /**
          * Сhecks the possibility of inserting after idx position
          * @param idx int idx
-         * @return
+         * @return boolean
          */
-    public Boolean isInsertAfter(int idx) {
-        if (!llTheoStatons.get(idx).getStatus()) return true;
-        if (llTheoStatons.get(idx).getStatus() & idx < llTheoStatons.size() - 1) {
-            return !llTheoStatons.get(idx + 1).getStatus();
+    public boolean isInsertAfter(int idx) {
+        if (!listPolygonStatons.get(idx).getStatus()) return true;
+        if (listPolygonStatons.get(idx).getStatus() & idx < listPolygonStatons.size() - 1) {
+            return !listPolygonStatons.get(idx + 1).getStatus();
         }
         return false;
     }
 
         /**
          * set and return bindings type of current TheoProject
-         * @return
+         * @return BindType
          */
-        private BindType setBindType() {
+        private BindType defBindType() {
             bindType = BindType.ZZ;
 //          if (llTheoStatons != null) {
-              if (llTheoStatons.size() > 2) {
+              if (listPolygonStatons.size() > 2) {
 //                  int last = llTheoStatons.size() - 1;
-                  if (llTheoStatons.get(0).getStatus() &
-                          llTheoStatons.get(1).getStatus() &
-                          llTheoStatons.get(llTheoStatons.size() - 1).getStatus() &
-                          llTheoStatons.get(llTheoStatons.size() - 2).getStatus()) {
+                  if (listPolygonStatons.get(0).getStatus() &
+                          listPolygonStatons.get(1).getStatus() &
+                          listPolygonStatons.get(listPolygonStatons.size() - 1).getStatus() &
+                          listPolygonStatons.get(listPolygonStatons.size() - 2).getStatus()) {
                       bindType = BindType.TT;
-                      if (!isValidSourceData(1,llTheoStatons.size() - 3) | !new DataHandler(llTheoStatons.get(llTheoStatons.size() - 2).getHor()).isPositiveNumber()) {
+                      if (isValidSourceData(1, listPolygonStatons.size() - 3) | !new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 2).getHor()).isPositiveNumber()) {
                           bindType = BindType.ZZ;
                           JOptionPane.showMessageDialog(parentFrame,
                                   parentFrame.getTitles().get("TPmessageError"),
@@ -509,12 +535,12 @@
 
 
                   }
-                  if (llTheoStatons.get(0).getStatus() &
-                          llTheoStatons.get(1).getStatus() &
-                          llTheoStatons.get(llTheoStatons.size() - 1).getStatus() &
-                          !llTheoStatons.get(llTheoStatons.size() - 2).getStatus()) {
+                  if (listPolygonStatons.get(0).getStatus() &
+                          listPolygonStatons.get(1).getStatus() &
+                          listPolygonStatons.get(listPolygonStatons.size() - 1).getStatus() &
+                          !listPolygonStatons.get(listPolygonStatons.size() - 2).getStatus()) {
                       bindType = BindType.TO;
-                      if (!isValidSourceData(1,llTheoStatons.size() - 2)) {
+                      if (isValidSourceData(1, listPolygonStatons.size() - 2)) {
                           bindType = BindType.ZZ;
                           JOptionPane.showMessageDialog(null,
                                   parentFrame.getTitles().get("TPmessageError"),
@@ -523,12 +549,12 @@
                       }
 
                   }
-                  if (llTheoStatons.get(0).getStatus() &
-                          !llTheoStatons.get(1).getStatus() &
-                          llTheoStatons.get(llTheoStatons.size() - 1).getStatus() &
-                          llTheoStatons.get(llTheoStatons.size() - 2).getStatus()) {
+                  if (listPolygonStatons.get(0).getStatus() &
+                          !listPolygonStatons.get(1).getStatus() &
+                          listPolygonStatons.get(listPolygonStatons.size() - 1).getStatus() &
+                          listPolygonStatons.get(listPolygonStatons.size() - 2).getStatus()) {
                       bindType = BindType.OT;
-                      if (!isValidSourceData(0,llTheoStatons.size() - 3) | !new DataHandler(llTheoStatons.get(llTheoStatons.size() - 2).getHor()).isPositiveNumber()) {
+                      if (isValidSourceData(0, listPolygonStatons.size() - 3) | !new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 2).getHor()).isPositiveNumber()) {
                           bindType = BindType.ZZ;
                           JOptionPane.showMessageDialog(null,
                                   parentFrame.getTitles().get("TPmessageError"),
@@ -536,12 +562,12 @@
                                   JOptionPane.ERROR_MESSAGE);
                       }
                   }
-                  if (llTheoStatons.get(0).getStatus() &
-                          !llTheoStatons.get(1).getStatus() &
-                          llTheoStatons.get(llTheoStatons.size() - 1).getStatus() &
-                          !llTheoStatons.get(llTheoStatons.size() - 2).getStatus()) {
+                  if (listPolygonStatons.get(0).getStatus() &
+                          !listPolygonStatons.get(1).getStatus() &
+                          listPolygonStatons.get(listPolygonStatons.size() - 1).getStatus() &
+                          !listPolygonStatons.get(listPolygonStatons.size() - 2).getStatus()) {
                       bindType = BindType.OO;
-                      if (!isValidSourceData(0,llTheoStatons.size() - 2)) {
+                      if (isValidSourceData(0, listPolygonStatons.size() - 2)) {
                           bindType = BindType.ZZ;
                           JOptionPane.showMessageDialog(null,
                                   parentFrame.getTitles().get("TPmessageError"),
@@ -549,12 +575,12 @@
                                   JOptionPane.ERROR_MESSAGE);
                       }
                   }
-                  if (llTheoStatons.get(0).getStatus() &
-                          llTheoStatons.get(1).getStatus() &
-                          !llTheoStatons.get(llTheoStatons.size() - 1).getStatus() &
-                          !llTheoStatons.get(llTheoStatons.size() - 2).getStatus()) {
+                  if (listPolygonStatons.get(0).getStatus() &
+                          listPolygonStatons.get(1).getStatus() &
+                          !listPolygonStatons.get(listPolygonStatons.size() - 1).getStatus() &
+                          !listPolygonStatons.get(listPolygonStatons.size() - 2).getStatus()) {
                       bindType = BindType.TZ;
-                      if (!isValidSourceData(1,llTheoStatons.size() - 3) | !new DataHandler(llTheoStatons.get(llTheoStatons.size() - 2).getHor()).isPositiveNumber()) {
+                      if (isValidSourceData(1, listPolygonStatons.size() - 3) | !new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 2).getHor()).isPositiveNumber()) {
                           bindType = BindType.ZZ;
                           JOptionPane.showMessageDialog(null,
                                   parentFrame.getTitles().get("TPmessageError"),
@@ -562,12 +588,12 @@
                                   JOptionPane.ERROR_MESSAGE);
                       }
                   }
-                  if (!llTheoStatons.get(0).getStatus() &
-                          !llTheoStatons.get(1).getStatus() &
-                          llTheoStatons.get(llTheoStatons.size() - 1).getStatus() &
-                          llTheoStatons.get(llTheoStatons.size() - 2).getStatus()) {
+                  if (!listPolygonStatons.get(0).getStatus() &
+                          !listPolygonStatons.get(1).getStatus() &
+                          listPolygonStatons.get(listPolygonStatons.size() - 1).getStatus() &
+                          listPolygonStatons.get(listPolygonStatons.size() - 2).getStatus()) {
                       bindType = BindType.ZT;
-                      if (!isValidSourceData(0,llTheoStatons.size() - 3) | !new DataHandler(llTheoStatons.get(llTheoStatons.size() - 2).getHor()).isPositiveNumber()) {
+                      if (isValidSourceData(0, listPolygonStatons.size() - 3) | !new DataHandler(listPolygonStatons.get(listPolygonStatons.size() - 2).getHor()).isPositiveNumber()) {
                           bindType = BindType.ZZ;
                           JOptionPane.showMessageDialog(null,
                                   parentFrame.getTitles().get("TPmessageError"),
@@ -589,27 +615,12 @@
          * @return boolen
          */
         private boolean noNeed() {
-            for (PolygonStation llTheoStaton : llTheoStatons) {
+            for (PolygonStation llTheoStaton : listPolygonStatons) {
                 if (!llTheoStaton.getStatus()) {
                     return false;
                 }
             }
             return true;
-        }
-        /**
-         * Determines the index of the TheoStation with the longest line length
-         * @param start index of the start of the search
-         * @param finish index of the end of the search
-         * @return int
-         */
-        private int idxMaxLength(int start, int finish) {
-            int k = start;
-            for (int i = k; i <= finish; i++) {
-                if (new DataHandler(llTheoStatons.get(i).getLine()).getDbl() > new DataHandler(llTheoStatons.get(k).getLine()).getDbl()) {
-                    k = i;
-                }
-            }
-            return k;
         }
 
         /**
@@ -618,16 +629,16 @@
          * @param finish index of the end of the search
          * @return boolean
          */
-        private Boolean isValidSourceData(int start, int finish) {
+        private boolean isValidSourceData(int start, int finish) {
             for (int i = start; i <= finish; i++) {
-                if (!new DataHandler(llTheoStatons.get(i).getName()).isValidName() |
-                        !new DataHandler(llTheoStatons.get(i).getHor()).isPositiveNumber() |
-                !new DataHandler(llTheoStatons.get(i).getLine()).isPositiveNumber() |
-                !new DataHandler(llTheoStatons.get(i).getDZ()).isNumber()) {
-                    return false;
+                if (!new DataHandler(listPolygonStatons.get(i).getName()).isValidName() |
+                        !new DataHandler(listPolygonStatons.get(i).getHor()).isPositiveNumber() |
+                !new DataHandler(listPolygonStatons.get(i).getLine()).isPositiveNumber() |
+                !new DataHandler(listPolygonStatons.get(i).getDZ()).isNumber()) {
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
 
         /**
@@ -640,36 +651,36 @@
             DataHandler hor;
             if (start <= finish) {
                 for (int i = start; i <= finish; i++) {
-                    hor = new DataHandler(llTheoStatons.get(i).getHor());
-                    dir = llTheoStatons.get(i - 1).getDirection() + 180 + hor.dmsToDeg() + llTheoStatons.get(i).getDDHor() / 3600;
+                    hor = new DataHandler(listPolygonStatons.get(i).getHor());
+                    dir = listPolygonStatons.get(i - 1).getDirection() + 180 + hor.dmsToDeg() + listPolygonStatons.get(i).getDDHor() / 3600;
                     while (dir >= 360) {
                         dir = dir - 360;
                     }
-                    llTheoStatons.get(i).setDirection(dir);
+                    listPolygonStatons.get(i).setDirection(dir);
                 }
             } else {
                 for (int i = start; i >= finish; i--) {
-                    hor = new DataHandler(llTheoStatons.get(i+1).getHor());
-                    dir = llTheoStatons.get(i +1).getDirection() - 180 - hor.dmsToDeg();
+                    hor = new DataHandler(listPolygonStatons.get(i+1).getHor());
+                    dir = listPolygonStatons.get(i +1).getDirection() - 180 - hor.dmsToDeg();
                     while (dir < 0) {
                         dir = dir + 360;
                     }
-                    llTheoStatons.get(i).setDirection(dir);
+                    listPolygonStatons.get(i).setDirection(dir);
                 }
             }
         }
 
         /**
-         * sets dX and dY for llTheoStations in the specified range
+         * sets dX and dY for listPolygonStations in the specified range
          * @param start index of the start of the search
          * @param finish index of the end of the search
          */
         private void setDXDYs(int start, int finish) {
             DataHandler line;
             for (int i = start; i <= finish; i++) {
-                line = new DataHandler(llTheoStatons.get(i).getLine());
-                llTheoStatons.get(i).setDX(line.getDbl() * Math.cos(Math.toRadians(llTheoStatons.get(i).getDirection())));
-                llTheoStatons.get(i).setDY(line.getDbl() * Math.sin(Math.toRadians(llTheoStatons.get(i).getDirection())));
+                line = new DataHandler(listPolygonStatons.get(i).getLine());
+                listPolygonStatons.get(i).setDX(line.getDbl() * Math.cos(Math.toRadians(listPolygonStatons.get(i).getDirection())));
+                listPolygonStatons.get(i).setDY(line.getDbl() * Math.sin(Math.toRadians(listPolygonStatons.get(i).getDirection())));
             }
         }
 
@@ -683,25 +694,25 @@
             double parentY;
             double parentZ;
             for (int i = start; i <= finish; i++) {
-                parentX = Double.parseDouble(llTheoStatons.get(i - 1).getX());
-                parentY = Double.parseDouble(llTheoStatons.get(i - 1).getY());
-                parentZ = Double.parseDouble(llTheoStatons.get(i -1).getZ());
-                llTheoStatons.get(i).setX(new DataHandler(parentX + llTheoStatons.get(i - 1).getDX() + llTheoStatons.get(i - 1).getDDX()).format(3).getStr());
-                llTheoStatons.get(i).setY(new DataHandler(parentY + llTheoStatons.get(i - 1).getDY() + llTheoStatons.get(i - 1).getDDY()).format(3).getStr());
-                llTheoStatons.get(i).setZ(new DataHandler(parentZ + Double.parseDouble(llTheoStatons.get(i -1).getDZ()) + llTheoStatons.get(i - 1).getDDZ()).format(3).getStr());
+                parentX = Double.parseDouble(listPolygonStatons.get(i - 1).getX());
+                parentY = Double.parseDouble(listPolygonStatons.get(i - 1).getY());
+                parentZ = Double.parseDouble(listPolygonStatons.get(i -1).getZ());
+                listPolygonStatons.get(i).setX(new DataHandler(parentX + listPolygonStatons.get(i - 1).getDX() + listPolygonStatons.get(i - 1).getDDX()).format(3).getStr());
+                listPolygonStatons.get(i).setY(new DataHandler(parentY + listPolygonStatons.get(i - 1).getDY() + listPolygonStatons.get(i - 1).getDDY()).format(3).getStr());
+                listPolygonStatons.get(i).setZ(new DataHandler(parentZ + Double.parseDouble(listPolygonStatons.get(i -1).getDZ()) + listPolygonStatons.get(i - 1).getDDZ()).format(3).getStr());
             }
 
         }
 
         /**
-         * initializes ddHor, ddX, ddY, ddZ for all llTheoStations
+         * initializes ddHor, ddX, ddY, ddZ for all listPolygonStations
          */
         private void iniDDs() {
-            for (PolygonStation llTheoStaton : llTheoStatons) {
-                llTheoStaton.setDDHor(0.0);
-                llTheoStaton.setDDX(0.0);
-                llTheoStaton.setDDY(0.0);
-                llTheoStaton.setDDZ(0.0);
+            for (PolygonStation station : listPolygonStatons) {
+                station.setDDHor(0.0);
+                station.setDDX(0.0);
+                station.setDDY(0.0);
+                station.setDDZ(0.0);
             }
         }
 
@@ -712,10 +723,8 @@
          */
         private void setPerimeter(int start, int finish) {
             double sum = 0.0;
-            DataHandler line;
             for (int i = start; i <= finish; i++) {
-                line = new DataHandler(llTheoStatons.get(i).getLine());
-                sum += Double.parseDouble(llTheoStatons.get(i).getLine());
+                sum += Double.parseDouble(listPolygonStatons.get(i).getLine());
             }
             perimeter = sum;
         }
@@ -725,40 +734,40 @@
          */
         private void setDDHors() {
             DataHandler hor;
-            double d = llTheoStatons.get(0).getDirection();
-            for (int i = 1; i <= llTheoStatons.size() - 2; i++) {
-                hor = new DataHandler(llTheoStatons.get(i).getHor());
+            double d = listPolygonStatons.get(0).getDirection();
+            for (int i = 1; i <= listPolygonStatons.size() - 2; i++) {
+                hor = new DataHandler(listPolygonStatons.get(i).getHor());
                 d = d + hor.dmsToDeg() + 180;
             }
             while (d >= 360) {
                 d = d - 360;
             }
-            fHor = (d - llTheoStatons.get(llTheoStatons.size() - 2).getDirection()) * 3600;
-            for (int i = 1; i <= llTheoStatons.size() - 2; i++) {
-                d = -1 * fHor / (llTheoStatons.size() - 2);
-                llTheoStatons.get(i).setDDHor(d);
+            fHor = (d - listPolygonStatons.get(listPolygonStatons.size() - 2).getDirection()) * 3600;
+            for (int i = 1; i <= listPolygonStatons.size() - 2; i++) {
+                d = -1 * fHor / (listPolygonStatons.size() - 2);
+                listPolygonStatons.get(i).setDDHor(d);
             }
         }
 
         /**
          * calculate fX, fY and sets ddX, ddY for all llTheoStations with interval
          * @param start index of the start of the search
-         * @param finish index of the end of the search
+         * @param end index of the end of the search
          */
-        private void setDDXDDYs(int start, int finish) {
+        private void setDDXDDYs(int start, int end) {
             double sumDX = 0.0;
             double sumDY = 0.0;
-            for (int i = start; i <= finish; i++) {
-                sumDX = sumDX + llTheoStatons.get(i).getDX();
-                sumDY = sumDY + llTheoStatons.get(i).getDY();
+            for (int i = start; i <= end; i++) {
+                sumDX = sumDX + listPolygonStatons.get(i).getDX();
+                sumDY = sumDY + listPolygonStatons.get(i).getDY();
             }
-            fX = sumDX + Double.parseDouble(llTheoStatons.get(start).getX()) - Double.parseDouble(llTheoStatons.get(finish + 1).getX());
-            fY = sumDY + Double.parseDouble(llTheoStatons.get(start).getY()) - Double.parseDouble(llTheoStatons.get(finish + 1).getY());
+            fX = sumDX + Double.parseDouble(listPolygonStatons.get(start).getX()) - Double.parseDouble(listPolygonStatons.get(end + 1).getX());
+            fY = sumDY + Double.parseDouble(listPolygonStatons.get(start).getY()) - Double.parseDouble(listPolygonStatons.get(end + 1).getY());
             fAbs = Math.hypot(fX, fY);
             fOtn = new DataHandler(1 / (new DataHandler(fAbs).format(3).getDbl() / new DataHandler(perimeter).format(3).getDbl())).format(0).getStr();
-            for (int i = start; i <= finish; i++) {
-                llTheoStatons.get(i).setDDX(-1 * fX / perimeter * Double.parseDouble(llTheoStatons.get(i).getLine()));
-                llTheoStatons.get(i).setDDY(-1 * fY / perimeter * Double.parseDouble(llTheoStatons.get(i).getLine()));
+            for (int i = start; i <= end; i++) {
+                listPolygonStatons.get(i).setDDX(-1 * fX / perimeter * Double.parseDouble(listPolygonStatons.get(i).getLine()));
+                listPolygonStatons.get(i).setDDY(-1 * fY / perimeter * Double.parseDouble(listPolygonStatons.get(i).getLine()));
             }
         }
 
@@ -770,11 +779,11 @@
         private void setDDZs(int start, int finish) {
             double sumZ = 0.0;
             for (int i = start; i <= finish; i++) {
-                sumZ = sumZ + Double.parseDouble(llTheoStatons.get(i).getDZ());
+                sumZ = sumZ + Double.parseDouble(listPolygonStatons.get(i).getDZ());
             }
-            fZ = sumZ + Double.parseDouble(llTheoStatons.get(start).getZ()) - Double.parseDouble(llTheoStatons.get(finish +1).getZ());
+            fZ = sumZ + Double.parseDouble(listPolygonStatons.get(start).getZ()) - Double.parseDouble(listPolygonStatons.get(finish +1).getZ());
             for (int i = start; i <= finish; i++) {
-                llTheoStatons.get(i).setDDZ(-1 * fZ / perimeter * Double.parseDouble(llTheoStatons.get(i).getLine()));
+                listPolygonStatons.get(i).setDDZ(-1 * fZ / perimeter * Double.parseDouble(listPolygonStatons.get(i).getLine()));
             }
         }
 
@@ -788,7 +797,7 @@
             double sumDY = 0.0;
             double sumDZ = 0.0;
             GeoCalc geoCalc = new GeoCalc();
-            bindType = setBindType();
+            bindType = defBindType();
             switch (bindType) {
                 case ZZ -> JOptionPane.showMessageDialog(parentFrame,
                         parentFrame.getTitles().get("TPmessageNoAdjustment"),
@@ -796,84 +805,84 @@
                         JOptionPane.ERROR_MESSAGE);
                 case TT -> {
                     iniDDs();
-                    setPerimeter(1, llTheoStatons.size() - 3);
-                    llTheoStatons.get(0).setDirection(Math.toDegrees(geoCalc.getDirAB(
-                            llTheoStatons.get(0).getX(),
-                            llTheoStatons.get(0).getY(),
-                            llTheoStatons.get(1).getX(),
-                            llTheoStatons.get(1).getY())));
-                    llTheoStatons.get(llTheoStatons.size() - 2).setDirection(Math.toDegrees(geoCalc.getDirAB(
-                            llTheoStatons.get(llTheoStatons.size() - 2).getX(),
-                            llTheoStatons.get(llTheoStatons.size() - 2).getY(),
-                            llTheoStatons.get(llTheoStatons.size() - 1).getX(),
-                            llTheoStatons.get(llTheoStatons.size() - 1).getY())));
+                    setPerimeter(1, listPolygonStatons.size() - 3);
+                    listPolygonStatons.get(0).setDirection(Math.toDegrees(geoCalc.getDirAB(
+                            listPolygonStatons.get(0).getX(),
+                            listPolygonStatons.get(0).getY(),
+                            listPolygonStatons.get(1).getX(),
+                            listPolygonStatons.get(1).getY())));
+                    listPolygonStatons.get(listPolygonStatons.size() - 2).setDirection(Math.toDegrees(geoCalc.getDirAB(
+                            listPolygonStatons.get(listPolygonStatons.size() - 2).getX(),
+                            listPolygonStatons.get(listPolygonStatons.size() - 2).getY(),
+                            listPolygonStatons.get(listPolygonStatons.size() - 1).getX(),
+                            listPolygonStatons.get(listPolygonStatons.size() - 1).getY())));
                     setDDHors();
-                    setDirections(1, llTheoStatons.size() - 3);
-                    setDXDYs(1, llTheoStatons.size() - 3);
-                    setDDXDDYs(1, llTheoStatons.size() - 3);
-                    setDDZs(1, llTheoStatons.size() - 3);
-                    setXYZs(2, llTheoStatons.size() - 3);
+                    setDirections(1, listPolygonStatons.size() - 3);
+                    setDXDYs(1, listPolygonStatons.size() - 3);
+                    setDDXDDYs(1, listPolygonStatons.size() - 3);
+                    setDDZs(1, listPolygonStatons.size() - 3);
+                    setXYZs(2, listPolygonStatons.size() - 3);
                 }
                 case TO -> {
                     iniDDs();
-                    setPerimeter(1, llTheoStatons.size() - 2);
-                    llTheoStatons.get(0).setDirection(Math.toDegrees(new SurveyStation("Not",
-                            llTheoStatons.get(0).getX(),
-                            llTheoStatons.get(0).getY(),
-                            llTheoStatons.get(0).getZ(),
+                    setPerimeter(1, listPolygonStatons.size() - 2);
+                    listPolygonStatons.get(0).setDirection(Math.toDegrees(new SurveyStation("Not",
+                            listPolygonStatons.get(0).getX(),
+                            listPolygonStatons.get(0).getY(),
+                            listPolygonStatons.get(0).getZ(),
                             "Not",
-                            llTheoStatons.get(1).getX(),
-                            llTheoStatons.get(1).getY(),
-                            llTheoStatons.get(1).getZ(),
+                            listPolygonStatons.get(1).getX(),
+                            listPolygonStatons.get(1).getY(),
+                            listPolygonStatons.get(1).getZ(),
                             "0.000").getDirection()));
-                    setDirections(1, llTheoStatons.size() - 2);
-                    setDXDYs(1, llTheoStatons.size() - 2);
-                    setDDXDDYs(1, llTheoStatons.size() - 2);
-                    setDDZs(1, llTheoStatons.size() - 2);
-                    setXYZs(2, llTheoStatons.size() - 2);
+                    setDirections(1, listPolygonStatons.size() - 2);
+                    setDXDYs(1, listPolygonStatons.size() - 2);
+                    setDDXDDYs(1, listPolygonStatons.size() - 2);
+                    setDDZs(1, listPolygonStatons.size() - 2);
+                    setXYZs(2, listPolygonStatons.size() - 2);
                 }
                 case OT -> {
                     iniDDs();
-                    setPerimeter(0, llTheoStatons.size() - 3);
-                    llTheoStatons.get(llTheoStatons.size() - 2).setDirection(Math.toDegrees(new SurveyStation("Not",
-                            llTheoStatons.get(llTheoStatons.size() - 2).getX(),
-                            llTheoStatons.get(llTheoStatons.size() - 2).getY(),
-                            llTheoStatons.get(llTheoStatons.size() - 2).getZ(),
+                    setPerimeter(0, listPolygonStatons.size() - 3);
+                    listPolygonStatons.get(listPolygonStatons.size() - 2).setDirection(Math.toDegrees(new SurveyStation("Not",
+                            listPolygonStatons.get(listPolygonStatons.size() - 2).getX(),
+                            listPolygonStatons.get(listPolygonStatons.size() - 2).getY(),
+                            listPolygonStatons.get(listPolygonStatons.size() - 2).getZ(),
                             "Not",
-                            llTheoStatons.get(llTheoStatons.size() - 1).getX(),
-                            llTheoStatons.get(llTheoStatons.size() - 1).getY(),
-                            llTheoStatons.get(llTheoStatons.size() - 1).getZ(),
+                            listPolygonStatons.get(listPolygonStatons.size() - 1).getX(),
+                            listPolygonStatons.get(listPolygonStatons.size() - 1).getY(),
+                            listPolygonStatons.get(listPolygonStatons.size() - 1).getZ(),
                             "0.000").getDirection()));
-                    setDirections(llTheoStatons.size() - 3, 0);
-                    setDXDYs(0, llTheoStatons.size() - 3);
-                    setDDXDDYs(0, llTheoStatons.size() - 3);
-                    setDDZs(0, llTheoStatons.size() - 3);
-                    setXYZs(1, llTheoStatons.size() - 3);
+                    setDirections(listPolygonStatons.size() - 3, 0);
+                    setDXDYs(0, listPolygonStatons.size() - 3);
+                    setDDXDDYs(0, listPolygonStatons.size() - 3);
+                    setDDZs(0, listPolygonStatons.size() - 3);
+                    setXYZs(1, listPolygonStatons.size() - 3);
                 }
                 case OO -> {
                     iniDDs();
-                    setPerimeter(0, llTheoStatons.size() - 2);
-                    llTheoStatons.get(0).setDirection(0.0);
-                    setDirections(1, llTheoStatons.size() - 2);
-                    setDXDYs(0, llTheoStatons.size() - 2);
-                    for (int i = 0; i <= llTheoStatons.size() - 2; i++) {
-                        sumDX = sumDX + llTheoStatons.get(i).getDX();
-                        sumDY = sumDY + llTheoStatons.get(i).getDY();
+                    setPerimeter(0, listPolygonStatons.size() - 2);
+                    listPolygonStatons.get(0).setDirection(0.0);
+                    setDirections(1, listPolygonStatons.size() - 2);
+                    setDXDYs(0, listPolygonStatons.size() - 2);
+                    for (int i = 0; i <= listPolygonStatons.size() - 2; i++) {
+                        sumDX = sumDX + listPolygonStatons.get(i).getDX();
+                        sumDY = sumDY + listPolygonStatons.get(i).getDY();
                     }
-                    sumDX = sumDX + Double.parseDouble(llTheoStatons.get(0).getX());
-                    sumDY = sumDY + Double.parseDouble(llTheoStatons.get(0).getY());
+                    sumDX = sumDX + Double.parseDouble(listPolygonStatons.get(0).getX());
+                    sumDY = sumDY + Double.parseDouble(listPolygonStatons.get(0).getY());
                     sumDZ = Math.toDegrees(new SurveyStation("Not",
-                            llTheoStatons.get(0).getX(),
-                            llTheoStatons.get(0).getY(),
+                            listPolygonStatons.get(0).getX(),
+                            listPolygonStatons.get(0).getY(),
                             "0.000",
                             "Not",
-                            llTheoStatons.get(llTheoStatons.size() - 1).getX(),
-                            llTheoStatons.get(llTheoStatons.size() - 1).getY(),
+                            listPolygonStatons.get(listPolygonStatons.size() - 1).getX(),
+                            listPolygonStatons.get(listPolygonStatons.size() - 1).getY(),
                             "0.000",
                             "0.000").getDirection()) -
                             Math.toDegrees(new SurveyStation("Not",
-                                    llTheoStatons.get(0).getX(),
-                                    llTheoStatons.get(0).getY(),
+                                    listPolygonStatons.get(0).getX(),
+                                    listPolygonStatons.get(0).getY(),
                                     "0.000",
                                     "Not",
                                     new DataHandler(sumDX).format(3).getStr(),
@@ -883,52 +892,52 @@
                     while (sumDZ < 0.0) {
                         sumDZ = sumDZ + 360;
                     }
-                    llTheoStatons.get(0).setDirection(sumDZ);
-                    setDirections(1, llTheoStatons.size() - 2);
-                    setDXDYs(0, llTheoStatons.size() - 2);
-                    setDDXDDYs(0, llTheoStatons.size() - 2);
-                    setDDZs(0, llTheoStatons.size() - 2);
-                    setXYZs(1, llTheoStatons.size() - 2);
+                    listPolygonStatons.get(0).setDirection(sumDZ);
+                    setDirections(1, listPolygonStatons.size() - 2);
+                    setDXDYs(0, listPolygonStatons.size() - 2);
+                    setDDXDDYs(0, listPolygonStatons.size() - 2);
+                    setDDZs(0, listPolygonStatons.size() - 2);
+                    setXYZs(1, listPolygonStatons.size() - 2);
                 }
                 case TZ -> {
                     iniDDs();
-                    setPerimeter(1, llTheoStatons.size() - 2);
-                    llTheoStatons.get(0).setDirection(Math.toDegrees(new SurveyStation("Not",
-                            llTheoStatons.get(0).getX(),
-                            llTheoStatons.get(0).getY(),
-                            llTheoStatons.get(0).getZ(),
+                    setPerimeter(1, listPolygonStatons.size() - 2);
+                    listPolygonStatons.get(0).setDirection(Math.toDegrees(new SurveyStation("Not",
+                            listPolygonStatons.get(0).getX(),
+                            listPolygonStatons.get(0).getY(),
+                            listPolygonStatons.get(0).getZ(),
                             "Not",
-                            llTheoStatons.get(1).getX(),
-                            llTheoStatons.get(1).getY(),
-                            llTheoStatons.get(1).getZ(),
+                            listPolygonStatons.get(1).getX(),
+                            listPolygonStatons.get(1).getY(),
+                            listPolygonStatons.get(1).getZ(),
                             "0.000").getDirection()));
-                    setDirections(1, llTheoStatons.size() - 2);
-                    setDXDYs(1, llTheoStatons.size() - 2);
-                    setXYZs(2, llTheoStatons.size() - 1);
+                    setDirections(1, listPolygonStatons.size() - 2);
+                    setDXDYs(1, listPolygonStatons.size() - 2);
+                    setXYZs(2, listPolygonStatons.size() - 1);
                 }
                 case ZT -> {
                     iniDDs();
-                    setPerimeter(0, llTheoStatons.size() - 3);
-                    llTheoStatons.get(llTheoStatons.size() - 2).setDirection(Math.toDegrees(new SurveyStation("Not",
-                            llTheoStatons.get(llTheoStatons.size() - 2).getX(),
-                            llTheoStatons.get(llTheoStatons.size() - 2).getY(),
-                            llTheoStatons.get(llTheoStatons.size() - 2).getZ(),
+                    setPerimeter(0, listPolygonStatons.size() - 3);
+                    listPolygonStatons.get(listPolygonStatons.size() - 2).setDirection(Math.toDegrees(new SurveyStation("Not",
+                            listPolygonStatons.get(listPolygonStatons.size() - 2).getX(),
+                            listPolygonStatons.get(listPolygonStatons.size() - 2).getY(),
+                            listPolygonStatons.get(listPolygonStatons.size() - 2).getZ(),
                             "Not",
-                            llTheoStatons.get(llTheoStatons.size() - 1).getX(),
-                            llTheoStatons.get(llTheoStatons.size() - 1).getY(),
-                            llTheoStatons.get(llTheoStatons.size() - 1).getZ(),
+                            listPolygonStatons.get(listPolygonStatons.size() - 1).getX(),
+                            listPolygonStatons.get(listPolygonStatons.size() - 1).getY(),
+                            listPolygonStatons.get(listPolygonStatons.size() - 1).getZ(),
                             "0.000").getDirection()));
-                    setDirections(llTheoStatons.size() - 3, 0);
-                    setDXDYs(0, llTheoStatons.size() - 3);
-                    for (int i = 0; i <= llTheoStatons.size() - 3; i++) {
-                        sumDX = sumDX + llTheoStatons.get(i).getDX();
-                        sumDY = sumDY + llTheoStatons.get(i).getDY();
-                        sumDZ = sumDZ + Double.parseDouble(llTheoStatons.get(i).getDZ());
+                    setDirections(listPolygonStatons.size() - 3, 0);
+                    setDXDYs(0, listPolygonStatons.size() - 3);
+                    for (int i = 0; i <= listPolygonStatons.size() - 3; i++) {
+                        sumDX = sumDX + listPolygonStatons.get(i).getDX();
+                        sumDY = sumDY + listPolygonStatons.get(i).getDY();
+                        sumDZ = sumDZ + Double.parseDouble(listPolygonStatons.get(i).getDZ());
                     }
-                    llTheoStatons.get(0).setX(new DataHandler(Double.parseDouble(llTheoStatons.get(llTheoStatons.size() - 2).getX()) - sumDX).format(3).getStr());
-                    llTheoStatons.get(0).setY(new DataHandler(Double.parseDouble(llTheoStatons.get(llTheoStatons.size() - 2).getY()) - sumDY).format(3).getStr());
-                    llTheoStatons.get(0).setZ(new DataHandler(Double.parseDouble(llTheoStatons.get(llTheoStatons.size() - 2).getZ()) - sumDZ).format(3).getStr());
-                    setXYZs(1, llTheoStatons.size() - 3);
+                    listPolygonStatons.get(0).setX(new DataHandler(Double.parseDouble(listPolygonStatons.get(listPolygonStatons.size() - 2).getX()) - sumDX).format(3).getStr());
+                    listPolygonStatons.get(0).setY(new DataHandler(Double.parseDouble(listPolygonStatons.get(listPolygonStatons.size() - 2).getY()) - sumDY).format(3).getStr());
+                    listPolygonStatons.get(0).setZ(new DataHandler(Double.parseDouble(listPolygonStatons.get(listPolygonStatons.size() - 2).getZ()) - sumDZ).format(3).getStr());
+                    setXYZs(1, listPolygonStatons.size() - 3);
                 }
 
 

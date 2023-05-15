@@ -794,13 +794,13 @@ public class MainWin extends JFrame{
             }
             case 1 -> {
                 int q = 0;
-                for (int i = 0; i < polygonProject.getSizeTheoStations(); i++) {
+                for (int i = 0; i < polygonProject.getSizePolygonStations(); i++) {
                     for (int j = 0; j < catalog.getSizeCatalog(); j++) {
-                        if (polygonProject.getTheoStation(i).getName().equals(catalog.get(j).getName()) & polygonProject.getTheoStation(i).getStatus()) {
-                            polygonProject.getTheoStation(i).setName(catalog.get(j).getName());
-                            polygonProject.getTheoStation(i).setX(catalog.get(j).getX());
-                            polygonProject.getTheoStation(i).setY(catalog.get(j).getY());
-                            polygonProject.getTheoStation(i).setZ(catalog.get(j).getZ());
+                        if (polygonProject.getPolygonStation(i).getName().equals(catalog.get(j).getName()) & polygonProject.getPolygonStation(i).getStatus()) {
+                            polygonProject.getPolygonStation(i).setName(catalog.get(j).getName());
+                            polygonProject.getPolygonStation(i).setX(catalog.get(j).getX());
+                            polygonProject.getPolygonStation(i).setY(catalog.get(j).getY());
+                            polygonProject.getPolygonStation(i).setZ(catalog.get(j).getZ());
                             q++;
                         }
                     }

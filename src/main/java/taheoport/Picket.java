@@ -6,12 +6,12 @@ package taheoport;
  * Copyright Nizovkin A.V. 2022
  */
 public class Picket{
-    private String pName = "Not";
-    private String pAltName = "Not";
-    private String line = "0.000";
-    private String hor = "0.000";
-    private String vert = "0.000";
-    private String v = "0.000";
+    private String pName;
+    private String pAltName;
+    private String line;
+    private String hor;
+    private String vert;
+    private String v;
     private double direction = 0.0;
     private double dX = 0.0;
     private double dY = 0.0;
@@ -23,14 +23,21 @@ public class Picket{
 
     /**
      * Constructor
-     * входящие параметры:
-     * @param pName название пикета (номер или код)
-     * @param pLine измеренная наклонная длина линии
-     * @param pHor левый горизонтальный угол
-     * @param pVert вертикальный угол
-     * @param pV высота наведения
+     * @param pName pickets name
+     * @param pLine inclined distance
+     * @param pHor left horizontal angle
+     * @param pVert tilt angle
+     * @param pV target height
+     * @param pAltName alternative name
+     * @param station parent station
      */
-    public Picket(String pName, String pLine, String pHor, String pVert, String pV, String pAltName, SurveyStation st) {
+    public Picket(String pName,
+                  String pLine,
+                  String pHor,
+                  String pVert,
+                  String pV,
+                  String pAltName,
+                  SurveyStation station) {
         if (new DataHandler(pName).isValidName()) {
             this.pName = pName;
         } else {
@@ -68,88 +75,128 @@ public class Picket{
         }
     }
 
+    /**
+     * Overrides the method toString
+     * @return String
+     */
     public String toString(){
         return pName + "\t" + pAltName + "\t" + line + "\t" + hor + "\t" + vert + "\t" + v;
     }
 
-    //---Setters
-
+    /**
+     * Sets pickets name
+     * @param pName name
+     */
     public void setpName(String pName) {
         if (new DataHandler(pName).isValidName()) {
             this.pName = pName;
+        } else {
+            this.pName = "None";
         }
     }
 
-    public void setpAltName(String pAltName) {
-        if (new DataHandler(pAltName).isValidName()) {
-            this.pAltName = pAltName;
-        }
-    }
-
+    /**
+     * Sets tilt distance to picket
+     * @param line line
+     */
     public void setLine(String line) {
-        if (new DataHandler(line).isPositiveNumber()) {
             this.line = line;
-        }
     }
 
+    /**
+     * Sets horizontal angle to picket
+     * @param hor angle, G.MMSS
+     */
     public void setHor(String hor) {
-        if (new DataHandler(hor).isPositiveNumber()) {
             this.hor = hor;
-        }
     }
 
+    /**
+     * Sets tilt angle line to picket
+     * @param vert angle in, G.MMSS
+     */
     public void setVert(String vert) {
-        if (new DataHandler(vert).isNumber()) {
             this.vert = vert;
-        }
     }
 
+    /**
+     * Sets target height
+     * @param v target height, m.
+     */
     public void setV(String v) {
-        if (new DataHandler(v).isNumber()) {
             this.v = v;
-        }
     }
 
+    /**
+     * Sets direction line to picket
+     * @param direction angle, radian
+     */
     public void setDirection(double direction) {
         this.direction = direction;
     }
 
+    /**
+     * Sets horizontal distance to picket
+     * @param horLine distance, m.
+     */
     public void setHorLine(double horLine) {
         this.horLine = horLine;
     }
 
+    /**
+     * Sets distance projection on the X-axis
+     * @param dX double, m.
+     */
     public void setdX(double dX) {
         this.dX = dX;
     }
 
+    /**
+     * Sets distance projection on the Y-axis
+     * @param dY double, m.
+     */
     public void setdY(double dY) {
         this.dY = dY;
     }
 
+    /**
+     * Sets elevation to picket
+     * @param dZ double, m.
+     */
     public void setdZ(double dZ) {
         this.dZ = dZ;
     }
 
+    /**
+     * Sets pickets coordinates X
+     * @param x double, m.
+     */
     public void setX(double x) {
         this.x = x;
     }
 
+    /**
+     * Sets pickets coordinates Y
+     * @param y double, m.
+     */
     public void setY(double y) {
         this.y = y;
     }
 
+    /**
+     * Sets pickets coordinates Z
+     * @param z double, m.
+     */
     public void setZ(double z) {
         this.z = z;
     }
 
-    //---Getters
-
+    /**
+     * Gets pickets name
+     * @return String
+     */
     public String getpName() {
         return pName;
-    }
-
-    public String getpAltName() {
-        return pAltName;
     }
 
     /**
@@ -181,7 +228,7 @@ public class Picket{
      * @return String DX
      */
     public String getDX() {
-        return new DataHandler( dX).format(3).getStr();
+        return new DataHandler(dX).format(3).getStr();
     }
 
     /**
@@ -206,7 +253,7 @@ public class Picket{
     }
 
     /**
-     * Get horizontal distance
+     * Gets horizontal distance
      * @return double
      */
     public String getpHorLine() {
@@ -214,21 +261,33 @@ public class Picket{
     }
 
     /**
-     * Get pickets dz = l * sin(vert)
+     * Gets pickets dz = l * sin(vert)
      * @return double
      */
     public String getDZ() {
         return new DataHandler(dZ).format(3).getStr();
     }
 
+    /**
+     * Gets horizontal angle
+     * @return String
+     */
     public String getHor() {
         return hor;
     }
 
+    /**
+     * Gets tilt angle
+     * @return String
+     */
     public String getVert() {
         return vert;
     }
 
+    /**
+     * Gets target height
+     * @return String
+     */
     public String getV() {
         return v;
     }
