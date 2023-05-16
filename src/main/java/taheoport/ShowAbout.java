@@ -6,11 +6,15 @@ import java.util.LinkedList;
 
 /**
  * This class encapsulates form about program
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
 public class ShowAbout extends JDialog {
 
+    /**
+     * Constructor
+     * @param parentFrame MainWin
+     */
     public ShowAbout(MainWin parentFrame) {
         super(parentFrame, parentFrame.getTitles().get("SAdialogTitle"), true);
         setBounds(parentFrame.getX() + parentFrame.getWidthMain() / 2 - parentFrame.getWidthMain() / 3 * 2 / 2,
@@ -89,9 +93,5 @@ public class ShowAbout extends JDialog {
 
         setResizable(false);
         setVisible(true);
-
-// The END of Constructor
     }
-
-// The END of Class
 }

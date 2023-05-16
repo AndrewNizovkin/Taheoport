@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 /**
  * This class encapsulated panel for displaying and editing of polygon
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
 public class PolygonEditorStandart extends JPanel {

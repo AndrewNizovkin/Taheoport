@@ -13,7 +13,7 @@ import java.util.Vector;
 
 /**
  * This main window of program
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
 public class MainWin extends JFrame{

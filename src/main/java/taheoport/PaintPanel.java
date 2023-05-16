@@ -5,7 +5,7 @@ import java.awt.*;
 
 /**
  * Display results of processing and highlights current position
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
 public class PaintPanel extends JPanel {

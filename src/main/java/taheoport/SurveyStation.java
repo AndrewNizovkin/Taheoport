@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 /**
  * This class encapsulates parameters of SurveyStation
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
 public class SurveyStation {

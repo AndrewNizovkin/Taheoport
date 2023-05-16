@@ -6,25 +6,25 @@ import java.awt.*;
 
 /**
  * This class display external coordinate catalog
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
 public class ShowCatalog extends JDialog {
-    private SurveyProject sp;
-    private String name;
-    private MainWin parentFrame;
-    private int selRow;
-    private int index;
-    private int w;
-    private int h;
-    private JScrollPane spnlPoints; //
-    private JButton btnInsertCoordinates;
-    private JButton btnCancel;
-    private JTable tblPoints;
-    private JPanel pnlControl;
-    private Catalog catalog;
 
-    public ShowCatalog(MainWin frame, int index, String name) {
+    private final Catalog catalog;
+    private final int index;
+    private final MainWin parentFrame;
+    private int selRow;
+    private final String target;
+    private final JTable tblPoints;
+
+    /**
+     * Constructor
+     * @param frame parent MainWin
+     * @param index station selected index in surveyProject
+     * @param target parameter to changed
+     */
+    public ShowCatalog(MainWin frame, int index, String target) {
         super( frame,frame.getTitles().get("SCdialogTitle"), true);
         parentFrame = frame;
 
@@ -32,15 +32,14 @@ public class ShowCatalog extends JDialog {
         Image im = kit.getImage("images/teo.png");
         this.setIconImage(im);
 
-        this.sp = frame.getSurveyProject();
-        this.name = name;
+        this.target = target;
         this.index = index;
         this.catalog = frame.getCatalog();
         selRow = -1;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        w = parentFrame.getWidthMain() / 2;
-        h = parentFrame.getHeightMain() / 2;
+        int w = parentFrame.getWidthMain() / 2;
+        int h = parentFrame.getHeightMain() / 2;
         setBounds(frame.getX() + frame.getWidth() / 2 - w / 2,frame.getY() + frame.getHeight() / 2 - h / 2, w, h);
         setLayout(new BorderLayout());
 
@@ -61,25 +60,26 @@ public class ShowCatalog extends JDialog {
             }
         });
 
-        spnlPoints = new JScrollPane(tblPoints);
+        //
+        JScrollPane spnlPoints = new JScrollPane(tblPoints);
         add(spnlPoints, BorderLayout.CENTER);
 
 // pnlControl__________________________________________________
 
-        pnlControl = new JPanel();
+        JPanel pnlControl = new JPanel();
         pnlControl.setLayout(new FlowLayout());
 
 // btnInsertCoordinates________________________________________
 
-        btnInsertCoordinates = new JButton(parentFrame.getTitles().get("SCbtnInsertCoordinates"));
+        JButton btnInsertCoordinates = new JButton(parentFrame.getTitles().get("SCbtnInsertCoordinates"));
         btnInsertCoordinates.setToolTipText(parentFrame.getTitles().get("SCbtnInsertCoordinatesTT"));
         btnInsertCoordinates.addActionListener(e -> {
-            setCoordinates();
+            replaceCoordinates();
         });
         pnlControl.add(btnInsertCoordinates);
 // btnCancel________________________________________
 
-        btnCancel = new JButton(parentFrame.getTitles().get("SCbtnCancel"));
+        JButton btnCancel = new JButton(parentFrame.getTitles().get("SCbtnCancel"));
         btnCancel.setToolTipText(parentFrame.getTitles().get("SCbtnCancel"));
         btnCancel.addActionListener(e -> {
             this.dispose();
@@ -95,22 +95,22 @@ public class ShowCatalog extends JDialog {
         revalidate();
     }
 
-    private void setCoordinates () {
+    private void replaceCoordinates() {
         if (selRow >= 0) {
 //            Station st = this.sp.getStation(index);
             CatalogPoint cp = this.catalog.getCatalogPoint(selRow);
-            if (name.equals("StationName")) {
-                sp.getStation(index).setName(cp.getName());
-                sp.getStation(index).setX(cp.getX());
-                sp.getStation(index).setY(cp.getY());
-                sp.getStation(index).setZ(cp.getZ());
+            if (target.equals("StationName")) {
+                parentFrame.getSurveyProject().getStation(index).setName(cp.getName());
+                parentFrame.getSurveyProject().getStation(index).setX(cp.getX());
+                parentFrame.getSurveyProject().getStation(index).setY(cp.getY());
+                parentFrame.getSurveyProject().getStation(index).setZ(cp.getZ());
             }
-            if (name.equals("OrName")) {
-                sp.getStation(index).setNameOr(cp.getName());
-                sp.getStation(index).setxOr(cp.getX());
-                sp.getStation(index).setyOr(cp.getY());
+            if (target.equals("OrName")) {
+                parentFrame.getSurveyProject().getStation(index).setNameOr(cp.getName());
+                parentFrame.getSurveyProject().getStation(index).setxOr(cp.getX());
+                parentFrame.getSurveyProject().getStation(index).setyOr(cp.getY());
             }
-            if (name.equals("TheoStation")) {
+            if (target.equals("TheoStation")) {
                 parentFrame.getPolygonProject().getPolygonStation(index).setName(cp.getName());
                 parentFrame.getPolygonProject().getPolygonStation(index).setX(cp.getX());
                 parentFrame.getPolygonProject().getPolygonStation(index).setY(cp.getY());

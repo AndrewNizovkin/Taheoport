@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 /**
  * This class encapsulates panel for display editing survey measurement
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
 public class SurveyEditorStandart extends JPanel  {

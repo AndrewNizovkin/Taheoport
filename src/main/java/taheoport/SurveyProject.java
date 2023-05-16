@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * Version information
  * @version 1.0
  * Date
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
 public class SurveyProject {

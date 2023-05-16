@@ -5,7 +5,7 @@ import java.awt.*;
 
 /**
  * This class encapsulates panel for display the polygon
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
 public class PolygonPaintPanel extends JPanel {

@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 /**
  * This class encapsulates form for display result processing of measurement
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
 public class ShowViewResults extends JDialog {

@@ -8,7 +8,7 @@ import java.io.File;
 
 /**
  * This class encapsulates form for changes program settings
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
 public class ShowOptions extends JDialog {

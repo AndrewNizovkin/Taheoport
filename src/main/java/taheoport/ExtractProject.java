@@ -4,7 +4,7 @@
 
     /**
      * This class encapsulates result of extracting the polygon from measurements
-     * @author Andrey Nizovkin
+     * @author Andrew Nizovkin
      * Copyright Nizovkin A.V. 2022
      */
     public class ExtractProject extends LinkedList<ExtractStation> {

@@ -7,7 +7,7 @@
     /**
      * this class encapsulates data in a list of stations llTeoStation and
      * provides methods for editing, adjustment
-     * @author Andrey Nizovkin
+     * @author Andrew Nizovkin
      * Copyright Nizovkin A.V. 2022
      */
 public class PolygonProject {

@@ -10,17 +10,24 @@ import java.util.regex.Pattern;
 
 /**
  * This class encapsulates form for changes angle
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
 public class ShowChangeAngle extends JDialog implements ChangeListener, ActionListener {
-    private final MainWin parentFrame;
-    private final String title;
-    private final JTextField tfOffset;
+
     private final JLabel lblOffset;
+    private final MainWin parentFrame;
     private final JRadioButton rbOffset = new JRadioButton();
     private final JRadioButton rbCopy = new JRadioButton();
+    private final String title;
+    private final JTextField tfOffset;
 
+
+    /**
+     * Constructor
+     * @param parentFrame parent MainWin
+     * @param title dialogs title
+     */
     public ShowChangeAngle(MainWin parentFrame, String title) {
         super(parentFrame, title, true);
         this.parentFrame  = parentFrame;

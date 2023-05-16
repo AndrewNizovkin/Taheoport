@@ -6,7 +6,7 @@
 
     /**
      * This class encapsulates form for display results of extracting polygon from measurement
-     * @author Andrey Nizovkin
+     * @author Andrew Nizovkin
      * Copyright Nizovkin A.V. 2022
      */
     public class ShowViewExtractPol extends JDialog {

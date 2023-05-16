@@ -1,7 +1,7 @@
     package taheoport;
 /**
  * This class defines a point by the 3D coordinates
- *   @author Andrey Nizovkin
+ *   @author Andrew Nizovkin
  *   Copyright Nizovkin A.V. 2022
  * and height of the measurements
  */

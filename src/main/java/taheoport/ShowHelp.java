@@ -8,10 +8,9 @@ import java.util.HashMap;
 
 /**
  * This class encapsulates form for users guid
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
-
 public class ShowHelp extends JDialog {
     private final Manual manual;
     private final JTree tContent;
@@ -32,6 +31,10 @@ public class ShowHelp extends JDialog {
     private final DefaultMutableTreeNode tnFiles;
     private final DefaultMutableTreeNode tnOptions;
 
+    /**
+     * Constructor
+     * @param parentFrame parent MainWin
+     */
     public ShowHelp(MainWin parentFrame) {
         super(parentFrame, parentFrame.getTitles().get("SHtitleFrame"), false);
         HashMap<String, String> titles = parentFrame.getTitles();

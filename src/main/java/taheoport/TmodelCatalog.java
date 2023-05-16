@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * This class encapsulates table model of catalog
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
 public class TmodelCatalog extends AbstractTableModel {

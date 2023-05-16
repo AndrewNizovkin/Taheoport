@@ -5,24 +5,23 @@ import java.util.LinkedList;
 
 /**
  * This class provide language support for UI
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
 public class Shell {
+
     private final MainWin parentFrame;
+
     /**
      * Constructor
      * @param parentFrame parent frame
      */
     public Shell(MainWin parentFrame) {
         this.parentFrame = parentFrame;
-
-
-// The End of constructor
     }
 
     /**
-     * Gets HashMap titles
+     * Gets HashMap titles. Provides text for user interface
      */
     public HashMap<String, String> getTitles() {
         HashMap<String, String> titles = new HashMap<>();
@@ -448,7 +447,7 @@ public class Shell {
     }
 
     /**
-     * Gets header to coordinate calculation report for theoProject
+     * Gets header to coordinate calculation report for polygonProject
      * @return LinkedList
      */
     public LinkedList<String> getTopReportXY() {

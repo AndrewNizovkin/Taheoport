@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `taheoport.PolygonPaintPanel`
+`java.lang.Object` -> `taheoport.PolygonProject`
 
 ---
 

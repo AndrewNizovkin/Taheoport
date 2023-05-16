@@ -2,7 +2,7 @@ package taheoport;
 
 /**
  * This class encapsulates the geodesic tasks
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
 public class GeoCalc {

@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 /**
  * This class converts coordinates for displayed on a panel
- * @author Andrey Nizovkin
+ * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
 public class PaintProject extends LinkedList<PaintPoint>{
