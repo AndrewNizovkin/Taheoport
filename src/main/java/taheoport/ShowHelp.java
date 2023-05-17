@@ -12,13 +12,14 @@ import java.util.HashMap;
  * Copyright Nizovkin A.V. 2022
  */
 public class ShowHelp extends JDialog {
+
+    private final CardLayout cardLayout = new CardLayout();
     private final Manual manual;
+    private final JPanel pnlViewContent;
+    private final JPanel pnlToolbarDemo;
+    private JScrollPane spToolbarDemo;
     private final JTree tContent;
     private final JTree tViewContent;
-    private JScrollPane spToolbarDemo;
-    private final JPanel pnlVewContent;
-    private final JPanel pnlToolbarDemo;
-    private final CardLayout cardLayout = new CardLayout();
     private final DefaultMutableTreeNode tnContent;
     private final DefaultMutableTreeNode tnIntroduction;
     private final DefaultMutableTreeNode tnImport;
@@ -72,11 +73,8 @@ public class ShowHelp extends JDialog {
         DefaultMutableTreeNode tnTasks = new DefaultMutableTreeNode(titles.get("SHtnTasks"));
         tnContent.add(tnTasks);
                 tnImport = new DefaultMutableTreeNode(titles.get("SHtnImport"));
-                tnContent.add(tnImport);
                 tnExtract = new DefaultMutableTreeNode(titles.get("SHtnExtract"));
-                tnContent.add(tnExtract);
                 tnAdjustment = new DefaultMutableTreeNode(titles.get("SHtnAdjustment"));
-                tnContent.add(tnAdjustment);
                 tnTasks.add(tnImport);
                 tnTasks.add(tnExtract);
             tnTasks.add(tnAdjustment);
@@ -277,20 +275,20 @@ public class ShowHelp extends JDialog {
 
 // pnlViewContent_____________________________________________________
 
-            pnlVewContent = new JPanel(cardLayout);
-            pnlVewContent.add(pnlContent,"SHtnContent");
-            pnlVewContent.add(pnlIntroduction,"SHtnIntroduction");
-            pnlVewContent.add(pnlImport,"SHtnImport");
-            pnlVewContent.add(pnlExtract,"SHtnExtract");
-            pnlVewContent.add(pnlAdjustment,"SHtnAdjust");
-            pnlVewContent.add(pnlMainMenu,"SHtnMainMenu");
-            pnlVewContent.add(pnlToolbar,"SHtnToolbar");
-            pnlVewContent.add(pnlMeasurements,"SHtnMeasurements");
-            pnlVewContent.add(pnlPolygon,"SHtnPolygon");
-            pnlVewContent.add(pnlOptions,"SHtnOptions");
-            pnlVewContent.add(pnlFiles,"SHtnFiles");
+            pnlViewContent = new JPanel(cardLayout);
+            pnlViewContent.add(pnlContent,"SHtnContent");
+            pnlViewContent.add(pnlIntroduction,"SHtnIntroduction");
+            pnlViewContent.add(pnlImport,"SHtnImport");
+            pnlViewContent.add(pnlExtract,"SHtnExtract");
+            pnlViewContent.add(pnlAdjustment,"SHtnAdjust");
+            pnlViewContent.add(pnlMainMenu,"SHtnMainMenu");
+            pnlViewContent.add(pnlToolbar,"SHtnToolbar");
+            pnlViewContent.add(pnlMeasurements,"SHtnMeasurements");
+            pnlViewContent.add(pnlPolygon,"SHtnPolygon");
+            pnlViewContent.add(pnlOptions,"SHtnOptions");
+            pnlViewContent.add(pnlFiles,"SHtnFiles");
 
-        add(pnlVewContent, BorderLayout.CENTER);
+        add(pnlViewContent, BorderLayout.CENTER);
 
         setResizable(true);
         setVisible(true);
@@ -304,17 +302,17 @@ public class ShowHelp extends JDialog {
      * @param node DefaultMutableTreeNode
      */
     private void updateViewContent(DefaultMutableTreeNode node) {
-        if (node == null || node == tnContent) cardLayout.show(pnlVewContent, "SHtnContent");
-        if (node == tnIntroduction) cardLayout.show(pnlVewContent, "SHtnIntroduction");
-        if (node == tnImport) cardLayout.show(pnlVewContent, "SHtnImport");
-        if (node == tnExtract) cardLayout.show(pnlVewContent, "SHtnExtract");
-        if (node == tnAdjustment) cardLayout.show(pnlVewContent, "SHtnAdjust");
-        if (node == tnMainMenu) cardLayout.show(pnlVewContent, "SHtnMainMenu");
-        if (node == tnToolbar) cardLayout.show(pnlVewContent, "SHtnToolbar");
-        if (node == tnMeasurements) cardLayout.show(pnlVewContent, "SHtnMeasurements");
-        if (node == tnPolygon) cardLayout.show(pnlVewContent, "SHtnPolygon");
-        if (node == tnFiles) cardLayout.show(pnlVewContent, "SHtnFiles");
-        if (node == tnOptions) cardLayout.show(pnlVewContent, "SHtnOptions");
+        if (node == null || node == tnContent) cardLayout.show(pnlViewContent, "SHtnContent");
+        if (node == tnIntroduction) cardLayout.show(pnlViewContent, "SHtnIntroduction");
+        if (node == tnImport) cardLayout.show(pnlViewContent, "SHtnImport");
+        if (node == tnExtract) cardLayout.show(pnlViewContent, "SHtnExtract");
+        if (node == tnAdjustment) cardLayout.show(pnlViewContent, "SHtnAdjust");
+        if (node == tnMainMenu) cardLayout.show(pnlViewContent, "SHtnMainMenu");
+        if (node == tnToolbar) cardLayout.show(pnlViewContent, "SHtnToolbar");
+        if (node == tnMeasurements) cardLayout.show(pnlViewContent, "SHtnMeasurements");
+        if (node == tnPolygon) cardLayout.show(pnlViewContent, "SHtnPolygon");
+        if (node == tnFiles) cardLayout.show(pnlViewContent, "SHtnFiles");
+        if (node == tnOptions) cardLayout.show(pnlViewContent, "SHtnOptions");
     }
 
     /**
