@@ -1,6 +1,5 @@
 package taheoport;
 
-import java.io.File;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,44 +15,48 @@ import java.util.regex.Pattern;
  * Copyright Nizovkin A.V. 2022
  */
 public class SurveyProject {
-    private String path = new File("").getAbsolutePath(); // Path to the working directory
-    private String absoluteTahPath = "";
-//    private String absoluteCatalogPath;
-    private SurveyStation st; //   Reference variable of the Station class
-    private  Picket p; // Reference variable of the Picket class
-    private  LinkedList <SurveyStation> llStations = new LinkedList <SurveyStation>(); // List of Stations
-    private LinkedList <CatalogPoint> llCatalog = new LinkedList<CatalogPoint>();
-    private MainWin frameParent;
+    private String absoluteTahPath;
+    private final LinkedList <SurveyStation> surveyStations;
+    private final MainWin parentFrame;
 
-    public SurveyProject(MainWin frame) {
-        frameParent = frame;
+    /**
+     * Constructor
+     * @param parentFrame MainWin
+     */
+    public SurveyProject(MainWin parentFrame) {
+        this.parentFrame = parentFrame;
+        absoluteTahPath = "";
+        surveyStations = new LinkedList <>();
     }
 
     /**
      *  Import from *.txt file Topcon
      */
-    public SurveyProject loadTopconList(LinkedList<String> l) {
-        l.removeFirst();
-        String str = l.removeFirst();
-        String [] array = str.split("_'");
-        for (String s : array) {
-            Matcher m = Pattern.compile("^.+?\\+").matcher(s);
+    public SurveyProject loadTopconList(LinkedList<String> list) {
+        SurveyStation surveyStation;
+        Picket picket;
+        list.removeFirst();
+        String[] measurements;
+        String[] measurement;
+        String [] array = list.removeFirst().split("_'");
+        for (String row : array) {
+            Matcher m = Pattern.compile("^.+?\\+").matcher(row);
             if (m.find()) {
-                st = addStation();
-                st.setName(s.substring(0, s.indexOf("_", 0)));
-                st.setVi(new DataHandler(s.substring(s.indexOf(")", 0) + 1,
-                        s.indexOf("_", s.indexOf(")", 0)))).format(3).getStr());
-                String[] pickets = s.substring(m.end()).split("_\\+");
-                for (String s1 : pickets) {
-                    p = st.addPicket(st);
-                    Matcher mm = Pattern.compile("[_*\\?*\\+m*d*,*]").matcher(s1);
-                    s1 = new DataHandler(mm.replaceAll(" ")).compress(" ").getStr();
-                    String[] picket = s1.split(" ");
-                    p.setpName(picket[0]);
-                    p.setLine(new DataHandler(picket[1]).setPointPosition(5).format(3).getStr());
-                    p.setVert(new DataHandler(picket[2]).setPointPosition(3).ZenithToVert().format(4).getStr());
-                    p.setHor(new DataHandler(picket[3]).setPointPosition(3).format(4).getStr());
-                    p.setV(new DataHandler(picket[7]).format(3).getStr());
+                surveyStation = addStation();
+                surveyStation.setName(row.substring(0, row.indexOf("_", 0)));
+                surveyStation.setVi(new DataHandler(row.substring(row.indexOf(")", 0) + 1,
+                        row.indexOf("_", row.indexOf(")", 0)))).format(3).getStr());
+                measurements = row.substring(m.end()).split("_\\+");
+                for (String record : measurements) {
+                    picket = surveyStation.addPicket(surveyStation);
+                    Matcher mm = Pattern.compile("[_*\\?*\\+m*d*,*]").matcher(record);
+                    record = new DataHandler(mm.replaceAll(" ")).compress(" ").getStr();
+                    measurement = record.split(" ");
+                    picket.setpName(measurement[0]);
+                    picket.setLine(new DataHandler(measurement[1]).setPointPosition(5).format(3).getStr());
+                    picket.setVert(new DataHandler(measurement[2]).setPointPosition(3).ZenithToVert().format(4).getStr());
+                    picket.setHor(new DataHandler(measurement[3]).setPointPosition(3).format(4).getStr());
+                    picket.setV(new DataHandler(measurement[7]).format(3).getStr());
                 }
             }
         }
@@ -65,22 +68,23 @@ public class SurveyProject {
      * @param l list
      */
     public SurveyProject loadNiconList(LinkedList<String> l) {
+        SurveyStation surveyStation = new SurveyStation();
         l.removeFirst();
         try {
             while (l.size() > 0){
                 String [] array = l.removeFirst().split(",");
                 switch (array[0]) {
-                    case "ST" -> st = addStation(array[1],
+                    case "ST" -> surveyStation = addStation(array[1],
                             "0.000", "0.000", "0.000",
                             array[3],
                             "0.000", "0.000", "0.000",
                             new DataHandler(array[5]).format(3).getStr());
-                    case "SS" -> p = st.addPicket(array[7],
+                    case "SS" -> surveyStation.addPicket(array[7],
                             new DataHandler(array[3]).format(3).getStr(),
                             new DataHandler(array[4]).format(4).getStr(),
                             new DataHandler(array[5]).format(4).getStr(),
                             new DataHandler(array[2]).format(3).getStr(),
-                            array[1], st);
+                            array[1], surveyStation);
                 }
             }
             l = null;
@@ -93,46 +97,40 @@ public class SurveyProject {
     /**
      * Import from *.gsi file Leica
      */
-    public SurveyProject loadLeicaList(LinkedList<String> l) {
+    public SurveyProject loadLeicaList(LinkedList<String> list) {
+        SurveyStation surveyStation = new SurveyStation();
         String sep =" ";
         String code = "Not";
         String iCur = "Not";
         DataHandler[] lh;
         int res = 0;
         String [] array;
-        l.removeFirst();
+        list.removeFirst();
         try {
-            while (l.size() > 0) {
-                array = (l.removeFirst()).split(sep);
+            while (list.size() > 0) {
+                array = (list.removeFirst()).split(sep);
                 lh = new DataHandler[array.length];
                 switch (array[0].substring(0, 2)) {
                     case "41" ->
-                            //запоминаем код pName
                             code = array[0].substring(7);
                     case "11" -> {
                         for (String s : array) {
                             switch (s.substring(0, 2)) {
                                 case "11":
-                                    //название (номер) pAltName пикета
                                     lh[6] = new DataHandler(s.substring(7)).removeFirstZero();
                                 case "31":
-                                    //измеренная линия
                                     lh[1] = new DataHandler(s.substring(7)).setPointPosition(5).format(3);
                                     break;
                                 case "21":
-                                    //горизонтальный угол
                                     lh[2] = new DataHandler(s.substring(7)).setPointPosition(3).format(4);
                                     break;
                                 case "22":
-                                    //зенитное расстояние
                                     lh[3] = new DataHandler(s.substring(7)).setPointPosition(3).ZenithToVert().format(4);
                                     break;
                                 case "87":
-                                    //высота наведения
                                     lh[4] = new DataHandler(s.substring(7)).setPointPosition(5).format(3);
                                     break;
                                 case "88":
-                                    //высота инструмента
                                     lh[5] = new DataHandler(s.substring(7)).setPointPosition(5).format(3);
                                     break;
                             }
@@ -143,22 +141,22 @@ public class SurveyProject {
                             lh[0] = lh[6];
                         }
                         if (lh[5].getStr().equals(iCur)) {
-                            st.addPicket(lh[0].getStr(),
+                            surveyStation.addPicket(lh[0].getStr(),
                                     lh[1].getStr(),
                                     lh[2].getStr(),
                                     lh[3].getStr(),
                                     lh[4].getStr(),
-                                    lh[6].getStr(), st);
+                                    lh[6].getStr(), surveyStation);
                         } else {
-                            st = addStation();
-                            st.setVi(lh[5].getStr());
+                            surveyStation = addStation();
+                            surveyStation.setVi(lh[5].getStr());
                             iCur = lh[5].getStr();
-                            st.addPicket(lh[0].getStr(),
+                            surveyStation.addPicket(lh[0].getStr(),
                                     lh[1].getStr(),
                                     lh[2].getStr(),
                                     lh[3].getStr(),
                                     lh[4].getStr(),
-                                    lh[6].getStr(), st);
+                                    lh[6].getStr(), surveyStation);
                         }
                     }
                 }
@@ -174,11 +172,10 @@ public class SurveyProject {
      * Import from *.tah file
      */
         public SurveyProject loadTahList(LinkedList<String> l){
+            SurveyStation surveyStation;
             String sep =" ";
-//            int index = 0;
             String str;
             String [] array;
-//            LinkedList <String> l = new MyChooser().readTextFile(path, "tah", "Import from tah");
             if (l == null) {
                 return null;
             }
@@ -188,21 +185,21 @@ public class SurveyProject {
                 while (!str.contains("//") && l.size() > 1) {
                     str = new DataHandler(str).compress(sep).getStr();
                     array = str.split(sep);
-                    st = addStation(array[0], array[1], array[2], array[3], array[5], array[6], array[7], "0.000", array[4]);
+                    addStation(array[0], array[1], array[2], array[3], array[5], array[6], array[7], "0.000", array[4]);
                     str = (String) l.removeFirst();
                 }
                 int index = 0;
-                st = getStation(index);
+                surveyStation = getStation(index);
                 while (l.size() > 0) {
                     str = (String) l.removeFirst();
                       if (!str.contains("//")) {
                       str = new DataHandler(str).compress(sep).getStr();
                         array = str.split(sep);
-                        st.addPicket(array[0], array[1], array[2], array[3], array[4], String.valueOf(st.sizePickets()), st);
+                        surveyStation.addPicket(array[0], array[1], array[2], array[3], array[4], String.valueOf(surveyStation.sizePickets()), surveyStation);
                     } else {
                         index = index + 1;
                         if (index < sizeStations()) {
-                            st = getStation(index);
+                            surveyStation = getStation(index);
                         }
                     }
                 }
@@ -213,61 +210,67 @@ public class SurveyProject {
         }
 
     /**
-     * Returns Tah in the form LinkedList
+     * Returns Tah as LinkedList
      * @return Linkedlist
      */
     public   LinkedList <String> getTahList() {
+        SurveyStation surveyStation;
+        Picket picket;
         String sep = " ";
-//        String str;
-        LinkedList <String> l = new LinkedList<String>();
+        LinkedList <String> list = new LinkedList<>();
             try {
                  for (int i = 0; i < this.sizeStations(); i++) {
-                     st = this.getStation(i);
-                     l.add(st.getName() + sep + st.getX() + sep + st.getY() + sep + st.getZ() +
-                             sep + st.getVi() + sep + st.getNameOr() + sep + st.getxOr() + sep + st.getyOr());
+                     surveyStation = this.getStation(i);
+                     list.add(surveyStation.getName() + sep +
+                             surveyStation.getX() + sep +
+                             surveyStation.getY() + sep +
+                             surveyStation.getZ() + sep +
+                             surveyStation.getVi() + sep +
+                             surveyStation.getNameOr() + sep +
+                             surveyStation.getxOr() + sep +
+                             surveyStation.getyOr());
                  }
-                 l.add("//");
+                 list.add("//");
                  for (int i = 0; i < this.sizeStations(); i++) {
-                     st = this.getStation(i);
-                     for (int j = 0; j < st.sizePickets(); j++ ) {
-                         p = st.getPicket(j);
-                         l.add(p.getpName() + sep + p.getLine() + sep +
-                                 p.getHor() + sep + p.getVert() + sep +
-                                 p.getV() + sep + i);
+                     surveyStation = this.getStation(i);
+                     for (int j = 0; j < surveyStation.sizePickets(); j++ ) {
+                         picket = surveyStation.getPicket(j);
+                         list.add(picket.getpName() + sep + picket.getLine() + sep +
+                                 picket.getHor() + sep + picket.getVert() + sep +
+                                 picket.getV() + sep + i);
                      }
-                     l.add("//");
+                     list.add("//");
                  }
             } catch (NoSuchElementException e) {
                 System.out.println("element not found");
             }
-            return l;
-//--->>
+            return list;
         }
 
     /**
      * return list Pickets: name X Y Z
      * @return LinkedList
      */
-
-//    @Contract(pure = true)
-        public LinkedList <String> getPicketsList() {
+        public LinkedList<String> getPicketsList() {
+            SurveyStation surveyStation;
+            Picket picket;
             String sep = " ";
-            LinkedList <String> l = new LinkedList<String>();
+            LinkedList<String> list = new LinkedList<>();
             try {
                 for (int i = 0; i < this.sizeStations(); i++) {
-                    st = this.getStation(i);
-                    for (int j = 0; j < st.sizePickets(); j++) {
-                        p = st.getPicket(j);
-                        l.add(p.getpName() + sep +
-                                p.getX() + sep +
-                                p.getY() + sep +
-                                p.getZ());
+                    surveyStation = this.getStation(i);
+                    for (int j = 0; j < surveyStation.sizePickets(); j++) {
+                        picket = surveyStation.getPicket(j);
+                        list.add(picket.getpName() + sep +
+                                picket.getX() + sep +
+                                picket.getY() + sep +
+                                picket.getZ());
                     }
                 }
             } catch (NoSuchElementException e) {
                 System.out.println("element not found");
             }
-            return l;
+            return list;
         }
 
     /**
@@ -275,56 +278,56 @@ public class SurveyProject {
      * @return LinkedList<String>
      */
     public LinkedList<String> getReportList() {
-            HashMap<String, String> titlesReports = new Shell(frameParent).getTitlesReports();
-            Picket p;
-            LinkedList<String> llReport = new LinkedList<String>();
-            LinkedList<String> llTopReport = new Shell(frameParent).getTopReportSurvey();
+            HashMap<String, String> titlesReports = new Shell(parentFrame).getTitlesReports();
+            Picket picket;
+            LinkedList<String> listReport = new LinkedList<>();
+            LinkedList<String> listTopReport = new Shell(parentFrame).getTopReportSurvey();
             String str;
-            while ((str = llTopReport.pollFirst()) != null) {
-                llReport.add(str);
+            while ((str = listTopReport.pollFirst()) != null) {
+                listReport.add(str);
             }
-        for (SurveyStation llStation : llStations) {
-            llReport.add("                                   " + titlesReports.get("SPstation") +
-                    llStation.getName() +
+        for (SurveyStation surveyStation : surveyStations) {
+            listReport.add("                                   " + titlesReports.get("SPstation") +
+                    surveyStation.getName() +
                     "       " + titlesReports.get("SPorientir") +
-                    llStation.getNameOr() +
+                    surveyStation.getNameOr() +
                     "      " + titlesReports.get("SPtoolHeight") +
-                    llStation.getVi());
-            llReport.add("-----------------------------------------------------------------------------------------------------------------------------------------------");
-            llReport.add("| " +
-                    new DataHandler(llStation.getName()).toTable(10).getStr() +
+                    surveyStation.getVi());
+            listReport.add("-----------------------------------------------------------------------------------------------------------------------------------------------");
+            listReport.add("| " +
+                    new DataHandler(surveyStation.getName()).toTable(10).getStr() +
                     " |          |          |         |          |          |          |          |           | " +
-                    new DataHandler(llStation.getX()).toTable(11).getStr() + " | " +
-                    new DataHandler(llStation.getY()).toTable(11).getStr() + " | " +
-                    new DataHandler(llStation.getZ()).toTable(10).getStr() + " |");
-            llReport.add("| " +
-                    new DataHandler(llStation.getNameOr()).toTable(10).getStr() +
+                    new DataHandler(surveyStation.getX()).toTable(11).getStr() + " | " +
+                    new DataHandler(surveyStation.getY()).toTable(11).getStr() + " | " +
+                    new DataHandler(surveyStation.getZ()).toTable(10).getStr() + " |");
+            listReport.add("| " +
+                    new DataHandler(surveyStation.getNameOr()).toTable(10).getStr() +
                     " |          |          |         |          |          |          |          |           | " +
-                    new DataHandler(llStation.getxOr()).toTable(11).getStr() + " | " +
-                    new DataHandler(llStation.getyOr()).toTable(11).getStr() + " |            |");
+                    new DataHandler(surveyStation.getxOr()).toTable(11).getStr() + " | " +
+                    new DataHandler(surveyStation.getyOr()).toTable(11).getStr() + " |            |");
 
-            for (int j = 0; j < llStation.sizePickets(); j++) {
-                p = llStation.getPicket(j);
-                llReport.add("| " +
-                        new DataHandler(p.getpName()).toTable(10).getStr() + " | " +
-                        new DataHandler(p.getLine()).toTable(8).getStr() + " | " +
-                        new DataHandler(p.getHor()).toTable(8).getStr() + " | " +
-                        new DataHandler(p.getVert()).toTable(7).getStr() + " | " +
-                        new DataHandler(p.getV()).toTable(8).getStr() + " | " +
-                        new DataHandler(p.getPDirection()).toTable(8).getStr() + " | " +
-                        new DataHandler(p.getDX()).toTable(8).getStr() + " | " +
-                        new DataHandler(p.getDY()).toTable(8).getStr() + " | " +
-                        new DataHandler(p.getDZ()).toTable(9).getStr() + " | " +
-                        new DataHandler(p.getX()).toTable(11).getStr() + " | " +
-                        new DataHandler(p.getY()).toTable(11).getStr() + " | " +
-                        new DataHandler(p.getZ()).toTable(10).getStr() + " |");
+            for (int j = 0; j < surveyStation.sizePickets(); j++) {
+                picket = surveyStation.getPicket(j);
+                listReport.add("| " +
+                        new DataHandler(picket.getpName()).toTable(10).getStr() + " | " +
+                        new DataHandler(picket.getLine()).toTable(8).getStr() + " | " +
+                        new DataHandler(picket.getHor()).toTable(8).getStr() + " | " +
+                        new DataHandler(picket.getVert()).toTable(7).getStr() + " | " +
+                        new DataHandler(picket.getV()).toTable(8).getStr() + " | " +
+                        new DataHandler(picket.getPDirection()).toTable(8).getStr() + " | " +
+                        new DataHandler(picket.getDX()).toTable(8).getStr() + " | " +
+                        new DataHandler(picket.getDY()).toTable(8).getStr() + " | " +
+                        new DataHandler(picket.getDZ()).toTable(9).getStr() + " | " +
+                        new DataHandler(picket.getX()).toTable(11).getStr() + " | " +
+                        new DataHandler(picket.getY()).toTable(11).getStr() + " | " +
+                        new DataHandler(picket.getZ()).toTable(10).getStr() + " |");
 
             }
 
-            llReport.add("-----------------------------------------------------------------------------------------------------------------------------------------------");
+            listReport.add("-----------------------------------------------------------------------------------------------------------------------------------------------");
         }
 
-            return llReport;
+            return listReport;
         }
 
     /**
@@ -340,84 +343,85 @@ public class SurveyProject {
      * @param sI Tool height
      * @return Station
      */
-     public SurveyStation addStation(String sName, String sXst, String sYst, String sZst, String sNameOr, String sXor, String sYor, String sZor, String sI) throws NullPointerException{
-        st = new SurveyStation(sName, sXst, sYst, sZst, sNameOr, sXor, sYor, sZor, sI);
-        llStations.add(st);
-        st = llStations.getLast();
-        return st;
+     public SurveyStation addStation(String sName,
+                                     String sXst,
+                                     String sYst,
+                                     String sZst,
+                                     String sNameOr,
+                                     String sXor,
+                                     String sYor,
+                                     String sZor,
+                                     String sI) throws NullPointerException{
+        surveyStations.add(new SurveyStation(sName,
+                sXst,
+                sYst,
+                sZst,
+                sNameOr,
+                sXor,
+                sYor,
+                sZor,
+                sI));
+        return surveyStations.getLast();
     }
 
     /**
-     * Appends new element Station to the end of list ll without parameters
+     * Appends new instance of SurveyStation to the end of this.surveyStations
      * @return Station
      */
     public SurveyStation addStation() {
-         return addStation("noname", "0.000", "0.000",
-                 "0.000","noname", "0.000",
-                 "0.000", "0.000", "0.000");
+        surveyStations.add(new SurveyStation());
+         return surveyStations.getLast();
     }
 
+    /**
+     * Addes new instance SurveyStation to this.surveyStations to index position
+     * @param index int index
+     * @return SurveyStation
+     */
     public SurveyStation addStation(int index) {
-
-        st = new SurveyStation("noname", "0.000", "0.000",
-                "0.000","noname", "0.000",
-                "0.000", "0.000", "0.000");
-        llStations.add(index, st);
-        st = llStations.get(index);
-        st.addPicket(st);
-        return st;
+        SurveyStation surveyStation;
+        surveyStations.add(index, new SurveyStation());
+        surveyStation = surveyStations.get(index);
+        surveyStation.addPicket(surveyStation);
+        return surveyStation;
     }
 
-    public SurveyStation addStation(SurveyStation tahStation) {
-        llStations.add(tahStation);
-        return llStations.getLast();
+    /**
+     * Addes new instance SurveyStation to this.surveyStations to end position
+     * @param surveyStation instance of SurveyStation
+     */
+    public void addStation(SurveyStation surveyStation) {
+        surveyStations.add(surveyStation);
     }
 
     /**
      * Rerurns the element (Station) at the specfied position of list ll
-     * @param i element index
+     * @param index element index
      * @return element (Station)
      */
-    public SurveyStation getStation(int i){
-            st = llStations.get(i);
-            return st;
+    public SurveyStation getStation(int index){
+            return surveyStations.get(index);
     }
 
     /**
      * Removes the element (Station) at the specified position of list ll
-     * @param i element index
+     * @param index element index
      */
-    public void removeStation(int i){
-        llStations.remove(i);
+    public void removeStation(int index){
+        surveyStations.remove(index);
     }
 
     /**
-     * Return the size of list  of Stations ll
-     * @return int size list of Stations ll
+     * Return the size of list  of Stations
+     * @return int size list of Stations
      */
     public int sizeStations(){
-        return llStations.size();
-    }
-
-    /**
-     * get the String path
-     * @return path
-     */
-    public String getPath() {
-        return path;
-    }
-
-    /**
-     * Set the String path
-     * @param path
-     */
-    public void setPath(String path) {
-        this.path = path;
+        return surveyStations.size();
     }
 
     /**
      * Set absolute path to current file tah
-     * @param absoluteTahPath
+     * @param absoluteTahPath String
      */
     public void setAbsoluteTahPath(String absoluteTahPath) {
         this.absoluteTahPath = absoluteTahPath;
@@ -425,12 +429,9 @@ public class SurveyProject {
 
     /**
      * Get absolute path to current file tah
-     * @return
+     * @return String
      */
     public String getAbsoluteTahPath() {
-        if (absoluteTahPath == null) {
-            absoluteTahPath = "";
-        }
         return absoluteTahPath;
     }
 
@@ -447,7 +448,7 @@ public class SurveyProject {
         double dY;
         double dZ;
         Picket picket;
-        for (SurveyStation llStation : llStations) {
+        for (SurveyStation llStation : surveyStations) {
             dirBase = geoCalc.getDirAB(
                     llStation.getX(),
                     llStation.getY(),
@@ -457,8 +458,9 @@ public class SurveyProject {
                 picket = llStation.getPicket(j);
 
 
-                if (frameParent.getOptions().getOrientStation() == 1) {
-                    dirPicket = dirBase + new DataHandler(picket.getHor()).dmsToRad() - new DataHandler(llStation.getPicket(0).getHor()).dmsToRad();
+                if (parentFrame.getOptions().getOrientStation() == 1) {
+                    dirPicket = dirBase + new DataHandler(picket.getHor()).dmsToRad() -
+                            new DataHandler(llStation.getPicket(0).getHor()).dmsToRad();
                     while (dirPicket < 0) {
                         dirPicket += 2 * Math.PI;
                     }
@@ -492,15 +494,13 @@ public class SurveyProject {
      * checks the possibility to get TheoProject from this SurveyProfect
      * @return boolean
      */
-    public boolean haveTheo() {
-        for (SurveyStation llStation : llStations) {
+    public boolean havePolygon() {
+        for (SurveyStation llStation : surveyStations) {
             if (llStation.sizePickets() < 2) {
                 return false;
             }
         }
         return true;
     }
-
-// The END of Class
 }
 

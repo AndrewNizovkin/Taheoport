@@ -17,7 +17,23 @@ public class SurveyStation {
     private String yOr;
     private String zOr;
     private String vi;
-    private LinkedList <Picket> sll;
+    private final LinkedList <Picket> pickets;
+
+    /**
+     * Constructor without parameters
+     */
+    public SurveyStation() {
+        pickets = new LinkedList<>();
+        this.name = "noname";
+        this.x = "0.000";
+        this.y = "0.000";
+        this.z = "0.000";
+        this.nameOr = "noname";
+        this.xOr = "0.000";
+        this.yOr = "0.000";
+        this.zOr = "0.000";
+        this.vi = "0.000";
+    }
 
     /**
      * Constructor
@@ -87,7 +103,7 @@ public class SurveyStation {
         } else {
             this.vi = "0.000";
         }
-        sll = new LinkedList <Picket>();
+        pickets = new LinkedList <>();
     }
 
     //---Добавляет строку параметров с разделителем
@@ -144,9 +160,9 @@ public class SurveyStation {
                             String pV,
                             String pAltName, SurveyStation st) throws NullPointerException{
 //        p = new Picket(pName, pLine, pHor, pVert, pV, pAltName);
-        sll.add(new Picket(pName, pLine, pHor, pVert, pV, pAltName, st));
+        pickets.add(new Picket(pName, pLine, pHor, pVert, pV, pAltName, st));
 //        p = sll.getLast();
-        return sll.getLast();
+        return pickets.getLast();
     }
 
     public Picket addPicket(SurveyStation st) {
@@ -155,10 +171,10 @@ public class SurveyStation {
     }
 
     public Picket addPicket(int index) {
-        sll.add(index, new Picket("noname", "0.000", "0.000",
+        pickets.add(index, new Picket("noname", "0.000", "0.000",
                 "0.000", "0.000", "noname", this));
 
-        return sll.get(index);
+        return pickets.get(index);
     }
 
 
@@ -166,19 +182,19 @@ public class SurveyStation {
     //---Возвращает ссылку (Picket) на элемент списка sll с индексом i
     public Picket getPicket(int k){
 //        p = sll.get(k);
-        return sll.get(k);
+        return pickets.get(k);
     }
 
     //---Удаляет Picket с индексом i из списка sll и возвращает ссылку на него
     public Picket removePicket(int i){
 //        p = (Picket) sll.remove(i);
-        return sll.remove(i);
+        return pickets.remove(i);
     }
 
     //--Возвращает размер списка пикетов на текущей станции
     public int sizePickets(){
 //        int k = sll.size();
-        return sll.size();
+        return pickets.size();
     }
 
     //---Setters

@@ -595,7 +595,7 @@ public class MainWin extends JFrame{
      */
     private void extractPol() {
         if (surveyProject != null) {
-            if (surveyProject.haveTheo()) {
+            if (surveyProject.havePolygon()) {
                 surveyProject.processSourceData();
                 extractProject = new ExtractProject(this);
                 polygonProject = new PolygonProject(this).loadPolList(extractProject.extractPolygonProject());
