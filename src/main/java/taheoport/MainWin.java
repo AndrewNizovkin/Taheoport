@@ -332,7 +332,7 @@ public class MainWin extends JFrame{
 
         surveyProject = new SurveyProject(this);
         SurveyStation st = surveyProject.addStation();
-        st.addPicket(st);
+        st.addPicket();
         reloadSurveyEditor();
         setControlsOn();
         surveyEditor.setFocusStations();
@@ -547,7 +547,7 @@ public class MainWin extends JFrame{
             case 0 -> {
                 surveyProject = new SurveyProject(this);
                 SurveyStation st = surveyProject.addStation();
-                st.addPicket(st);
+                st.addPicket();
                 reloadSurveyEditor();
                 setControlsOn();
                 surveyEditor.setFocusStations();
@@ -595,7 +595,7 @@ public class MainWin extends JFrame{
      */
     private void extractPol() {
         if (surveyProject != null) {
-            if (surveyProject.havePolygon()) {
+            if (surveyProject.containPolygon()) {
                 surveyProject.processSourceData();
                 extractProject = new ExtractProject(this);
                 polygonProject = new PolygonProject(this).loadPolList(extractProject.extractPolygonProject());

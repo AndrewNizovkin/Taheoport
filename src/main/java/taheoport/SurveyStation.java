@@ -106,10 +106,17 @@ public class SurveyStation {
         pickets = new LinkedList <>();
     }
 
-    //---Добавляет строку параметров с разделителем
+    @Override
     public String toString(){
-//        String txt = sName + "\t" + sXst + "\t" + sYst + "\t" + sZst + "\t" + sNameOr + "\t" + sXor + "\t" + sYor + "\t" + sZor + "\t" + sI;
-        return  name + "\t" + x + "\t" + y + "\t" + z + "\t" + nameOr + "\t" + xOr + "\t" + yOr + "\t" + zOr + "\t" + vi;
+        return  name + " " +
+                x + " " +
+                y + " " +
+                z + " " +
+                nameOr + " " +
+                xOr + " " +
+                yOr + " " +
+                zOr + " " +
+                vi;
     }
 
     /**
@@ -152,140 +159,228 @@ public class SurveyStation {
         return dir;
     }
 
-    //---Добавляет новый Picket в конец списка пикетов sll и возвращает ссылку на него
+    /**
+     * Append new instance Picket with arguments to end of this.pickets
+     * @param pName picket name
+     * @param pLine inclined distance from station to picket
+     * @param pHor horizontal direction to picket
+     * @param pVert tilt angle to target
+     * @param pV target height
+     * @param pAltName alternative picket name
+     * @return Picket
+     * @throws NullPointerException
+     */
     public Picket addPicket(String pName,
                             String pLine,
                             String pHor,
                             String pVert,
                             String pV,
-                            String pAltName, SurveyStation st) throws NullPointerException{
-//        p = new Picket(pName, pLine, pHor, pVert, pV, pAltName);
-        pickets.add(new Picket(pName, pLine, pHor, pVert, pV, pAltName, st));
-//        p = sll.getLast();
+                            String pAltName) throws NullPointerException{
+        pickets.add(new Picket(pName, pLine, pHor, pVert, pV, pAltName));
         return pickets.getLast();
     }
 
-    public Picket addPicket(SurveyStation st) {
+    /**
+     * Append new Empty instance Picket to the end of this.pickets
+     * @return Picket
+     */
+    public Picket addPicket() {
         return addPicket("noname", "0.000", "0.0000",
-                "0.0000", "0.000", "noname",st);
+                "0.0000", "0.000", "noname");
     }
 
-    public Picket addPicket(int index) {
+    /**
+     * Append new Empty instance of Picket to index position of this.pickets
+     * @param index int index
+     */
+    public void addPicket(int index) {
         pickets.add(index, new Picket("noname", "0.000", "0.000",
-                "0.000", "0.000", "noname", this));
+                "0.000", "0.000", "noname"));
+    }
 
+    /**
+     * Gets this.pickets.get(index)
+     * @param index index of picket
+     * @return Picket
+     */
+    public Picket getPicket(int index){
         return pickets.get(index);
     }
 
-
-
-    //---Возвращает ссылку (Picket) на элемент списка sll с индексом i
-    public Picket getPicket(int k){
-//        p = sll.get(k);
-        return pickets.get(k);
+    /**
+     * Removes index element of this.pickets
+     * @param index int pickets index
+     */
+    public void removePicket(int index){
+        pickets.remove(index);
     }
 
-    //---Удаляет Picket с индексом i из списка sll и возвращает ссылку на него
-    public Picket removePicket(int i){
-//        p = (Picket) sll.remove(i);
-        return pickets.remove(i);
-    }
-
-    //--Возвращает размер списка пикетов на текущей станции
+    /**
+     * Gets size list of pickets
+     * @return int
+     */
     public int sizePickets(){
-//        int k = sll.size();
         return pickets.size();
     }
 
-    //---Setters
+    /**
+     * Sets station name
+     * @param name String station name
+     */
     public void setName(String name) {
         if (new DataHandler(name).isValidName()) {
             this.name = name;
         }
     }
 
+    /**
+     * Sets station X coordinate
+     * @param x String x station
+     */
     public void setX(String x) {
         if (new DataHandler(x).isNumber()) {
             this.x = x;
         }
     }
 
+    /**
+     * Sets station Y coordinate
+     * @param y String y station
+     */
     public void setY(String y) {
         if (new DataHandler(y).isNumber()) {
             this.y = y;
         }
     }
 
+    /**
+     * Sets station Z coordinate
+     * @param z String z station
+     */
     public void setZ(String z) {
         if (new DataHandler(z).isNumber()) {
             this.z = z;
         }
     }
 
+    /**
+     * Sets orientir name
+     * @param nameOr String orientir name
+     */
     public void setNameOr(String nameOr) {
         if (new DataHandler(nameOr).isValidName()) {
             this.nameOr = nameOr;
         }
     }
 
+    /**
+     * Sets orientir X coordinate
+     * @param xOr String x orientir
+     */
     public void setxOr(String xOr) {
         if (new DataHandler(xOr).isNumber()) {
             this.xOr = xOr;
         }
     }
 
+    /**
+     * Sets orientir Y coordinate
+     * @param yOr String y orientir
+     */
     public void setyOr(String yOr) {
         if (new DataHandler(yOr).isNumber()) {
             this.yOr = yOr;
         }
     }
 
+    /**
+     * Sets orientir z coordinate
+     * @param zOr String z orientir
+     */
     public void setzOr(String zOr) {
         if (new DataHandler(zOr).isNumber()) {
             this.zOr = zOr;
         }
     }
 
+    /**
+     * Sets target height
+     * @param vi String target height
+     */
     public void setVi(String vi) {
         if (new DataHandler(vi).isNumber()) {
             this.vi = vi;
         }
     }
 
-    // Getters
-
+    /**
+     * Gets this.name
+     * @return String
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets station X coordinate this.x
+     * @return String
+     */
     public String getX() {
         return x;
     }
 
+    /**
+     * Gets station Y coordinate this.y
+     * @return String
+     */
     public String getY() {
         return y;
     }
 
+    /**
+     * Gets station Z coordinate this.z
+     * @return String
+     */
     public String getZ() {
         return z;
     }
 
+    /**
+     * Gets orientir name this.nameOr
+     * @return String
+     */
     public String getNameOr() {
         return nameOr;
     }
 
+    /**
+     * Gets orientir X coordinate this.xOr
+     * @return String
+     */
     public String getxOr() {
         return xOr;
     }
 
+    /**
+     * Gets orientir Y coordinate this.yOr
+     * @return String
+     */
     public String getyOr() {
         return yOr;
     }
 
+    /**
+     * Gets orientir Z coordinate this.z
+     * @return String
+     */
     public String getzOr() {
         return zOr;
     }
 
+    /**
+     * Gets target height this.vi
+     * @return String
+     */
     public String getVi() {
         return vi;
     }

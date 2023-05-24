@@ -48,7 +48,7 @@ public class SurveyProject {
                         row.indexOf("_", row.indexOf(")", 0)))).format(3).getStr());
                 measurements = row.substring(m.end()).split("_\\+");
                 for (String record : measurements) {
-                    picket = surveyStation.addPicket(surveyStation);
+                    picket = surveyStation.addPicket();
                     Matcher mm = Pattern.compile("[_*\\?*\\+m*d*,*]").matcher(record);
                     record = new DataHandler(mm.replaceAll(" ")).compress(" ").getStr();
                     measurement = record.split(" ");
@@ -65,14 +65,14 @@ public class SurveyProject {
 
     /**
      * Import from *.row file Nicon
-     * @param l list
+     * @param list list
      */
-    public SurveyProject loadNiconList(LinkedList<String> l) {
+    public SurveyProject loadNiconList(LinkedList<String> list) {
         SurveyStation surveyStation = new SurveyStation();
-        l.removeFirst();
+        list.removeFirst();
         try {
-            while (l.size() > 0){
-                String [] array = l.removeFirst().split(",");
+            while (list.size() > 0){
+                String [] array = list.removeFirst().split(",");
                 switch (array[0]) {
                     case "ST" -> surveyStation = addStation(array[1],
                             "0.000", "0.000", "0.000",
@@ -84,16 +84,15 @@ public class SurveyProject {
                             new DataHandler(array[4]).format(4).getStr(),
                             new DataHandler(array[5]).format(4).getStr(),
                             new DataHandler(array[2]).format(3).getStr(),
-                            array[1], surveyStation);
+                            array[1]);
                 }
             }
-            l = null;
-
         } catch (NoSuchElementException e) {
             System.out.println("element not found");
         }
         return this;
     }
+
     /**
      * Import from *.gsi file Leica
      */
@@ -101,62 +100,62 @@ public class SurveyProject {
         SurveyStation surveyStation = new SurveyStation();
         String sep =" ";
         String code = "Not";
-        String iCur = "Not";
-        DataHandler[] lh;
-        int res = 0;
+        String currentToolHeight = "Not";
+        DataHandler[] lineHandlers;
+//        int res = 0;
         String [] array;
         list.removeFirst();
         try {
             while (list.size() > 0) {
                 array = (list.removeFirst()).split(sep);
-                lh = new DataHandler[array.length];
+                lineHandlers = new DataHandler[array.length];
                 switch (array[0].substring(0, 2)) {
                     case "41" ->
                             code = array[0].substring(7);
                     case "11" -> {
-                        for (String s : array) {
-                            switch (s.substring(0, 2)) {
+                        for (String str : array) {
+                            switch (str.substring(0, 2)) {
                                 case "11":
-                                    lh[6] = new DataHandler(s.substring(7)).removeFirstZero();
+                                    lineHandlers[6] = new DataHandler(str.substring(7)).removeFirstZero();
                                 case "31":
-                                    lh[1] = new DataHandler(s.substring(7)).setPointPosition(5).format(3);
+                                    lineHandlers[1] = new DataHandler(str.substring(7)).setPointPosition(5).format(3);
                                     break;
                                 case "21":
-                                    lh[2] = new DataHandler(s.substring(7)).setPointPosition(3).format(4);
+                                    lineHandlers[2] = new DataHandler(str.substring(7)).setPointPosition(3).format(4);
                                     break;
                                 case "22":
-                                    lh[3] = new DataHandler(s.substring(7)).setPointPosition(3).ZenithToVert().format(4);
+                                    lineHandlers[3] = new DataHandler(str.substring(7)).setPointPosition(3).ZenithToVert().format(4);
                                     break;
                                 case "87":
-                                    lh[4] = new DataHandler(s.substring(7)).setPointPosition(5).format(3);
+                                    lineHandlers[4] = new DataHandler(str.substring(7)).setPointPosition(5).format(3);
                                     break;
                                 case "88":
-                                    lh[5] = new DataHandler(s.substring(7)).setPointPosition(5).format(3);
+                                    lineHandlers[5] = new DataHandler(str.substring(7)).setPointPosition(5).format(3);
                                     break;
                             }
                         }
                         if (!code.equals("Not")) {
-                            lh[0] = new DataHandler(code).removeFirstZero();
+                            lineHandlers[0] = new DataHandler(code).removeFirstZero();
                         } else {
-                            lh[0] = lh[6];
+                            lineHandlers[0] = lineHandlers[6];
                         }
-                        if (lh[5].getStr().equals(iCur)) {
-                            surveyStation.addPicket(lh[0].getStr(),
-                                    lh[1].getStr(),
-                                    lh[2].getStr(),
-                                    lh[3].getStr(),
-                                    lh[4].getStr(),
-                                    lh[6].getStr(), surveyStation);
+                        if (lineHandlers[5].getStr().equals(currentToolHeight)) {
+                            surveyStation.addPicket(lineHandlers[0].getStr(),
+                                    lineHandlers[1].getStr(),
+                                    lineHandlers[2].getStr(),
+                                    lineHandlers[3].getStr(),
+                                    lineHandlers[4].getStr(),
+                                    lineHandlers[6].getStr());
                         } else {
                             surveyStation = addStation();
-                            surveyStation.setVi(lh[5].getStr());
-                            iCur = lh[5].getStr();
-                            surveyStation.addPicket(lh[0].getStr(),
-                                    lh[1].getStr(),
-                                    lh[2].getStr(),
-                                    lh[3].getStr(),
-                                    lh[4].getStr(),
-                                    lh[6].getStr(), surveyStation);
+                            surveyStation.setVi(lineHandlers[5].getStr());
+                            currentToolHeight = lineHandlers[5].getStr();
+                            surveyStation.addPicket(lineHandlers[0].getStr(),
+                                    lineHandlers[1].getStr(),
+                                    lineHandlers[2].getStr(),
+                                    lineHandlers[3].getStr(),
+                                    lineHandlers[4].getStr(),
+                                    lineHandlers[6].getStr());
                         }
                     }
                 }
@@ -171,31 +170,31 @@ public class SurveyProject {
     /**
      * Import from *.tah file
      */
-        public SurveyProject loadTahList(LinkedList<String> l){
+        public SurveyProject loadTahList(LinkedList<String> list){
             SurveyStation surveyStation;
             String sep =" ";
             String str;
             String [] array;
-            if (l == null) {
+            if (list == null) {
                 return null;
             }
-            absoluteTahPath = l.removeFirst();
+            absoluteTahPath = list.removeFirst();
             try {
-                str = l.removeFirst();
-                while (!str.contains("//") && l.size() > 1) {
+                str = list.removeFirst();
+                while (!str.contains("//") && list.size() > 1) {
                     str = new DataHandler(str).compress(sep).getStr();
                     array = str.split(sep);
                     addStation(array[0], array[1], array[2], array[3], array[5], array[6], array[7], "0.000", array[4]);
-                    str = (String) l.removeFirst();
+                    str = (String) list.removeFirst();
                 }
                 int index = 0;
                 surveyStation = getStation(index);
-                while (l.size() > 0) {
-                    str = (String) l.removeFirst();
+                while (list.size() > 0) {
+                    str = (String) list.removeFirst();
                       if (!str.contains("//")) {
                       str = new DataHandler(str).compress(sep).getStr();
                         array = str.split(sep);
-                        surveyStation.addPicket(array[0], array[1], array[2], array[3], array[4], String.valueOf(surveyStation.sizePickets()), surveyStation);
+                        surveyStation.addPicket(array[0], array[1], array[2], array[3], array[4], String.valueOf(surveyStation.sizePickets()));
                     } else {
                         index = index + 1;
                         if (index < sizeStations()) {
@@ -365,7 +364,7 @@ public class SurveyProject {
     }
 
     /**
-     * Appends new instance of SurveyStation to the end of this.surveyStations
+     * Appends new Empty instance of SurveyStation to the end of this.surveyStations
      * @return Station
      */
     public SurveyStation addStation() {
@@ -382,7 +381,7 @@ public class SurveyProject {
         SurveyStation surveyStation;
         surveyStations.add(index, new SurveyStation());
         surveyStation = surveyStations.get(index);
-        surveyStation.addPicket(surveyStation);
+        surveyStation.addPicket();
         return surveyStation;
     }
 
@@ -395,7 +394,7 @@ public class SurveyProject {
     }
 
     /**
-     * Rerurns the element (Station) at the specfied position of list ll
+     * Rerurns the element (Station) at the specfied position of this.surveyStations
      * @param index element index
      * @return element (Station)
      */
@@ -404,7 +403,7 @@ public class SurveyProject {
     }
 
     /**
-     * Removes the element (Station) at the specified position of list ll
+     * Removes the element (Station) at the specified position this.surveyStations
      * @param index element index
      */
     public void removeStation(int index){
@@ -494,7 +493,7 @@ public class SurveyProject {
      * checks the possibility to get TheoProject from this SurveyProfect
      * @return boolean
      */
-    public boolean havePolygon() {
+    public boolean containPolygon() {
         for (SurveyStation llStation : surveyStations) {
             if (llStation.sizePickets() < 2) {
                 return false;

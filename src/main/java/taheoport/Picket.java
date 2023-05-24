@@ -29,15 +29,13 @@ public class Picket{
      * @param pVert tilt angle
      * @param pV target height
      * @param pAltName alternative name
-     * @param station parent station
      */
     public Picket(String pName,
                   String pLine,
                   String pHor,
                   String pVert,
                   String pV,
-                  String pAltName,
-                  SurveyStation station) {
+                  String pAltName) {
         if (new DataHandler(pName).isValidName()) {
             this.pName = pName;
         } else {
