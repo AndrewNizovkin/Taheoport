@@ -340,19 +340,6 @@ public class MainWin extends JFrame{
     }
 
     /**
-     * Main
-     * @param args String[] args
-     */
-    public static void main(String [] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new MainWin();
-            }
-        });
-    }
-
-    /**
      * gets options
      * @return Options
      */
@@ -363,11 +350,6 @@ public class MainWin extends JFrame{
     /**
      * sets options
      */
-/*
-    public   void setOptions() {
-        pathWorkDir = options.getPathWorkDir();
-    }
-*/
 
     /**
      * gets width of MainWin

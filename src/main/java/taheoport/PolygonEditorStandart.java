@@ -290,12 +290,8 @@ public class PolygonEditorStandart extends JPanel {
         ListSelectionModel columnSelectionModel = tblStations.getColumnModel().getSelectionModel();
         columnSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tblStations.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tblStations.getSelectionModel().addListSelectionListener(e -> {
-            selRow = tblStations.getSelectedRow();
-        });
-        tblStations.getColumnModel().getSelectionModel().addListSelectionListener(e -> {
-            selColumn = tblStations.getSelectedColumn();
-        });
+        tblStations.getSelectionModel().addListSelectionListener(e -> selRow = tblStations.getSelectedRow());
+        tblStations.getColumnModel().getSelectionModel().addListSelectionListener(e -> selColumn = tblStations.getSelectedColumn());
 
         JScrollPane scpTheoStations = new JScrollPane(tblStations);
         add(scpTheoStations, BorderLayout.CENTER);
@@ -409,17 +405,13 @@ public class PolygonEditorStandart extends JPanel {
     }
 
     /**
-     * This model of tblTheoStations
+     * This model of tblPolygonStations
      */
     private class TmodelPolygonStations extends AbstractTableModel {
-        private final int columnCount = 8;
         private final ArrayList <Object []> dataArrayList;
 
         public TmodelPolygonStations() {
-            dataArrayList = new ArrayList<Object[]>();
-            for (int i = 0; i < dataArrayList.size(); i++) {
-                dataArrayList.add(new String[getColumnCount()]);
-            }
+            dataArrayList = new ArrayList<>();
         }
         /**
          * Returns the number of rows in the model. A
@@ -445,7 +437,7 @@ public class PolygonEditorStandart extends JPanel {
          */
         @Override
         public int getColumnCount() {
-            return columnCount;
+            return 8;
         }
 
         /**
@@ -490,10 +482,6 @@ public class PolygonEditorStandart extends JPanel {
             Object [] row = dataArrayList.get(rowIndex);
             DataHandler dataHandler = new DataHandler();
             if (columnIndex != 7) dataHandler = new DataHandler((String) object).commaToPoint();
-/*
-            row [columnIndex] = object;
-            dataArrayList.set(rowIndex, row);
-*/
             switch (columnIndex) {
                 case 0 -> {
                     if (dataHandler.getStr().equals("")) {
@@ -651,7 +639,7 @@ public class PolygonEditorStandart extends JPanel {
 
         /**
          * add row to dataArrayList
-         * @param row
+         * @param row array of Objects
          */
         public void addRow(Object [] row) {
             dataArrayList.add(row);
@@ -664,7 +652,7 @@ public class PolygonEditorStandart extends JPanel {
 
         /**
          * remove row from dataArrayList
-         * @param index
+         * @param index index removes row
          */
         public void removeRow(int index) {
             dataArrayList.remove(index);

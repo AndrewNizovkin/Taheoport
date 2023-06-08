@@ -6,13 +6,26 @@ package taheoport;
  * Copyright Nizovkin A.V. 2022
  */
 public class ExtractStation {
-    private String name = "Not";
-    private String horBack = "0.0000";
-    private String horForward = "0.0000";
-    private String lineBack = "0.000";
-    private String lineForward = "0.000";
-    private String dZBack = "0.000";
-    private String dZForward = "0.000";
+    private String name;
+    private String horBack;
+    private String horForward;
+    private String lineBack;
+    private String lineForward;
+    private String dZBack;
+    private String dZForward;
+
+    /**
+     * Constructor
+     */
+    public ExtractStation() {
+        name = "Not";
+        horBack = "0.0000";
+        horForward = "0.0000";
+        lineBack = "0.000";
+        lineForward = "0.000";
+        dZBack = "0.000";
+        dZForward = "0.000";
+    }
 
 // Setters_____________________________________
 

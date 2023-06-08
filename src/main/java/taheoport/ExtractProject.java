@@ -12,7 +12,7 @@
 
         /**
          * Constructor
-         * @param frame
+         * @param frame parent MainWin
          */
         public ExtractProject(MainWin frame) {
             parentFrame = frame;
