@@ -18,14 +18,14 @@ import java.util.Vector;
  */
 public class MainWin extends JFrame{
 //    private static TahEditorFocusTransversalPolicy focusPolicy;
-    private JTabbedPane tpMain;
+    private final JTabbedPane tpMain;
     private final JPanel pnlMeasurements;
     private final JPanel pnlPolygon;
     private Catalog catalog;
     private SurveyProject surveyProject;
     private PolygonProject polygonProject;
     private ExtractProject extractProject;
-    private String pathWorkDir;
+    private final String pathWorkDir;
     private final Options options;
     private HashMap<String, String> titles;
     private boolean isCatalog;

@@ -48,7 +48,7 @@ public class MyChooser {
             } else {
                 output = new BufferedWriter(new FileWriter(f.getAbsolutePath()));
             }
-            while (list.size() > 0) {
+            while (!list.isEmpty()) {
                 output.write(list.removeFirst());
                 output.newLine();
             }

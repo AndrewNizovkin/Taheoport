@@ -17,7 +17,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>taheoport.MainWin</mainClass>
+                            <mainClass>taheoport.Program</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
