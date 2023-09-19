@@ -40,19 +40,16 @@ public class MyChooser {
         if (f.isFile()) {
             f.delete();
         }
-        absolutePath = f.getAbsolutePath();
-        try {
-            BufferedWriter output;
-            if (!f.getAbsolutePath().endsWith(filter)) {
-                output = new BufferedWriter(new FileWriter(f.getAbsolutePath() + "." + filter));
-            } else {
-                output = new BufferedWriter(new FileWriter(f.getAbsolutePath()));
-            }
+        if (!f.getAbsolutePath().endsWith(filter)) {
+            absolutePath = f.getAbsolutePath() + "." + filter;
+        } else {
+            absolutePath = f.getAbsolutePath();
+        }
+        try (BufferedWriter output = new BufferedWriter(new FileWriter(absolutePath))){
             while (list.size() > 0) {
                 output.write(list.removeFirst());
                 output.newLine();
             }
-            output.close();
         } catch (FileNotFoundException e) {
             System.out.println("file not found");
         } catch (IOException e) {
@@ -71,14 +68,11 @@ public class MyChooser {
         if (!(list == null)) {
             File f = new File(absolutePath);
 
-            try {
-                BufferedWriter output = new BufferedWriter(new FileWriter(f.getAbsolutePath()));
+            try (BufferedWriter output = new BufferedWriter(new FileWriter(f.getAbsolutePath()))){
                 while (list.size() > 0) {
                     output.write(list.removeFirst());
                     output.newLine();
                 }
-                output.close();
-//            fch = null;
             } catch (FileNotFoundException e) {
                 System.out.println("file not found");
             } catch (IOException e) {
@@ -86,10 +80,7 @@ public class MyChooser {
             }
         }
         return absolutePath;
-
     }
-
-
 
     /**
      * Returns a list of lines of the specified text file
@@ -124,13 +115,10 @@ public class MyChooser {
                 file = new File(array[0]);
             }
 
-            try {
-                BufferedReader input = new BufferedReader(new FileReader(file.getAbsoluteFile()));
+            try (BufferedReader input = new BufferedReader(new FileReader(file.getAbsoluteFile()))) {
                 while ((str = input.readLine()) != null) {
                     list.addLast(str);
                 }
-                input.close();
-//            fch = null;
             } catch (FileNotFoundException e) {
                 System.out.println("file not found");
             } catch (IOException e) {
