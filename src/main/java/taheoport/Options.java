@@ -39,7 +39,7 @@ public class Options {
         this.parentFrame = frame;
         File f = new File("taheoport.ini");
         if (!f.isFile()) {
-            this.pathWorkDir = new File("").getAbsolutePath();
+            this.pathWorkDir = System.getProperty("user.dir");
             saveOptions();
         }
 
@@ -49,7 +49,7 @@ public class Options {
         s = list.pollFirst();
 
         if (s  == null ) {
-            this.pathWorkDir = new File("").getAbsolutePath();
+            this.pathWorkDir = System.getProperty("user.dir");
             saveOptions();
             list = new MyChooser(parentFrame).readTextFile("taheoport.ini");
             list.pollFirst();
@@ -59,7 +59,7 @@ public class Options {
 
         assert s != null;
         if (!s.equals("taheoport_ini")) {
-            this.pathWorkDir = new File("").getAbsolutePath();
+            this.pathWorkDir = System.getProperty("user.dir");
             saveOptions();
             list = new MyChooser(parentFrame).readTextFile("taheoport.ini");
             list.pollFirst();
