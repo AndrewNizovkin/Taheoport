@@ -295,31 +295,28 @@ public class MainWin extends JFrame{
         tpMain.add(pnlPolygon);
         tpMain.setTitleAt(0, titles.get("MWtpMain0"));
         tpMain.setTitleAt(1,titles.get("MWtpMain1"));
-        tpMain.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                if (tpMain.getSelectedIndex() == 0) {
-                    if (surveyProject != null) {
-                        setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
-                        setControlsOn();
-                    } else {
-                        setTitle("Taheoport");
-                        setControlsOff();
-                    }
-                    mImport.setEnabled(true);
-                    btnImport.setEnabled(true);
+        tpMain.addChangeListener(e -> {
+            if (tpMain.getSelectedIndex() == 0) {
+                if (surveyProject != null) {
+                    setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
+                    setControlsOn();
+                } else {
+                    setTitle("Taheoport");
+                    setControlsOff();
                 }
-                if (tpMain.getSelectedIndex() == 1) {
-                    if (polygonProject != null) {
-                        setTitle("Taheoport: " + polygonProject.getAbsolutePolPath());
-                        setControlsOn();
-                    } else {
-                        setTitle("Taheoport");
-                        setControlsOff();
-                    }
-                    mImport.setEnabled(false);
-                    btnImport.setEnabled(false);
+                mImport.setEnabled(true);
+                btnImport.setEnabled(true);
+            }
+            if (tpMain.getSelectedIndex() == 1) {
+                if (polygonProject != null) {
+                    setTitle("Taheoport: " + polygonProject.getAbsolutePolPath());
+                    setControlsOn();
+                } else {
+                    setTitle("Taheoport");
+                    setControlsOff();
                 }
+                mImport.setEnabled(false);
+                btnImport.setEnabled(false);
             }
         });
         add(tpMain);
@@ -349,10 +346,6 @@ public class MainWin extends JFrame{
     public Options getOptions() {
         return options;
     }
-
-    /**
-     * sets options
-     */
 
     /**
      * gets width of MainWin
