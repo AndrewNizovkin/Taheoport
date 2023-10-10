@@ -12,7 +12,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `taheoport.Manual`
+`java.lang.Object` -> `taheoport.model.Manual`
 
 ---
 

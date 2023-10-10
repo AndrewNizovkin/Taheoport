@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `java.util.LinkedList<ExtractStation>` -> `taheoport.ExtractProject`
+`java.lang.Object` -> `java.util.LinkedList<ExtractStation>` -> `taheoport.model.ExtractProject`
 
 ---
 

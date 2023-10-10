@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `taheoport.PolygonProject`
+`java.lang.Object` -> `taheoport.model.PolygonProject`
 
 ---
 

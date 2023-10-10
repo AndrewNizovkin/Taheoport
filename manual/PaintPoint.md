@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `taheoport.PaintPoint`
+`java.lang.Object` -> `taheoport.model.PaintPoint`
 
 ---
 

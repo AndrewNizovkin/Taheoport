@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `LinkedList<PaintPoint>` -> `taheoport.PaintProject`
+`java.lang.Object` -> `LinkedList<PaintPoint>` -> `taheoport.model.PaintProject`
 
 ---
 

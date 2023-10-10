@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `javax.swing.JPanel`-> `taheoport.PolygonEditorStandart`
+`java.lang.Object` -> `javax.swing.JPanel`-> `taheoport.gui.PolygonEditorStandart`
 
 ---
 

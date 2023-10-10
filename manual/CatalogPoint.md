@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `taheoport.CatalogPoint`
+`java.lang.Object` -> `taheoport.model.CatalogPoint`
 
 ---
 

@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `taheoport.Shell`
+`java.lang.Object` -> `taheoport.model.Shell`
 
 ---
 

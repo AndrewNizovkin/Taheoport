@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `javax.swing.JPanel` -> `taheoport.LinearOffsetPaintPanel`
+`java.lang.Object` -> `javax.swing.JPanel` -> `taheoport.gui.LinearOffsetPaintPanel`
 
 ---
 

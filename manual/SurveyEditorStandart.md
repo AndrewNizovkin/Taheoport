@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `javax.swing.JPanel` -> `taheoport.SurveyEditorStandart`
+`java.lang.Object` -> `javax.swing.JPanel` -> `taheoport.gui.SurveyEditorStandart`
 
 ---
 

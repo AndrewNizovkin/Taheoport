@@ -12,7 +12,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `taheoport.SurveyProject`
+`java.lang.Object` -> `taheoport.model.SurveyProject`
 
 ---
 

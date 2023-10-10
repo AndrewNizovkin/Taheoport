@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `taheoport.Picket`
+`java.lang.Object` -> `taheoport.model.Picket`
 
 ---
 

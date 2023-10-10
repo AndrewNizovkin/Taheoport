@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `taheoport.ExtractStation`
+`java.lang.Object` -> `taheoport.model.ExtractStation`
 
 ---
 

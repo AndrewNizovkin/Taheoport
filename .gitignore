@@ -1,4 +1,5 @@
 foto/
-examples/
+.gitignore
+*.ini
 .idea/
 ~*

@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `javax.swing.JFrame` -> `taheoport.MainWin`
+`java.lang.Object` -> `javax.swing.JFrame` -> `taheoport.gui.MainWin`
 
 ---
 

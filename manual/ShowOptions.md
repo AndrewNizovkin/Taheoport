@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `javax.swing.JDialog` -> `taheoport.ShowOptions`
+`java.lang.Object` -> `javax.swing.JDialog` -> `taheoport.gui.ShowOptions`
 
 ---
 

@@ -1,5 +1,7 @@
 package taheoport;
 
+import taheoport.gui.MainWin;
+
 import javax.swing.*;
 
 public class Program {
