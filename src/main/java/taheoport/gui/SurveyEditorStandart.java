@@ -1,5 +1,5 @@
 package taheoport.gui;
-import taheoport.services.DataHandler;
+import taheoport.controllers.DataHandler;
 import taheoport.model.SurveyProject;
 import taheoport.model.SurveyStation;
 

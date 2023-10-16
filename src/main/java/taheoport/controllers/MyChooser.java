@@ -1,4 +1,4 @@
-package taheoport.services;
+package taheoport.controllers;
 import taheoport.gui.MainWin;
 
 import javax.swing.*;
@@ -12,7 +12,7 @@ import java.util.LinkedList;
  * Copyright Nizovkin A.V. 2022
  */
 public class MyChooser {
-    MainWin parentFrame;
+    private final MainWin parentFrame;
 
     public MyChooser(MainWin frame) {
         parentFrame = frame;
@@ -86,24 +86,24 @@ public class MyChooser {
 
     /**
      * Returns a list of lines of the specified text file
-     * @param array may be:
-     *              String [3] array {path, filter, title}
-     *              String [1] array {absolutePath}
+     * @param args may be:
+     *              String [3] args {path, filter, title}
+     *              String [1] args {absolutePath}
      * @return LinkedList The first item in the list is the absolute path to the file
      */
 //    public LinkedList<String> readTextFile(String path, String filter, String title) {
-    public LinkedList<String> readTextFile(String ... array) {
-        LinkedList <String> list = new LinkedList<String>();
+    public LinkedList<String> readTextFile(String ... args) {
+        LinkedList <String> list = new LinkedList<>();
         File file = new File("noname.txt");
         int res = 0;
         String str;
-        if (array != null) {
-            if (array.length == 3) {
-                JFileChooser fileChooser = new JFileChooser(array[0]);
+        if (args != null) {
+            if (args.length == 3) {
+                JFileChooser fileChooser = new JFileChooser(args[0]);
 
-                FileNameExtensionFilter fileNameFilter = new FileNameExtensionFilter("*." + array[1], array[1]);
+                FileNameExtensionFilter fileNameFilter = new FileNameExtensionFilter("*." + args[1], args[1]);
                 fileChooser.setFileFilter(fileNameFilter);
-                fileChooser.setDialogTitle(array[2]);
+                fileChooser.setDialogTitle(args[2]);
                 res = fileChooser.showOpenDialog(parentFrame);
                 if (res != JFileChooser.APPROVE_OPTION) {
                     fileChooser.cancelSelection();
@@ -112,9 +112,9 @@ public class MyChooser {
                 file = fileChooser.getSelectedFile();
                 list.add(file.getAbsolutePath());
             }
-            if (array.length == 1) {
-                list.add(array[0]);
-                file = new File(array[0]);
+            if (args.length == 1) {
+                list.add(args[0]);
+                file = new File(args[0]);
             }
 
             try (BufferedReader input = new BufferedReader(new FileReader(file.getAbsoluteFile()))) {

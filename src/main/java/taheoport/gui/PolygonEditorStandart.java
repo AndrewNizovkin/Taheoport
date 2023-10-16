@@ -1,6 +1,6 @@
 package taheoport.gui;
 
-import taheoport.services.DataHandler;
+import taheoport.controllers.DataHandler;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

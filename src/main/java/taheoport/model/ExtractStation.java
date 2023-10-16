@@ -1,6 +1,6 @@
 package taheoport.model;
 
-import taheoport.services.DataHandler;
+import taheoport.controllers.DataHandler;
 
 /**
  * This class encapsulates params of station, extracted from measurements

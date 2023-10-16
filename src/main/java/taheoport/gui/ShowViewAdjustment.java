@@ -2,7 +2,7 @@ package taheoport.gui;
 
 import taheoport.model.Catalog;
 import taheoport.model.CatalogPoint;
-import taheoport.services.MyChooser;
+import taheoport.controllers.MyChooser;
 
 import javax.swing.*;
 import java.awt.*;

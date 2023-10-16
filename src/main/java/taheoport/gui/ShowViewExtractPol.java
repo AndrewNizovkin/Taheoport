@@ -1,6 +1,6 @@
     package taheoport.gui;
 
-    import taheoport.services.MyChooser;
+    import taheoport.controllers.MyChooser;
 
     import javax.swing.*;
     import java.awt.*;

@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `taheoport.services.MyChooser`
+`java.lang.Object` -> `taheoport.controllers.MyChooser`
 
 ---
 

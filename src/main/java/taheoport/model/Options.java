@@ -1,6 +1,6 @@
 package taheoport.model;
 
-import taheoport.services.MyChooser;
+import taheoport.controllers.MyChooser;
 import taheoport.gui.MainWin;
 
 import java.io.File;

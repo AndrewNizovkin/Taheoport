@@ -1,8 +1,8 @@
     package taheoport.model;
 
     import taheoport.gui.MainWin;
-    import taheoport.services.DataHandler;
-    import taheoport.services.GeoCalc;
+    import taheoport.controllers.DataHandler;
+    import taheoport.controllers.GeoCalc;
 
     import javax.swing.*;
     import java.util.HashMap;

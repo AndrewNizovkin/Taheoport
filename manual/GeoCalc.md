@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `taheoport.services.GeoCalc`
+`java.lang.Object` -> `taheoport.controllers.GeoCalc`
 
 ---
 
