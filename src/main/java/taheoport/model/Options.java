@@ -46,7 +46,7 @@ public class Options {
             saveOptions();
         }
 
-        LinkedList <String > list = new MyChooser(parentFrame).readTextFile("taheoport.ini");
+        LinkedList <String > list = parentFrame.getIoController().readTextFile("taheoport.ini");
         list.pollFirst();
         String s;
         s = list.pollFirst();
@@ -54,7 +54,7 @@ public class Options {
         if (s  == null ) {
             this.pathWorkDir = System.getProperty("user.dir");
             saveOptions();
-            list = new MyChooser(parentFrame).readTextFile("taheoport.ini");
+            list = parentFrame.getIoController().readTextFile("taheoport.ini");
             list.pollFirst();
             s = list.pollFirst();
         }
@@ -64,7 +64,7 @@ public class Options {
         if (!s.equals("taheoport_ini")) {
             this.pathWorkDir = System.getProperty("user.dir");
             saveOptions();
-            list = new MyChooser(parentFrame).readTextFile("taheoport.ini");
+            list = parentFrame.getIoController().readTextFile("taheoport.ini");
             list.pollFirst();
         }
 
@@ -262,7 +262,7 @@ public class Options {
         list.add("offsetDirectionType=" + offsetDirectionType);
         list.add("offsetTiltAngleType=" + offsetTiltType);
 
-        new MyChooser(parentFrame).writeTextFile("taheoport.ini", list);
+        parentFrame.getIoController().writeTextFile(list, "taheoport.ini");
     }
 
 }

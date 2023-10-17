@@ -1070,9 +1070,10 @@ public class SurveyEditorStandart extends JPanel  {
     /**
      * Class TmodelPickets encapsulates tableModel of tblPickets
      */
+
     private class TmodelPickets extends AbstractTableModel {
         private int columnCount = 5;
-        private ArrayList<String []> dataArrayList;
+        private final ArrayList<String []> dataArrayList;
         /**
          *
          */

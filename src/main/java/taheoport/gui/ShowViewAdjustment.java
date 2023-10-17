@@ -22,48 +22,47 @@ public class ShowViewAdjustment extends JDialog {
 
     /**
      * Constructor
-     * @param parentFrame MainWin parent parentFrame
+     * @param frame MainWin parent parentFrame
      */
-    public ShowViewAdjustment(MainWin parentFrame) {
-        super(parentFrame,parentFrame.getTitles().get("SVAdialogTitle"), true);
-        this.parentFrame = parentFrame;
+    public ShowViewAdjustment(MainWin frame) {
+        super(frame,frame.getTitles().get("SVAdialogTitle"), true);
+        this.parentFrame = frame;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 //        setDefaultLookAndFeelDecorated(false);
         setUndecorated(true);
         getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
-        int widthFrame = this.parentFrame.getWidthMain() * 3 / 2;
-        int heightFrame = this.parentFrame.getHeightMain();
-        setBounds(this.parentFrame.getX() + this.parentFrame.getWidth() / 2 - widthFrame / 2,
-                this.parentFrame.getY() + this.parentFrame.getHeight() / 2 - heightFrame / 2, widthFrame, heightFrame);
+        int widthFrame = parentFrame.getWidthMain() * 3 / 2;
+        int heightFrame = parentFrame.getHeightMain();
+        setBounds(parentFrame.getX() + parentFrame.getWidth() / 2 - widthFrame / 2,
+                parentFrame.getY() + parentFrame.getHeight() / 2 - heightFrame / 2, widthFrame, heightFrame);
         Toolkit kit = Toolkit.getDefaultToolkit();
         Image im = kit.getImage("images/teo.png");
         this.setIconImage(im);
 // btnClose______________________________________________________________
 
         JButton btnClose = new JButton(new ImageIcon("images/close_pane.png"));
-        btnClose.setToolTipText(this.parentFrame.getTitles().get("SVRbtnCloseTT"));
+        btnClose.setToolTipText(parentFrame.getTitles().get("SVRbtnCloseTT"));
         btnClose.addActionListener(e -> this.dispose());
 
 // btnSaveReport______________________________________________________________
 
         JButton btnSaveReport = new JButton(new ImageIcon("images/save.png"));
-        btnSaveReport.setToolTipText(this.parentFrame.getTitles().get("SVRbtnSaveReportTT"));
+        btnSaveReport.setToolTipText(parentFrame.getTitles().get("SVRbtnSaveReportTT"));
         btnSaveReport.addActionListener(e -> {
             switch (tp.getSelectedIndex()) {
-                case 0 -> new MyChooser(this.parentFrame).writeTextFile(this.parentFrame.getPathWorkDir(),
+                case 0 -> parentFrame.getIoController().writeTextFile(parentFrame.getPolygonProject().getReportNXYZ(),
+                        parentFrame.getPathWorkDir(),
                         "kat",
-                        this.parentFrame.getTitles().get("SVRsaveTitle0"),
-                        this.parentFrame.getPolygonProject().getReportNXYZ());
-                case 1 -> new MyChooser(this.parentFrame).writeTextFile(this.parentFrame.getPathWorkDir(),
+                        parentFrame.getTitles().get("SVRsaveTitle0"));
+                case 1 -> parentFrame.getIoController().writeTextFile(parentFrame.getPolygonProject().getReportXY(),
+                        parentFrame.getPathWorkDir(),
                         "txt",
-                        this.parentFrame.getTitles().get("SVRsaveTitle1"),
-                        this.parentFrame.getPolygonProject().getReportXY());
-                case 2 -> new MyChooser(this.parentFrame).writeTextFile(this.parentFrame.getPathWorkDir(),
+                        parentFrame.getTitles().get("SVRsaveTitle1"));
+                case 2 -> parentFrame.getIoController().writeTextFile(parentFrame.getPolygonProject().getReportZ(),
+                        parentFrame.getPathWorkDir(),
                         "txt",
-                        this.parentFrame.getTitles().get("SVRsaveTitle1"),
-                        this.parentFrame.getPolygonProject().getReportZ());
-
+                        parentFrame.getTitles().get("SVRsaveTitle1"));
             }
         });
 

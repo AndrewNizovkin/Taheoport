@@ -26,20 +26,20 @@ public class ShowViewResults extends JDialog {
 
     /**
      * Constructor
-     * @param parentFrame parent MainWin
+     * @param frame parent MainWin
      */
-    public ShowViewResults(MainWin parentFrame) {
-        super( parentFrame, parentFrame.getTitles().get("SVRdialogTitle"), true);
-        this.parentFrame = parentFrame;
-        surveyProject = this.parentFrame.getSurveyProject();
+    public ShowViewResults(MainWin frame) {
+        super( frame, frame.getTitles().get("SVRdialogTitle"), true);
+        this.parentFrame = frame;
+        surveyProject = parentFrame.getSurveyProject();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         setUndecorated(true);
         getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
-        int widthFrame = this.parentFrame.getWidthMain() * 3 / 2;
-        int heigthFrame = this.parentFrame.getHeightMain();
-        setBounds(this.parentFrame.getX() + this.parentFrame.getWidth() / 2 - widthFrame / 2,
-                this.parentFrame.getY() + this.parentFrame.getHeight() / 2 - heigthFrame / 2, widthFrame, heigthFrame);
+        int widthFrame = parentFrame.getWidthMain() * 3 / 2;
+        int heigthFrame = parentFrame.getHeightMain();
+        setBounds(parentFrame.getX() + parentFrame.getWidth() / 2 - widthFrame / 2,
+                parentFrame.getY() + parentFrame.getHeight() / 2 - heigthFrame / 2, widthFrame, heigthFrame);
         Toolkit kit = Toolkit.getDefaultToolkit();
         Image im = kit.getImage("images/teo.png");
         this.setIconImage(im);
@@ -52,16 +52,16 @@ public class ShowViewResults extends JDialog {
 // btnSaveReport______________________________________________________________
 
         JButton btnSaveReport = new JButton(new ImageIcon("images/save.png"));
-        btnSaveReport.setToolTipText(this.parentFrame.getTitles().get("SVRbtnSaveReportTT"));
+        btnSaveReport.setToolTipText(parentFrame.getTitles().get("SVRbtnSaveReportTT"));
         btnSaveReport.addActionListener(e -> {
             switch (tpSurvey.getSelectedIndex()) {
-                case 0 -> new MyChooser(this.parentFrame).writeTextFile(this.parentFrame.getPathWorkDir(),"dat",
-                        this.parentFrame.getTitles().get("SVRsaveTitle0"),
-                        this.parentFrame.getSurveyProject().getPicketsList());
-                case 1 -> new MyChooser(this.parentFrame).writeTextFile(this.parentFrame.getPathWorkDir(),
+                case 0 -> parentFrame.getIoController().writeTextFile(parentFrame.getSurveyProject().getPicketsList(),
+                        parentFrame.getPathWorkDir(),"dat",
+                        parentFrame.getTitles().get("SVRsaveTitle0"));
+                case 1 -> parentFrame.getIoController().writeTextFile(parentFrame.getSurveyProject().getReportList(),
+                        this.parentFrame.getPathWorkDir(),
                         "txt",
-                        this.parentFrame.getTitles().get("SVRsaveTitle1"),
-                        this.parentFrame.getSurveyProject().getReportList());
+                        this.parentFrame.getTitles().get("SVRsaveTitle1"));
             }
                 });
 

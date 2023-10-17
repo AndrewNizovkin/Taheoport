@@ -16,11 +16,11 @@
 
         /**
          * Constructor
-         * @param parentFrame MainWin parent frame
+         * @param frame MainWin parent frame
          */
-        public ShowViewExtractPol(MainWin parentFrame) {
-            super(parentFrame, parentFrame.getTitles().get("SVEdialogTitle"), true);
-            this.parentFrame = parentFrame;
+        public ShowViewExtractPol(MainWin frame) {
+            super(frame, frame.getTitles().get("SVEdialogTitle"), true);
+            this.parentFrame = frame;
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             setLayout(new BorderLayout());
             setUndecorated(true);
@@ -43,9 +43,9 @@
             JButton btnSaveReport = new JButton(new ImageIcon("images/save.png"));
             btnSaveReport.setToolTipText(parentFrame.getTitles().get("SVRbtnSaveReportTT"));
             btnSaveReport.addActionListener(e -> {
-                new MyChooser(this.parentFrame).writeTextFile(this.parentFrame.getPathWorkDir(), "txt",
-                        this.parentFrame.getTitles().get("SVRsaveTitle1"),
-                        this.parentFrame.getExtractProject().getExtractReport());
+                parentFrame.getIoController().writeTextFile(parentFrame.getExtractProject().getExtractReport(),
+                        parentFrame.getPathWorkDir(), "txt",
+                        parentFrame.getTitles().get("SVRsaveTitle1"));
             });
 
 // tb_________________________________________________________________________

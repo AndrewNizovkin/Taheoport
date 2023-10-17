@@ -1,9 +1,7 @@
 package taheoport.gui;
 
-import taheoport.controllers.IOController;
-import taheoport.controllers.IOController1;
+import taheoport.controllers.*;
 import taheoport.model.*;
-import taheoport.controllers.MyChooser;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +20,7 @@ import java.util.Vector;
 public class MainWin extends JFrame{
 //    private static TahEditorFocusTransversalPolicy focusPolicy;
     private final IOController ioController;
+    private final ImportController importController;
     private final JTabbedPane tpMain;
     private final JPanel pnlMeasurements;
     private final JPanel pnlPolygon;
@@ -71,6 +70,7 @@ public class MainWin extends JFrame{
     public MainWin() {
         super("Taheoport");
         ioController = new IOController1(this);
+        importController = new ImportController1(this);
 /*
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -366,6 +366,14 @@ public class MainWin extends JFrame{
     }
 
     /**
+     * Gets this.ioController
+     * @return IOController
+     */
+    public IOController getIoController() {
+        return this.ioController;
+    }
+
+    /**
      * Return sp
      * @return SurveyProject sp
      */
@@ -466,7 +474,8 @@ public class MainWin extends JFrame{
                 LinkedList <String>  llLeicaList = ioController.readTextFile(pathWorkDir, "gsi",
                         titles.get("MWopenFileTitle"));
                 if (llLeicaList != null) {
-                    surveyProject = new SurveyProject(this).loadLeicaList(llLeicaList);
+//                    surveyProject = new SurveyProject(this).loadLeicaList(llLeicaList);
+                    surveyProject = importController.loadLeica(llLeicaList);
                     reloadSurveyEditor();
                     setControlsOn();
                     surveyProject.setAbsoluteTahPath(ioController.writeTextFile(surveyProject.getTahList(),pathWorkDir,
@@ -487,7 +496,8 @@ public class MainWin extends JFrame{
             case 0 -> {
                 LinkedList <String>  llNiconList = ioController.readTextFile(pathWorkDir, "raw", titles.get("MWopenFileTitle"));
                 if (llNiconList != null) {
-                surveyProject = new SurveyProject(this).loadNiconList(llNiconList);
+//                surveyProject = new SurveyProject(this).loadNiconList(llNiconList);
+                surveyProject = importController.loadNicon(llNiconList);
                     reloadSurveyEditor();
                     setControlsOn();
                     surveyProject.setAbsoluteTahPath(ioController.writeTextFile(surveyProject.getTahList(), pathWorkDir, "tah", "write Tah"));
@@ -507,7 +517,8 @@ public class MainWin extends JFrame{
             case 0 -> {
                 LinkedList<String> llTopconList = ioController.readTextFile(pathWorkDir, "txt", titles.get("MWopenFileTitle"));
                 if (llTopconList != null) {
-                    surveyProject = new SurveyProject(this).loadTopconList(llTopconList);
+//                    surveyProject = new SurveyProject(this).loadTopconList(llTopconList);
+                    surveyProject = importController.loadTopcon(llTopconList);
                     reloadSurveyEditor();
                     setControlsOn();
                     surveyProject.setAbsoluteTahPath(ioController.writeTextFile(surveyProject.getTahList(), pathWorkDir, "tah", "write Tah"));
@@ -551,7 +562,8 @@ public class MainWin extends JFrame{
             case 0 -> {
                 LinkedList<String> llTahList = ioController.readTextFile(pathWorkDir, "tah", titles.get("MWopenFileTitle"));
                 if (llTahList != null) {
-                    surveyProject = new SurveyProject(this).loadTahList(llTahList);
+//                    surveyProject = new SurveyProject(this).loadTahList(llTahList);
+                    surveyProject = importController.loadTah(llTahList);
                     reloadSurveyEditor();
                     setControlsOn();
                     surveyEditor.setFocusStations();
