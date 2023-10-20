@@ -1,4 +1,6 @@
 foto/
+examples/
+target/
 .gitignore
 *.ini
 .idea/

@@ -3,7 +3,6 @@ package taheoport.gui;
 import taheoport.model.Catalog;
 import taheoport.model.CatalogPoint;
 import taheoport.model.SurveyProject;
-import taheoport.controllers.MyChooser;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,10 +54,10 @@ public class ShowViewResults extends JDialog {
         btnSaveReport.setToolTipText(parentFrame.getTitles().get("SVRbtnSaveReportTT"));
         btnSaveReport.addActionListener(e -> {
             switch (tpSurvey.getSelectedIndex()) {
-                case 0 -> parentFrame.getIoController().writeTextFile(parentFrame.getSurveyProject().getPicketsList(),
+                case 0 -> parentFrame.getIoController().writeTextFile(parentFrame.getSurveyController().getPickets(),
                         parentFrame.getPathWorkDir(),"dat",
                         parentFrame.getTitles().get("SVRsaveTitle0"));
-                case 1 -> parentFrame.getIoController().writeTextFile(parentFrame.getSurveyProject().getReportList(),
+                case 1 -> parentFrame.getIoController().writeTextFile(parentFrame.getSurveyController().getReport(),
                         this.parentFrame.getPathWorkDir(),
                         "txt",
                         this.parentFrame.getTitles().get("SVRsaveTitle1"));
@@ -119,7 +118,7 @@ public class ShowViewResults extends JDialog {
 // spReport__________________________________________________
 
         JTextArea textAreaReport = new JTextArea();
-        LinkedList<String> ll = this.parentFrame.getSurveyProject().getReportList();
+        LinkedList<String> ll = parentFrame.getSurveyController().getReport();
         String s = ll.pollFirst();
         while (s != null) {
             textAreaReport.append(s + "\n");

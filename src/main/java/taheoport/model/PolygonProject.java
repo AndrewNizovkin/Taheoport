@@ -170,9 +170,6 @@ public class PolygonProject {
         if (list == null) {
             return null;
         }
-
-//        LinkedList<String> l = new MyChooser().readTextFile(pathWorkDir, "pol", "Выберите файл *.pol");
-//        if (list != null) {
             absolutePolPath = list.removeFirst();
             while (list.size() > 0) {
                 str = new DataHandler(list.removeFirst()).compress(sep).getStr();
@@ -396,21 +393,6 @@ public class PolygonProject {
             while ((str = llTopReportZ.pollFirst()) != null) {
                 llReportZ.add(str);
             }
-            /*
-            llReportZ.add("");
-            llReportZ.add("           В Е Д О М О С Т Ь  В Ы Ч И С Л Е Н И Я  В Ы С О Т");
-            llReportZ.add("");
-            llReportZ.add("-----------------------------------------------------------------------");
-            llReportZ.add("|Наименование|  Длина   | Измеренное |Поправка|Исправленное|Абсолютная|");
-            llReportZ.add("|    пункта  | стороны  | превышение |        | превышение | отметка  |");
-            llReportZ.add("|            |     м.   |      м.    |   мм.  |     м.     |    м.    |");
-            llReportZ.add("|------------|----------|------------|--------|------------|----------|");
-            llReportZ.add("|     1      |     2    |      3     |    4   |      5     |     6    |");
-            llReportZ.add("|------------|----------|------------|--------|------------|----------|");
-            */
-
-
-
 
             if (bindType == BindType.TT | bindType == BindType.TO | bindType == BindType.TZ) {
                 start = 1;

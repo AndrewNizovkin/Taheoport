@@ -21,6 +21,7 @@ public class MainWin extends JFrame{
 //    private static TahEditorFocusTransversalPolicy focusPolicy;
     private final IOController ioController;
     private final ImportController importController;
+    private final SurveyController surveyController;
     private final JTabbedPane tpMain;
     private final JPanel pnlMeasurements;
     private final JPanel pnlPolygon;
@@ -71,6 +72,7 @@ public class MainWin extends JFrame{
         super("Taheoport");
         ioController = new IOController1(this);
         importController = new ImportController1(this);
+        surveyController = new SurveyController1(this);
 /*
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -373,6 +375,10 @@ public class MainWin extends JFrame{
         return this.ioController;
     }
 
+    public SurveyController getSurveyController() {
+        return surveyController;
+    }
+
     /**
      * Return sp
      * @return SurveyProject sp
@@ -478,7 +484,7 @@ public class MainWin extends JFrame{
                     surveyProject = importController.loadLeica(llLeicaList);
                     reloadSurveyEditor();
                     setControlsOn();
-                    surveyProject.setAbsoluteTahPath(ioController.writeTextFile(surveyProject.getTahList(),pathWorkDir,
+                    surveyProject.setAbsoluteTahPath(ioController.writeTextFile(surveyController.getTahList(),pathWorkDir,
                             "tah", "Write Tah"));
                     setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
                     surveyEditor.setFocusStations();
@@ -500,7 +506,7 @@ public class MainWin extends JFrame{
                 surveyProject = importController.loadNicon(llNiconList);
                     reloadSurveyEditor();
                     setControlsOn();
-                    surveyProject.setAbsoluteTahPath(ioController.writeTextFile(surveyProject.getTahList(), pathWorkDir, "tah", "write Tah"));
+                    surveyProject.setAbsoluteTahPath(ioController.writeTextFile(surveyController.getTahList(), pathWorkDir, "tah", "write Tah"));
                     setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
                     surveyEditor.setFocusStations();
                 }
@@ -521,7 +527,7 @@ public class MainWin extends JFrame{
                     surveyProject = importController.loadTopcon(llTopconList);
                     reloadSurveyEditor();
                     setControlsOn();
-                    surveyProject.setAbsoluteTahPath(ioController.writeTextFile(surveyProject.getTahList(), pathWorkDir, "tah", "write Tah"));
+                    surveyProject.setAbsoluteTahPath(ioController.writeTextFile(surveyController.getTahList(), pathWorkDir, "tah", "write Tah"));
                     setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
                     surveyEditor.setFocusStations();
                 }
@@ -562,7 +568,6 @@ public class MainWin extends JFrame{
             case 0 -> {
                 LinkedList<String> llTahList = ioController.readTextFile(pathWorkDir, "tah", titles.get("MWopenFileTitle"));
                 if (llTahList != null) {
-//                    surveyProject = new SurveyProject(this).loadTahList(llTahList);
                     surveyProject = importController.loadTah(llTahList);
                     reloadSurveyEditor();
                     setControlsOn();
@@ -588,7 +593,7 @@ public class MainWin extends JFrame{
     private void extractPol() {
         if (surveyProject != null) {
             if (surveyProject.containPolygon()) {
-                surveyProject.processSourceData();
+                surveyController.processSourceData();
                 extractProject = new ExtractProject(this);
                 polygonProject = new PolygonProject(this).loadPolList(extractProject.extractPolygonProject());
                 tpMain.setSelectedIndex(1);
@@ -611,12 +616,12 @@ public class MainWin extends JFrame{
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
                 if (surveyProject.getAbsoluteTahPath().equals("")) {
-                    String s = ioController.writeTextFile(surveyProject.getTahList(), pathWorkDir, "tah", "Write Tah");
+                    String s = ioController.writeTextFile(surveyController.getTahList(), pathWorkDir, "tah", "Write Tah");
                     if (s != null) {
                         surveyProject.setAbsoluteTahPath(s);
                     }
                 } else {
-                    surveyProject.setAbsoluteTahPath(ioController.writeTextFile(surveyProject.getTahList(), surveyProject.getAbsoluteTahPath()));
+                    surveyProject.setAbsoluteTahPath(ioController.writeTextFile(surveyController.getTahList(), surveyProject.getAbsoluteTahPath()));
                 }
                 setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
             }
@@ -641,7 +646,7 @@ public class MainWin extends JFrame{
     private void saveAs() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                String s = ioController.writeTextFile(surveyProject.getTahList(), pathWorkDir, "tah", titles.get("MWsaveTahTitle"));
+                String s = ioController.writeTextFile(surveyController.getTahList(), pathWorkDir, "tah", titles.get("MWsaveTahTitle"));
                 if (s != null) {
                     surveyProject.setAbsoluteTahPath(s);
                     setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
@@ -663,8 +668,8 @@ public class MainWin extends JFrame{
     private void processSourceData() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                surveyProject.processSourceData();
-                ioController.writeTextFile(surveyProject.getPicketsList(), pathWorkDir, "dat", "Write DAT");
+                surveyController.processSourceData();
+                ioController.writeTextFile(surveyController.getPickets(), pathWorkDir, "dat", "Write DAT");
             }
             case 1 -> {
                 polygonProject.processSourceData();
@@ -738,7 +743,7 @@ public class MainWin extends JFrame{
     private void viewResult() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                surveyProject.processSourceData();
+                surveyController.processSourceData();
                 new ShowViewResults(this);
             }
             case 1 -> {
