@@ -36,4 +36,10 @@ public interface PolygonController {
      * @return LinkedList <String>
      */
     public LinkedList<String> getReportNXYZ();
+
+    /**
+     * Processes the source data.
+     * Adjustment the network and determines the coordinates of the defined points llTheoStations
+     */
+    public void processSourceData();
 }

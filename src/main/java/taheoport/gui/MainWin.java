@@ -73,6 +73,25 @@ public class MainWin extends JFrame{
         ioController = new IOController1(this);
         importController = new ImportController1(this);
         surveyController = new SurveyController1(this);
+        options = new Options(this);
+        titles = new Shell(this).getTitles();
+        pathWorkDir = options.getPathWorkDir();
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        isCatalog = false;
+        wMain = 640;
+        hMain = 650;
+        setBounds((screenSize.width - wMain) / 2, (screenSize.height - hMain) / 2, wMain, hMain);
+        setResizable(false);
+
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Image im = kit.getImage("images/teo.png");
+        this.setIconImage(im);
+        setUIFont (new javax.swing.plaf.FontUIResource(Font.DIALOG, Font.PLAIN, 12));
+        setUndecorated(true);
+        getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+
 /*
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -86,21 +105,8 @@ public class MainWin extends JFrame{
             throw new RuntimeException(e);
         }
 */
-        setUIFont (new javax.swing.plaf.FontUIResource(Font.DIALOG, Font.PLAIN, 12));
-        setUndecorated(true);
-        getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
-        options = new Options(this);
-        titles = new Shell(this).getTitles();
-        pathWorkDir = options.getPathWorkDir();
-        Toolkit kit = Toolkit.getDefaultToolkit();
-        Image im = kit.getImage("images/teo.png");
-        this.setIconImage(im);
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        isCatalog = false;
-        wMain = 640;
-        hMain = 650;
+
 
         JMenuBar mbr = new JMenuBar();
 
@@ -324,8 +330,6 @@ public class MainWin extends JFrame{
             }
         });
         add(tpMain);
-        setBounds((screenSize.width - wMain) / 2, (screenSize.height - hMain) / 2, wMain, hMain);
-        setResizable(false);
 
         polygonProject = new PolygonProject(this);
         polygonProject.addStation(new PolygonStation());
@@ -333,13 +337,13 @@ public class MainWin extends JFrame{
         setControlsOn();
         setTitle("Taheoport: " + polygonProject.getAbsolutePolPath());
         polygonEditor.setFocusTable();
-
         surveyProject = new SurveyProject(this);
         SurveyStation st = surveyProject.addStation();
         st.addPicket();
         reloadSurveyEditor();
         setControlsOn();
         surveyEditor.setFocusStations();
+
         setVisible(true);
     }
 
