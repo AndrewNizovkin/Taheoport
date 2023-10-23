@@ -51,15 +51,15 @@ public class ShowViewAdjustment extends JDialog {
         btnSaveReport.setToolTipText(parentFrame.getTitles().get("SVRbtnSaveReportTT"));
         btnSaveReport.addActionListener(e -> {
             switch (tp.getSelectedIndex()) {
-                case 0 -> parentFrame.getIoController().writeTextFile(parentFrame.getPolygonProject().getReportNXYZ(),
+                case 0 -> parentFrame.getIoController().writeTextFile(parentFrame.getPolygonController().getReportNXYZ(),
                         parentFrame.getPathWorkDir(),
                         "kat",
                         parentFrame.getTitles().get("SVRsaveTitle0"));
-                case 1 -> parentFrame.getIoController().writeTextFile(parentFrame.getPolygonProject().getReportXY(),
+                case 1 -> parentFrame.getIoController().writeTextFile(parentFrame.getPolygonController().getReportXY(),
                         parentFrame.getPathWorkDir(),
                         "txt",
                         parentFrame.getTitles().get("SVRsaveTitle1"));
-                case 2 -> parentFrame.getIoController().writeTextFile(parentFrame.getPolygonProject().getReportZ(),
+                case 2 -> parentFrame.getIoController().writeTextFile(parentFrame.getPolygonController().getReportZ(),
                         parentFrame.getPathWorkDir(),
                         "txt",
                         parentFrame.getTitles().get("SVRsaveTitle1"));
@@ -78,7 +78,7 @@ public class ShowViewAdjustment extends JDialog {
 // spReportXY_______________________________________________________________________
 
         JTextArea textAreaXY = new JTextArea();
-        LinkedList<String> llReportXY = this.parentFrame.getPolygonProject().getReportXY();
+        LinkedList<String> llReportXY = parentFrame.getPolygonController().getReportXY();
         String s = llReportXY.pollFirst();
         while (s != null) {
             textAreaXY.append(s + "\n");
@@ -98,7 +98,7 @@ public class ShowViewAdjustment extends JDialog {
         JPanel pnlReportZ = new JPanel();
         JTextArea textAreaZ = new JTextArea();
         pnlReportZ.setLayout(new GridLayout(0, 1));
-        LinkedList<String> llReportZ = this.parentFrame.getPolygonProject().getReportZ();
+        LinkedList<String> llReportZ = parentFrame.getPolygonController().getReportZ();
         s = llReportZ.pollFirst();
         while (s != null) {
             textAreaZ.append(s + "\n");
@@ -120,11 +120,11 @@ public class ShowViewAdjustment extends JDialog {
 // tblNXYZ_______________________________________________________________________
 
             Catalog catalogNXYZ = new Catalog();
-            for (int i = 0; i < this.parentFrame.getPolygonProject().getSizePolygonStations(); i++) {
-                catalogNXYZ.add(new CatalogPoint(this.parentFrame.getPolygonProject().getPolygonStation(i).getName(),
-                        this.parentFrame.getPolygonProject().getPolygonStation(i).getX(),
-                        this.parentFrame.getPolygonProject().getPolygonStation(i).getY(),
-                        this.parentFrame.getPolygonProject().getPolygonStation(i).getZ()));
+            for (int i = 0; i < parentFrame.getPolygonProject().getSizePolygonStations(); i++) {
+                catalogNXYZ.add(new CatalogPoint(parentFrame.getPolygonProject().getPolygonStation(i).getName(),
+                        parentFrame.getPolygonProject().getPolygonStation(i).getX(),
+                        parentFrame.getPolygonProject().getPolygonStation(i).getY(),
+                        parentFrame.getPolygonProject().getPolygonStation(i).getZ()));
             }
             JTable tblNXYZ = new JTable(new TmodelCatalog(catalogNXYZ));
             tblNXYZ.getTableHeader().setReorderingAllowed(false);
@@ -147,9 +147,9 @@ public class ShowViewAdjustment extends JDialog {
         tp.add(pnlNXYZ);
         tp.add(spReportXY);
         tp.add(spReportZ);
-        tp.setTitleAt(0, this.parentFrame.getTitles().get("SVRtpSurveyTitle0"));
-        tp.setTitleAt(1, this.parentFrame.getTitles().get("SVRtpSurveyTitle1"));
-        tp.setTitleAt(2, this.parentFrame.getTitles().get("SVRtpSurveyTitle2"));
+        tp.setTitleAt(0, parentFrame.getTitles().get("SVRtpSurveyTitle0"));
+        tp.setTitleAt(1, parentFrame.getTitles().get("SVRtpSurveyTitle1"));
+        tp.setTitleAt(2, parentFrame.getTitles().get("SVRtpSurveyTitle2"));
         add(tp);
         setResizable(true);
         setVisible(true);

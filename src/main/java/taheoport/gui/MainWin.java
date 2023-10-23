@@ -22,6 +22,7 @@ public class MainWin extends JFrame{
     private final IOController ioController;
     private final ImportController importController;
     private final SurveyController surveyController;
+    private final PolygonController polygonController;
     private final JTabbedPane tpMain;
     private final JPanel pnlMeasurements;
     private final JPanel pnlPolygon;
@@ -73,6 +74,7 @@ public class MainWin extends JFrame{
         ioController = new IOController1(this);
         importController = new ImportController1(this);
         surveyController = new SurveyController1(this);
+        polygonController = new PolygonController1(this);
         options = new Options(this);
         titles = new Shell(this).getTitles();
         pathWorkDir = options.getPathWorkDir();
@@ -379,8 +381,20 @@ public class MainWin extends JFrame{
         return this.ioController;
     }
 
+    /**
+     * Gets this.surveyController
+     * @return SurveyController
+     */
     public SurveyController getSurveyController() {
         return surveyController;
+    }
+
+    /**
+     * Gets this.polygonController
+     * @return PolygonController
+     */
+    public PolygonController getPolygonController() {
+        return polygonController;
     }
 
     /**
@@ -581,7 +595,7 @@ public class MainWin extends JFrame{
             case 1 -> {
                 LinkedList<String> llPolList = ioController.readTextFile(pathWorkDir, "pol", titles.get("MWopenFileTitle"));
                 if (llPolList != null) {
-                    polygonProject = new PolygonProject(this).loadPolList(llPolList);
+                    polygonProject = polygonController.loadPolList(llPolList);
                     reloadPolygonEditor();
                     setControlsOn();
                     setTitle("Taheoport: " + polygonProject.getAbsolutePolPath());
@@ -599,7 +613,7 @@ public class MainWin extends JFrame{
             if (surveyProject.containPolygon()) {
                 surveyController.processSourceData();
                 extractProject = new ExtractProject(this);
-                polygonProject = new PolygonProject(this).loadPolList(extractProject.extractPolygonProject());
+                polygonProject = polygonController.loadPolList(extractProject.extractPolygonProject());
                 tpMain.setSelectedIndex(1);
                 reloadPolygonEditor();
                 setControlsOn();
@@ -631,12 +645,12 @@ public class MainWin extends JFrame{
             }
             case 1 -> {
                 if (polygonProject.getAbsolutePolPath().equals("")) {
-                    String s = ioController.writeTextFile(polygonProject.getPolList(), pathWorkDir, "pol", "Write *.pol");
+                    String s = ioController.writeTextFile(polygonController.getPolList(), pathWorkDir, "pol", "Write *.pol");
                     if (s != null) {
                         polygonProject.setAbsolutePolPath(s);
                     }
                 } else {
-                    polygonProject.setAbsolutePolPath(ioController.writeTextFile(polygonProject.getPolList(), polygonProject.getAbsolutePolPath()));
+                    polygonProject.setAbsolutePolPath(ioController.writeTextFile(polygonController.getPolList(), polygonProject.getAbsolutePolPath()));
                 }
                 setTitle("Taheoport: " + polygonProject.getAbsolutePolPath());
             }
@@ -657,7 +671,7 @@ public class MainWin extends JFrame{
                 }
             }
             case 1 -> {
-                String s = ioController.writeTextFile(polygonProject.getPolList(), pathWorkDir, "pol", titles.get("MWsavePolTitle"));
+                String s = ioController.writeTextFile(polygonController.getPolList(), pathWorkDir, "pol", titles.get("MWsavePolTitle"));
                 if (s != null) {
                     polygonProject.setAbsolutePolPath(s);
                     setTitle("Taheoport: " + polygonProject.getAbsolutePolPath());
@@ -676,7 +690,7 @@ public class MainWin extends JFrame{
                 ioController.writeTextFile(surveyController.getPickets(), pathWorkDir, "dat", "Write DAT");
             }
             case 1 -> {
-                polygonProject.processSourceData();
+                polygonController.processSourceData();
                 reloadPolygonEditor();
                 polygonEditor.setBindings();
             }

@@ -11,35 +11,35 @@ public interface PolygonController {
      * @param list list
      * @return PolygonProject
      */
-    public PolygonProject loadPolList(LinkedList<String> list);
+    PolygonProject loadPolList(LinkedList<String> list);
 
     /**
      * gets list for writing to file current PolygonProject
      * @return LinkedList
      */
-    public LinkedList<String> getPolList();
+    LinkedList<String> getPolList();
 
     /**
      * Gets polygonometry adjustment report
      * @return LinkedList <String>
      */
-    public LinkedList<String> getReportXY ();
+    LinkedList<String> getReportXY ();
 
     /**
      * Gets leveling  adjustment report
      * @return LinkedList <String>
      */
-    public LinkedList<String> getReportZ ();
+    LinkedList<String> getReportZ ();
 
     /**
      * Returns a list of rows in the report <Name X Y Z>
      * @return LinkedList <String>
      */
-    public LinkedList<String> getReportNXYZ();
+    LinkedList<String> getReportNXYZ();
 
     /**
      * Processes the source data.
      * Adjustment the network and determines the coordinates of the defined points llTheoStations
      */
-    public void processSourceData();
+    void processSourceData();
 }

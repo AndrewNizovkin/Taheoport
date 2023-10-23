@@ -27,7 +27,10 @@ public class PaintProject extends LinkedList<PaintPoint>{
         if (surveyProject != null) {
             PaintPoint sPoint;
             for (int i = 0; i < surveyProject.sizeStations(); i++) {
-                sPoint = new PaintPoint(surveyProject.getStation(i).getName(), surveyProject.getStation(i).getX(), surveyProject.getStation(i).getY(), surveyProject.getStation(i).getZ());
+                sPoint = new PaintPoint(surveyProject.getStation(i).getName(),
+                        surveyProject.getStation(i).getX(),
+                        surveyProject.getStation(i).getY(),
+                        surveyProject.getStation(i).getZ());
                 sPoint.setxOr(surveyProject.getStation(i).getxOr());
                 sPoint.setyOr(surveyProject.getStation(i).getyOr());
                 sPoint.setStatus(true);

@@ -59,7 +59,7 @@ public class PolygonEditorStandart extends JPanel {
         btnInsertRowBefore.setEnabled(true);
         btnInsertRowBefore.setToolTipText(parentFrame.getTitles().get("TAHbtnInsertRowBeforeTT"));
         btnInsertRowBefore.addActionListener(e -> {
-            if (parentFrame.getPolygonProject().isInsertBefore(selRow)) {
+            if (isInsertBefore(selRow)) {
 //            int k = selRow - 1;
                 parentFrame.getPolygonProject().addStation(selRow);
                 tmPolygonStations.addRow(selRow, new Object[]{
@@ -85,7 +85,7 @@ public class PolygonEditorStandart extends JPanel {
         btnInsertRowAfter.setEnabled(true);
         btnInsertRowAfter.setToolTipText(parentFrame.getTitles().get("TAHbtnInsertRowAfterTT"));
         btnInsertRowAfter.addActionListener(e -> {
-            if (parentFrame.getPolygonProject().isInsertAfter(selRow)) {
+            if (isInsertAfter(selRow)) {
                 selRow++;
                 parentFrame.getPolygonProject().addStation(selRow);
                 tmPolygonStations.addRow(selRow, new Object[]{
@@ -405,6 +405,33 @@ public class PolygonEditorStandart extends JPanel {
             }
         }
     }
+
+    /**
+     * Сhecks the possibility of inserting before idx position
+     * @param idx int idx
+     * @return boolean
+     */
+    private Boolean isInsertBefore(int idx) {
+        if (!parentFrame.getPolygonProject().getPolygonStation(idx).getStatus()) return true;
+        if (parentFrame.getPolygonProject().getPolygonStation(idx).getStatus() & idx > 0) {
+            return !parentFrame.getPolygonProject().getPolygonStation(idx - 1).getStatus();
+        }
+        return false;
+    }
+
+    /**
+     * Сhecks the possibility of inserting after idx position
+     * @param idx int idx
+     * @return boolean
+     */
+    private boolean isInsertAfter(int idx) {
+        if (!parentFrame.getPolygonProject().getPolygonStation(idx).getStatus()) return true;
+        if (parentFrame.getPolygonProject().getPolygonStation(idx).getStatus() & idx < parentFrame.getPolygonProject().getSizePolygonStations() - 1) {
+            return !parentFrame.getPolygonProject().getPolygonStation(idx + 1).getStatus();
+        }
+        return false;
+    }
+
 
     /**
      * This model of tblPolygonStations
