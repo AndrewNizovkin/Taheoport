@@ -10,23 +10,23 @@ public interface ImportController {
      * Loads from tah
      * @return SurveyProject
      */
-    public SurveyProject loadTah(LinkedList<String> list);
+    SurveyProject loadTah(LinkedList<String> list);
 
     /**
      * Loads from Leica *.gis
      * @return SurveyProject
      */
-    public SurveyProject loadLeica(LinkedList<String> list);
+    SurveyProject loadLeica(LinkedList<String> list);
 
     /**
      * Loads from Topcon *.txt
      * @return SurveyProject
      */
-    public SurveyProject loadTopcon(LinkedList<String> list);
+    SurveyProject loadTopcon(LinkedList<String> list);
 
     /**
      * Loads from Nicon *.row
      * @return SurveyProject
      */
-    public SurveyProject loadNicon(LinkedList<String> list);
+    SurveyProject loadNicon(LinkedList<String> list);
 }

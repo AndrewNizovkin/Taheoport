@@ -7,23 +7,23 @@ public interface SurveyController {
      * Gets SurveyProject as list
      * @return LinkedList
      */
-    public LinkedList<String> getTahList();
+    LinkedList<String> getTahList();
 
     /**
      * Gets pickets coordinate catalog
      * @return LinkedList
      */
-    public LinkedList<String> getPickets();
+    LinkedList<String> getPickets();
 
     /**
      * Gets report to print
      * @return LinkedList
      */
-    public LinkedList<String> getReport();
+    LinkedList<String> getReport();
 
     /**
      * process SurveyProject and sets for all pickets:
      * directions,DX, DY, DZ, X, Y, Z
      */
-    public void processSourceData();
+    void processSourceData();
 }

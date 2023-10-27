@@ -13,30 +13,6 @@ import java.util.LinkedList;
     private String absoluteCatalogPath;
 
     /**
-     * Downloads catalog from list
-     * @param l LinkedList
-     */
-    public Catalog loadCatalogList(LinkedList<String> l) {
-        if (l != null) {
-            this.absoluteCatalogPath = l.removeFirst();
-            int i = 0;
-            while (l.size() > 0) {
-                String s = new DataHandler(l.removeFirst()).compress(" ").getStr();
-                String[] array = s.split(" ");
-                if (array.length >= 4) {
-                    CatalogPoint cPoint = new CatalogPoint(array[0],
-                            new DataHandler(array[1]).commaToPoint().format(3).getStr(),
-                            new DataHandler(array[2]).commaToPoint().format(3).getStr(),
-                            new DataHandler(array[3]).commaToPoint().format(3).getStr());
-                    add(cPoint);
-                }
-                i++;
-            }
-        }
-        return this;
-    }
-
-    /**
      * Returns a Catalog item by index
      * @param index int index of catalog
      * @return CatalogPoint
@@ -59,6 +35,14 @@ import java.util.LinkedList;
      */
     public String getAbsoluteCatalogPath() {
         return absoluteCatalogPath;
+    }
+
+    /**
+     * Sets absoluteCatalogPath
+     * @param absoluteCatalogPath String
+     */
+    public void setAbsoluteCatalogPath(String absoluteCatalogPath) {
+        this.absoluteCatalogPath = absoluteCatalogPath;
     }
 }
 

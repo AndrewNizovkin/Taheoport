@@ -23,6 +23,7 @@ public class MainWin extends JFrame{
     private final ImportController importController;
     private final SurveyController surveyController;
     private final PolygonController polygonController;
+    private final CatalogController catalogController;
     private final JTabbedPane tpMain;
     private final JPanel pnlMeasurements;
     private final JPanel pnlPolygon;
@@ -75,6 +76,8 @@ public class MainWin extends JFrame{
         importController = new ImportController1(this);
         surveyController = new SurveyController1(this);
         polygonController = new PolygonController1(this);
+        catalogController = new CatalogController1(this);
+
         options = new Options(this);
         titles = new Shell(this).getTitles();
         pathWorkDir = options.getPathWorkDir();
@@ -111,6 +114,7 @@ public class MainWin extends JFrame{
 
 
         JMenuBar mbr = new JMenuBar();
+        tpMain = new JTabbedPane();
 
 //mFile_______________________________________________________________
 
@@ -173,7 +177,7 @@ public class MainWin extends JFrame{
 
             tUpdate = new JMenuItem(titles.get("MWtUpdate"));
             tUpdate.setEnabled(false);
-            tUpdate.addActionListener(e -> updateBasePoints());
+            tUpdate.addActionListener(e -> catalogController.updateBasePoints(tpMain.getSelectedIndex()));
 
             tRun = new JMenuItem(titles.get("MWtRun"), new ImageIcon("images/run.png"));
             tRun.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));
@@ -295,7 +299,7 @@ public class MainWin extends JFrame{
 
         this.add(tb, BorderLayout.NORTH);
 
-        tpMain = new JTabbedPane();
+
 
         pnlMeasurements = new JPanel();
         pnlMeasurements.setLayout(new BorderLayout());
@@ -700,7 +704,7 @@ public class MainWin extends JFrame{
     /**
      * Reload tahEditorStandart
      */
-    private void reloadSurveyEditor() {
+    public void reloadSurveyEditor() {
         if (surveyEditor != null) {
             pnlMeasurements.remove(surveyEditor);
         }
@@ -714,7 +718,7 @@ public class MainWin extends JFrame{
     /**
      * Reload TheoEditor
      */
-    private void reloadPolygonEditor() {
+    public void reloadPolygonEditor() {
         if (polygonEditor != null) {
             pnlPolygon.remove(polygonEditor);
         }
@@ -777,63 +781,12 @@ public class MainWin extends JFrame{
     }
 
     /**
-     * Updates base points with current catalog
-     */
-    private void updateBasePoints() {
-        switch (tpMain.getSelectedIndex()) {
-            case 0 -> {
-                if (catalog != null & surveyProject != null) {
-                    int q = 0;
-                    for (int i = 0; i < surveyProject.sizeStations(); i++) {
-                        for (int j = 0; j < catalog.getSizeCatalog(); j++) {
-                            if (surveyProject.getStation(i).getName().equals(catalog.get(j).getName())) {
-                                surveyProject.getStation(i).setName(catalog.get(j).getName());
-                                surveyProject.getStation(i).setX(catalog.get(j).getX());
-                                surveyProject.getStation(i).setY(catalog.get(j).getY());
-                                surveyProject.getStation(i).setZ(catalog.get(j).getZ());
-                                q++;
-                            }
-                            if (surveyProject.getStation(i).getNameOr().equals(catalog.get(j).getName())) {
-                                surveyProject.getStation(i).setNameOr(catalog.get(j).getName());
-                                surveyProject.getStation(i).setxOr(catalog.get(j).getX());
-                                surveyProject.getStation(i).setyOr(catalog.get(j).getY());
-                                surveyProject.getStation(i).setzOr(catalog.get(j).getZ());
-                                q++;
-                            }
-                        }
-                    }
-                    JOptionPane.showMessageDialog(this, q + titles.get("MWupdateMessage"), titles.get("MWupdateMessageTitle"), JOptionPane.INFORMATION_MESSAGE);
-                }
-
-                reloadSurveyEditor();
-            }
-            case 1 -> {
-                int q = 0;
-                for (int i = 0; i < polygonProject.getSizePolygonStations(); i++) {
-                    for (int j = 0; j < catalog.getSizeCatalog(); j++) {
-                        if (polygonProject.getPolygonStation(i).getName().equals(catalog.get(j).getName()) & polygonProject.getPolygonStation(i).getStatus()) {
-                            polygonProject.getPolygonStation(i).setName(catalog.get(j).getName());
-                            polygonProject.getPolygonStation(i).setX(catalog.get(j).getX());
-                            polygonProject.getPolygonStation(i).setY(catalog.get(j).getY());
-                            polygonProject.getPolygonStation(i).setZ(catalog.get(j).getZ());
-                            q++;
-                        }
-                    }
-                }
-                JOptionPane.showMessageDialog(this, q + titles.get("MWupdateMessage"), titles.get("MWupdateMessageTitle"), JOptionPane.INFORMATION_MESSAGE);
-
-                reloadPolygonEditor();
-            }
-        }
-
-    }
-
-    /**
      * This action load points coordinates from text file *.kat to sp (SurveyProject)
      */
-
     private void loadCatalog() {
-            catalog = new Catalog().loadCatalogList(ioController.readTextFile(pathWorkDir, "kat", titles.get("MWloadCatalogTitle")));
+            catalog = catalogController.loadCatalogList(ioController.readTextFile(pathWorkDir,
+                    "kat",
+                    titles.get("MWloadCatalogTitle")));
         if (catalog.getSizeCatalog() > 0) {
             lblCatalog.setEnabled(true);
             lblCatalog.setText(catalog.getAbsoluteCatalogPath());
@@ -872,7 +825,7 @@ public class MainWin extends JFrame{
 
         public TahEditorFocusTransversalPolicy(Vector<Component> order) {
 
-            this.order = new Vector<Component>(order.size());
+            this.order = new Vector<>(order.size());
             this.order.addAll(order);
         }
 
@@ -915,7 +868,7 @@ public class MainWin extends JFrame{
          */
         @Override
         public Component getComponentBefore(Container aContainer, Component aComponent) {
-            int idx = order.indexOf(aComponent) - -1;
+            int idx = order.indexOf(aComponent) + 1;
             return order.get(idx);
         }
 
@@ -967,7 +920,4 @@ public class MainWin extends JFrame{
             return order.get(0);
         }
     }
-
-
-
 }

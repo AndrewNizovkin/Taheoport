@@ -11,7 +11,7 @@ public interface IOController {
      *              String [1] args {absolutePath}
      * @return LinkedList The first item in the list is the absolute path to the file
      */
-    public LinkedList<String> readTextFile(String ... args);
+    LinkedList<String> readTextFile(String ... args);
 
     /**
      * Writes the list items to a text file of the specified type
@@ -21,5 +21,5 @@ public interface IOController {
      * @return LinkedList The first item in the list is the absolute path to the file
      */
 
-    public String writeTextFile(LinkedList<String> list, String... args);
+    String writeTextFile(LinkedList<String> list, String... args);
 }
