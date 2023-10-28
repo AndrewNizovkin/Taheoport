@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `taheoport.model.Options`
+`java.lang.Object` -> `taheoport.model.Settings`
 
 ---
 

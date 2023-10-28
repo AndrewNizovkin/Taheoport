@@ -857,12 +857,12 @@ public class SurveyEditorStandart extends JPanel  {
      */
     private void changeDistance() {
         new ShowChangeDistance(parentFrame);
-        if (parentFrame.getOptions().isChanged()) {
+        if (parentFrame.getSettings().isChanged()) {
             String str;
             double line = Double.parseDouble((String) tmodelPickets.getValueAt(selRow, 1));
             double tilt = new DataHandler((String) tmodelPickets.getValueAt(selRow, 3)).dmsToRad();
-            double offset = Double.parseDouble(parentFrame.getOptions().getOffsetDistance());
-            switch (parentFrame.getOptions().getOffsetDistanceType()) {
+            double offset = Double.parseDouble(parentFrame.getSettings().getOffsetDistance());
+            switch (parentFrame.getSettings().getOffsetDistanceType()) {
                 case 0 -> {
                     str = new DataHandler(line + offset / Math.cos(tilt)).format(3).getStr();
                     tmodelPickets.setValueAt(str, selRow, 1);
@@ -885,8 +885,8 @@ public class SurveyEditorStandart extends JPanel  {
      */
     private void changeDirection() {
         new ShowChangeAngle(parentFrame,parentFrame.getTitles().get("SCAtitleChangeDirection"));
-        if (parentFrame.getOptions().isChanged()) {
-            switch (parentFrame.getOptions().getOffsetDirectionType()) {
+        if (parentFrame.getSettings().isChanged()) {
+            switch (parentFrame.getSettings().getOffsetDirectionType()) {
                 case 0 -> {
                     if (selRow < tmodelPickets.getRowCount() - 1) {
                         tmodelPickets.setValueAt(tmodelPickets.getValueAt(selRow + 1, 2), selRow, 2);
@@ -894,7 +894,7 @@ public class SurveyEditorStandart extends JPanel  {
                 }
                 case 1 -> {
                     double angle = new DataHandler((String) tmodelPickets.getValueAt(selRow, 2)).dmsToDeg();
-                    double offset = new DataHandler(parentFrame.getOptions().getOffsetDirection()).dmsToDeg();
+                    double offset = new DataHandler(parentFrame.getSettings().getOffsetDirection()).dmsToDeg();
                     angle += offset;
                     while (angle < 0) {
                         angle += 360;
@@ -918,10 +918,10 @@ public class SurveyEditorStandart extends JPanel  {
      */
     private void changeTilt() {
         new ShowChangeAngle(parentFrame, parentFrame.getTitles().get("SCAtitleChangeTiltAngle"));
-        if (parentFrame.getOptions().isChanged()) {
+        if (parentFrame.getSettings().isChanged()) {
             double line = Double.parseDouble((String) tmodelPickets.getValueAt(selRow, 1));
             double tilt = new DataHandler((String) tmodelPickets.getValueAt(selRow, 3)).dmsToRad();
-            switch (parentFrame.getOptions().getOffsetTiltType()) {
+            switch (parentFrame.getSettings().getOffsetTiltType()) {
                 case 0 -> {
                     if (selRow < tmodelPickets.getRowCount() - 1) {
                         double tiltNext = new DataHandler((String) tmodelPickets.getValueAt(selRow + 1, 3)).dmsToRad();
@@ -934,7 +934,7 @@ public class SurveyEditorStandart extends JPanel  {
                 }
                 case 1 -> {
                     double angle = new DataHandler((String) tmodelPickets.getValueAt(selRow, 3)).dmsToDeg();
-                    double offset = new DataHandler(parentFrame.getOptions().getOffsetTiltAngle()).dmsToDeg();
+                    double offset = new DataHandler(parentFrame.getSettings().getOffsetTiltAngle()).dmsToDeg();
                     line = line * Math.cos(tilt) / Math.cos(new DataHandler().degToDms(angle + offset).dmsToRad());
                     tmodelPickets.setValueAt(new DataHandler(line).format(3).getStr(), selRow, 1);
                     tmodelPickets.setValueAt(new DataHandler().degToDms(angle + offset).getStr(), selRow, 3);

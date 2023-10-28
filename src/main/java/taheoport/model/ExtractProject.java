@@ -30,7 +30,7 @@
         SurveyProject surveyProject = new SurveyProject(parentFrame);
         for (int i = 0; i < parentFrame.getSurveyProject().sizeStations(); i++) {
             if (parentFrame.getSurveyProject().getStation(i).getName().charAt(0)
-                    != (char) parentFrame.getOptions().getPrefixEX() &
+                    != (char) parentFrame.getSettings().getPrefixEX() &
                     parentFrame.getSurveyProject().getStation(i).sizePickets() >= 2) {
                 surveyProject.addStation(parentFrame.getSurveyProject().getStation(i));
             }

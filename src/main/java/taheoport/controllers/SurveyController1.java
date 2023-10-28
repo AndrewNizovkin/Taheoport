@@ -173,7 +173,7 @@ public class SurveyController1 implements SurveyController {
                 picket = llStation.getPicket(j);
 
 
-                if (parentFrame.getOptions().getOrientStation() == 1) {
+                if (parentFrame.getSettings().getOrientStation() == 1) {
                     dirPicket = dirBase + new DataHandler(picket.getHor()).dmsToRad() -
                             new DataHandler(llStation.getPicket(0).getHor()).dmsToRad();
                     while (dirPicket < 0) {

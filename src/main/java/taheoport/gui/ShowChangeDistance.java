@@ -26,7 +26,7 @@ public class ShowChangeDistance extends JDialog implements ChangeListener, Actio
 
         super(parentFrame, parentFrame.getTitles().get("SADtitle"), true);
         this.parentFrame = parentFrame;
-        parentFrame.getOptions().setChanged(false);
+        parentFrame.getSettings().setChanged(false);
         setBounds(parentFrame.getX() + parentFrame.getWidthMain() / 2 - parentFrame.getWidthMain() / 3 * 2 / 2,
                 parentFrame.getY() + parentFrame.getHeightMain() / 2 - parentFrame.getHeightMain() / 2 / 2,
                 290,
@@ -54,7 +54,7 @@ public class ShowChangeDistance extends JDialog implements ChangeListener, Actio
         rbInc.setText(parentFrame.getTitles().get("SADrbInc"));
         rbInc.setFocusable(false);
         rbInc.addChangeListener(this);
-        if (parentFrame.getOptions().getOffsetDistanceType() == 1) {
+        if (parentFrame.getSettings().getOffsetDistanceType() == 1) {
             rbInc.setSelected(true);
         }
 
@@ -66,7 +66,7 @@ public class ShowChangeDistance extends JDialog implements ChangeListener, Actio
         rbHor.setText(parentFrame.getTitles().get("SADrbHor"));
         rbHor.setFocusable(false);
         rbHor.addChangeListener(this);
-        if (parentFrame.getOptions().getOffsetDistanceType() == 0) {
+        if (parentFrame.getSettings().getOffsetDistanceType() == 0) {
             rbHor.setSelected(true);
         }
 
@@ -86,7 +86,7 @@ public class ShowChangeDistance extends JDialog implements ChangeListener, Actio
 // tfOffset_________________________________________________________
 
         tfOffset = new JTextField();
-        tfOffset.setText(parentFrame.getOptions().getOffsetDistance());
+        tfOffset.setText(parentFrame.getSettings().getOffsetDistance());
         tfOffset.addActionListener(this);
         tfOffset.addFocusListener(new FocusListener() {
             @Override
@@ -200,11 +200,11 @@ public class ShowChangeDistance extends JDialog implements ChangeListener, Actio
     @Override
     public void stateChanged(ChangeEvent e) {
         if (rbHor.isSelected()) {
-            parentFrame.getOptions().setOffsetDistanceType(0);
+            parentFrame.getSettings().setOffsetDistanceType(0);
         } else {
-            parentFrame.getOptions().setOffsetDistanceType(1);
+            parentFrame.getSettings().setOffsetDistanceType(1);
         }
-        parentFrame.getOptions().saveOptions();
+        parentFrame.getSettingsController().saveOptions();
         reloadPaintPanel();
 
     }
@@ -220,10 +220,10 @@ public class ShowChangeDistance extends JDialog implements ChangeListener, Actio
             tfOffset.setText("0.000");
         }
         if (new DataHandler(tfOffset.getText()).commaToPoint().isNumber()) {
-            this.parentFrame.getOptions().setOffsetDistance(new DataHandler(tfOffset.getText()).commaToPoint().format(3).getStr());
-            this.parentFrame.getOptions().setChanged(true);
+            this.parentFrame.getSettings().setOffsetDistance(new DataHandler(tfOffset.getText()).commaToPoint().format(3).getStr());
+            this.parentFrame.getSettings().setChanged(true);
         } else {
-            this.parentFrame.getOptions().setOffsetDistance("0.000");
+            this.parentFrame.getSettings().setOffsetDistance("0.000");
         }
         this.dispose();
     }

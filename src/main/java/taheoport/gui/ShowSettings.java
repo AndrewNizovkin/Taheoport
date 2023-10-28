@@ -1,6 +1,6 @@
 package taheoport.gui;
 
-import taheoport.model.Options;
+import taheoport.model.Settings;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -14,7 +14,7 @@ import java.io.File;
  * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
-public class ShowOptions extends JDialog {
+public class ShowSettings extends JDialog {
 
     private final JButton btnApprove;
     private final JButton btnCancel;
@@ -29,7 +29,7 @@ public class ShowOptions extends JDialog {
     private final JLabel lblLanguage;
     private final JLabel lblFOtn;
     private final JLabel lblPrefixEX;
-    private final Options options;
+    private final Settings settings;
     private final MainWin parentFrame;
     private final JPanel pnlAcceptable;
     private final JPanel pnlExtractor;
@@ -42,17 +42,17 @@ public class ShowOptions extends JDialog {
 
     /**
      * Constructor
-     * @param parentFrame parent parentFrame
+     * @param frame parent parentFrame
      */
-    public ShowOptions(MainWin parentFrame) {
-        super(parentFrame, parentFrame.getTitles().get("SOtitle"), true);
+    public ShowSettings(MainWin frame) {
+        super(frame, frame.getTitles().get("SOtitle"), true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        this.parentFrame = parentFrame;
-        options = this.parentFrame.getOptions();
-        int w = this.parentFrame.getWidthMain() / 3 * 2;
-        int h = this.parentFrame.getHeightMain() / 2;
-        setBounds(this.parentFrame.getX() + this.parentFrame.getWidthMain() / 2 - w / 2,
-                this.parentFrame.getY() + this.parentFrame.getHeightMain() / 2 - h / 2, w, h);
+        this.parentFrame = frame;
+        settings = parentFrame.getSettings();
+        int w = parentFrame.getWidthMain() / 3 * 2;
+        int h = parentFrame.getHeightMain() / 2;
+        setBounds(parentFrame.getX() + parentFrame.getWidthMain() / 2 - w / 2,
+                parentFrame.getY() + parentFrame.getHeightMain() / 2 - h / 2, w, h);
         Toolkit kit = Toolkit.getDefaultToolkit();
         Image im = kit.getImage("images/teo.png");
         this.setIconImage(im);
@@ -71,7 +71,7 @@ public class ShowOptions extends JDialog {
 
 // lblLanguage_________________________________________________________________
 
-            lblLanguage = new JLabel(this.parentFrame.getTitles().get("SOlblLanguage"), JLabel.CENTER);
+            lblLanguage = new JLabel(parentFrame.getTitles().get("SOlblLanguage"), JLabel.CENTER);
 
             pnlLanguage.add(lblLanguage, new GridBagConstraints(0, 0, 1, 1, 1, 0,
                     GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
@@ -80,10 +80,10 @@ public class ShowOptions extends JDialog {
 
             String[] languages = {"English", "Русский"};
             JComboBox<String> cbLanguage = new JComboBox<>(languages);
-            cbLanguage.setSelectedIndex(this.parentFrame.getOptions().getLanguage());
+            cbLanguage.setSelectedIndex(settings.getLanguage());
             cbLanguage.addActionListener(e -> {
-                this.parentFrame.getOptions().setLanguage(cbLanguage.getSelectedIndex());
-                this.parentFrame.translate();
+                settings.setLanguage(cbLanguage.getSelectedIndex());
+                parentFrame.translate();
                 translate();
             });
 
@@ -105,7 +105,7 @@ public class ShowOptions extends JDialog {
 
                 tfPathWorkDir = new JTextField(25);
                 tfPathWorkDir.setToolTipText(this.parentFrame.getTitles().get("SOtfPathWorkDirTT"));
-                tfPathWorkDir.setText(options.getPathWorkDir());
+                tfPathWorkDir.setText(settings.getPathWorkDir());
                 tfPathWorkDir.addFocusListener(new FocusListener() {
                     @Override
                     public void focusGained(FocusEvent e) {
@@ -115,20 +115,20 @@ public class ShowOptions extends JDialog {
                     @Override
                     public void focusLost(FocusEvent e) {
                         if(new File(tfPathWorkDir.getText()).isDirectory()) {
-                            options.setPathWorkDir(tfPathWorkDir.getText());
+                            settings.setPathWorkDir(tfPathWorkDir.getText());
 
                         } else {
-                            tfPathWorkDir.setText(options.getPathWorkDir());
+                            tfPathWorkDir.setText(settings.getPathWorkDir());
                         }
 
                     }
                 });
                 tfPathWorkDir.addActionListener(e -> {
                     if(new File(tfPathWorkDir.getText()).isDirectory()) {
-                        options.setPathWorkDir(tfPathWorkDir.getText());
+                        settings.setPathWorkDir(tfPathWorkDir.getText());
 
                     } else {
-                        tfPathWorkDir.setText(options.getPathWorkDir());
+                        tfPathWorkDir.setText(settings.getPathWorkDir());
                     }
 
                 });
@@ -139,11 +139,11 @@ public class ShowOptions extends JDialog {
 // btnFolder__________________________________________________________________
 
                 btnFolder = new JButton(new ImageIcon("images/browse_folder.png"));
-                btnFolder.setToolTipText(this.parentFrame.getTitles().get("SObtnFolderTT"));
+                btnFolder.setToolTipText(parentFrame.getTitles().get("SObtnFolderTT"));
                 btnFolder.addActionListener(e -> {
-                    File f = new File(options.getPathWorkDir());
+                    File f = new File(settings.getPathWorkDir());
                     JFileChooser fileChooser = new JFileChooser(f.getAbsolutePath());
-                    fileChooser.setDialogTitle(this.parentFrame.getTitles().get("SOsetDialogTitle"));
+                    fileChooser.setDialogTitle(parentFrame.getTitles().get("SOsetDialogTitle"));
                     fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                     int res = fileChooser.showOpenDialog(this);
                     if (res != JFileChooser.APPROVE_OPTION) {
@@ -152,7 +152,7 @@ public class ShowOptions extends JDialog {
                         if (f.isDirectory()) {
                             f = fileChooser.getSelectedFile();
                             tfPathWorkDir.setText(f.getAbsolutePath());
-                            options.setPathWorkDir(tfPathWorkDir.getText());
+                            settings.setPathWorkDir(tfPathWorkDir.getText());
                         }
                     }
                 });
@@ -172,7 +172,7 @@ public class ShowOptions extends JDialog {
 
 // rbZero___________________________________________________________
 
-            rbZero = new JRadioButton(this.parentFrame.getTitles().get("SOrbZero"));
+            rbZero = new JRadioButton(parentFrame.getTitles().get("SOrbZero"));
             rbZero.addActionListener(e -> setOrientStation());
 
            pnlOrientStation.add(rbZero, new GridBagConstraints(0, 0, 1, 1, 1, 0,
@@ -180,7 +180,7 @@ public class ShowOptions extends JDialog {
 
 // rbFirst__________________________________________________________
 
-            rbFirst = new JRadioButton(this.parentFrame.getTitles().get("SOrbFirst"));
+            rbFirst = new JRadioButton(parentFrame.getTitles().get("SOrbFirst"));
             rbFirst.addActionListener(e -> setOrientStation());
 
             pnlOrientStation.add(rbFirst, new GridBagConstraints(0, 1, 1, 1, 1, 0,
@@ -205,8 +205,8 @@ public class ShowOptions extends JDialog {
 
 // lblPrefixEX_______________________________________________________
 
-            lblPrefixEX = new JLabel(this.parentFrame.getTitles().get("SOlblPrefixEX"), JLabel.CENTER);
-            lblPrefixEX.setToolTipText((this.parentFrame.getTitles().get("SOlblPrefixEXTT")));
+            lblPrefixEX = new JLabel(parentFrame.getTitles().get("SOlblPrefixEX"), JLabel.CENTER);
+            lblPrefixEX.setToolTipText((parentFrame.getTitles().get("SOlblPrefixEXTT")));
             pnlExtractor.add(lblPrefixEX, new GridBagConstraints(0, 0, 4, 1, 4, 0,
                     GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
@@ -218,8 +218,8 @@ public class ShowOptions extends JDialog {
                 prefixs[i] = " " + (char) (i + 65);
             }
             JComboBox<String> cbPrefixEX = new JComboBox<>(prefixs);
-            cbPrefixEX.setSelectedIndex(this.parentFrame.getOptions().getPrefixEX() - 65);
-            cbPrefixEX.addActionListener(e -> this.parentFrame.getOptions().setPrefixEX(cbPrefixEX.getSelectedIndex() + 65));
+            cbPrefixEX.setSelectedIndex(settings.getPrefixEX() - 65);
+            cbPrefixEX.addActionListener(e -> settings.setPrefixEX(cbPrefixEX.getSelectedIndex() + 65));
 
             pnlExtractor.add(cbPrefixEX, new GridBagConstraints(4, 0, 1, 1, 1, 0,
                     GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
@@ -250,66 +250,66 @@ public class ShowOptions extends JDialog {
 
 // lblFH_________________________________________________________________________
 
-            lblFH = new JLabel(this.parentFrame.getTitles().get("SOlblFH"), JLabel.LEFT);
+            lblFH = new JLabel(parentFrame.getTitles().get("SOlblFH"), JLabel.LEFT);
 
             pnlAcceptable.add(lblFH, new GridBagConstraints(0, 0, 4, 1, 4, 0,
                     GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
 // lblFHor__________________________________________________________________
 
-            lblFHor  =  new JLabel(this.parentFrame.getTitles().get("SOlblFHor"), JLabel.LEFT);
+            lblFHor  =  new JLabel(parentFrame.getTitles().get("SOlblFHor"), JLabel.LEFT);
 
             pnlAcceptable.add(lblFHor, new GridBagConstraints(0, 1, 4, 1, 4, 0,
                     GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
 // lblFAbs_________________________________________________________________
 
-            lblFAbs = new JLabel(this.parentFrame.getTitles().get("SOlblFAbs"), JLabel.LEFT);
+            lblFAbs = new JLabel(parentFrame.getTitles().get("SOlblFAbs"), JLabel.LEFT);
 
             pnlAcceptable.add(lblFAbs, new GridBagConstraints(0, 2, 4, 1, 4, 0,
                     GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
 // lblFOtn__________________________________________________________________
-            lblFOtn = new JLabel(this.parentFrame.getTitles().get("SOlblFOtn"), JLabel.LEFT);
+            lblFOtn = new JLabel(parentFrame.getTitles().get("SOlblFOtn"), JLabel.LEFT);
 
             pnlAcceptable.add(lblFOtn, new GridBagConstraints(0, 3, 4, 1, 4, 0,
                     GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
 // cbFH_______________________________________________________________
 
-            cbFH = new JComboBox<String>(this.parentFrame.getOptions().getFHs());
-            cbFH.setToolTipText(this.parentFrame.getTitles().get("SOcbFHTT"));
-            cbFH.setSelectedIndex(this.parentFrame.getOptions().getIdxFH());
-            cbFH.addActionListener(e -> this.parentFrame.getOptions().setIdxFH(cbFH.getSelectedIndex()));
+            cbFH = new JComboBox<>(settings.getFHs());
+            cbFH.setToolTipText(parentFrame.getTitles().get("SOcbFHTT"));
+            cbFH.setSelectedIndex(settings.getIdxFH());
+            cbFH.addActionListener(e -> settings.setIdxFH(cbFH.getSelectedIndex()));
 
             pnlAcceptable.add(cbFH, new GridBagConstraints(4, 0, 1, 1, 1, 0,
                     GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
 // cbFHor_______________________________________________________________
 
-            cbFHor = new JComboBox<String>(this.parentFrame.getOptions().getFHors());
-            cbFHor.setToolTipText(this.parentFrame.getTitles().get("SOcbFHorTT"));
-            cbFHor.setSelectedIndex(this.parentFrame.getOptions().getIdxFHor());
-            cbFHor.addActionListener(e -> this.parentFrame.getOptions().setIdxFHor(cbFHor.getSelectedIndex()));
+            cbFHor = new JComboBox<>(settings.getFHors());
+            cbFHor.setToolTipText(parentFrame.getTitles().get("SOcbFHorTT"));
+            cbFHor.setSelectedIndex(settings.getIdxFHor());
+            cbFHor.addActionListener(e -> settings.setIdxFHor(cbFHor.getSelectedIndex()));
 
             pnlAcceptable.add(cbFHor, new GridBagConstraints(4, 1, 1, 1, 1, 0,
                     GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
 // cbFAbs_______________________________________________________________
 
-            cbFAbs = new JComboBox<String>(this.parentFrame.getOptions().getFAbss());
+            cbFAbs = new JComboBox<String>(this.parentFrame.getSettings().getFAbss());
 //            cbFAbs.setFont(parentFrame.getFontMain());
-            cbFAbs.setSelectedIndex(this.parentFrame.getOptions().getIdxFAbs());
-            cbFAbs.addActionListener(e -> this.parentFrame.getOptions().setIdxFAbs(cbFAbs.getSelectedIndex()));
+            cbFAbs.setSelectedIndex(settings.getIdxFAbs());
+            cbFAbs.addActionListener(e -> settings.setIdxFAbs(cbFAbs.getSelectedIndex()));
 
             pnlAcceptable.add(cbFAbs, new GridBagConstraints(4, 2, 1, 1, 1, 0,
                     GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
 // cbFOtn_______________________________________________________________
 
-            cbFOtn = new JComboBox<String>(this.parentFrame.getOptions().getFOtns());
-            cbFOtn.setSelectedIndex(this.parentFrame.getOptions().getIdxFOtn());
-            cbFOtn.addActionListener(e -> this.parentFrame.getOptions().setIdxFOtn(cbFOtn.getSelectedIndex()));
+            cbFOtn = new JComboBox<>(settings.getFOtns());
+            cbFOtn.setSelectedIndex(settings.getIdxFOtn());
+            cbFOtn.addActionListener(e -> settings.setIdxFOtn(cbFOtn.getSelectedIndex()));
             pnlAcceptable.add(cbFOtn, new GridBagConstraints(4, 3, 1, 1, 1, 0,
                     GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
@@ -324,8 +324,8 @@ public class ShowOptions extends JDialog {
                 GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
         tp.add(pnlMeasurements);
-        tp.setTitleAt(0, this.parentFrame.getTitles().get("SOtpTitle0"));
-        tp.setTitleAt(1, this.parentFrame.getTitles().get("SOtpTitle1"));
+        tp.setTitleAt(0, parentFrame.getTitles().get("SOtpTitle0"));
+        tp.setTitleAt(1, parentFrame.getTitles().get("SOtpTitle1"));
         add(tp);
 
 // pnlControl________________________________________________________
@@ -334,19 +334,17 @@ public class ShowOptions extends JDialog {
         pnlControl.setLayout(new FlowLayout());
 
 // btnApprove________________________________________________________
-            btnApprove = new JButton(this.parentFrame.getTitles().get("SObtnApprove"));
-            btnApprove.setToolTipText(this.parentFrame.getTitles().get("SObtnApproveTT"));
+            btnApprove = new JButton(parentFrame.getTitles().get("SObtnApprove"));
+            btnApprove.setToolTipText(parentFrame.getTitles().get("SObtnApproveTT"));
             btnApprove.addActionListener(e -> {
-                    options.saveOptions();
-//                    parentFrame.setOptions();
+                    parentFrame.getSettingsController().saveOptions();
                 this.dispose();
             });
             pnlControl.add(btnApprove);
 
 // btnCancel________________________________________________________
-            btnCancel = new JButton(this.parentFrame.getTitles().get("SObtnCancel"));
-//            btnCancel.setFont(parentFrame.getFontMain());
-            btnCancel.setToolTipText(this.parentFrame.getTitles().get("SObtnCancelTT"));
+            btnCancel = new JButton(parentFrame.getTitles().get("SObtnCancel"));
+            btnCancel.setToolTipText(parentFrame.getTitles().get("SObtnCancelTT"));
             btnCancel.addActionListener(e -> this.dispose());
 
             pnlControl.add(btnCancel);
@@ -362,7 +360,7 @@ public class ShowOptions extends JDialog {
      * sets one of the rbZero or rbFirst from the bgOrientStation
      */
     private void showOrientStation() {
-        switch (parentFrame.getOptions().getOrientStation()) {
+        switch (parentFrame.getSettings().getOrientStation()) {
             case 0 -> rbZero.setSelected(true);
             case 1 -> rbFirst.setSelected(true);
         }
@@ -373,9 +371,9 @@ public class ShowOptions extends JDialog {
      */
     private void setOrientStation() {
         if (rbZero.isSelected()) {
-            parentFrame.getOptions().setOrientStation(0);
+            settings.setOrientStation(0);
         } else {
-            parentFrame.getOptions().setOrientStation(1);
+            settings.setOrientStation(1);
         }
     }
 

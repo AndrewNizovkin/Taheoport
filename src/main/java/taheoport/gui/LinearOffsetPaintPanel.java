@@ -1,7 +1,5 @@
 package taheoport.gui;
 
-import taheoport.gui.MainWin;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -31,7 +29,7 @@ public class LinearOffsetPaintPanel extends JPanel {
         super.paintComponent(g);
 
         g.setColor(Color.RED);
-        switch (parentFrame.getOptions().getOffsetDistanceType()) {
+        switch (parentFrame.getSettings().getOffsetDistanceType()) {
             case 0 -> {
                 g.drawLine(64, 43, 95, 43);
             }

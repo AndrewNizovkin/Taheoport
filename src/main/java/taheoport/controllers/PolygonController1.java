@@ -209,7 +209,7 @@ public class PolygonController1 implements PolygonController{
         if (polygonProject.getBindType() == PolygonProject.BindType.TT) {
             llReportXY.add(titlesReports.get("TPactual") + new DataHandler(polygonProject.getfHor()).format(2).getStr() + titlesReports.get("TPsek"));
             llReportXY.add(titlesReports.get("TPacceptable") +
-                    new DataHandler(parentFrame.getOptions().getValueFHor() * Math.sqrt(polygonProject.getSizePolygonStations() - 2)).format(0).getStr() +
+                    new DataHandler(parentFrame.getSettings().getValueFHor() * Math.sqrt(polygonProject.getSizePolygonStations() - 2)).format(0).getStr() +
                     titlesReports.get("TPsek"));
         } else {
             llReportXY.add(titlesReports.get("TPactual") + "-.-");
@@ -228,7 +228,7 @@ public class PolygonController1 implements PolygonController{
             llReportXY.add(titlesReports.get("TPlineDY") + new DataHandler(polygonProject.getfY()).format(3).getStr() + "м.");
             llReportXY.add(titlesReports.get("TPabsoluteDeviation") + new DataHandler(polygonProject.getfAbs()).format(3).getStr() + "м.");
             llReportXY.add(titlesReports.get("TPactualRelativeDeviation") + "1:" + polygonProject.getfOtn());
-            llReportXY.add(titlesReports.get("TPacceptableRelativeDeviation") + "1:" + parentFrame.getOptions().getValueFOtn());
+            llReportXY.add(titlesReports.get("TPacceptableRelativeDeviation") + "1:" + parentFrame.getSettings().getValueFOtn());
 
         }
         return llReportXY;
@@ -318,7 +318,7 @@ public class PolygonController1 implements PolygonController{
                     new DataHandler(polygonProject.getfZ() * 1000).format(0).getStr() +
                     titlesReports.get("TPmm"));
             llReportZ.add(titlesReports.get("TPacceptableResidue") +
-                    new DataHandler(parentFrame.getOptions().getValueFH() *
+                    new DataHandler(parentFrame.getSettings().getValueFH() *
                             Math.sqrt(polygonProject.getPerimeter() / 1000)).format(0).getStr() +
                     titlesReports.get("TPmm"));
         }

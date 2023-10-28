@@ -24,6 +24,7 @@ public class MainWin extends JFrame{
     private final SurveyController surveyController;
     private final PolygonController polygonController;
     private final CatalogController catalogController;
+    private final SettingsController settingsController;
     private final JTabbedPane tpMain;
     private final JPanel pnlMeasurements;
     private final JPanel pnlPolygon;
@@ -32,7 +33,7 @@ public class MainWin extends JFrame{
     private PolygonProject polygonProject;
     private ExtractProject extractProject;
     private final String pathWorkDir;
-    private final Options options;
+    private final Settings settings;
     private HashMap<String, String> titles;
     private boolean isCatalog;
     private final int wMain; // main frame width
@@ -77,10 +78,12 @@ public class MainWin extends JFrame{
         surveyController = new SurveyController1(this);
         polygonController = new PolygonController1(this);
         catalogController = new CatalogController1(this);
+        settingsController = new SettingsController1(this);
 
-        options = new Options(this);
+        settings = new Settings();
+        settingsController.loadOptions();
         titles = new Shell(this).getTitles();
-        pathWorkDir = options.getPathWorkDir();
+        pathWorkDir = settings.getPathWorkDir();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -197,7 +200,7 @@ public class MainWin extends JFrame{
             tOptions = new JMenuItem(titles.get("MWtOptions"));
 //            tOptions.setFont(fontMain);
             tOptions.setEnabled(true);
-            tOptions.addActionListener(e -> new ShowOptions(this));
+            tOptions.addActionListener(e -> new ShowSettings(this));
 
 
         mTools.add(tLoadCat);
@@ -354,11 +357,11 @@ public class MainWin extends JFrame{
     }
 
     /**
-     * gets options
-     * @return Options
+     * gets settings
+     * @return this.settings
      */
-    public Options getOptions() {
-        return options;
+    public Settings getSettings() {
+        return settings;
     }
 
     /**
@@ -399,6 +402,10 @@ public class MainWin extends JFrame{
      */
     public PolygonController getPolygonController() {
         return polygonController;
+    }
+
+    public SettingsController getSettingsController() {
+        return settingsController;
     }
 
     /**
