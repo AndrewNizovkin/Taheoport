@@ -186,9 +186,7 @@ public class Adjuster1 implements Adjuster{
     private void defBindType() {
         polygonProject.setBindType(PolygonProject.BindType.ZZ);
         int countStations = polygonProject.getSizePolygonStations();
-//          if (llTheoStatons != null) {
         if (countStations > 2) {
-//                  int last = llTheoStatons.size() - 1;
             if (polygonProject.getPolygonStation(0).getStatus() &
                     polygonProject.getPolygonStation(1).getStatus() &
                     polygonProject.getPolygonStation(countStations - 1).getStatus() &
@@ -202,8 +200,6 @@ public class Adjuster1 implements Adjuster{
                             parentFrame.getTitles().get("TPmessageErrorTitle"),
                             JOptionPane.ERROR_MESSAGE);
                 }
-
-
             }
             if (polygonProject.getPolygonStation(0).getStatus() &
                     polygonProject.getPolygonStation(1).getStatus() &
@@ -217,7 +213,6 @@ public class Adjuster1 implements Adjuster{
                             parentFrame.getTitles().get("TPmessageErrorTitle"),
                             JOptionPane.ERROR_MESSAGE);
                 }
-
             }
             if (polygonProject.getPolygonStation(0).getStatus() &
                     !polygonProject.getPolygonStation(1).getStatus() &
@@ -274,13 +269,10 @@ public class Adjuster1 implements Adjuster{
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
-
         }
         if (noNeed()) {
             polygonProject.setBindType(PolygonProject.BindType.ZZ);
         }
-//          }
-//        return bindType;
     }
 
     /**

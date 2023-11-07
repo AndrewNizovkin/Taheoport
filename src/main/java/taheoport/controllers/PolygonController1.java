@@ -29,7 +29,7 @@ public class PolygonController1 implements PolygonController{
      */
     @Override
     public PolygonProject loadPolList(LinkedList<String> list) {
-        PolygonProject polygonProject = new PolygonProject(parentFrame);
+        PolygonProject polygonProject = new PolygonProject();
         PolygonStation ts;
         String sep = " ";
         String str = "";

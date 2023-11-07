@@ -23,6 +23,7 @@ public class MainWin extends JFrame{
     private final ImportController importController;
     private final SurveyController surveyController;
     private final PolygonController polygonController;
+    private final ExtractController extractController;
     private final CatalogController catalogController;
     private final SettingsController settingsController;
     private final JTabbedPane tpMain;
@@ -31,7 +32,6 @@ public class MainWin extends JFrame{
     private Catalog catalog;
     private SurveyProject surveyProject;
     private PolygonProject polygonProject;
-    private ExtractProject extractProject;
     private final String pathWorkDir;
     private final Settings settings;
     private HashMap<String, String> titles;
@@ -77,6 +77,7 @@ public class MainWin extends JFrame{
         importController = new ImportController1(this);
         surveyController = new SurveyController1(this);
         polygonController = new PolygonController1(this);
+        extractController = new ExtractController1(this);
         catalogController = new CatalogController1(this);
         settingsController = new SettingsController1(this);
 
@@ -340,7 +341,7 @@ public class MainWin extends JFrame{
         });
         add(tpMain);
 
-        polygonProject = new PolygonProject(this);
+        polygonProject = new PolygonProject();
         polygonProject.addStation(new PolygonStation());
         reloadPolygonEditor();
         setControlsOn();
@@ -404,6 +405,18 @@ public class MainWin extends JFrame{
         return polygonController;
     }
 
+    public PolygonProject getPolygonProject() {
+        return polygonProject;
+    }
+
+    /**
+     * Gets this.extractController
+     * @return ExtractController
+     */
+    public ExtractController getExtractController() {
+        return extractController;
+    }
+
     public SettingsController getSettingsController() {
         return settingsController;
     }
@@ -424,17 +437,17 @@ public class MainWin extends JFrame{
         return titles;
     }
 
-    /**
-     * return theoProject
-     * @return TheoProject theoProject
-     */
-    public PolygonProject getPolygonProject() {
-        return polygonProject;
-    }
-
-    public ExtractProject getExtractProject() {
-        return extractProject;
-    }
+//    /**
+//     * return theoProject
+//     * @return TheoProject theoProject
+//     */
+//    public PolygonProject getPolygonProject() {
+//        return polygonProject;
+//    }
+//
+//    public ExtractProject getExtractProject() {
+//        return extractProject;
+//    }
 
     /**
      * Return catalog coordinates
@@ -579,7 +592,7 @@ public class MainWin extends JFrame{
                 surveyEditor.setFocusStations();
             }
             case 1 -> {
-                polygonProject = new PolygonProject(this);
+                polygonProject = new PolygonProject();
                 polygonProject.addStation(new PolygonStation());
                 reloadPolygonEditor();
                 setControlsOn();
@@ -623,8 +636,8 @@ public class MainWin extends JFrame{
         if (surveyProject != null) {
             if (surveyProject.containPolygon()) {
                 surveyController.processSourceData();
-                extractProject = new ExtractProject(this);
-                polygonProject = polygonController.loadPolList(extractProject.extractPolygonProject());
+//                extractProject = new ExtractProject(this);
+                polygonProject = polygonController.loadPolList(extractController.extractPolygonProject());
                 tpMain.setSelectedIndex(1);
                 reloadPolygonEditor();
                 setControlsOn();

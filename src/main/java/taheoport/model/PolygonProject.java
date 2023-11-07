@@ -10,26 +10,32 @@
      * Copyright Nizovkin A.V. 2022
      */
 public class PolygonProject {
-        private String absolutePolPath = "";
-        private BindType bindType = BindType.ZZ;
-        private double fHor = 0.0;
-        private double fX = 0.0;
-        private double fY = 0.0;
-        private double fZ = 0.0;
-        private double fAbs = 0.0;
-        private String fOtn = "Not";
-        private final LinkedList<PolygonStation> listPolygonStatons = new LinkedList<>();
-        private final MainWin parentFrame;
-        private double perimeter = 0.0;
+        private String absolutePolPath;
+        private BindType bindType;
+        private double fHor;
+        private double fX;
+        private double fY;
+        private double fZ;
+        private double fAbs;
+        private String fOtn;
+        private final LinkedList<PolygonStation> listPolygonStatons;
+        private double perimeter;
 
     public enum BindType {ZZ,TT, TO, OT, OO, TZ, ZT}
 
         /**
          * Constructor
-         * @param frame parent MainWin
          */
-    public PolygonProject(MainWin frame) {
-        parentFrame = frame;
+    public PolygonProject() {
+        absolutePolPath = "";
+        bindType = BindType.ZZ;
+        fHor = 0.0;
+        fX = 0.0;
+        fY = 0.0;
+        fAbs = 0.0;
+        fOtn = "Not";
+        perimeter = 0.0;
+        listPolygonStatons = new LinkedList<>();
     }
 
         /**
@@ -171,7 +177,7 @@ public class PolygonProject {
 
         /**
          * Sets bindType
-         * @param bindType
+         * @param bindType BindType
          */
         public void setBindType(BindType bindType) {
             this.bindType = bindType;
