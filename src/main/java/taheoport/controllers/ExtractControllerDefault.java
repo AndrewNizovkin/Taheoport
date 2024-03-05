@@ -8,11 +8,11 @@ import taheoport.model.SurveyProject;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ExtractController1 implements ExtractController{
+public class ExtractControllerDefault implements ExtractController{
     private final MainWin parentFrame;
     List<ExtractStation> extractProject;
 
-    public ExtractController1(MainWin frame) {
+    public ExtractControllerDefault(MainWin frame) {
         this.parentFrame = frame;
         extractProject = new LinkedList<>();
     }

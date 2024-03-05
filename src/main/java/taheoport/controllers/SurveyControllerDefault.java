@@ -9,10 +9,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
-public class SurveyController1 implements SurveyController {
+public class SurveyControllerDefault implements SurveyController {
     private final MainWin parentFrame;
 
-    public SurveyController1(MainWin frame) {
+    public SurveyControllerDefault(MainWin frame) {
         this.parentFrame = frame;
     }
 

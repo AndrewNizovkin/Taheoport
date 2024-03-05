@@ -7,10 +7,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.util.LinkedList;
 
-public class IOController1 implements IOController {
+public class IOControllerDefault implements IOController {
     private final MainWin parentFrame;
 
-    public IOController1(MainWin parentFrame) {
+    public IOControllerDefault(MainWin parentFrame) {
         this.parentFrame = parentFrame;
     }
 

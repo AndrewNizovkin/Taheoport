@@ -6,7 +6,7 @@ import taheoport.model.Settings;
 import java.io.File;
 import java.util.LinkedList;
 
-public class SettingsController1 implements SettingsController{
+public class SettingsControllerDefault implements SettingsController{
 
     private final MainWin parentFrame;
 
@@ -14,7 +14,7 @@ public class SettingsController1 implements SettingsController{
      * Constructor
      * @param parentFrame MainWin
      */
-    public SettingsController1(MainWin parentFrame) {
+    public SettingsControllerDefault(MainWin parentFrame) {
         this.parentFrame = parentFrame;
     }
 

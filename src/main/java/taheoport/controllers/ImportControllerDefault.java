@@ -10,10 +10,10 @@ import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ImportController1 implements ImportController{
+public class ImportControllerDefault implements ImportController{
     private MainWin parentFrame;
 
-    public ImportController1(MainWin frame) {
+    public ImportControllerDefault(MainWin frame) {
         this.parentFrame = frame;
     }
 

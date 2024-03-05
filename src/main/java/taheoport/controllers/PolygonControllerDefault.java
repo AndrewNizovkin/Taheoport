@@ -10,15 +10,15 @@ import java.util.LinkedList;
 
 import static taheoport.model.PolygonProject.BindType.TZ;
 
-public class PolygonController1 implements PolygonController{
+public class PolygonControllerDefault implements PolygonController{
 
     private final MainWin parentFrame;
     private final Adjuster adjuster;
 
 
-    public PolygonController1(MainWin frame) {
+    public PolygonControllerDefault(MainWin frame) {
         this.parentFrame = frame;
-        adjuster = new Adjuster1(frame);
+        adjuster = new AdjusterDefault(frame);
     }
 
     /**

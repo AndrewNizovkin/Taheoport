@@ -7,11 +7,11 @@ import taheoport.model.SurveyStation;
 
 import javax.swing.*;
 
-public class Adjuster1 implements Adjuster{
+public class AdjusterDefault implements Adjuster{
     private final MainWin parentFrame;
     private PolygonProject polygonProject;
 
-    public Adjuster1(MainWin frame) {
+    public AdjusterDefault(MainWin frame) {
 
         parentFrame = frame;
         polygonProject = parentFrame.getPolygonProject();

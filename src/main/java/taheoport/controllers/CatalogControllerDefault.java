@@ -10,11 +10,11 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class CatalogController1 implements CatalogController{
+public class CatalogControllerDefault implements CatalogController{
 
     private final MainWin parentFrame;
 
-    public CatalogController1(MainWin parentFrame) {
+    public CatalogControllerDefault(MainWin parentFrame) {
         this.parentFrame = parentFrame;
     }
 
