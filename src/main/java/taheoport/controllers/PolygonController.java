@@ -3,6 +3,7 @@ package taheoport.controllers;
 import taheoport.model.PolygonProject;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public interface PolygonController {
 
@@ -11,31 +12,31 @@ public interface PolygonController {
      * @param list list
      * @return PolygonProject
      */
-    PolygonProject loadPolList(LinkedList<String> list);
+    PolygonProject loadPolList(List<String> list);
 
     /**
      * gets list for writing to file current PolygonProject
      * @return LinkedList
      */
-    LinkedList<String> getPolList();
+    List<String> getPolList();
 
     /**
      * Gets polygonometry adjustment report
      * @return LinkedList <String>
      */
-    LinkedList<String> getReportXY ();
+    List<String> getReportXY ();
 
     /**
      * Gets leveling  adjustment report
      * @return LinkedList <String>
      */
-    LinkedList<String> getReportZ ();
+    List<String> getReportZ ();
 
     /**
      * Returns a list of rows in the report <Name X Y Z>
      * @return LinkedList <String>
      */
-    LinkedList<String> getReportNXYZ();
+    List<String> getReportNXYZ();
 
     /**
      * Processes the source data.

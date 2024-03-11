@@ -3,6 +3,7 @@ package taheoport.controllers;
 import taheoport.model.Catalog;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public interface CatalogController {
 
@@ -10,7 +11,7 @@ public interface CatalogController {
      * Downloads catalog from list
      * @param list LinkedList
      */
-    Catalog loadCatalogList(LinkedList<String> list);
+    Catalog loadCatalogList(List<String> list);
 
     /**
      * Updates base points with current catalog

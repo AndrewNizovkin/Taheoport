@@ -1,10 +1,10 @@
     package taheoport.gui;
 
-    import taheoport.controllers.MyChooser;
+//    import taheoport.controllers.MyChooser;
 
     import javax.swing.*;
     import java.awt.*;
-    import java.util.LinkedList;
+    import java.util.List;
 
     /**
      * This class encapsulates form for display results of extracting polygon from measurement
@@ -60,12 +60,8 @@
 // spExtractReport___________________________________________________________
 
             JTextArea textArea = new JTextArea();
-            LinkedList<String> llExtractReport = parentFrame.getExtractController().getExtractReport();
-            String s = llExtractReport.pollFirst();
-            while (s != null) {
-                textArea.append(s + "\n");
-                s = llExtractReport.pollFirst();
-            }
+            List<String> llExtractReport = parentFrame.getExtractController().getExtractReport();
+            llExtractReport.forEach(x -> textArea.append(x + "\n"));
             textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
             textArea.setLineWrap(false);
             textArea.setWrapStyleWord(true);

@@ -11,6 +11,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Vector;
+import java.util.List;
 
 /**
  * This main window of program
@@ -519,7 +520,7 @@ public class MainWin extends JFrame{
     private void importLeica() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                LinkedList <String>  llLeicaList = ioController.readTextFile(settings.getPathWorkDir(), "gsi",
+                List <String>  llLeicaList = ioController.readTextFile(settings.getPathWorkDir(), "gsi",
                         titles.get("MWopenFileTitle"));
                 if (llLeicaList != null) {
 //                    surveyProject = new SurveyProject(this).loadLeicaList(llLeicaList);
@@ -542,7 +543,7 @@ public class MainWin extends JFrame{
     private void importNicon() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                LinkedList <String>  llNiconList = ioController.readTextFile(settings.getPathWorkDir(), "raw", titles.get("MWopenFileTitle"));
+                List <String>  llNiconList = ioController.readTextFile(settings.getPathWorkDir(), "raw", titles.get("MWopenFileTitle"));
                 if (llNiconList != null) {
 //                surveyProject = new SurveyProject(this).loadNiconList(llNiconList);
                 surveyProject = importController.loadNicon(llNiconList);
@@ -563,7 +564,7 @@ public class MainWin extends JFrame{
     private void importTopcon() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                LinkedList<String> llTopconList = ioController.readTextFile(settings.getPathWorkDir(), "txt", titles.get("MWopenFileTitle"));
+                List<String> llTopconList = ioController.readTextFile(settings.getPathWorkDir(), "txt", titles.get("MWopenFileTitle"));
                 if (llTopconList != null) {
 //                    surveyProject = new SurveyProject(this).loadTopconList(llTopconList);
                     surveyProject = importController.loadTopcon(llTopconList);
@@ -608,7 +609,7 @@ public class MainWin extends JFrame{
     private void openFile() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                LinkedList<String> llTahList = ioController.readTextFile(settings.getPathWorkDir(), "tah", titles.get("MWopenFileTitle"));
+                List<String> llTahList = ioController.readTextFile(settings.getPathWorkDir(), "tah", titles.get("MWopenFileTitle"));
                 if (llTahList != null) {
                     surveyProject = importController.loadTah(llTahList);
                     reloadSurveyEditor();
@@ -617,7 +618,7 @@ public class MainWin extends JFrame{
             }
             }
             case 1 -> {
-                LinkedList<String> llPolList = ioController.readTextFile(settings.getPathWorkDir(), "pol", titles.get("MWopenFileTitle"));
+                List<String> llPolList = ioController.readTextFile(settings.getPathWorkDir(), "pol", titles.get("MWopenFileTitle"));
                 if (llPolList != null) {
                     polygonProject = polygonController.loadPolList(llPolList);
                     reloadPolygonEditor();

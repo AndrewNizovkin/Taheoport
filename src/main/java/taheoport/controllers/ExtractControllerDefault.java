@@ -23,7 +23,7 @@ public class ExtractControllerDefault implements ExtractController{
      * @return LinkedList<String>
      */
     @Override
-    public LinkedList<String> extractPolygonProject() {
+    public List<String> extractPolygonProject() {
         extractProject.clear();
         LinkedList<String> llPolList = new LinkedList<>();
         SurveyProject surveyProject = new SurveyProject(parentFrame);
@@ -95,8 +95,8 @@ public class ExtractControllerDefault implements ExtractController{
      * @return LinkedList<String>
      */
     @Override
-    public LinkedList<String> getExtractReport() {
-        LinkedList<String> llExtractReport = new LinkedList<>();
+    public List<String> getExtractReport() {
+        List<String> llExtractReport = new LinkedList<>();
         String str;
         LinkedList<String> llTopReportExtract = new Shell(parentFrame).getTopReportExtract();
         while ((str = llTopReportExtract.pollFirst()) != null) {

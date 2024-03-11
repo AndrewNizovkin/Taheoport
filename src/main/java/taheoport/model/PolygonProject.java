@@ -1,7 +1,7 @@
     package taheoport.model;
 
-    import taheoport.gui.MainWin;
     import java.util.LinkedList;
+    import java.util.List;
 
     /**
      * this class encapsulates data in a list of stations llTeoStation and
@@ -18,7 +18,7 @@ public class PolygonProject {
         private double fZ;
         private double fAbs;
         private String fOtn;
-        private final LinkedList<PolygonStation> listPolygonStatons;
+        private final List<PolygonStation> listPolygonStations;
         private double perimeter;
 
     public enum BindType {ZZ,TT, TO, OT, OO, TZ, ZT}
@@ -35,7 +35,7 @@ public class PolygonProject {
         fAbs = 0.0;
         fOtn = "Not";
         perimeter = 0.0;
-        listPolygonStatons = new LinkedList<>();
+        listPolygonStations = new LinkedList<>();
     }
 
         /**
@@ -60,7 +60,7 @@ public class PolygonProject {
          * @return String
          */
         public PolygonStation getPolygonStation(int idx) {
-        return listPolygonStatons.get(idx);
+        return listPolygonStations.get(idx);
         }
 
         /**
@@ -68,7 +68,7 @@ public class PolygonProject {
          * @return int size
          */
         public int getSizePolygonStations() {
-            return listPolygonStatons.size();
+            return listPolygonStations.size();
         }
 
         /**
@@ -140,7 +140,7 @@ public class PolygonProject {
          * @param idx int index removed element
          */
         public void removeStation(int idx) {
-            listPolygonStatons.remove(idx);
+            listPolygonStations.remove(idx);
         }
 
         /**
@@ -148,7 +148,7 @@ public class PolygonProject {
          * @param idx int idx
          */
         public void addStation(int idx) {
-            listPolygonStatons.add(idx, new PolygonStation());
+            listPolygonStations.add(idx, new PolygonStation());
         }
 
         /**
@@ -156,7 +156,7 @@ public class PolygonProject {
          * @param polygonStation instance of PolygonStation
          */
         public void addStation(PolygonStation polygonStation) {
-            listPolygonStatons.add(polygonStation);
+            listPolygonStations.add(polygonStation);
         }
 
         /**

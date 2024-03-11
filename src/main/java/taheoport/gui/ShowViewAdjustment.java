@@ -2,11 +2,9 @@ package taheoport.gui;
 
 import taheoport.model.Catalog;
 import taheoport.model.CatalogPoint;
-import taheoport.controllers.MyChooser;
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class encapsulates form for display result of polygon adjustment
@@ -78,11 +76,13 @@ public class ShowViewAdjustment extends JDialog {
 // spReportXY_______________________________________________________________________
 
         JTextArea textAreaXY = new JTextArea();
-        LinkedList<String> llReportXY = parentFrame.getPolygonController().getReportXY();
-        String s = llReportXY.pollFirst();
-        while (s != null) {
+        List<String> llReportXY = parentFrame.getPolygonController().getReportXY();
+        String s;
+        llReportXY.remove(0);
+        while (!llReportXY.isEmpty()) {
+            s = llReportXY.remove(0);
             textAreaXY.append(s + "\n");
-            s = llReportXY.pollFirst();
+
         }
         textAreaXY.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         textAreaXY.setLineWrap(false);
@@ -98,12 +98,8 @@ public class ShowViewAdjustment extends JDialog {
         JPanel pnlReportZ = new JPanel();
         JTextArea textAreaZ = new JTextArea();
         pnlReportZ.setLayout(new GridLayout(0, 1));
-        LinkedList<String> llReportZ = parentFrame.getPolygonController().getReportZ();
-        s = llReportZ.pollFirst();
-        while (s != null) {
-            textAreaZ.append(s + "\n");
-            s = llReportZ.pollFirst();
-        }
+        List<String> llReportZ = parentFrame.getPolygonController().getReportZ();
+        llReportZ.forEach(x -> textAreaZ.append(x + "\n"));
         textAreaZ.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         textAreaZ.setLineWrap(false);
         textAreaZ.setWrapStyleWord(true);

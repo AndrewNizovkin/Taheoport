@@ -1,6 +1,7 @@
 package taheoport.controllers;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public interface IOController {
 
@@ -11,7 +12,7 @@ public interface IOController {
      *              String [1] args {absolutePath}
      * @return LinkedList The first item in the list is the absolute path to the file
      */
-    LinkedList<String> readTextFile(String ... args);
+    List<String> readTextFile(String ... args);
 
     /**
      * Writes the list items to a text file of the specified type
@@ -21,5 +22,5 @@ public interface IOController {
      * @return LinkedList The first item in the list is the absolute path to the file
      */
 
-    String writeTextFile(LinkedList<String> list, String... args);
+    String writeTextFile(List<String> list, String... args);
 }

@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.util.LinkedList;
+import java.util.List;
 
 public class IOControllerDefault implements IOController {
     private final MainWin parentFrame;
@@ -23,8 +24,8 @@ public class IOControllerDefault implements IOController {
      * @return LinkedList The first item in the list is the absolute path to the file
      */
     @Override
-    public LinkedList<String> readTextFile(String... args) {
-        LinkedList <String> list = new LinkedList<>();
+    public List<String> readTextFile(String... args) {
+        List <String> list = new LinkedList<>();
         File file = new File("noname.txt");
         int res = 0;
         String str;
@@ -50,7 +51,7 @@ public class IOControllerDefault implements IOController {
 
             try (BufferedReader input = new BufferedReader(new FileReader(file.getAbsoluteFile()))) {
                 while ((str = input.readLine()) != null) {
-                    list.addLast(str);
+                    list.add(str);
                 }
             } catch (FileNotFoundException e) {
                 System.out.println("file not found");
@@ -72,7 +73,7 @@ public class IOControllerDefault implements IOController {
      * @return LinkedList The first item in the list is the absolute path to the file
      */
     @Override
-    public String writeTextFile(LinkedList<String> list, String... args) {
+    public String writeTextFile(List<String> list, String... args) {
         String absolutePath = parentFrame.getPathWorkDir();
         if (args.length != 0) {
             switch (args.length) {
@@ -82,8 +83,8 @@ public class IOControllerDefault implements IOController {
                         File f = new File(absolutePath);
 
                         try (BufferedWriter output = new BufferedWriter(new FileWriter(f.getAbsolutePath()))){
-                            while (list.size() > 0) {
-                                output.write(list.removeFirst());
+                            while (!list.isEmpty()) {
+                                output.write(list.remove(0));
                                 output.newLine();
                             }
                         } catch (FileNotFoundException e) {
@@ -114,8 +115,8 @@ public class IOControllerDefault implements IOController {
                         absolutePath = f.getAbsolutePath();
                     }
                     try (BufferedWriter output = new BufferedWriter(new FileWriter(absolutePath))){
-                        while (list.size() > 0) {
-                            output.write(list.removeFirst());
+                        while (!list.isEmpty()) {
+                            output.write(list.remove(0));
                             output.newLine();
                         }
                     } catch (FileNotFoundException e) {

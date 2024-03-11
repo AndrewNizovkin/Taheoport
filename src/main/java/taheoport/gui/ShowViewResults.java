@@ -6,7 +6,7 @@ import taheoport.model.SurveyProject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class encapsulates form for display result processing of measurement
@@ -118,11 +118,12 @@ public class ShowViewResults extends JDialog {
 // spReport__________________________________________________
 
         JTextArea textAreaReport = new JTextArea();
-        LinkedList<String> ll = parentFrame.getSurveyController().getReport();
-        String s = ll.pollFirst();
-        while (s != null) {
+        List<String> ll = parentFrame.getSurveyController().getReport();
+        String s;
+        ll.remove(0);
+        while (!ll.isEmpty()) {
+            s = ll.remove(0);
             textAreaReport.append(s + "\n");
-            s = ll.pollFirst();
         }
         textAreaReport.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         textAreaReport.setLineWrap(false);

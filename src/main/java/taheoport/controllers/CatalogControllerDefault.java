@@ -9,6 +9,7 @@ import taheoport.model.SurveyProject;
 import javax.swing.*;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public class CatalogControllerDefault implements CatalogController{
 
@@ -23,15 +24,15 @@ public class CatalogControllerDefault implements CatalogController{
      * @param list LinkedList
      */
     @Override
-    public Catalog loadCatalogList(LinkedList<String> list) {
+    public Catalog loadCatalogList(List<String> list) {
         Catalog catalog = new Catalog();
         if (list != null) {
             String line;
             String[] array;
             CatalogPoint cPoint;
-            catalog.setAbsoluteCatalogPath(list.removeFirst());
-            while (list.size() > 0) {
-                line = new DataHandler(list.removeFirst()).compress(" ").getStr();
+            catalog.setAbsoluteCatalogPath(list.remove(0));
+            while (!list.isEmpty()) {
+                line = new DataHandler(list.remove(0)).compress(" ").getStr();
                 array = line.split(" ");
                 if (array.length >= 4) {
                     cPoint = new CatalogPoint(array[0],

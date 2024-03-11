@@ -6,6 +6,7 @@ import taheoport.model.SurveyProject;
 import taheoport.model.SurveyStation;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,7 +24,7 @@ public class ImportControllerDefault implements ImportController{
      * @return SurveyProject
      */
     @Override
-    public SurveyProject loadTah(LinkedList<String> list) {
+    public SurveyProject loadTah(List<String> list) {
         SurveyProject surveyProject = new SurveyProject(parentFrame);
         SurveyStation surveyStation;
         String sep =" ";
@@ -32,19 +33,19 @@ public class ImportControllerDefault implements ImportController{
         if (list == null) {
             return null;
         }
-        surveyProject.setAbsoluteTahPath(list.removeFirst());
+        surveyProject.setAbsoluteTahPath(list.remove(0));
         try {
-            str = list.removeFirst();
+            str = list.remove(0);
             while (!str.contains("//") && list.size() > 1) {
                 str = new DataHandler(str).compress(sep).getStr();
                 array = str.split(sep);
                 surveyProject.addStation(array[0], array[1], array[2], array[3], array[5], array[6], array[7], "0.000", array[4]);
-                str = (String) list.removeFirst();
+                str = (String) list.remove(0);
             }
             int index = 0;
             surveyStation = surveyProject.getStation(index);
-            while (list.size() > 0) {
-                str = (String) list.removeFirst();
+            while (!list.isEmpty()) {
+                str = (String) list.remove(0);
                 if (!str.contains("//")) {
                     str = new DataHandler(str).compress(sep).getStr();
                     array = str.split(sep);
@@ -68,7 +69,7 @@ public class ImportControllerDefault implements ImportController{
      * @return SurveyProject
      */
     @Override
-    public SurveyProject loadLeica(LinkedList<String> list) {
+    public SurveyProject loadLeica(List<String> list) {
         SurveyProject surveyProject = new SurveyProject(parentFrame);
         SurveyStation surveyStation = new SurveyStation();
         String sep =" ";
@@ -77,10 +78,10 @@ public class ImportControllerDefault implements ImportController{
         DataHandler[] lineHandlers;
 //        int res = 0;
         String [] array;
-        surveyProject.setAbsoluteTahPath(list.removeFirst());
+        surveyProject.setAbsoluteTahPath(list.remove(0));
         try {
-            while (list.size() > 0) {
-                array = (list.removeFirst()).split(sep);
+            while (!list.isEmpty()) {
+                array = (list.remove(0)).split(sep);
                 lineHandlers = new DataHandler[array.length];
                 switch (array[0].substring(0, 2)) {
                     case "41" ->
@@ -146,14 +147,14 @@ public class ImportControllerDefault implements ImportController{
      * @return SurveyProject
      */
     @Override
-    public SurveyProject loadTopcon(LinkedList<String> list) {
+    public SurveyProject loadTopcon(List<String> list) {
         SurveyProject surveyProject = new SurveyProject(parentFrame);
         SurveyStation surveyStation;
         Picket picket;
-        surveyProject.setAbsoluteTahPath(list.removeFirst());
+        surveyProject.setAbsoluteTahPath(list.remove(0));
         String[] measurements;
         String[] measurement;
-        String [] array = list.removeFirst().split("_'");
+        String [] array = list.remove(0).split("_'");
         for (String row : array) {
             Matcher m = Pattern.compile("^.+?\\+").matcher(row);
             if (m.find()) {
@@ -184,13 +185,13 @@ public class ImportControllerDefault implements ImportController{
      * @return SurveyProject
      */
     @Override
-    public SurveyProject loadNicon(LinkedList<String> list) {
+    public SurveyProject loadNicon(List<String> list) {
         SurveyProject surveyProject = new SurveyProject(parentFrame);
         SurveyStation surveyStation = new SurveyStation();
-        surveyProject.setAbsoluteTahPath(list.removeFirst());
+        surveyProject.setAbsoluteTahPath(list.remove(0));
         try {
-            while (list.size() > 0){
-                String [] array = list.removeFirst().split(",");
+            while (!list.isEmpty()){
+                String [] array = list.remove(0).split(",");
                 switch (array[0]) {
                     case "ST" -> surveyStation = surveyProject.addStation(array[1],
                             "0.000", "0.000", "0.000",

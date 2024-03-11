@@ -7,6 +7,7 @@ import taheoport.model.Shell;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 import static taheoport.model.PolygonProject.BindType.TZ;
 
@@ -28,7 +29,7 @@ public class PolygonControllerDefault implements PolygonController{
      * @return PolygonProject
      */
     @Override
-    public PolygonProject loadPolList(LinkedList<String> list) {
+    public PolygonProject loadPolList(List<String> list) {
         PolygonProject polygonProject = new PolygonProject();
         PolygonStation ts;
         String sep = " ";
@@ -37,9 +38,9 @@ public class PolygonControllerDefault implements PolygonController{
         if (list == null) {
             return null;
         }
-        parentFrame.getPolygonProject().setAbsolutePolPath(list.removeFirst());
-        while (list.size() > 0) {
-            str = new DataHandler(list.removeFirst()).compress(sep).getStr();
+        parentFrame.getPolygonProject().setAbsolutePolPath(list.remove(0));
+        while (!list.isEmpty()) {
+            str = new DataHandler(list.remove(0)).compress(sep).getStr();
             array = str.split(sep);
             if (array.length == 7) {
                 ts = new PolygonStation();
@@ -66,10 +67,10 @@ public class PolygonControllerDefault implements PolygonController{
      * @return LinkedList
      */
     @Override
-    public LinkedList<String> getPolList() {
+    public List<String> getPolList() {
         String sep = " ";
         String s = "";
-        LinkedList <String> llPol = new LinkedList<>();
+        List <String> llPol = new LinkedList<>();
         PolygonStation polygonStation;
         for (int i = 0; i < parentFrame.getPolygonProject().getSizePolygonStations(); i++) {
             polygonStation = parentFrame.getPolygonProject().getPolygonStation(i);
@@ -97,15 +98,11 @@ public class PolygonControllerDefault implements PolygonController{
      * @return LinkedList <String>
      */
     @Override
-    public LinkedList<String> getReportXY() {
-        LinkedList<String> llReportXY = new LinkedList<String>();
-        LinkedList<String> llTopReportXY = new Shell(parentFrame).getTopReportXY();
+    public List<String> getReportXY() {
+        List<String> llTopReportXY = new Shell(parentFrame).getTopReportXY();
         HashMap<String, String> titlesReports = new Shell(parentFrame).getTitlesReports();
-        String str;
         PolygonProject polygonProject = parentFrame.getPolygonProject();
-        while ((str = llTopReportXY.pollFirst()) != null) {
-            llReportXY.add(str);
-        }
+        List<String> llReportXY = new LinkedList<>(llTopReportXY);
 
         switch (polygonProject.getBindType()) {
             case TZ, TO, TT -> {
@@ -241,7 +238,7 @@ public class PolygonControllerDefault implements PolygonController{
      * @return LinkedList <String>
      */
     @Override
-    public LinkedList<String> getReportZ() {
+    public List<String> getReportZ() {
         PolygonProject polygonProject = parentFrame.getPolygonProject();
         double dZCorrected;
         double sumDZ = 0.0;
@@ -249,13 +246,14 @@ public class PolygonControllerDefault implements PolygonController{
         double sumDZCorrected = 0.0;
         int start = 0;
         int finish = polygonProject.getSizePolygonStations() - 1;
-        LinkedList<String> llReportZ = new LinkedList<>();
+
         LinkedList<String> llTopReportZ = new Shell(parentFrame).getTopReportZ();
+        LinkedList<String> llReportZ = new LinkedList<>(llTopReportZ);
         HashMap<String, String> titlesReports = new Shell(parentFrame).getTitlesReports();
-        String str;
-        while ((str = llTopReportZ.pollFirst()) != null) {
-            llReportZ.add(str);
-        }
+//        String str;
+//        while ((str = llTopReportZ.pollFirst()) != null) {
+//            llReportZ.add(str);
+//        }
 
         if (polygonProject.getBindType() == PolygonProject.BindType.TT |
                 polygonProject.getBindType() == PolygonProject.BindType.TO |
@@ -331,9 +329,9 @@ public class PolygonControllerDefault implements PolygonController{
      * @return LinkedList <String>
      */
     @Override
-    public LinkedList<String> getReportNXYZ() {
+    public List<String> getReportNXYZ() {
         String sep = " ";
-        LinkedList<String> llReportNXYZ = new LinkedList<>();
+        List<String> llReportNXYZ = new LinkedList<>();
         PolygonStation polygonStation;
         for (int i = 0; i < parentFrame.getPolygonProject().getSizePolygonStations(); i++) {
             polygonStation = parentFrame.getPolygonProject().getPolygonStation(i);

@@ -7,6 +7,7 @@ import taheoport.model.SurveyStation;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class SurveyControllerDefault implements SurveyController {
@@ -22,11 +23,11 @@ public class SurveyControllerDefault implements SurveyController {
      * @return LinkedList
      */
     @Override
-    public LinkedList<String> getTahList() {
+    public List<String> getTahList() {
         SurveyStation surveyStation;
         Picket picket;
         String sep = " ";
-        LinkedList <String> list = new LinkedList<>();
+        List<String> list = new LinkedList<>();
         try {
             for (int i = 0; i < parentFrame.getSurveyProject().sizeStations(); i++) {
                 surveyStation = parentFrame.getSurveyProject().getStation(i);
@@ -62,7 +63,7 @@ public class SurveyControllerDefault implements SurveyController {
      * @return LinkedList
      */
     @Override
-    public LinkedList<String> getPickets() {
+    public List<String> getPickets() {
         SurveyStation surveyStation;
         Picket picket;
         String sep = " ";
@@ -90,7 +91,7 @@ public class SurveyControllerDefault implements SurveyController {
      * @return LinkedList
      */
     @Override
-    public LinkedList<String> getReport() {
+    public List<String> getReport() {
         HashMap<String, String> titlesReports = new Shell(parentFrame).getTitlesReports();
         Picket picket;
         SurveyStation surveyStation;

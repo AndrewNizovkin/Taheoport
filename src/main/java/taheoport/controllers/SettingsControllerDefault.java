@@ -5,6 +5,7 @@ import taheoport.model.Settings;
 
 import java.io.File;
 import java.util.LinkedList;
+import java.util.List;
 
 public class SettingsControllerDefault implements SettingsController{
 
@@ -52,19 +53,20 @@ public class SettingsControllerDefault implements SettingsController{
             saveOptions();
         }
 
-        LinkedList <String > list = parentFrame.getIoController().readTextFile("taheoport.ini");
-        list.pollFirst();
+        List<String > list = parentFrame.getIoController().readTextFile("taheoport.ini");
+        list.remove(0);
         String firstLine;
-        firstLine = list.pollFirst();
+        firstLine = list.remove(0);
 
         if (firstLine  == null || !firstLine.equals("taheoport_ini")) {
             saveOptions();
             list = parentFrame.getIoController().readTextFile("taheoport.ini");
-            list.pollFirst();
+            list.remove(0);
         }
 
         String [] array;
-        while ((firstLine = list.pollFirst()) != null) {
+        while (!list.isEmpty()) {
+            firstLine = list.remove(0);
             array = firstLine.split("=");
             switch (array[0]) {
                 case "pathWorkDir" -> settings.setPathWorkDir(array[1]);
