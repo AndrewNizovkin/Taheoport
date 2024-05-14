@@ -1,7 +1,5 @@
 package taheoport.model;
 
-import taheoport.controllers.DataHandler;
-
 import java.util.LinkedList;
 
 /**

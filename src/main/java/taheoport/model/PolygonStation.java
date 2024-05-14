@@ -1,6 +1,6 @@
 package taheoport.model;
 
-import taheoport.controllers.DataHandler;
+import taheoport.service.DataHandler;
 
 /**
  * This class encapsulates fields of PolygonStation

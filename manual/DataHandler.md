@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `taheoport.controllers.DataHandler`
+`java.lang.Object` -> `taheoport.service.DataHandler`
 
 ---
 

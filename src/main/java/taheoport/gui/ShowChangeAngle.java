@@ -1,6 +1,6 @@
 package taheoport.gui;
 
-import taheoport.controllers.DataHandler;
+import taheoport.service.DataHandler;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

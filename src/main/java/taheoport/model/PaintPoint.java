@@ -1,6 +1,6 @@
 package taheoport.model;
 
-import taheoport.controllers.DataHandler;
+import taheoport.service.DataHandler;
 
 /**
  * This class defines a point by the 3D coordinates
