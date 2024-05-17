@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Provides methods for parsing, analyzing, and converting a string str
+ * This class provides methods for parsing, analyzing, and converting a string str
  * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */

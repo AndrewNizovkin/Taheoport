@@ -19,13 +19,13 @@ import java.util.List;
  */
 public class MainWin extends JFrame{
 //    private static TahEditorFocusTransversalPolicy focusPolicy;
-    private final IOController ioController;
-    private final ImportController importController;
-    private final SurveyController surveyController;
-    private final PolygonController polygonController;
-    private final ExtractController extractController;
-    private final CatalogController catalogController;
-    private final SettingsController settingsController;
+    private final IOService ioService;
+    private final ImportService importService;
+    private final SurveyService surveyService;
+    private final PolygonService polygonService;
+    private final ExtractService extractService;
+    private final CatalogService catalogService;
+    private final SettingsService settingsService;
     private final JTabbedPane tpMain;
     private final JPanel pnlMeasurements;
     private final JPanel pnlPolygon;
@@ -36,25 +36,25 @@ public class MainWin extends JFrame{
     private final Settings settings;
     private HashMap<String, String> titles;
     private boolean isCatalog;
-    private final int wMain; // main frame width
-    private final int hMain; // main frame height
+    private final int wMain;
+    private final int hMain;
     private final JMenu mFile;
     private final JMenu mTools;
     private final JMenu mHelp;
-    private final JMenu mImport; // main frame menu
+    private final JMenu mImport;
     private final JMenuItem fNew;
     private final JMenuItem fOpen;
     private final JMenuItem fSave;
     private final JMenuItem fSaveAs;
-    private final JMenuItem fExit; // File  menu items
-    private final JMenuItem tOptions; // Options menu items
+    private final JMenuItem fExit;
+    private final JMenuItem tOptions;
     private final JMenuItem tRun;
     private final JMenuItem tLoadCat;
     private final JMenuItem tView;
     private final JMenuItem tUpdate;
-    private final JMenuItem tExtractPol; // Tools menu items
+    private final JMenuItem tExtractPol;
     private final JMenuItem hAbout;
-    private final JMenuItem hHelp; // File menu items
+    private final JMenuItem hHelp;
     private final JButton btnNew;
     private final JButton btnOpen;
     private final JButton btnSave;
@@ -73,16 +73,16 @@ public class MainWin extends JFrame{
      */
     public MainWin() {
         super("Taheoport");
-        ioController = new IOControllerDefault(this);
-        importController = new ImportControllerDefault(this);
-        surveyController = new SurveyControllerDefault(this);
-        polygonController = new PolygonControllerDefault(this);
-        extractController = new ExtractControllerDefault(this);
-        catalogController = new CatalogControllerDefault(this);
-        settingsController = new SettingsControllerDefault(this);
+        ioService = new IOServiceDefault(this);
+        importService = new ImportServiceDefault(this);
+        surveyService = new SurveyServiceDefault(this);
+        polygonService = new PolygonServiceDefault(this);
+        extractService = new ExtractServiceDefault(this);
+        catalogService = new CatalogServiceDefault(this);
+        settingsService = new SettingsServiceDefault(this);
 
         settings = new Settings();
-        settingsController.loadOptions();
+        settingsService.loadOptions();
         titles = new Shell(this).getTitles();
 //        pathWorkDir = settings.getPathWorkDir();
 
@@ -181,7 +181,7 @@ public class MainWin extends JFrame{
 
             tUpdate = new JMenuItem(titles.get("MWtUpdate"));
             tUpdate.setEnabled(false);
-            tUpdate.addActionListener(e -> catalogController.updateBasePoints(tpMain.getSelectedIndex()));
+            tUpdate.addActionListener(e -> catalogService.updateBasePoints(tpMain.getSelectedIndex()));
 
             tRun = new JMenuItem(titles.get("MWtRun"), new ImageIcon("images/run.png"));
             tRun.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));
@@ -385,24 +385,24 @@ public class MainWin extends JFrame{
      * Gets this.ioController
      * @return IOController
      */
-    public IOController getIoController() {
-        return this.ioController;
+    public IOService getIoController() {
+        return this.ioService;
     }
 
     /**
      * Gets this.surveyController
      * @return SurveyController
      */
-    public SurveyController getSurveyController() {
-        return surveyController;
+    public SurveyService getSurveyController() {
+        return surveyService;
     }
 
     /**
      * Gets this.polygonController
      * @return PolygonController
      */
-    public PolygonController getPolygonController() {
-        return polygonController;
+    public PolygonService getPolygonController() {
+        return polygonService;
     }
 
     public PolygonProject getPolygonProject() {
@@ -413,12 +413,12 @@ public class MainWin extends JFrame{
      * Gets this.extractController
      * @return ExtractController
      */
-    public ExtractController getExtractController() {
-        return extractController;
+    public ExtractService getExtractController() {
+        return extractService;
     }
 
-    public SettingsController getSettingsController() {
-        return settingsController;
+    public SettingsService getSettingsController() {
+        return settingsService;
     }
 
     /**
@@ -519,14 +519,14 @@ public class MainWin extends JFrame{
     private void importLeica() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                List <String>  llLeicaList = ioController.readTextFile(settings.getPathWorkDir(), "gsi",
+                List <String>  llLeicaList = ioService.readTextFile(settings.getPathWorkDir(), "gsi",
                         titles.get("MWopenFileTitle"));
                 if (llLeicaList != null) {
 //                    surveyProject = new SurveyProject(this).loadLeicaList(llLeicaList);
-                    surveyProject = importController.loadLeica(llLeicaList);
+                    surveyProject = importService.loadLeica(llLeicaList);
                     reloadSurveyEditor();
                     setControlsOn();
-                    surveyProject.setAbsoluteTahPath(ioController.writeTextFile(surveyController.getTahList(),settings.getPathWorkDir(),
+                    surveyProject.setAbsoluteTahPath(ioService.writeTextFile(surveyService.getTahList(),settings.getPathWorkDir(),
                             "tah", "Write Tah"));
                     setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
                     surveyEditor.setFocusStations();
@@ -542,13 +542,13 @@ public class MainWin extends JFrame{
     private void importNicon() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                List <String>  llNiconList = ioController.readTextFile(settings.getPathWorkDir(), "raw", titles.get("MWopenFileTitle"));
+                List <String>  llNiconList = ioService.readTextFile(settings.getPathWorkDir(), "raw", titles.get("MWopenFileTitle"));
                 if (llNiconList != null) {
 //                surveyProject = new SurveyProject(this).loadNiconList(llNiconList);
-                surveyProject = importController.loadNicon(llNiconList);
+                surveyProject = importService.loadNicon(llNiconList);
                     reloadSurveyEditor();
                     setControlsOn();
-                    surveyProject.setAbsoluteTahPath(ioController.writeTextFile(surveyController.getTahList(), settings.getPathWorkDir(), "tah", "write Tah"));
+                    surveyProject.setAbsoluteTahPath(ioService.writeTextFile(surveyService.getTahList(), settings.getPathWorkDir(), "tah", "write Tah"));
                     setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
                     surveyEditor.setFocusStations();
                 }
@@ -563,13 +563,13 @@ public class MainWin extends JFrame{
     private void importTopcon() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                List<String> llTopconList = ioController.readTextFile(settings.getPathWorkDir(), "txt", titles.get("MWopenFileTitle"));
+                List<String> llTopconList = ioService.readTextFile(settings.getPathWorkDir(), "txt", titles.get("MWopenFileTitle"));
                 if (llTopconList != null) {
 //                    surveyProject = new SurveyProject(this).loadTopconList(llTopconList);
-                    surveyProject = importController.loadTopcon(llTopconList);
+                    surveyProject = importService.loadTopcon(llTopconList);
                     reloadSurveyEditor();
                     setControlsOn();
-                    surveyProject.setAbsoluteTahPath(ioController.writeTextFile(surveyController.getTahList(), settings.getPathWorkDir(), "tah", "write Tah"));
+                    surveyProject.setAbsoluteTahPath(ioService.writeTextFile(surveyService.getTahList(), settings.getPathWorkDir(), "tah", "write Tah"));
                     setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
                     surveyEditor.setFocusStations();
                 }
@@ -608,18 +608,18 @@ public class MainWin extends JFrame{
     private void openFile() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                List<String> llTahList = ioController.readTextFile(settings.getPathWorkDir(), "tah", titles.get("MWopenFileTitle"));
+                List<String> llTahList = ioService.readTextFile(settings.getPathWorkDir(), "tah", titles.get("MWopenFileTitle"));
                 if (llTahList != null) {
-                    surveyProject = importController.loadTah(llTahList);
+                    surveyProject = importService.loadTah(llTahList);
                     reloadSurveyEditor();
                     setControlsOn();
                     surveyEditor.setFocusStations();
             }
             }
             case 1 -> {
-                List<String> llPolList = ioController.readTextFile(settings.getPathWorkDir(), "pol", titles.get("MWopenFileTitle"));
+                List<String> llPolList = ioService.readTextFile(settings.getPathWorkDir(), "pol", titles.get("MWopenFileTitle"));
                 if (llPolList != null) {
-                    polygonProject = polygonController.loadPolList(llPolList);
+                    polygonProject = polygonService.loadPolList(llPolList);
                     reloadPolygonEditor();
                     setControlsOn();
                     setTitle("Taheoport: " + polygonProject.getAbsolutePolPath());
@@ -635,9 +635,9 @@ public class MainWin extends JFrame{
     private void extractPol() {
         if (surveyProject != null) {
             if (surveyProject.containPolygon()) {
-                surveyController.processSourceData();
+                surveyService.processSourceData();
 //                extractProject = new ExtractProject(this);
-                polygonProject = polygonController.loadPolList(extractController.extractPolygonProject());
+                polygonProject = polygonService.loadPolList(extractService.extractPolygonProject());
                 tpMain.setSelectedIndex(1);
                 reloadPolygonEditor();
                 setControlsOn();
@@ -658,23 +658,23 @@ public class MainWin extends JFrame{
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
                 if (surveyProject.getAbsoluteTahPath().isEmpty()) {
-                    String s = ioController.writeTextFile(surveyController.getTahList(), settings.getPathWorkDir(), "tah", "Write Tah");
+                    String s = ioService.writeTextFile(surveyService.getTahList(), settings.getPathWorkDir(), "tah", "Write Tah");
                     if (s != null) {
                         surveyProject.setAbsoluteTahPath(s);
                     }
                 } else {
-                    surveyProject.setAbsoluteTahPath(ioController.writeTextFile(surveyController.getTahList(), surveyProject.getAbsoluteTahPath()));
+                    surveyProject.setAbsoluteTahPath(ioService.writeTextFile(surveyService.getTahList(), surveyProject.getAbsoluteTahPath()));
                 }
                 setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
             }
             case 1 -> {
                 if (polygonProject.getAbsolutePolPath().isEmpty()) {
-                    String s = ioController.writeTextFile(polygonController.getPolList(), settings.getPathWorkDir(), "pol", "Write *.pol");
+                    String s = ioService.writeTextFile(polygonService.getPolList(), settings.getPathWorkDir(), "pol", "Write *.pol");
                     if (s != null) {
                         polygonProject.setAbsolutePolPath(s);
                     }
                 } else {
-                    polygonProject.setAbsolutePolPath(ioController.writeTextFile(polygonController.getPolList(), polygonProject.getAbsolutePolPath()));
+                    polygonProject.setAbsolutePolPath(ioService.writeTextFile(polygonService.getPolList(), polygonProject.getAbsolutePolPath()));
                 }
                 setTitle("Taheoport: " + polygonProject.getAbsolutePolPath());
             }
@@ -688,14 +688,14 @@ public class MainWin extends JFrame{
     private void saveAs() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                String s = ioController.writeTextFile(surveyController.getTahList(), settings.getPathWorkDir(), "tah", titles.get("MWsaveTahTitle"));
+                String s = ioService.writeTextFile(surveyService.getTahList(), settings.getPathWorkDir(), "tah", titles.get("MWsaveTahTitle"));
                 if (s != null) {
                     surveyProject.setAbsoluteTahPath(s);
                     setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
                 }
             }
             case 1 -> {
-                String s = ioController.writeTextFile(polygonController.getPolList(), settings.getPathWorkDir(), "pol", titles.get("MWsavePolTitle"));
+                String s = ioService.writeTextFile(polygonService.getPolList(), settings.getPathWorkDir(), "pol", titles.get("MWsavePolTitle"));
                 if (s != null) {
                     polygonProject.setAbsolutePolPath(s);
                     setTitle("Taheoport: " + polygonProject.getAbsolutePolPath());
@@ -710,11 +710,11 @@ public class MainWin extends JFrame{
     private void processSourceData() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                surveyController.processSourceData();
-                ioController.writeTextFile(surveyController.getPickets(), settings.getPathWorkDir(), "dat", "Write DAT");
+                surveyService.processSourceData();
+                ioService.writeTextFile(surveyService.getPickets(), settings.getPathWorkDir(), "dat", "Write DAT");
             }
             case 1 -> {
-                polygonController.processSourceData();
+                polygonService.processSourceData();
                 reloadPolygonEditor();
                 polygonEditor.setBindings();
             }
@@ -785,7 +785,7 @@ public class MainWin extends JFrame{
     private void viewResult() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                surveyController.processSourceData();
+                surveyService.processSourceData();
                 new ShowViewResults(this);
             }
             case 1 -> {
@@ -804,7 +804,7 @@ public class MainWin extends JFrame{
      * This action load points coordinates from text file *.kat to sp (SurveyProject)
      */
     private void loadCatalog() {
-            catalog = catalogController.loadCatalogList(ioController.readTextFile(settings.getPathWorkDir(),
+            catalog = catalogService.loadCatalogList(ioService.readTextFile(settings.getPathWorkDir(),
                     "kat",
                     titles.get("MWloadCatalogTitle")));
         if (catalog.getSizeCatalog() > 0) {

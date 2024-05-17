@@ -7,6 +7,9 @@ import taheoport.model.SurveyStation;
 
 import javax.swing.*;
 
+/**
+ * This class encapsulates data and methods for mathematics processing of polygon
+ */
 public class AdjusterDefault implements Adjuster{
     private final MainWin parentFrame;
     private PolygonProject polygonProject;
