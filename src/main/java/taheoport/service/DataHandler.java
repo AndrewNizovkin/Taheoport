@@ -91,7 +91,7 @@ public class DataHandler {
      * @return
      */
     public boolean isValidName() {
-        if (str.equals("")) return false;
+        if (str.isEmpty()) return false;
         return !str.contains(" ") & !str.contains("/");
     }
 
