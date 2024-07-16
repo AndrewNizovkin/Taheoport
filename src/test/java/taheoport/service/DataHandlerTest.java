@@ -1,10 +1,8 @@
 package taheoport.service;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -54,18 +52,51 @@ class DataHandlerTest {
     }
 
     @Test
-    void isValidName() {
+    void isValidNameTrue() {
+        DataHandler dataHandler = new DataHandler("name1");
+
+        boolean expect = dataHandler.isValidName();
+
+        assertTrue(expect);
     }
 
-    @org.junit.jupiter.api.Test
-    void isPositiveNumber() {
+    @ParameterizedTest
+    @CsvSource({"name 1",
+            "name /"})
+    void isValidNameFalse(String string) {
+        DataHandler dataHandler = new DataHandler(string);
+
+        boolean expect = dataHandler.isValidName();
+
+        assertFalse(expect);
     }
 
-    @org.junit.jupiter.api.Test
+    @ParameterizedTest
+    @CsvSource({"1.345",
+            "0", "1", "1000.2332"})
+    void isPositiveNumberTrue(String str) {
+        DataHandler dataHandler = new DataHandler(str);
+
+        boolean expect = dataHandler.isPositiveNumber();
+
+        assertTrue(expect);
+    }
+
+    @ParameterizedTest
+    @CsvSource({"-1.345", "1/", "-100"})
+    void isPositiveNumberFalse(String str) {
+        DataHandler dataHandler = new DataHandler(str);
+
+        boolean expect = dataHandler.isPositiveNumber();
+
+        assertFalse(expect);
+    }
+
+    @Test
     void isNumber() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void zenithToVert() {
     }
 

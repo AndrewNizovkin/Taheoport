@@ -97,7 +97,7 @@ public class DataHandler {
 
     /**
      * Checks the validity of the entered only positive number
-     * @return
+     * @return boolean result
      */
     public boolean isPositiveNumber() {
         int points = 0;
