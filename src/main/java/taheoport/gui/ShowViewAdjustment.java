@@ -128,14 +128,19 @@ public class ShowViewAdjustment extends JDialog {
             sellRow = -1;
             tblNXYZ.getSelectionModel().addListSelectionListener(e -> {
                 sellRow = tblNXYZ.getSelectedRow();
-                this.reloadPnlViewNXYZ();
+                pnlViewNXYZ.setIndex(sellRow);
+                pnlViewNXYZ.repaint();
+//                this.reloadPnlViewNXYZ();
             });
 
             JScrollPane spNXYZ = new JScrollPane(tblNXYZ);
             spNXYZ.setPreferredSize(new Dimension(widthFrame / 5 * 2, heightFrame));
 
         pnlNXYZ.add(spNXYZ, BorderLayout.WEST);
-        reloadPnlViewNXYZ();
+        pnlViewNXYZ = new PolygonPaintPanel(parentFrame.getPolygonProject(), sellRow);
+        pnlNXYZ.add(pnlViewNXYZ, BorderLayout.CENTER);
+
+//        reloadPnlViewNXYZ();
 
 // tp____________________________________________________________________________
 
@@ -149,20 +154,5 @@ public class ShowViewAdjustment extends JDialog {
         add(tp);
         setResizable(true);
         setVisible(true);
-//-->> The End of constructor
     }
-
-    /**
-     * add pnlViewNXYZ to pnlNXYZ
-     */
-    private void reloadPnlViewNXYZ() {
-        if (pnlViewNXYZ != null) {
-            pnlNXYZ.remove(pnlViewNXYZ);
-        }
-        pnlViewNXYZ = new PolygonPaintPanel(parentFrame.getPolygonProject(), sellRow);
-        pnlNXYZ.add(pnlViewNXYZ, BorderLayout.CENTER);
-        revalidate();
-    }
-
-//-->> The END of class ShowViewAdjustment
 }

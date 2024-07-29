@@ -14,7 +14,7 @@ import java.awt.*;
  */
 public class PolygonPaintPanel extends JPanel {
     private final PolygonProject polygonProject;
-    private final int index;
+    private int index;
 
     /**
      * Constructor
@@ -25,6 +25,10 @@ public class PolygonPaintPanel extends JPanel {
         this.polygonProject = polygonProject;
         index = idx;
 
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     protected void paintComponent(Graphics g) {

@@ -99,7 +99,9 @@ public class ShowViewResults extends JDialog {
         sellRow = -1;
         tblView.getSelectionModel().addListSelectionListener(e -> {
             sellRow = tblView.getSelectedRow();
-            this.reloadPnlView();
+            pnlView.setIndex(sellRow);
+            pnlView.repaint();
+//            this.reloadPnlView();
         });
         JScrollPane spnlTblView = new JScrollPane(tblView);
         spnlTblView.setPreferredSize(new Dimension(widthFrame / 5 * 2, heigthFrame));
@@ -153,13 +155,5 @@ public class ShowViewResults extends JDialog {
         return surveyProject;
     }
 
-    /**
-     * Updates pnlView
-     */
-    private void reloadPnlView() {
-        pnlKatalog.remove(pnlView);
-        pnlView = new PaintPanel(this, sellRow);
-        pnlKatalog.add(pnlView, BorderLayout.CENTER);
-        revalidate();
-    }
+
 }

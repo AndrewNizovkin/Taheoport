@@ -12,7 +12,7 @@ import java.awt.*;
  * Copyright Nizovkin A.V. 2022
  */
 public class PaintPanel extends JPanel {
-    private final int index;
+    private int index;
     private final ShowViewResults parentFrame;
     private PaintProject ppPaintPoints;
 
@@ -29,11 +29,16 @@ public class PaintPanel extends JPanel {
         index = sellRow;
     }
 
-/*
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    /*
     public PaintProject getPpPaintPoints() {
         return ppPaintPoints;
     }
 */
+
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
