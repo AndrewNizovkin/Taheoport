@@ -65,13 +65,11 @@ public class SurveyEditorStandart extends JPanel  {
      * @param index int index of current SurveyStation of SurveyProject
      */
     public SurveyEditorStandart(MainWin parentFrame, int index) {
-//--
         if (!(parentFrame == null)) {
             this.index = index;
             this.surveyProject = parentFrame.getSurveyProject();
             this.parentFrame = parentFrame;
             surveyStation = this.surveyProject.getStation(index);
-            //    private CatalogPoint cpStation;
             SetCoordinates actionSetStation = new SetCoordinates("StationName");
             SetCoordinates actionSetOr = new SetCoordinates("OrName");
             if (this.parentFrame.isCatalog()) {
@@ -83,14 +81,29 @@ public class SurveyEditorStandart extends JPanel  {
             ImageIcon imageInsertRowAfter = new ImageIcon("images/insert_row_after.png");
             setLayout(new GridBagLayout());
 
-// pnlStation_________________________________________________________________________
+            pnlStations = new JPanel();
+            pnlStations.setLayout(new BorderLayout());
+            pnlStations.setBorder(BorderFactory.createTitledBorder(null,
+                    this.parentFrame.getTitles().get("TAHlblStationListTitle"),
+                    TitledBorder.CENTER,
+                    TitledBorder.TOP,
+                    new Font(Font.DIALOG, Font.PLAIN, 12),
+                    Color.BLUE));
+
+//region pnlStation
 
             pnlStation = new JPanel(new GridBagLayout());
-            pnlStation.setBorder(BorderFactory.createTitledBorder(null, this.parentFrame.getTitles().get("TAHlblStationTitle"), TitledBorder.CENTER, TitledBorder.TOP, new Font(Font.DIALOG, Font.PLAIN, 12), Color.BLUE));
-            pnlStation.setPreferredSize(new Dimension(this.parentFrame.getWidthMain() / 2, this.parentFrame.getHeightMain()));
+            pnlStation.setBorder(BorderFactory.createTitledBorder(null,
+                    this.parentFrame.getTitles().get("TAHlblStationTitle"),
+                    TitledBorder.CENTER,
+                    TitledBorder.TOP,
+                    new Font(Font.DIALOG, Font.PLAIN, 12),
+                    Color.BLUE));
+            pnlStation.setPreferredSize(new Dimension(this.parentFrame.getWidthMain() / 2,
+                    this.parentFrame.getHeightMain()));
+//endregion
 
-
-// btnStationName_________________________________________________________________
+//region btnStationName
 
             btnStationName = new JButton(actionSetStation);
             btnStationName.setBorder(BorderFactory.createEtchedBorder());
@@ -99,8 +112,9 @@ public class SurveyEditorStandart extends JPanel  {
 
             pnlStation.add(btnStationName, new GridBagConstraints(0, 0, 1, 1, 0, 1,
                     GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 10, 0));
+//endregion
 
-// tfStationName----------------------------------------------------------------------
+//region tfStationName
 
             tfStationName = new JTextField(15);
             tfStationName.setText(surveyStation.getName());
@@ -148,14 +162,16 @@ public class SurveyEditorStandart extends JPanel  {
 
             pnlStation.add(tfStationName, new GridBagConstraints(1, 0, 1, 1, 1, 0,
                     GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 20, 0));
+//endregion
 
-// lblStationX______________________________________________________________________
+//region lblStationX
 
             JLabel lblStationX = new JLabel("X =  ", JLabel.RIGHT);
             pnlStation.add(lblStationX, new GridBagConstraints(0, 1, 1, 1, 0, 0,
                     GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+//endregion
 
-// tfStationX------------------------------------------------------------------------------
+//region tfStationX
 
             tfStationX = new JTextField(surveyStation.getX(), 15);
             tfStationX.setBorder(BorderFactory.createEtchedBorder());
@@ -205,16 +221,26 @@ public class SurveyEditorStandart extends JPanel  {
                 }
             });
             tfStationX.addActionListener(e -> tfStationY.requestFocusInWindow());
-            pnlStation.add(tfStationX, new GridBagConstraints(1, 1, 1, 1, 1, 0,
-                    GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 20, 0));
+            pnlStation.add(tfStationX, new GridBagConstraints(
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    GridBagConstraints.EAST,
+                    GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 0), 20, 0));
+//endregion
 
-// lblStationY_______________________________________________________________________
+//region lblStationY
 
             JLabel lblStationY = new JLabel("Y =  ", JLabel.RIGHT);
             pnlStation.add(lblStationY, new GridBagConstraints(0, 2, 1, 1, 0, 0,
                     GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+//endregion
 
-// tfStationY_________________________________________________________________________
+//region tfStationY
 
             tfStationY = new JTextField(surveyStation.getY(), 15);
             tfStationY.setBorder(BorderFactory.createEtchedBorder());
@@ -266,15 +292,17 @@ public class SurveyEditorStandart extends JPanel  {
 
             pnlStation.add(tfStationY, new GridBagConstraints(1, 2, 1, 1, 1, 0,
                     GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 20, 0));
+//endregion
 
-// lblStationZ______________________________________________________________________
+//region lblStationZ
 
             JLabel lblStationZ = new JLabel("Z =  ", JLabel.RIGHT);
 
             pnlStation.add(lblStationZ, new GridBagConstraints(0, 3, 1, 1, 0, 0,
                     GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+//endregion
 
-// tfStationZ_____________________________________________________________________
+//region tfStationZ
 
             tfStationZ = new JTextField(surveyStation.getZ(), 15);
             tfStationZ.setBorder(BorderFactory.createEtchedBorder());
@@ -324,15 +352,17 @@ public class SurveyEditorStandart extends JPanel  {
 
             pnlStation.add(tfStationZ, new GridBagConstraints(1, 3, 1, 1, 1, 0,
                     GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 20, 0));
+//endregion
 
-// lblStationI_______________________________________________________________________
+//region lblStationI
 
             lblStationI = new JLabel(this.parentFrame.getTitles().get("TAHlblStationI"), JLabel.RIGHT);
 
             pnlStation.add(lblStationI, new GridBagConstraints(0, 4, 1, 1, 0, 0,
                     GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+//endregion
 
-// tfStationI___________________________________________________________________
+//region tfStationI
 
             tfStationI = new JTextField(surveyStation.getVi(), 15);
             tfStationI.setBorder(BorderFactory.createEtchedBorder());
@@ -380,21 +410,38 @@ public class SurveyEditorStandart extends JPanel  {
             });
             tfStationI.addActionListener(e -> tfOrName.requestFocusInWindow());
 
-            pnlStation.add(tfStationI, new GridBagConstraints(1, 4, 1, 1, 1, 0,
-                    GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 20, 0));
+            pnlStation.add(tfStationI, new GridBagConstraints(
+                    1,
+                    4,
+                    1,
+                    1,
+                    1,
+                    0,
+                    GridBagConstraints.EAST,
+                    GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 0), 20, 0));
+//endregion
 
-// btnOrName____________________________________________________________________
+//region btnOrName
 
             btnOrName = new JButton(actionSetOr);
             btnOrName.setBorder(BorderFactory.createEtchedBorder());
             btnOrName.setText(this.parentFrame.getTitles().get("TAHbtnOrName"));
             btnOrName.setToolTipText(this.parentFrame.getTitles().get("TAHbtnOrNameTT"));
 
-            pnlStation.add(btnOrName, new GridBagConstraints(0, 5, 1, 1, 0, 1,
-                    GridBagConstraints.EAST, GridBagConstraints.NONE,
+            pnlStation.add(btnOrName, new GridBagConstraints(
+                    0,
+                    5,
+                    1,
+                    1,
+                    0,
+                    1,
+                    GridBagConstraints.EAST,
+                    GridBagConstraints.NONE,
                     new Insets(0, 0, 0, 0), 0, 0));
+//endregion
 
-// tfOrName_______________________________________________________________
+//region tfOrName
 
             tfOrName = new JTextField(surveyStation.getNameOr(), 15);
             tfOrName.setBorder(BorderFactory.createEtchedBorder());
@@ -437,17 +484,35 @@ public class SurveyEditorStandart extends JPanel  {
             });
             tfOrName.addActionListener(e -> tfOrX.requestFocusInWindow());
 
-            pnlStation.add(tfOrName, new GridBagConstraints(1, 5, 1, 1, 1, 0,
-                    GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 20, 0));
+            pnlStation.add(tfOrName, new GridBagConstraints(
+                    1,
+                    5,
+                    1,
+                    1,
+                    1,
+                    0,
+                    GridBagConstraints.EAST,
+                    GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 0), 20, 0));
+//endregion
 
-// lblOrX______________________________________________________________________
+//region lblOrX
 
             JLabel lblOrX = new JLabel("X =  ", JLabel.RIGHT);
 
-            pnlStation.add(lblOrX, new GridBagConstraints(0, 6, 1, 1, 0, 0,
-                    GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+            pnlStation.add(lblOrX, new GridBagConstraints(
+                    0,
+                    6,
+                    1,
+                    1,
+                    0,
+                    0,
+                    GridBagConstraints.EAST,
+                    GridBagConstraints.NONE,
+                    new Insets(0, 0, 0, 0), 0, 0));
+//endregion
 
-// tfOrX________________________________________________________________________
+//region tfOrX
 
             tfOrX = new JTextField(surveyStation.getxOr());
             tfOrX.setBorder(BorderFactory.createEtchedBorder());
@@ -496,17 +561,35 @@ public class SurveyEditorStandart extends JPanel  {
             });
             tfOrX.addActionListener(e -> tfOrY.requestFocusInWindow());
 
-            pnlStation.add(tfOrX, new GridBagConstraints(1, 6, 1, 1, 1, 0,
-                    GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+            pnlStation.add(tfOrX, new GridBagConstraints(
+                    1,
+                    6,
+                    1,
+                    1,
+                    1,
+                    0,
+                    GridBagConstraints.EAST,
+                    GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 0), 0, 0));
+//endregion
 
-// lblOrY_______________________________________________________________________
+//region lblOrY
 
             JLabel lblOrY = new JLabel("Y =  ", JLabel.RIGHT);
 
-            pnlStation.add(lblOrY, new GridBagConstraints(0, 7, 1, 1, 0, 0,
-                    GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+            pnlStation.add(lblOrY, new GridBagConstraints(
+                    0,
+                    7,
+                    1,
+                    1,
+                    0,
+                    0,
+                    GridBagConstraints.EAST,
+                    GridBagConstraints.NONE,
+                    new Insets(0, 0, 0, 0), 0, 0));
+//endregion
 
-// tfOrY_______________________________________________________________________
+//region tfOrY
 
             tfOrY = new JTextField(surveyStation.getY());
             tfOrY.setBorder(BorderFactory.createEtchedBorder());
@@ -564,16 +647,19 @@ public class SurveyEditorStandart extends JPanel  {
             pnlStation.add(tfOrY, new GridBagConstraints(1, 7, 1, 1, 1, 0,
                     GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
-            this.add(pnlStation,new GridBagConstraints(0, 0, 1, 1, 1, 0,
-                    GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+            this.add(pnlStation,new GridBagConstraints(
+                    0,
+                    0,
+                    1,
+                    1,
+                    1,
+                    0,
+                    GridBagConstraints.EAST,
+                    GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 0), 0, 0));
+//endregion
 
-// pnlStations________________________________________________________________________
-
-            pnlStations = new JPanel();
-            pnlStations.setLayout(new BorderLayout());
-            pnlStations.setBorder(BorderFactory.createTitledBorder(null, this.parentFrame.getTitles().get("TAHlblStationListTitle"), TitledBorder.CENTER, TitledBorder.TOP, new Font(Font.DIALOG, Font.PLAIN, 12), Color.BLUE));
-
-// btnDeleteStation____________________________________________________________________
+//region btnDeleteStation
 
                 btnDeleteStation = new JButton(imageDeleteRow);
                 btnDeleteStation.setToolTipText(this.parentFrame.getTitles().get("TAHbtnDeleteStationTT"));
@@ -586,12 +672,11 @@ public class SurveyEditorStandart extends JPanel  {
                         reloadStations(this.index);
                         reloadStationPickets(this.index);
                         lstStations.requestFocusInWindow();
-//                        setFocusStations();
                     }
-
                 });
+//endregion
 
-// btnInsertStationBefore____________________________________________________________________
+//region btnInsertStationBefore
 
                 btnInsertStationBefore = new JButton(imageInsertRowBefore);
                 btnInsertStationBefore.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertStationBeforeTT"));
@@ -600,10 +685,10 @@ public class SurveyEditorStandart extends JPanel  {
                     reloadStations(this.index);
                     reloadStationPickets(this.index);
                     lstStations.requestFocusInWindow();
-//                    setFocusStations();
                 });
+//endregion
 
-// btnInsertStationAfter____________________________________________________________________
+//region btnInsertStationAfter
 
                 btnInsertStationAfter = new JButton(imageInsertRowAfter);
                 btnInsertStationAfter.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertStationAfterTT"));
@@ -613,10 +698,10 @@ public class SurveyEditorStandart extends JPanel  {
                     reloadStations(this.index);
                     reloadStationPickets(this.index);
                     lstStations.requestFocusInWindow();
-//                    setFocusStations();
                 });
+//endregion
 
-// tbStation____________________________________________________________________________
+//region tbStation
 
                 JToolBar tbStations = new JToolBar();
                 tbStations.add(btnDeleteStation);
@@ -624,7 +709,9 @@ public class SurveyEditorStandart extends JPanel  {
                 tbStations.add(btnInsertStationAfter);
                 tbStations.setFloatable(false);
                 tbStations.setBorder(BorderFactory.createEtchedBorder());
+//endregion
 
+//region pnlStations
             pnlStations.add(tbStations, BorderLayout.NORTH);
             reloadStations(0);
             pnlStations.add(scpStations, BorderLayout.CENTER);
@@ -641,17 +728,29 @@ public class SurveyEditorStandart extends JPanel  {
                 }
             });
 
-            this.add(pnlStations, new GridBagConstraints(0, 1, 1,GridBagConstraints.REMAINDER, 1, 0,
-                    GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-
-
-// pnlPickets__________________________________________________________________________
+            this.add(pnlStations, new GridBagConstraints(
+                    0,
+                    1,
+                    1,
+                    GridBagConstraints.REMAINDER,
+                    1,
+                    0,
+                    GridBagConstraints.EAST,
+                    GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 0), 0, 0));
+//endregion
 
             pnlPickets = new JPanel();
             pnlPickets.setLayout(new BorderLayout());
-            pnlPickets.setBorder(BorderFactory.createTitledBorder(null, this.parentFrame.getTitles().get("TAHlblPicketsTitle"), TitledBorder.CENTER, TitledBorder.TOP, new Font(Font.DIALOG, Font.PLAIN, 12), Color.BLUE));
+            pnlPickets.setBorder(BorderFactory.createTitledBorder(
+                    null,
+                    this.parentFrame.getTitles().get("TAHlblPicketsTitle"),
+                    TitledBorder.CENTER,
+                    TitledBorder.TOP,
+                    new Font(Font.DIALOG, Font.PLAIN, 12),
+                    Color.BLUE));
 
-// btnDeleteRow_______________________________________________________
+//region btnDeleteRow
 
             btnDeleteRow = new JButton(new ImageIcon("images/delete_row.png"));
             btnDeleteRow.setToolTipText(this.parentFrame.getTitles().get("TAHbtnDeleteRowTT"));
@@ -670,8 +769,9 @@ public class SurveyEditorStandart extends JPanel  {
                     tblPickets.requestFocusInWindow();
                 }
             });
+//endregion
 
-// btnInsertRowBefore_______________________________________________________
+//region btnInsertRowBefore
 
             btnInsertRowBefore = new JButton(new ImageIcon("images/insert_row.png"));
             btnInsertRowBefore.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertRowBeforeTT"));
@@ -686,8 +786,9 @@ public class SurveyEditorStandart extends JPanel  {
                     tblPickets.requestFocusInWindow();
                 }
             });
+//endregion
 
-// btnInsertRowAfter_______________________________________________________
+//region btnInsertRowAfter
 
             btnInsertRowAfter = new JButton(new ImageIcon("images/insert_row_after.png"));
             btnInsertRowAfter.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertRowAfterTT"));
@@ -703,28 +804,32 @@ public class SurveyEditorStandart extends JPanel  {
                     tblPickets.requestFocusInWindow();
                 }
             });
+//endregion
 
-// btnChangeDistance_________________________________________________
+//region btnChangeDistance
 
             btnChangeDistance = new JButton(new ImageIcon("images/rearrange.png"));
             btnChangeDistance.setToolTipText(this.parentFrame.getTitles().get("TAHbtnAddDistanceTT"));
             btnChangeDistance.addActionListener(e -> {
                 changeDistance();
             });
+//endregion
 
-// btnChangeDirection_________________________________________________
+//region btnChangeDirection
 
             btnChangeDirection = new JButton(new ImageIcon("images/change_direction.png"));
             btnChangeDirection.setToolTipText(this.parentFrame.getTitles().get("TAHbtnChangeDirectionTT"));
             btnChangeDirection.addActionListener(e -> changeDirection());
+//endregion
 
-// btnChangeTiltAngle_________________________________________________
+//region btnChangeTiltAngle
 
             btnChangeTilt = new JButton(new ImageIcon("images/change_tilt.png"));
             btnChangeTilt.setToolTipText(this.parentFrame.getTitles().get("TAHbtnChangeTiltAngleTT"));
             btnChangeTilt.addActionListener(e -> changeTilt());
+//endregion
 
-// tbPickets_______________________________________________________
+//region tbPickets
 
             JToolBar tbPickets = new JToolBar();
             tbPickets.setBorder(BorderFactory.createEtchedBorder());
@@ -737,17 +842,24 @@ public class SurveyEditorStandart extends JPanel  {
             tbPickets.add(btnChangeTilt);
             tbPickets.setFloatable(false);
             pnlPickets.add(tbPickets, BorderLayout.NORTH);
+//endregion
 
-
-// tblPickets_______________________________________________________
+//region tblPickets
 
             updateTblPickets();
-            this.add(pnlPickets, new GridBagConstraints(1, 0, 1, 2, 1, 1,
-                    GridBagConstraints.EAST, GridBagConstraints.BOTH,
-                    new Insets(0, 0, 0, 0),
-                    120, 0));
+            this.add(pnlPickets, new GridBagConstraints(
+                    1,
+                    0,
+                    1,
+                    2,
+                    1,
+                    1,
+                    GridBagConstraints.EAST,
+                    GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 0), 120, 0));
+//endregion
 
-// order___________________________________________________________
+//region order
 
             order = new Vector<Component>(9);
             order.add(tfStationName);
@@ -759,7 +871,7 @@ public class SurveyEditorStandart extends JPanel  {
             order.add(tfOrX);
             order.add(tfOrY);
             order.add(pnlStations);
-
+//endregion
         }
     }
 
@@ -796,10 +908,9 @@ public class SurveyEditorStandart extends JPanel  {
 
         reloadStationPickets(index);
 
-
-
         revalidate();
     }
+
     /**
      * reload pnlStation
      * @param index int index of current SurveyStation of SurveyProject
@@ -941,9 +1052,6 @@ public class SurveyEditorStandart extends JPanel  {
                 }
             }
         }
-
-
-
         tblPickets.getSelectionModel().setSelectionInterval(selRow, selRow);
         tblPickets.getColumnModel().getSelectionModel().setSelectionInterval(selColumn, selColumn);
         tblPickets.requestFocusInWindow();
@@ -1168,8 +1276,6 @@ public class SurveyEditorStandart extends JPanel  {
          * @param row
          */
         public void addRow(String [] row) {
-//        String [] rowTable = new String[getColumnCount()];
-//        rowTable = row;
             dataArrayList.add(row);
         }
 
@@ -1185,10 +1291,6 @@ public class SurveyEditorStandart extends JPanel  {
         public void removeRow(int index) {
             dataArrayList.remove(index);
             fireTableRowsDeleted(index, index);
-
-
         }
     }
-
-// The END of SurveyEditorStandart
 }

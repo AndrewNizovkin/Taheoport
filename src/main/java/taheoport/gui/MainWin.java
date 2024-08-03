@@ -115,12 +115,10 @@ public class MainWin extends JFrame{
         }
 */
 
-
-
         JMenuBar mbr = new JMenuBar();
         tpMain = new JTabbedPane();
 
-//mFile_______________________________________________________________
+        //region menu mFile
 
         mFile = new JMenu(titles.get("MWmFile"));
             fNew = new JMenuItem(titles.get("MWfNew"));
@@ -130,8 +128,6 @@ public class MainWin extends JFrame{
             fOpen  = new JMenuItem(titles.get("MWfOpen"), new ImageIcon("images/open.png"));
             fOpen.addActionListener(e -> openFile());
             fOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
-
-// mImport______________________________________________________
 
             mImport = new JMenu(titles.get("MWmImport"));
                 JMenuItem iLeica = new JMenuItem("Leica");
@@ -168,9 +164,12 @@ public class MainWin extends JFrame{
         mFile.add(fSaveAs);
         mFile.addSeparator();
         mFile.add(fExit);
+
+        //endregion
+
         mbr.add(mFile);
 
-//mTools_________________________________________________________
+        //region menu mTools
 
         mTools = new JMenu(titles.get("MWmTools"));
 
@@ -199,7 +198,6 @@ public class MainWin extends JFrame{
             tExtractPol.addActionListener(e -> extractPol());
 
             tOptions = new JMenuItem(titles.get("MWtOptions"));
-//            tOptions.setFont(fontMain);
             tOptions.setEnabled(true);
             tOptions.addActionListener(e -> new ShowSettings(this));
 
@@ -210,9 +208,12 @@ public class MainWin extends JFrame{
         mTools.add(tView);
         mTools.add(tExtractPol);
         mTools.add(tOptions);
+
+        //endregion
+
         mbr.add(mTools);
 
-// mHelp___________________________________________________________
+        //region menu mHelp
 
         mHelp = new JMenu(titles.get("MWmHelp"));
 
@@ -223,16 +224,16 @@ public class MainWin extends JFrame{
             hHelp = new JMenuItem(titles.get("MWhHelp"));
             hHelp.addActionListener(e -> new ShowHelp(this));
             hHelp.setEnabled(true);
-
         mHelp.add(hAbout);
         mHelp.add(hHelp);
         mbr.add(mHelp);
+
+        //endregion
+
         this.setJMenuBar(mbr);
 
+        //region toolbar tb
 
-//tb______________________________________________________
-
-        // toolbar
         JToolBar tb = new JToolBar();
 
             btnNew = new JButton(new ImageIcon("images/new.png"));
@@ -303,7 +304,7 @@ public class MainWin extends JFrame{
 
         this.add(tb, BorderLayout.NORTH);
 
-
+        //endregion
 
         pnlMeasurements = new JPanel();
         pnlMeasurements.setLayout(new BorderLayout());

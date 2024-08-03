@@ -36,7 +36,7 @@ public class PolygonEditorStandart extends JPanel {
         parentFrame = frame;
         setLayout(new BorderLayout());
 
-// btnDeleteRow_______________________________________________________
+//region btnDeleteRow
 
         JButton btnDeleteRow = new JButton(new ImageIcon("images/delete_row.png"));
         btnDeleteRow.setEnabled(true);
@@ -53,14 +53,15 @@ public class PolygonEditorStandart extends JPanel {
             }
         });
 
-// btnInsertRowBefore_______________________________________________________
+        //endregion
+
+//region btnInsertRowBefore
 
         JButton btnInsertRowBefore = new JButton(new ImageIcon("images/insert_row.png"));
         btnInsertRowBefore.setEnabled(true);
         btnInsertRowBefore.setToolTipText(parentFrame.getTitles().get("TAHbtnInsertRowBeforeTT"));
         btnInsertRowBefore.addActionListener(e -> {
             if (isInsertBefore(selRow)) {
-//            int k = selRow - 1;
                 parentFrame.getPolygonProject().addStation(selRow);
                 tmPolygonStations.addRow(selRow, new Object[]{
                         "noname",
@@ -78,8 +79,9 @@ public class PolygonEditorStandart extends JPanel {
                 tblStations.requestFocusInWindow();
             }
         });
+//endregion
 
-// btnInsertRowAfter_______________________________________________________
+// region btnInsertRowAfter
 
         JButton btnInsertRowAfter = new JButton(new ImageIcon("images/insert_row_after.png"));
         btnInsertRowAfter.setEnabled(true);
@@ -104,8 +106,9 @@ public class PolygonEditorStandart extends JPanel {
                 tblStations.requestFocusInWindow();
             }
         });
+//endregion
 
-// btnImportFromCatalog_______________________________________________________
+//region btnImportFromCatalog
 
         JButton btnImportFromCatalog = new JButton(new ImageIcon("images/database_export.png"));
         btnImportFromCatalog.setEnabled(true);
@@ -119,10 +122,9 @@ public class PolygonEditorStandart extends JPanel {
                 tmPolygonStations.setValueAt(parentFrame.getPolygonProject().getPolygonStation(selRow).getZ(), selRow, 6);
             }
         });
+//endregion
 
-
-
-// tbTheoStations__________________________________________________________
+//region tbTheoStations
 
         JToolBar tbTheoStations = new JToolBar();
         tbTheoStations.setBorder(BorderFactory.createEtchedBorder());
@@ -134,87 +136,107 @@ public class PolygonEditorStandart extends JPanel {
         tbTheoStations.add(btnImportFromCatalog);
 
         add(tbTheoStations, BorderLayout.NORTH);
+//endregion
 
-// pnlAdjustment____________________________________________________________
+//region pnlAdjustment
 
         JPanel pnlAdjustment = new JPanel(new GridLayout(7 , 2));
         pnlAdjustment.setBorder(BorderFactory.createTitledBorder(null, parentFrame.getTitles().get("THEOlblTitleBinding"), TitledBorder.CENTER, TitledBorder.TOP, new Font(Font.DIALOG, Font.PLAIN, 12), Color.BLUE));
+//endregion
 
-//lblHeight____________________________________________________
+//region lblHeight
 
         JLabel lblHeight = new JLabel(parentFrame.getTitles().get("THEOlblHeight"), JLabel.RIGHT);
         pnlAdjustment.add(lblHeight);
+//endregion
 
-//lblHeightResidue________________________________________________
+//region lblHeightResidue
 
         lblHeightResidue = new JLabel("-.-");
         pnlAdjustment.add(lblHeightResidue);
+//endregion
 
-//lblAngle_______________________________________________________
+//region lblAngle
 
         JLabel lblAngle = new JLabel(parentFrame.getTitles().get("THEOlblAngle"), JLabel.RIGHT);
         pnlAdjustment.add(lblAngle);
+//endregion
 
-//lblAngleResidue_______________________________________________________
+//region lblAngleResidue
 
         lblAngleResidue = new JLabel("-.-");
         pnlAdjustment.add(lblAngleResidue);
+//endregion
 
-//lblFX_______________________________________________________
+//region lblFX
 
         JLabel lblFX = new JLabel(parentFrame.getTitles().get("THEOlblFX"), JLabel.RIGHT);
         pnlAdjustment.add(lblFX);
+//endregion
 
-//lblFXResidue_______________________________________________________
+//region lblFXResidue
 
         lblFXResidue = new JLabel("-.-");
         pnlAdjustment.add(lblFXResidue);
+//endregion
 
-//lblFY_______________________________________________________
+//region lblFY
 
         JLabel lblFY = new JLabel(parentFrame.getTitles().get("THEOlblFY"), JLabel.RIGHT);
         pnlAdjustment.add(lblFY);
+//endregion
 
-//lblFYResidue_______________________________________________________
+//region lblFYResidue
 
         lblFYResidue = new JLabel("-.-");
         pnlAdjustment.add(lblFYResidue);
+//endregion
 
-//lblFAbsolute_______________________________________________________
+//region lblFAbsolute
 
         JLabel lblFAbsolute = new JLabel(parentFrame.getTitles().get("THEOlblFAbsolute"), JLabel.RIGHT);
         pnlAdjustment.add(lblFAbsolute);
+//endregion
 
-//lblFAbsoluteResidue_______________________________________________________
+//region lblFAbsoluteResidue
 
         lblFAbsoluteResidue = new JLabel("-.-");
         pnlAdjustment.add(lblFAbsoluteResidue);
+//endregion
 
-//lblFRelative_______________________________________________________
+//region lblFRelative
 
         JLabel lblFRelative = new JLabel(parentFrame.getTitles().get("THEOlblRelative"), JLabel.RIGHT);
         pnlAdjustment.add(lblFRelative);
+//endregion
 
-//lblFRelativeResidue_______________________________________________________
+//region lblFRelativeResidue
 
         lblFRelativeResidue = new JLabel("-.-");
         pnlAdjustment.add(lblFRelativeResidue);
+//endregion
 
-//lblPer_______________________________________________________
+//region lblPer
 
         JLabel lblPer = new JLabel(parentFrame.getTitles().get("THEOlblPer"), JLabel.RIGHT);
         pnlAdjustment.add(lblPer);
+//endregion
 
-//lblPerValue_______________________________________________________
+//region lblPerValue
 
         lblPerValue = new JLabel("-.-");
         pnlAdjustment.add(lblPerValue);
+//endregion
 
-// pnlPaint_______________________________________________________
+//region pnlPaint
 
         JPanel pnlPaint = new JPanel(new BorderLayout());
         pnlPaint.setPreferredSize(new Dimension(200, 200));
-        pnlPaint.setBorder(BorderFactory.createTitledBorder(null, parentFrame.getTitles().get("THEOpnlPaintTitle"), TitledBorder.CENTER, TitledBorder.TOP, new Font(Font.DIALOG, Font.PLAIN, 12), Color.BLUE));
+        pnlPaint.setBorder(BorderFactory.createTitledBorder(null, parentFrame.getTitles().get("THEOpnlPaintTitle"),
+                TitledBorder.CENTER,
+                TitledBorder.TOP,
+                new Font(Font.DIALOG, Font.PLAIN, 12),
+                Color.BLUE));
 
         if (parentFrame.getPolygonProject().getPerimeter() == 0.0) {
             JPanel pnlBlank = new JPanel();
@@ -224,8 +246,9 @@ public class PolygonEditorStandart extends JPanel {
             PolygonPaintPanel pnlTheoPaintPanel = new PolygonPaintPanel(parentFrame.getPolygonProject(), -1);
             pnlPaint.add(pnlTheoPaintPanel, BorderLayout.CENTER);
         }
+//endregion
 
-// pnlBottom______________________________________________________
+//region pnlBottom
 
         JPanel pnlBottom = new JPanel(new GridBagLayout());
         pnlBottom.add(pnlAdjustment, new GridBagConstraints(0, 0, 1, 1, 1, 0,
@@ -233,8 +256,9 @@ public class PolygonEditorStandart extends JPanel {
         pnlBottom.add(pnlPaint, new GridBagConstraints(1, 0, 1, 1, 1, 0,
                 GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
         add(pnlBottom, BorderLayout.SOUTH);
+//endregion
 
-//tblTheoStations__________________________________________________________
+//region tblTheoStations
 
         tmPolygonStations = new TmodelPolygonStations();
         tblStations = new JTable(tmPolygonStations);
@@ -297,6 +321,7 @@ public class PolygonEditorStandart extends JPanel {
 
         JScrollPane scpTheoStations = new JScrollPane(tblStations);
         add(scpTheoStations, BorderLayout.CENTER);
+//endregion
     }
 
     /**
