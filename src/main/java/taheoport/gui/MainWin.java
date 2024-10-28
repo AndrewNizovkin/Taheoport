@@ -26,6 +26,7 @@ public class MainWin extends JFrame{
     private final ExtractService extractService;
     private final CatalogService catalogService;
     private final SettingsService settingsService;
+    private final Security security;
     private final JTabbedPane tpMain;
     private final JPanel pnlMeasurements;
     private final JPanel pnlPolygon;
@@ -80,6 +81,7 @@ public class MainWin extends JFrame{
         extractService = new ExtractServiceDefault(this);
         catalogService = new CatalogServiceDefault(this);
         settingsService = new SettingsServiceDefault(this);
+        security = new SecurityImpl();
 
         settings = new Settings();
         settingsService.loadOptions();
@@ -318,26 +320,26 @@ public class MainWin extends JFrame{
         tpMain.setTitleAt(1,titles.get("MWtpMain1"));
         tpMain.addChangeListener(e -> {
             if (tpMain.getSelectedIndex() == 0) {
-                if (surveyProject != null) {
+                if (security.pass()) {
                     setTitle("Taheoport: " + surveyProject.getAbsoluteTahPath());
                     setControlsOn();
+                    mImport.setEnabled(true);
+                    btnImport.setEnabled(true);
                 } else {
                     setTitle("Taheoport");
                     setControlsOff();
                 }
-                mImport.setEnabled(true);
-                btnImport.setEnabled(true);
             }
             if (tpMain.getSelectedIndex() == 1) {
-                if (polygonProject != null) {
+                if (security.pass()) {
                     setTitle("Taheoport: " + polygonProject.getAbsolutePolPath());
                     setControlsOn();
+                    mImport.setEnabled(false);
+                    btnImport.setEnabled(false);
                 } else {
                     setTitle("Taheoport");
                     setControlsOff();
                 }
-                mImport.setEnabled(false);
-                btnImport.setEnabled(false);
             }
         });
         add(tpMain);
@@ -345,17 +347,28 @@ public class MainWin extends JFrame{
         polygonProject = new PolygonProject();
         polygonProject.addStation(new PolygonStation());
         reloadPolygonEditor();
-        setControlsOn();
         setTitle("Taheoport: " + polygonProject.getAbsolutePolPath());
         polygonEditor.setFocusTable();
         surveyProject = new SurveyProject(this);
         SurveyStation st = surveyProject.addStation();
         st.addPicket();
         reloadSurveyEditor();
-        setControlsOn();
-        surveyEditor.setFocusStations();
+//        setControlsOff();
+//        setControlsOn();
 
         setVisible(true);
+        if (security.pass()) {
+            setControlsOn();
+        } else {
+            setControlsOff();
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Что-то пошло не так. Обратитесь к разработчику",
+                    "Ошибка!",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        surveyEditor.setFocusStations();
+
     }
 
     /**
@@ -768,9 +781,15 @@ public class MainWin extends JFrame{
      * Sets setEnabled(false) for GUI components
      */
     private void setControlsOff() {
+        fOpen.setEnabled(false);
+        fNew.setEnabled(false);
+        mImport.setEnabled(false);
         fSave.setEnabled(false);
         fSaveAs.setEnabled(false);
         tExtractPol.setEnabled(false);
+        btnImport.setEnabled(false);
+        btnNew.setEnabled(false);
+        btnOpen.setEnabled(false);
         btnSave.setEnabled(false);
         btnRun.setEnabled(false);
         tRun.setEnabled(false);
