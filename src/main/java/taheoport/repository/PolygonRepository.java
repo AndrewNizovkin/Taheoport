@@ -1,4 +1,6 @@
-    package taheoport.model;
+    package taheoport.repository;
+
+    import taheoport.model.PolygonStation;
 
     import java.util.LinkedList;
     import java.util.List;
@@ -9,7 +11,7 @@
      * @author Andrew Nizovkin
      * Copyright Nizovkin A.V. 2022
      */
-public class PolygonProject {
+public class PolygonRepository {
         private String absolutePolPath;
         private BindType bindType;
         private double fHor;
@@ -26,7 +28,7 @@ public class PolygonProject {
         /**
          * Constructor
          */
-    public PolygonProject() {
+    public PolygonRepository() {
         absolutePolPath = "";
         bindType = BindType.ZZ;
         fHor = 0.0;

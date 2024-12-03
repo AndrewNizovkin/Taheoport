@@ -26,8 +26,8 @@
 `private final JPanel` | `pnlMeasurements` | Экземпляр `javax.swing.JPanel`, служащий контейнером для редактора измерений (`surveyEditor`).
 `private final JPanel` | `pnlPolygon` | Экземпляр `javax.swing.JPanel`, служащий контейнером для редактора полигонов (`polygonEditor`).
 `private Catalog` | `catalog` | Представляет координаты твёрдых (базисных) точек для текущей сессии.
-`private SurveyProject` | `surveyProject` | Представляет набор данных, необходимый для получения координат съёмочных точек (пикетов).Включает методы для математической обработки измерений, генерирования отчётов.
-`private PolygonProject` | `polygonProject` | Представляет набор данных, необходимый для получения координат точек полигона. Включает методы для математической обработки и оценки точности измерений, генерирования отчётов.
+`private SurveyProject` | `surveyRepository` | Представляет набор данных, необходимый для получения координат съёмочных точек (пикетов).Включает методы для математической обработки измерений, генерирования отчётов.
+`private PolygonProject` | `polygonRepository` | Представляет набор данных, необходимый для получения координат точек полигона. Включает методы для математической обработки и оценки точности измерений, генерирования отчётов.
 `private String` | `pathWorkDir` | Путь к рабочей папке.
 `private final Options` | `options` | Представляет пользовательские настройки программы.
 `private HashMap<String, String>` | `titles` | Представляет словарь для UI и отчётов, в соответствии с языковыми настройками.
@@ -78,32 +78,32 @@
 
 Модификатор и тип | Метод | Описание
 --- | --- | ---
-`private void` | `extractPol()` | Создаёт новый экземпляр `ExtractProject` в `this.extractProject`, извлекает данные из `this.surveyProject`. Создаёт новый экземпляр `PolygonProject` в `this.polygonProject` и загружает данные из `this.extractProject`. Обновляет редактор полигонов, делая вкладку "Полигон" активной. Отображает модальное окно `ShowViewExtractPol` с анализом результатов извлечения полигона.
+`private void` | `extractPol()` | Создаёт новый экземпляр `ExtractProject` в `this.extractProject`, извлекает данные из `this.surveyRepository`. Создаёт новый экземпляр `PolygonProject` в `this.polygonRepository` и загружает данные из `this.extractProject`. Обновляет редактор полигонов, делая вкладку "Полигон" активной. Отображает модальное окно `ShowViewExtractPol` с анализом результатов извлечения полигона.
 `public Catalog` | `getCatalog()` | Возвращает `this.catalog`.
 `public ExtractProject` | `getExtractProject()` | Возвращает `this.extractProject`.
 `public int` | `getHeightMain()` | Возвращает `this.hMain`.
 `public Options` | `getOptions()` | Возвращает `this.options`.
 `public String` | `getPathWorkDir()` | Возвращает `this.pathWorkDir`.
-`public PolygonProject` | `getPolygonProject()` | Возвращает `this.polygonProject`.
-`public SurveyProject` | `getSurveyProject()` | Возвращает `this.surveyProject`.
+`public PolygonProject` | `getPolygonProject()` | Возвращает `this.polygonRepository`.
+`public SurveyProject` | `getSurveyProject()` | Возвращает `this.surveyRepository`.
 `public HashMap<String, String>` | `getTitles()` | Возвращает `this.titles`.
 `public int` | `getWidthMain()` | Возвращает `this.wMain`. 
-`private void` | `importLeica()` | Создаёт новый экземпляр `SurveyProject` в `this.surveyProject`. Загружает набор измерений из текстового файла формата *.gsi (Leica) и отображает его в редакторе измерений.
-`private void` | `importNicon()` | Создаёт новый экземпляр `SurveyProject` в `this.surveyProject`. Загружает набор измерений из текстового файла формата *.row (Nicon) и отображает его в редакторе измерений.
-`private void` | `importTopcon()` | Создаёт новый экземпляр `SurveyProject` в `this.surveyProject`. Загружает набор измерений из текстового файла формата *.txt (Topcon) и отображает его в редакторе измерений.
+`private void` | `importLeica()` | Создаёт новый экземпляр `SurveyProject` в `this.surveyRepository`. Загружает набор измерений из текстового файла формата *.gsi (Leica) и отображает его в редакторе измерений.
+`private void` | `importNicon()` | Создаёт новый экземпляр `SurveyProject` в `this.surveyRepository`. Загружает набор измерений из текстового файла формата *.row (Nicon) и отображает его в редакторе измерений.
+`private void` | `importTopcon()` | Создаёт новый экземпляр `SurveyProject` в `this.surveyRepository`. Загружает набор измерений из текстового файла формата *.txt (Topcon) и отображает его в редакторе измерений.
 `public boolean` | `isCatalog()` | Возвращает `this.isCatalog`.
 `private void` | `loadCatalog` | Создаёт новый экземпляр `Catalog` в `this.catalog` и загружает в него данные из текстового файла, выбранного пользователем.
 `public static void` | `main(String[] args)` | Точка входа в программу.
-`private void` | `newFile()` | В зависимости от активной вкладки ("Измерения" или "Полигон"), создаёт либо новый экземпляр `SurveyProject` в `this.surveyProject` с одной пустой стацией и одним пустым измерением, либо новый экземпляр `PolygonProject` в `this.polygonProject` с одной пустой записью. Обновляет редактор измерений/полигона.
-`private void` | `openFile()` | В зависимости от активной вкладки ("Измерения" или "Полигон"), создаёт либо новый экземпляр `SurveyProject` в `this.surveyProject` и загружает его данными из файла *.tah, выбранного пользователем, либо новый экземпляр `PolygonProject` в `this.polygonProject` и загружает его данными из файла *.pol, выбранного пользователем. Обновляет редактор измерений/полигона.
+`private void` | `newFile()` | В зависимости от активной вкладки ("Измерения" или "Полигон"), создаёт либо новый экземпляр `SurveyProject` в `this.surveyRepository` с одной пустой стацией и одним пустым измерением, либо новый экземпляр `PolygonProject` в `this.polygonRepository` с одной пустой записью. Обновляет редактор измерений/полигона.
+`private void` | `openFile()` | В зависимости от активной вкладки ("Измерения" или "Полигон"), создаёт либо новый экземпляр `SurveyProject` в `this.surveyRepository` и загружает его данными из файла *.tah, выбранного пользователем, либо новый экземпляр `PolygonProject` в `this.polygonRepository` и загружает его данными из файла *.pol, выбранного пользователем. Обновляет редактор измерений/полигона.
 `private void` | `processSourceData()` | Если активна вкладка "Измерения", выполняет обработку набора измерений и предлагает пользователю сохранить на диске результаты в файле *.dat. Если активна вкладка "Полигон", выполняет уравнивание полигона, выводит в окно редактора полигона величины полученных невязок.
 `private void` | `reloadPolygonEditor()` | Обновляет панель редактора полигона.
 `private void` | `reloadSurveyEditor()` | Обновляет панель редактора измерений.
-`private void` | `save()` | Сохраняет данные в файле *.tah / *.pol, в контексте активной вкладки "Измерения" / "Полигон". Если `this.surveyProject.getAbsolutePath` / `this.polygonProject.getAbsolutePath` не определены, предлагает пользователю выбрать или создать файлы "вручную".
+`private void` | `save()` | Сохраняет данные в файле *.tah / *.pol, в контексте активной вкладки "Измерения" / "Полигон". Если `this.surveyRepository.getAbsolutePath` / `this.polygonRepository.getAbsolutePath` не определены, предлагает пользователю выбрать или создать файлы "вручную".
 `private void` | `saveAs()` | Сохраняет данные в файле *.tah / *.pol, в контексте активной вкладки "Измерения" / "Полигон". Предлагает пользователю выбрать или создать файлы "вручную".
 `private void` | `setControlsOff()` | Делает недоступными для пользователя следующие компоненты UI: `fSave`, `fSaveAs`, `tExtractPol`, `btnSave`, `btnRun`, `btnLoadCat`, `btnView`, `tLoadCat`, `tView`
 `private void` | `setControlsOff()` | Делает доступными для пользователя следующие компоненты UI: `fSave`, `fSaveAs`, `tExtractPol`, `btnSave`, `btnRun`, `btnLoadCat`, `btnView`, `tLoadCat`, `tView`
 `private void` | `setUIFont(javax.swing.plaf.FontUIResource f)` | Устанавливает основной шрифт для пользовательского интерфейса программы.
 `public void` | `translate()` | Устанавливает текстовые элементы пользовательского интерфейса в соответствии с языковыми настройками программы.
-`private void` | `updateBasePoints()` | Заменяет координаты "опорных" точек в `this.surveyProject` или `this.polygonProject` при совпадении названий с точками в `this.catalog` координатами из `this.catalog`.
+`private void` | `updateBasePoints()` | Заменяет координаты "опорных" точек в `this.surveyRepository` или `this.polygonRepository` при совпадении названий с точками в `this.catalog` координатами из `this.catalog`.
 `private void` | `viewResult()` | Обрабатывает данные. Отображает результаты в модальных окнах `ShowViewResults` или `ShowViewAdjustment`

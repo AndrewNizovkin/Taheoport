@@ -1,6 +1,6 @@
 package taheoport.gui;
+import taheoport.repository.SurveyRepository;
 import taheoport.service.DataHandler;
-import taheoport.model.SurveyProject;
 import taheoport.model.SurveyStation;
 
 import javax.swing.*;
@@ -46,7 +46,7 @@ public class SurveyEditorStandart extends JPanel  {
     private int selColumn;
     private JScrollPane scpPickets;
     private JScrollPane scpStations;
-    private SurveyProject surveyProject;
+    private SurveyRepository surveyRepository;
     private SurveyStation surveyStation;
     private JTextField tfStationName,
             tfStationX,
@@ -67,9 +67,9 @@ public class SurveyEditorStandart extends JPanel  {
     public SurveyEditorStandart(MainWin parentFrame, int index) {
         if (!(parentFrame == null)) {
             this.index = index;
-            this.surveyProject = parentFrame.getSurveyProject();
+            this.surveyRepository = parentFrame.getSurveyProject();
             this.parentFrame = parentFrame;
-            surveyStation = this.surveyProject.getStation(index);
+            surveyStation = this.surveyRepository.getStation(index);
             SetCoordinates actionSetStation = new SetCoordinates("StationName");
             SetCoordinates actionSetOr = new SetCoordinates("OrName");
             if (this.parentFrame.isCatalog()) {
@@ -664,9 +664,9 @@ public class SurveyEditorStandart extends JPanel  {
                 btnDeleteStation = new JButton(imageDeleteRow);
                 btnDeleteStation.setToolTipText(this.parentFrame.getTitles().get("TAHbtnDeleteStationTT"));
                 btnDeleteStation.addActionListener(e -> {
-                    if (surveyProject.sizeStations() > 1) {
-                        surveyProject.removeStation(this.index);
-                        if (this.index == surveyProject.sizeStations()) {
+                    if (surveyRepository.sizeStations() > 1) {
+                        surveyRepository.removeStation(this.index);
+                        if (this.index == surveyRepository.sizeStations()) {
                             this.index--;
                         }
                         reloadStations(this.index);
@@ -681,7 +681,7 @@ public class SurveyEditorStandart extends JPanel  {
                 btnInsertStationBefore = new JButton(imageInsertRowBefore);
                 btnInsertStationBefore.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertStationBeforeTT"));
                 btnInsertStationBefore.addActionListener(e -> {
-                    surveyStation = surveyProject.addStation(this.index);
+                    surveyStation = surveyRepository.addStation(this.index);
                     reloadStations(this.index);
                     reloadStationPickets(this.index);
                     lstStations.requestFocusInWindow();
@@ -694,7 +694,7 @@ public class SurveyEditorStandart extends JPanel  {
                 btnInsertStationAfter.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertStationAfterTT"));
                 btnInsertStationAfter.addActionListener(e -> {
                     this.index++;
-                    surveyStation = surveyProject.addStation(this.index);
+                    surveyStation = surveyRepository.addStation(this.index);
                     reloadStations(this.index);
                     reloadStationPickets(this.index);
                     lstStations.requestFocusInWindow();
@@ -919,9 +919,9 @@ public class SurveyEditorStandart extends JPanel  {
         if (scpStations != null) {
             pnlStations.remove(scpStations);
         }
-        String [] stations = new String[surveyProject.sizeStations()];
-        for (int i = 0; i < surveyProject.sizeStations(); i++) {
-            stations [i] = surveyProject.getStation(i).getName();
+        String [] stations = new String[surveyRepository.sizeStations()];
+        for (int i = 0; i < surveyRepository.sizeStations(); i++) {
+            stations [i] = surveyRepository.getStation(i).getName();
         }
         lstStations = new JList<String>(stations);
         lstStations.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -942,7 +942,7 @@ public class SurveyEditorStandart extends JPanel  {
      * @param index int index of current SurveyStation of SurveyProject
      */
     private void reloadStationPickets(int index) {
-        surveyStation = surveyProject.getStation(index);
+        surveyStation = surveyRepository.getStation(index);
         tfStationName.setText(surveyStation.getName());
         tfStationX.setText(surveyStation.getX());
         tfStationY.setText(surveyStation.getY());
@@ -1103,7 +1103,7 @@ public class SurveyEditorStandart extends JPanel  {
         public void actionPerformed(ActionEvent e) {
             if (parentFrame.isCatalog()) {
                 new ShowCatalog(parentFrame, index, name);
-                surveyStation = surveyProject.getStation(index);
+                surveyStation = surveyRepository.getStation(index);
                 tfStationName.setText(surveyStation.getName());
                 tfStationX.setText(surveyStation.getX());
                 tfStationY.setText(surveyStation.getY());

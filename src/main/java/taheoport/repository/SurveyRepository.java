@@ -1,6 +1,7 @@
-package taheoport.model;
+package taheoport.repository;
 
 import taheoport.gui.MainWin;
+import taheoport.model.SurveyStation;
 
 import java.util.*;
 
@@ -14,17 +15,17 @@ import java.util.*;
  * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
-public class SurveyProject {
+public class SurveyRepository {
     private String absoluteTahPath;
     private final LinkedList <SurveyStation> surveyStations;
-    private final MainWin parentFrame;
+//    private final MainWin parentFrame;
 
     /**
      * Constructor
-     * @param parentFrame MainWin
+//     * @param parentFrame MainWin
      */
-    public SurveyProject(MainWin parentFrame) {
-        this.parentFrame = parentFrame;
+    public SurveyRepository() {
+//        this.parentFrame = parentFrame;
         absoluteTahPath = "";
         surveyStations = new LinkedList <>();
     }

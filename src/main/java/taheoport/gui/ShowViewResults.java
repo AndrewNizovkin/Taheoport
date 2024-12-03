@@ -2,7 +2,7 @@ package taheoport.gui;
 
 import taheoport.model.Catalog;
 import taheoport.model.CatalogPoint;
-import taheoport.model.SurveyProject;
+import taheoport.repository.SurveyRepository;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +19,7 @@ public class ShowViewResults extends JDialog {
     private final JPanel pnlKatalog;
     private PaintPanel pnlView;
     private int sellRow;
-    private final SurveyProject surveyProject;
+    private final SurveyRepository surveyRepository;
     private final JTable tblView;
     private JTabbedPane tpSurvey;
 
@@ -30,7 +30,7 @@ public class ShowViewResults extends JDialog {
     public ShowViewResults(MainWin frame) {
         super( frame, frame.getTitles().get("SVRdialogTitle"), true);
         this.parentFrame = frame;
-        surveyProject = parentFrame.getSurveyProject();
+        surveyRepository = parentFrame.getSurveyProject();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         setUndecorated(true);
@@ -77,20 +77,20 @@ public class ShowViewResults extends JDialog {
 //tblVeiw______________________________________________
 
         Catalog cView = new Catalog();
-        for (int i = 0; i < surveyProject.sizeStations(); i++) {
-            cView.add(new CatalogPoint(surveyProject.getStation(i).getName(),
-                    surveyProject.getStation(i).getX(),
-                    surveyProject.getStation(i).getY(),
-                    surveyProject.getStation(i).getZ()));
-            cView.add(new CatalogPoint(surveyProject.getStation(i).getNameOr(),
-                    surveyProject.getStation(i).getxOr(),
-                    surveyProject.getStation(i).getyOr(),
-                    surveyProject.getStation(i).getzOr()));
-            for (int j = 0; j < surveyProject.getStation(i).sizePickets(); j++) {
-                cView.add(new CatalogPoint(surveyProject.getStation(i).getPicket(j).getpName(),
-                        surveyProject.getStation(i).getPicket(j).getX(),
-                        surveyProject.getStation(i).getPicket(j).getY(),
-                        surveyProject.getStation(i).getPicket(j).getZ()));
+        for (int i = 0; i < surveyRepository.sizeStations(); i++) {
+            cView.add(new CatalogPoint(surveyRepository.getStation(i).getName(),
+                    surveyRepository.getStation(i).getX(),
+                    surveyRepository.getStation(i).getY(),
+                    surveyRepository.getStation(i).getZ()));
+            cView.add(new CatalogPoint(surveyRepository.getStation(i).getNameOr(),
+                    surveyRepository.getStation(i).getxOr(),
+                    surveyRepository.getStation(i).getyOr(),
+                    surveyRepository.getStation(i).getzOr()));
+            for (int j = 0; j < surveyRepository.getStation(i).sizePickets(); j++) {
+                cView.add(new CatalogPoint(surveyRepository.getStation(i).getPicket(j).getpName(),
+                        surveyRepository.getStation(i).getPicket(j).getX(),
+                        surveyRepository.getStation(i).getPicket(j).getY(),
+                        surveyRepository.getStation(i).getPicket(j).getZ()));
             }
         }
         tblView = new JTable(new TmodelCatalog(cView));
@@ -151,8 +151,8 @@ public class ShowViewResults extends JDialog {
      * Gets this.surveyProject
      * @return SurveyProject
      */
-    public SurveyProject getSurveyProject() {
-        return surveyProject;
+    public SurveyRepository getSurveyProject() {
+        return surveyRepository;
     }
 
 

@@ -3,7 +3,7 @@ package taheoport.service;
 import taheoport.gui.MainWin;
 import taheoport.model.ExtractStation;
 import taheoport.model.Shell;
-import taheoport.model.SurveyProject;
+import taheoport.repository.SurveyRepository;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -29,54 +29,54 @@ public class ExtractServiceDefault implements ExtractService {
     public List<String> extractPolygonProject() {
         extractProject.clear();
         LinkedList<String> llPolList = new LinkedList<>();
-        SurveyProject surveyProject = new SurveyProject(parentFrame);
+        SurveyRepository surveyRepository = new SurveyRepository();
         for (int i = 0; i < parentFrame.getSurveyProject().sizeStations(); i++) {
             if (parentFrame.getSurveyProject().getStation(i).getName().charAt(0)
                     != (char) parentFrame.getSettings().getPrefixEX() &
                     parentFrame.getSurveyProject().getStation(i).sizePickets() >= 2) {
-                surveyProject.addStation(parentFrame.getSurveyProject().getStation(i));
+                surveyRepository.addStation(parentFrame.getSurveyProject().getStation(i));
             }
         }
 
         ExtractStation extractStation = new ExtractStation();
-        extractStation.setName(surveyProject.getStation(0).getPicket(0).getpName());
-        extractStation.setHorBack(surveyProject.getStation(0).getPicket(0).getHor());
-        extractStation.setHorForward(surveyProject.getStation(0).getPicket(0).getHor());
-        extractStation.setLineBack(surveyProject.getStation(0).getPicket(0).getpHorLine());
-        extractStation.setLineForward(surveyProject.getStation(0).getPicket(0).getpHorLine());
-        extractStation.setdZBack(new DataHandler(surveyProject.getStation(0).
+        extractStation.setName(surveyRepository.getStation(0).getPicket(0).getpName());
+        extractStation.setHorBack(surveyRepository.getStation(0).getPicket(0).getHor());
+        extractStation.setHorForward(surveyRepository.getStation(0).getPicket(0).getHor());
+        extractStation.setLineBack(surveyRepository.getStation(0).getPicket(0).getpHorLine());
+        extractStation.setLineForward(surveyRepository.getStation(0).getPicket(0).getpHorLine());
+        extractStation.setdZBack(new DataHandler(surveyRepository.getStation(0).
                 getPicket(0).getDZ()).format(3).getStr());
-        extractStation.setdZForward(new DataHandler(-1 * Double.parseDouble(surveyProject.getStation(0).
+        extractStation.setdZForward(new DataHandler(-1 * Double.parseDouble(surveyRepository.getStation(0).
                 getPicket(0).getDZ())).format(3).getStr());
         extractProject.add(extractStation);
 
-        for (int i = 0; i <= surveyProject.sizeStations() - 2; i++) {
+        for (int i = 0; i <= surveyRepository.sizeStations() - 2; i++) {
             extractStation = new ExtractStation();
-            extractStation.setName(surveyProject.getStation(i).getName());
-            extractStation.setHorBack(surveyProject.getStation(i).getPicket(0).getHor());
-            extractStation.setHorForward(surveyProject.getStation(i).getPicket(1).getHor());
-            extractStation.setLineBack(surveyProject.getStation(i + 1).getPicket(0).getpHorLine());
-            extractStation.setLineForward(surveyProject.getStation(i).getPicket(1).getpHorLine());
-            extractStation.setdZBack(new DataHandler(surveyProject.getStation(i + 1).
+            extractStation.setName(surveyRepository.getStation(i).getName());
+            extractStation.setHorBack(surveyRepository.getStation(i).getPicket(0).getHor());
+            extractStation.setHorForward(surveyRepository.getStation(i).getPicket(1).getHor());
+            extractStation.setLineBack(surveyRepository.getStation(i + 1).getPicket(0).getpHorLine());
+            extractStation.setLineForward(surveyRepository.getStation(i).getPicket(1).getpHorLine());
+            extractStation.setdZBack(new DataHandler(surveyRepository.getStation(i + 1).
                     getPicket(0).getDZ()).format(3).getStr());
-            extractStation.setdZForward(new DataHandler( surveyProject.getStation(i).
+            extractStation.setdZForward(new DataHandler( surveyRepository.getStation(i).
                     getPicket(1).getDZ()).format(3).getStr());
             extractProject.add(extractStation);
         }
 
         extractStation = new ExtractStation();
-        extractStation.setName(surveyProject.getStation(surveyProject.sizeStations() - 1).getName());
-        extractStation.setHorBack(surveyProject.getStation(surveyProject.sizeStations() - 1).
+        extractStation.setName(surveyRepository.getStation(surveyRepository.sizeStations() - 1).getName());
+        extractStation.setHorBack(surveyRepository.getStation(surveyRepository.sizeStations() - 1).
                 getPicket(0).getHor());
-        extractStation.setHorForward(surveyProject.getStation(surveyProject.sizeStations() - 1).
+        extractStation.setHorForward(surveyRepository.getStation(surveyRepository.sizeStations() - 1).
                 getPicket(1).getHor());
-        extractStation.setLineBack(surveyProject.getStation(surveyProject.sizeStations() - 1).
+        extractStation.setLineBack(surveyRepository.getStation(surveyRepository.sizeStations() - 1).
                 getPicket(1).getpHorLine());
-        extractStation.setLineForward(surveyProject.getStation(surveyProject.sizeStations() - 1).
+        extractStation.setLineForward(surveyRepository.getStation(surveyRepository.sizeStations() - 1).
                 getPicket(1).getpHorLine());
-        extractStation.setdZBack(new DataHandler(-1 * Double.parseDouble(surveyProject.getStation(surveyProject.sizeStations() - 1).
+        extractStation.setdZBack(new DataHandler(-1 * Double.parseDouble(surveyRepository.getStation(surveyRepository.sizeStations() - 1).
                 getPicket(1).getDZ())).format(3).getStr());
-        extractStation.setdZForward(new DataHandler(surveyProject.getStation(surveyProject.sizeStations() - 1).
+        extractStation.setdZForward(new DataHandler(surveyRepository.getStation(surveyRepository.sizeStations() - 1).
                 getPicket(1).getDZ()).format(3).getStr());
         extractProject.add(extractStation);
 
@@ -87,7 +87,7 @@ public class ExtractServiceDefault implements ExtractService {
                     station.getLineTrue() + " " +
                     station.getDZTrue() + " Not Not Not");
         }
-        llPolList.add(surveyProject.getStation(surveyProject.sizeStations() - 1).
+        llPolList.add(surveyRepository.getStation(surveyRepository.sizeStations() - 1).
                 getPicket(1).getpName() + " Not Not Not Not Not Not");
         return llPolList;
     }

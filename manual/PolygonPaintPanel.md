@@ -21,7 +21,7 @@
 
 Модификатор и тип | Поле | Описание
 --- | ---|---
-`private final PolygonProject` | `polygonProject` | Текущий экземпляр `PolygonProject`.
+`private final PolygonProject` | `polygonRepository` | Текущий экземпляр `PolygonProject`.
 `private final int` | `index` | Индекс выбранной станции.
 
 ---
@@ -30,7 +30,7 @@
 
 Конструктор | Описание
 --- | ---
-`PolygonPaintPanel(PolygonProject polygonProject, int idx)` | Отрисовывает на панели полигон инкапсулированный в `polygonProject`. Выделяет цветом станцию с индексом `idx`.
+`PolygonPaintPanel(PolygonProject polygonRepository, int idx)` | Отрисовывает на панели полигон инкапсулированный в `polygonRepository`. Выделяет цветом станцию с индексом `idx`.
 
 ---
 

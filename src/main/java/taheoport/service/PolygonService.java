@@ -1,6 +1,6 @@
 package taheoport.service;
 
-import taheoport.model.PolygonProject;
+import taheoport.repository.PolygonRepository;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public interface PolygonService {
      * @param list list
      * @return PolygonProject
      */
-    PolygonProject loadPolList(List<String> list);
+    PolygonRepository loadPolList(List<String> list);
 
     /**
      * gets list for writing to file current PolygonProject

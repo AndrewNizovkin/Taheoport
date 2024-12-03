@@ -44,7 +44,7 @@
 `private int` | `selColumn` | Индекс текущего(выбранного) стролбца в таблице измерений.
 `private JScrollPane` | `scpPickets` | Служит контейнером для таблицы `tblPickets`, содержащей результаты измерений.
 `private JScrollPane` | `scpStations` | Служит контейнером для списка `lstStations`, содержащим названия станций.
-`private SurveyProject` | `surveyProject` | Инкапсулирует данные набора измерений и включает методы для их математической обработки.
+`private SurveyProject` | `surveyRepository` | Инкапсулирует данные набора измерений и включает методы для их математической обработки.
 `private SurveyStation` | `surveyStation` | Экземпляр `SurveyStation`, соответствующий `index`.
 `private JTextField` | `tfStationName` | Служит для отображения и редактирования названия станции.
 `private JTextField` | `tfStationX` | Служит для отображения и редактирования координаты X станции.

@@ -1,6 +1,6 @@
 package taheoport.service;
 
-import taheoport.model.SurveyProject;
+import taheoport.repository.SurveyRepository;
 
 import java.util.List;
 
@@ -13,23 +13,23 @@ public interface ImportService {
      * Loads from tah
      * @return SurveyProject
      */
-    SurveyProject loadTah(List<String> list);
+    SurveyRepository loadTah(List<String> list);
 
     /**
      * Loads from Leica *.gis
      * @return SurveyProject
      */
-    SurveyProject loadLeica(List<String> list);
+    SurveyRepository loadLeica(List<String> list);
 
     /**
      * Loads from Topcon *.txt
      * @return SurveyProject
      */
-    SurveyProject loadTopcon(List<String> list);
+    SurveyRepository loadTopcon(List<String> list);
 
     /**
      * Loads from Nicon *.row
      * @return SurveyProject
      */
-    SurveyProject loadNicon(List<String> list);
+    SurveyRepository loadNicon(List<String> list);
 }

@@ -2,7 +2,7 @@ package taheoport.gui;
 
 import taheoport.model.PaintPoint;
 import taheoport.model.PaintProject;
-import taheoport.model.PolygonProject;
+import taheoport.repository.PolygonRepository;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,16 +13,16 @@ import java.awt.*;
  * Copyright Nizovkin A.V. 2022
  */
 public class PolygonPaintPanel extends JPanel {
-    private final PolygonProject polygonProject;
+    private final PolygonRepository polygonRepository;
     private int index;
 
     /**
      * Constructor
-     * @param polygonProject current PolygonProject
+     * @param polygonRepository current PolygonProject
      * @param idx current index of station
      */
-    public PolygonPaintPanel(PolygonProject polygonProject, int idx) {
-        this.polygonProject = polygonProject;
+    public PolygonPaintPanel(PolygonRepository polygonRepository, int idx) {
+        this.polygonRepository = polygonRepository;
         index = idx;
 
     }
@@ -33,7 +33,7 @@ public class PolygonPaintPanel extends JPanel {
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        PaintProject ppTheoPaintPoints = new PaintProject(polygonProject, this.getWidth(), this.getHeight());
+        PaintProject ppTheoPaintPoints = new PaintProject(polygonRepository, this.getWidth(), this.getHeight());
         if (ppTheoPaintPoints.getScale() < 10) {
             g.setColor(Color.BLUE);
             for (PaintPoint ppTheoPintPoint : ppTheoPaintPoints) {

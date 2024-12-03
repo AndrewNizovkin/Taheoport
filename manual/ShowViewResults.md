@@ -25,7 +25,7 @@
 `private final JPanel` | `pnlKatalog` | Отображает каталог координат пикетов и съёмочной сети и схему съёмки в виде дерева.
 `private PaintPanel` | `pnlView` | Отображает схему съёмки.
 `private int` | `sellRow` | Индекс выделенной строки в каталоге координат.
-`private final SurveyProject` | `surveyProject` | Инкапсулирует набор измерений и включает методы для их обработки.
+`private final SurveyProject` | `surveyRepository` | Инкапсулирует набор измерений и включает методы для их обработки.
 `private final JTable` | `tblView` | Таблица, отображающая каталог координат пикетов и съёмочной сети.
 `private JTabbedPane` | `tpSurvey` | Панель с вкладками. Служит контейнером для панелей, отображающих каталог координат `pnlKatalog` и ведомость координат `spReport`.
 
@@ -43,5 +43,5 @@
 
 Модификатор и тип | Метод | Описание
 --- | --- | ---
-`public SurveyProject` | `SurveyProject()` | Возвращает `this.surveyProject`.
+`public SurveyProject` | `SurveyProject()` | Возвращает `this.surveyRepository`.
 `private void` | `reloadPnlView()` | Обновляет панель `pnlView`.

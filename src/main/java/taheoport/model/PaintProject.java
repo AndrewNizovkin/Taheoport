@@ -1,5 +1,8 @@
 package taheoport.model;
 
+import taheoport.repository.PolygonRepository;
+import taheoport.repository.SurveyRepository;
+
 import java.util.LinkedList;
 
 /**
@@ -17,38 +20,38 @@ public class PaintProject extends LinkedList<PaintPoint>{
     private int y0;
 
     /**
-     * Constructor
-     * @param surveyProject current SurveyProject
+     * Constructor with surveyProject
+     * @param surveyRepository current SurveyProject
      * @param pWidth width of panel
      * @param pHeight heigth of panel
      */
-    public PaintProject(SurveyProject surveyProject, int pWidth, int pHeight) {
+    public PaintProject(SurveyRepository surveyRepository, int pWidth, int pHeight) {
         super();
-        if (surveyProject != null) {
+        if (surveyRepository != null) {
             PaintPoint sPoint;
-            for (int i = 0; i < surveyProject.sizeStations(); i++) {
-                sPoint = new PaintPoint(surveyProject.getStation(i).getName(),
-                        surveyProject.getStation(i).getX(),
-                        surveyProject.getStation(i).getY(),
-                        surveyProject.getStation(i).getZ());
-                sPoint.setxOr(surveyProject.getStation(i).getxOr());
-                sPoint.setyOr(surveyProject.getStation(i).getyOr());
+            for (int i = 0; i < surveyRepository.sizeStations(); i++) {
+                sPoint = new PaintPoint(surveyRepository.getStation(i).getName(),
+                        surveyRepository.getStation(i).getX(),
+                        surveyRepository.getStation(i).getY(),
+                        surveyRepository.getStation(i).getZ());
+                sPoint.setxOr(surveyRepository.getStation(i).getxOr());
+                sPoint.setyOr(surveyRepository.getStation(i).getyOr());
                 sPoint.setStatus(true);
                 add(sPoint);
 
-                sPoint = new PaintPoint(surveyProject.getStation(i).getNameOr(), surveyProject.getStation(i).getxOr(), surveyProject.getStation(i).getyOr(), surveyProject.getStation(i).getzOr());
-                sPoint.setxOr(surveyProject.getStation(i).getX());
-                sPoint.setyOr(surveyProject.getStation(i).getY());
+                sPoint = new PaintPoint(surveyRepository.getStation(i).getNameOr(), surveyRepository.getStation(i).getxOr(), surveyRepository.getStation(i).getyOr(), surveyRepository.getStation(i).getzOr());
+                sPoint.setxOr(surveyRepository.getStation(i).getX());
+                sPoint.setyOr(surveyRepository.getStation(i).getY());
                 sPoint.setStatus(false);
                 add(sPoint);
 
-                for (int j = 0; j < surveyProject.getStation(i).sizePickets(); j++) {
-                    PaintPoint pPoint = new PaintPoint(surveyProject.getStation(i).getPicket(j).getpName(),
-                            surveyProject.getStation(i).getPicket(j).getX(),
-                            surveyProject.getStation(i).getPicket(j).getY(),
-                            surveyProject.getStation(i).getPicket(j).getZ());
-                    pPoint.setxOr(surveyProject.getStation(i).getX());
-                    pPoint.setyOr(surveyProject.getStation(i).getY());
+                for (int j = 0; j < surveyRepository.getStation(i).sizePickets(); j++) {
+                    PaintPoint pPoint = new PaintPoint(surveyRepository.getStation(i).getPicket(j).getpName(),
+                            surveyRepository.getStation(i).getPicket(j).getX(),
+                            surveyRepository.getStation(i).getPicket(j).getY(),
+                            surveyRepository.getStation(i).getPicket(j).getZ());
+                    pPoint.setxOr(surveyRepository.getStation(i).getX());
+                    pPoint.setyOr(surveyRepository.getStation(i).getY());
                     pPoint.setStatus(false);
                     add(pPoint);
                 }
@@ -89,20 +92,20 @@ public class PaintProject extends LinkedList<PaintPoint>{
 
     /**
      * Constructor with TheoProject
-     * @param polygonProject TheoProject
+     * @param polygonRepository TheoProject
      * @param pWidth width of panel
      * @param pHeight height of panel
      */
-    public PaintProject(PolygonProject polygonProject, int pWidth, int pHeight) {
+    public PaintProject(PolygonRepository polygonRepository, int pWidth, int pHeight) {
         super();
-        if (polygonProject != null) {
+        if (polygonRepository != null) {
             PaintPoint tPoint;
-            for (int i = 0; i < polygonProject.getSizePolygonStations(); i++) {
-                tPoint = new PaintPoint(polygonProject.getPolygonStation(i).getName(),
-                        polygonProject.getPolygonStation(i).getX(),
-                        polygonProject.getPolygonStation(i).getY(),
-                        polygonProject.getPolygonStation(i).getZ());
-                tPoint.setStatus(polygonProject.getPolygonStation(i).getStatus());
+            for (int i = 0; i < polygonRepository.getSizePolygonStations(); i++) {
+                tPoint = new PaintPoint(polygonRepository.getPolygonStation(i).getName(),
+                        polygonRepository.getPolygonStation(i).getX(),
+                        polygonRepository.getPolygonStation(i).getY(),
+                        polygonRepository.getPolygonStation(i).getZ());
+                tPoint.setStatus(polygonRepository.getPolygonStation(i).getStatus());
                 add(tPoint);
             }
             xMin = Double.parseDouble(get(0).getX());
@@ -178,9 +181,7 @@ public class PaintProject extends LinkedList<PaintPoint>{
             if (scale == 0) {
                 scale = 1.0;
             }
-//            PaintPoint point;
             for (PaintPoint paintPoint : this) {
-//                point = paintPoint;
                 paintPoint.setxPaint(x0 + (int) ((paintPoint.getyDbl() - yMin) / scale));
                 paintPoint.setyPaint(pHeight - y0 - (int) ((paintPoint.getxDbl() - xMin) / scale));
                 if (!paintPoint.getStatus()) {

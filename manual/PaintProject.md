@@ -35,8 +35,8 @@
 Конструктор | Описание
 --- | ---
 `PaintProject(LinkedList<PaintPoint> paintPoints, int pWidth, int pHeight)` | Создаёт экземпляр `PaintProject`. Где `paintPoints` - список `PaintPoint` в исходных координатах, `pWidth` - ширина панели отображения, `pHeight` - высота панели отображения.
-`PaintProject(PolygonProject polygonProject, int pWidth, int pHeight)` | Создаёт экземпляр `PaintProject`. Где `polygonProject` - экземпляр `PolygonProject`, `pWidth` - ширина панели отображения, `pHeight` - высота панели отображения.
-`PaintProject(SurveyProject surveyProject, int pWidth, int pHeight)` | Создаёт экземпляр `PaintProject`. Где `surveyProject` - экземпляр `SurveyProject`, `pWidth` - ширина панели отображения, `pHeight` - высота панели отображения.
+`PaintProject(PolygonProject polygonRepository, int pWidth, int pHeight)` | Создаёт экземпляр `PaintProject`. Где `polygonRepository` - экземпляр `PolygonProject`, `pWidth` - ширина панели отображения, `pHeight` - высота панели отображения.
+`PaintProject(SurveyProject surveyRepository, int pWidth, int pHeight)` | Создаёт экземпляр `PaintProject`. Где `surveyRepository` - экземпляр `SurveyProject`, `pWidth` - ширина панели отображения, `pHeight` - высота панели отображения.
 
 ---
 

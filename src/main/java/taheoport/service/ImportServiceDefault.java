@@ -2,7 +2,7 @@ package taheoport.service;
 
 import taheoport.gui.MainWin;
 import taheoport.model.Picket;
-import taheoport.model.SurveyProject;
+import taheoport.repository.SurveyRepository;
 import taheoport.model.SurveyStation;
 
 import java.util.List;
@@ -26,8 +26,8 @@ public class ImportServiceDefault implements ImportService {
      * @return SurveyProject
      */
     @Override
-    public SurveyProject loadTah(List<String> list) {
-        SurveyProject surveyProject = new SurveyProject(parentFrame);
+    public SurveyRepository loadTah(List<String> list) {
+        SurveyRepository surveyRepository = new SurveyRepository();
         SurveyStation surveyStation;
         String sep =" ";
         String str;
@@ -35,17 +35,17 @@ public class ImportServiceDefault implements ImportService {
         if (list == null) {
             return null;
         }
-        surveyProject.setAbsoluteTahPath(list.remove(0));
+        surveyRepository.setAbsoluteTahPath(list.remove(0));
         try {
             str = list.remove(0);
             while (!str.contains("//") && list.size() > 1) {
                 str = new DataHandler(str).compress(sep).getStr();
                 array = str.split(sep);
-                surveyProject.addStation(array[0], array[1], array[2], array[3], array[5], array[6], array[7], "0.000", array[4]);
+                surveyRepository.addStation(array[0], array[1], array[2], array[3], array[5], array[6], array[7], "0.000", array[4]);
                 str = (String) list.remove(0);
             }
             int index = 0;
-            surveyStation = surveyProject.getStation(index);
+            surveyStation = surveyRepository.getStation(index);
             while (!list.isEmpty()) {
                 str = (String) list.remove(0);
                 if (!str.contains("//")) {
@@ -54,15 +54,15 @@ public class ImportServiceDefault implements ImportService {
                     surveyStation.addPicket(array[0], array[1], array[2], array[3], array[4], String.valueOf(surveyStation.sizePickets()));
                 } else {
                     index = index + 1;
-                    if (index < surveyProject.sizeStations()) {
-                        surveyStation = surveyProject.getStation(index);
+                    if (index < surveyRepository.sizeStations()) {
+                        surveyStation = surveyRepository.getStation(index);
                     }
                 }
             }
         } catch (NoSuchElementException e) {
             System.out.println("element not found");
         }
-        return surveyProject;
+        return surveyRepository;
     }
 
     /**
@@ -71,8 +71,8 @@ public class ImportServiceDefault implements ImportService {
      * @return SurveyProject
      */
     @Override
-    public SurveyProject loadLeica(List<String> list) {
-        SurveyProject surveyProject = new SurveyProject(parentFrame);
+    public SurveyRepository loadLeica(List<String> list) {
+        SurveyRepository surveyRepository = new SurveyRepository();
         SurveyStation surveyStation = new SurveyStation();
         String sep =" ";
         String code = "Not";
@@ -80,7 +80,7 @@ public class ImportServiceDefault implements ImportService {
         DataHandler[] lineHandlers;
 //        int res = 0;
         String [] array;
-        surveyProject.setAbsoluteTahPath(list.remove(0));
+        surveyRepository.setAbsoluteTahPath(list.remove(0));
         try {
             while (!list.isEmpty()) {
                 array = (list.remove(0)).split(sep);
@@ -123,7 +123,7 @@ public class ImportServiceDefault implements ImportService {
                                     lineHandlers[4].getStr(),
                                     lineHandlers[6].getStr());
                         } else {
-                            surveyStation = surveyProject.addStation();
+                            surveyStation = surveyRepository.addStation();
                             surveyStation.setVi(lineHandlers[5].getStr());
                             currentToolHeight = lineHandlers[5].getStr();
                             surveyStation.addPicket(lineHandlers[0].getStr(),
@@ -140,7 +140,7 @@ public class ImportServiceDefault implements ImportService {
         } catch (NoSuchElementException e) {
             System.out.println("element not found");
         }
-        return surveyProject;
+        return surveyRepository;
     }
 
     /**
@@ -149,18 +149,18 @@ public class ImportServiceDefault implements ImportService {
      * @return SurveyProject
      */
     @Override
-    public SurveyProject loadTopcon(List<String> list) {
-        SurveyProject surveyProject = new SurveyProject(parentFrame);
+    public SurveyRepository loadTopcon(List<String> list) {
+        SurveyRepository surveyRepository = new SurveyRepository();
         SurveyStation surveyStation;
         Picket picket;
-        surveyProject.setAbsoluteTahPath(list.remove(0));
+        surveyRepository.setAbsoluteTahPath(list.remove(0));
         String[] measurements;
         String[] measurement;
         String [] array = list.remove(0).split("_'");
         for (String row : array) {
             Matcher m = Pattern.compile("^.+?\\+").matcher(row);
             if (m.find()) {
-                surveyStation = surveyProject.addStation();
+                surveyStation = surveyRepository.addStation();
                 surveyStation.setName(row.substring(0, row.indexOf("_", 0)));
                 surveyStation.setVi(new DataHandler(row.substring(row.indexOf(")", 0) + 1,
                         row.indexOf("_", row.indexOf(")", 0)))).format(3).getStr());
@@ -178,7 +178,7 @@ public class ImportServiceDefault implements ImportService {
                 }
             }
         }
-        return surveyProject;
+        return surveyRepository;
     }
 
     /**
@@ -187,15 +187,15 @@ public class ImportServiceDefault implements ImportService {
      * @return SurveyProject
      */
     @Override
-    public SurveyProject loadNicon(List<String> list) {
-        SurveyProject surveyProject = new SurveyProject(parentFrame);
+    public SurveyRepository loadNicon(List<String> list) {
+        SurveyRepository surveyRepository = new SurveyRepository();
         SurveyStation surveyStation = new SurveyStation();
-        surveyProject.setAbsoluteTahPath(list.remove(0));
+        surveyRepository.setAbsoluteTahPath(list.remove(0));
         try {
             while (!list.isEmpty()){
                 String [] array = list.remove(0).split(",");
                 switch (array[0]) {
-                    case "ST" -> surveyStation = surveyProject.addStation(array[1],
+                    case "ST" -> surveyStation = surveyRepository.addStation(array[1],
                             "0.000", "0.000", "0.000",
                             array[3],
                             "0.000", "0.000", "0.000",
@@ -211,6 +211,6 @@ public class ImportServiceDefault implements ImportService {
         } catch (NoSuchElementException e) {
             System.out.println("element not found");
         }
-        return surveyProject;
+        return surveyRepository;
     }
 }
