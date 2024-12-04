@@ -30,28 +30,28 @@ public class PaintProject extends LinkedList<PaintPoint>{
         if (surveyRepository != null) {
             PaintPoint sPoint;
             for (int i = 0; i < surveyRepository.sizeStations(); i++) {
-                sPoint = new PaintPoint(surveyRepository.getStation(i).getName(),
-                        surveyRepository.getStation(i).getX(),
-                        surveyRepository.getStation(i).getY(),
-                        surveyRepository.getStation(i).getZ());
-                sPoint.setxOr(surveyRepository.getStation(i).getxOr());
-                sPoint.setyOr(surveyRepository.getStation(i).getyOr());
+                sPoint = new PaintPoint(surveyRepository.findById(i).getName(),
+                        surveyRepository.findById(i).getX(),
+                        surveyRepository.findById(i).getY(),
+                        surveyRepository.findById(i).getZ());
+                sPoint.setxOr(surveyRepository.findById(i).getxOr());
+                sPoint.setyOr(surveyRepository.findById(i).getyOr());
                 sPoint.setStatus(true);
                 add(sPoint);
 
-                sPoint = new PaintPoint(surveyRepository.getStation(i).getNameOr(), surveyRepository.getStation(i).getxOr(), surveyRepository.getStation(i).getyOr(), surveyRepository.getStation(i).getzOr());
-                sPoint.setxOr(surveyRepository.getStation(i).getX());
-                sPoint.setyOr(surveyRepository.getStation(i).getY());
+                sPoint = new PaintPoint(surveyRepository.findById(i).getNameOr(), surveyRepository.findById(i).getxOr(), surveyRepository.findById(i).getyOr(), surveyRepository.findById(i).getzOr());
+                sPoint.setxOr(surveyRepository.findById(i).getX());
+                sPoint.setyOr(surveyRepository.findById(i).getY());
                 sPoint.setStatus(false);
                 add(sPoint);
 
-                for (int j = 0; j < surveyRepository.getStation(i).sizePickets(); j++) {
-                    PaintPoint pPoint = new PaintPoint(surveyRepository.getStation(i).getPicket(j).getpName(),
-                            surveyRepository.getStation(i).getPicket(j).getX(),
-                            surveyRepository.getStation(i).getPicket(j).getY(),
-                            surveyRepository.getStation(i).getPicket(j).getZ());
-                    pPoint.setxOr(surveyRepository.getStation(i).getX());
-                    pPoint.setyOr(surveyRepository.getStation(i).getY());
+                for (int j = 0; j < surveyRepository.findById(i).sizePickets(); j++) {
+                    PaintPoint pPoint = new PaintPoint(surveyRepository.findById(i).getPicket(j).getpName(),
+                            surveyRepository.findById(i).getPicket(j).getX(),
+                            surveyRepository.findById(i).getPicket(j).getY(),
+                            surveyRepository.findById(i).getPicket(j).getZ());
+                    pPoint.setxOr(surveyRepository.findById(i).getX());
+                    pPoint.setyOr(surveyRepository.findById(i).getY());
                     pPoint.setStatus(false);
                     add(pPoint);
                 }

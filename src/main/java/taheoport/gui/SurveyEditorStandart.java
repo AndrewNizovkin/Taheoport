@@ -67,9 +67,9 @@ public class SurveyEditorStandart extends JPanel  {
     public SurveyEditorStandart(MainWin parentFrame, int index) {
         if (!(parentFrame == null)) {
             this.index = index;
-            this.surveyRepository = parentFrame.getSurveyProject();
+            this.surveyRepository = parentFrame.getSurveyRepository();
             this.parentFrame = parentFrame;
-            surveyStation = this.surveyRepository.getStation(index);
+            surveyStation = this.surveyRepository.findById(index);
             SetCoordinates actionSetStation = new SetCoordinates("StationName");
             SetCoordinates actionSetOr = new SetCoordinates("OrName");
             if (this.parentFrame.isCatalog()) {
@@ -681,7 +681,7 @@ public class SurveyEditorStandart extends JPanel  {
                 btnInsertStationBefore = new JButton(imageInsertRowBefore);
                 btnInsertStationBefore.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertStationBeforeTT"));
                 btnInsertStationBefore.addActionListener(e -> {
-                    surveyStation = surveyRepository.addStation(this.index);
+                    surveyStation = surveyRepository.insertStation(this.index);
                     reloadStations(this.index);
                     reloadStationPickets(this.index);
                     lstStations.requestFocusInWindow();
@@ -694,7 +694,7 @@ public class SurveyEditorStandart extends JPanel  {
                 btnInsertStationAfter.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertStationAfterTT"));
                 btnInsertStationAfter.addActionListener(e -> {
                     this.index++;
-                    surveyStation = surveyRepository.addStation(this.index);
+                    surveyStation = surveyRepository.insertStation(this.index);
                     reloadStations(this.index);
                     reloadStationPickets(this.index);
                     lstStations.requestFocusInWindow();
@@ -921,7 +921,7 @@ public class SurveyEditorStandart extends JPanel  {
         }
         String [] stations = new String[surveyRepository.sizeStations()];
         for (int i = 0; i < surveyRepository.sizeStations(); i++) {
-            stations [i] = surveyRepository.getStation(i).getName();
+            stations [i] = surveyRepository.findById(i).getName();
         }
         lstStations = new JList<String>(stations);
         lstStations.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -942,7 +942,7 @@ public class SurveyEditorStandart extends JPanel  {
      * @param index int index of current SurveyStation of SurveyProject
      */
     private void reloadStationPickets(int index) {
-        surveyStation = surveyRepository.getStation(index);
+        surveyStation = surveyRepository.findById(index);
         tfStationName.setText(surveyStation.getName());
         tfStationX.setText(surveyStation.getX());
         tfStationY.setText(surveyStation.getY());
@@ -1103,7 +1103,7 @@ public class SurveyEditorStandart extends JPanel  {
         public void actionPerformed(ActionEvent e) {
             if (parentFrame.isCatalog()) {
                 new ShowCatalog(parentFrame, index, name);
-                surveyStation = surveyRepository.getStation(index);
+                surveyStation = surveyRepository.findById(index);
                 tfStationName.setText(surveyStation.getName());
                 tfStationX.setText(surveyStation.getX());
                 tfStationY.setText(surveyStation.getY());
@@ -1233,35 +1233,35 @@ public class SurveyEditorStandart extends JPanel  {
             switch (columnIndex) {
                 case 0 -> {
                     if (dataHandler.isValidName()) {
-                        parentFrame.getSurveyProject().getStation(index).getPicket(rowIndex).setpName((String) str);
+                        parentFrame.getSurveyRepository().findById(index).getPicket(rowIndex).setpName((String) str);
                         row [columnIndex] = (String) str;
                         dataArrayList.set(rowIndex, row);
                     }
                 }
                 case 1 -> {
                     if (dataHandler.isPositiveNumber()) {
-                        parentFrame.getSurveyProject().getStation(index).getPicket(rowIndex).setLine(dataHandler.format(3).getStr());
+                        parentFrame.getSurveyRepository().findById(index).getPicket(rowIndex).setLine(dataHandler.format(3).getStr());
                         row[columnIndex] = dataHandler.format(3).getStr();
                         dataArrayList.set(rowIndex, row);
                     }
                 }
                 case 2 -> {
                     if (dataHandler.isPositiveNumber()) {
-                        parentFrame.getSurveyProject().getStation(index).getPicket(rowIndex).setHor(dataHandler.format(4).getStr());
+                        parentFrame.getSurveyRepository().findById(index).getPicket(rowIndex).setHor(dataHandler.format(4).getStr());
                         row[columnIndex] = dataHandler.format(4).getStr();
                         dataArrayList.set(rowIndex, row);
                     }
                 }
                 case 3 -> {
                     if (dataHandler.isNumber()) {
-                        parentFrame.getSurveyProject().getStation(index).getPicket(rowIndex).setVert(dataHandler.format(4).getStr());
+                        parentFrame.getSurveyRepository().findById(index).getPicket(rowIndex).setVert(dataHandler.format(4).getStr());
                         row[columnIndex] = dataHandler.format(4).getStr();
                         dataArrayList.set(rowIndex, row);
                     }
                 }
                 case 4 -> {
                     if (dataHandler.isNumber()) {
-                        parentFrame.getSurveyProject().getStation(index).getPicket(rowIndex).setV(dataHandler.format(3).getStr());
+                        parentFrame.getSurveyRepository().findById(index).getPicket(rowIndex).setV(dataHandler.format(3).getStr());
                         row[columnIndex] = dataHandler.format(3).getStr();
                         dataArrayList.set(rowIndex, row);
                     }

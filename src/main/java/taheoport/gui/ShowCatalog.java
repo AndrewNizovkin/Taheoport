@@ -103,15 +103,15 @@ public class ShowCatalog extends JDialog {
 //            Station st = this.sp.getStation(index);
             CatalogPoint cp = this.catalog.getCatalogPoint(selRow);
             if (target.equals("StationName")) {
-                parentFrame.getSurveyProject().getStation(index).setName(cp.getName());
-                parentFrame.getSurveyProject().getStation(index).setX(cp.getX());
-                parentFrame.getSurveyProject().getStation(index).setY(cp.getY());
-                parentFrame.getSurveyProject().getStation(index).setZ(cp.getZ());
+                parentFrame.getSurveyRepository().findById(index).setName(cp.getName());
+                parentFrame.getSurveyRepository().findById(index).setX(cp.getX());
+                parentFrame.getSurveyRepository().findById(index).setY(cp.getY());
+                parentFrame.getSurveyRepository().findById(index).setZ(cp.getZ());
             }
             if (target.equals("OrName")) {
-                parentFrame.getSurveyProject().getStation(index).setNameOr(cp.getName());
-                parentFrame.getSurveyProject().getStation(index).setxOr(cp.getX());
-                parentFrame.getSurveyProject().getStation(index).setyOr(cp.getY());
+                parentFrame.getSurveyRepository().findById(index).setNameOr(cp.getName());
+                parentFrame.getSurveyRepository().findById(index).setxOr(cp.getX());
+                parentFrame.getSurveyRepository().findById(index).setyOr(cp.getY());
             }
             if (target.equals("TheoStation")) {
                 parentFrame.getPolygonProject().getPolygonStation(index).setName(cp.getName());

@@ -30,53 +30,53 @@ public class ExtractServiceDefault implements ExtractService {
         extractProject.clear();
         LinkedList<String> llPolList = new LinkedList<>();
         SurveyRepository surveyRepository = new SurveyRepository();
-        for (int i = 0; i < parentFrame.getSurveyProject().sizeStations(); i++) {
-            if (parentFrame.getSurveyProject().getStation(i).getName().charAt(0)
+        for (int i = 0; i < parentFrame.getSurveyRepository().sizeStations(); i++) {
+            if (parentFrame.getSurveyRepository().findById(i).getName().charAt(0)
                     != (char) parentFrame.getSettings().getPrefixEX() &
-                    parentFrame.getSurveyProject().getStation(i).sizePickets() >= 2) {
-                surveyRepository.addStation(parentFrame.getSurveyProject().getStation(i));
+                    parentFrame.getSurveyRepository().findById(i).sizePickets() >= 2) {
+                surveyRepository.addStation(parentFrame.getSurveyRepository().findById(i));
             }
         }
 
         ExtractStation extractStation = new ExtractStation();
-        extractStation.setName(surveyRepository.getStation(0).getPicket(0).getpName());
-        extractStation.setHorBack(surveyRepository.getStation(0).getPicket(0).getHor());
-        extractStation.setHorForward(surveyRepository.getStation(0).getPicket(0).getHor());
-        extractStation.setLineBack(surveyRepository.getStation(0).getPicket(0).getpHorLine());
-        extractStation.setLineForward(surveyRepository.getStation(0).getPicket(0).getpHorLine());
-        extractStation.setdZBack(new DataHandler(surveyRepository.getStation(0).
+        extractStation.setName(surveyRepository.findById(0).getPicket(0).getpName());
+        extractStation.setHorBack(surveyRepository.findById(0).getPicket(0).getHor());
+        extractStation.setHorForward(surveyRepository.findById(0).getPicket(0).getHor());
+        extractStation.setLineBack(surveyRepository.findById(0).getPicket(0).getpHorLine());
+        extractStation.setLineForward(surveyRepository.findById(0).getPicket(0).getpHorLine());
+        extractStation.setdZBack(new DataHandler(surveyRepository.findById(0).
                 getPicket(0).getDZ()).format(3).getStr());
-        extractStation.setdZForward(new DataHandler(-1 * Double.parseDouble(surveyRepository.getStation(0).
+        extractStation.setdZForward(new DataHandler(-1 * Double.parseDouble(surveyRepository.findById(0).
                 getPicket(0).getDZ())).format(3).getStr());
         extractProject.add(extractStation);
 
         for (int i = 0; i <= surveyRepository.sizeStations() - 2; i++) {
             extractStation = new ExtractStation();
-            extractStation.setName(surveyRepository.getStation(i).getName());
-            extractStation.setHorBack(surveyRepository.getStation(i).getPicket(0).getHor());
-            extractStation.setHorForward(surveyRepository.getStation(i).getPicket(1).getHor());
-            extractStation.setLineBack(surveyRepository.getStation(i + 1).getPicket(0).getpHorLine());
-            extractStation.setLineForward(surveyRepository.getStation(i).getPicket(1).getpHorLine());
-            extractStation.setdZBack(new DataHandler(surveyRepository.getStation(i + 1).
+            extractStation.setName(surveyRepository.findById(i).getName());
+            extractStation.setHorBack(surveyRepository.findById(i).getPicket(0).getHor());
+            extractStation.setHorForward(surveyRepository.findById(i).getPicket(1).getHor());
+            extractStation.setLineBack(surveyRepository.findById(i + 1).getPicket(0).getpHorLine());
+            extractStation.setLineForward(surveyRepository.findById(i).getPicket(1).getpHorLine());
+            extractStation.setdZBack(new DataHandler(surveyRepository.findById(i + 1).
                     getPicket(0).getDZ()).format(3).getStr());
-            extractStation.setdZForward(new DataHandler( surveyRepository.getStation(i).
+            extractStation.setdZForward(new DataHandler( surveyRepository.findById(i).
                     getPicket(1).getDZ()).format(3).getStr());
             extractProject.add(extractStation);
         }
 
         extractStation = new ExtractStation();
-        extractStation.setName(surveyRepository.getStation(surveyRepository.sizeStations() - 1).getName());
-        extractStation.setHorBack(surveyRepository.getStation(surveyRepository.sizeStations() - 1).
+        extractStation.setName(surveyRepository.findById(surveyRepository.sizeStations() - 1).getName());
+        extractStation.setHorBack(surveyRepository.findById(surveyRepository.sizeStations() - 1).
                 getPicket(0).getHor());
-        extractStation.setHorForward(surveyRepository.getStation(surveyRepository.sizeStations() - 1).
+        extractStation.setHorForward(surveyRepository.findById(surveyRepository.sizeStations() - 1).
                 getPicket(1).getHor());
-        extractStation.setLineBack(surveyRepository.getStation(surveyRepository.sizeStations() - 1).
+        extractStation.setLineBack(surveyRepository.findById(surveyRepository.sizeStations() - 1).
                 getPicket(1).getpHorLine());
-        extractStation.setLineForward(surveyRepository.getStation(surveyRepository.sizeStations() - 1).
+        extractStation.setLineForward(surveyRepository.findById(surveyRepository.sizeStations() - 1).
                 getPicket(1).getpHorLine());
-        extractStation.setdZBack(new DataHandler(-1 * Double.parseDouble(surveyRepository.getStation(surveyRepository.sizeStations() - 1).
+        extractStation.setdZBack(new DataHandler(-1 * Double.parseDouble(surveyRepository.findById(surveyRepository.sizeStations() - 1).
                 getPicket(1).getDZ())).format(3).getStr());
-        extractStation.setdZForward(new DataHandler(surveyRepository.getStation(surveyRepository.sizeStations() - 1).
+        extractStation.setdZForward(new DataHandler(surveyRepository.findById(surveyRepository.sizeStations() - 1).
                 getPicket(1).getDZ()).format(3).getStr());
         extractProject.add(extractStation);
 
@@ -87,7 +87,7 @@ public class ExtractServiceDefault implements ExtractService {
                     station.getLineTrue() + " " +
                     station.getDZTrue() + " Not Not Not");
         }
-        llPolList.add(surveyRepository.getStation(surveyRepository.sizeStations() - 1).
+        llPolList.add(surveyRepository.findById(surveyRepository.sizeStations() - 1).
                 getPicket(1).getpName() + " Not Not Not Not Not Not");
         return llPolList;
     }
@@ -119,8 +119,8 @@ public class ExtractServiceDefault implements ExtractService {
                     new DataHandler(extractStation.getDZTrue()).toTable(8).getStr() + " | " +
                     new DataHandler(extractStation.getDDZ()).toTable(6).getStr() + " |");
         }
-        llExtractReport.add("| " + new DataHandler(parentFrame.getSurveyProject().
-                getStation(parentFrame.getSurveyProject().sizeStations() - 1).
+        llExtractReport.add("| " + new DataHandler(parentFrame.getSurveyRepository().
+                findById(parentFrame.getSurveyRepository().sizeStations() - 1).
                 getPicket(1).getpName()).toTable(10).getStr() +
                 " |          |          |          |        |          |          |          |        |");
         llExtractReport.add("--------------------------------------------------------------------------------------------------");

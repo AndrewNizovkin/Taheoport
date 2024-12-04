@@ -1,11 +1,23 @@
 package taheoport.service;
 
+import taheoport.repository.SurveyRepository;
+
 import java.util.List;
 
 /**
  * This interface defines methods for working with survey project
  */
 public interface SurveyService {
+
+
+    void setAbsoluteTahPath(String absoluteTahPath);
+
+    String getAbsoluteTahPath();
+
+    void setSurveyRepository(SurveyRepository surveyRepository);
+
+    SurveyRepository getSurveyRepository();
+
     /**
      * Gets SurveyProject as list
      * @return LinkedList

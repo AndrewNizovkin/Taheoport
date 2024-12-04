@@ -4,6 +4,7 @@ import taheoport.gui.MainWin;
 import taheoport.model.Picket;
 import taheoport.model.Shell;
 import taheoport.model.SurveyStation;
+import taheoport.repository.SurveyRepository;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -14,10 +15,35 @@ import java.util.NoSuchElementException;
  * This class encapsulates methods for working with survey project
  */
 public class SurveyServiceDefault implements SurveyService {
+    private String absoluteTahPath;
     private final MainWin parentFrame;
+    private SurveyRepository surveyRepository;
 
+    /**
+     * Constructor
+     * @param frame mainWin
+     */
     public SurveyServiceDefault(MainWin frame) {
-        this.parentFrame = frame;
+        parentFrame = frame;
+        absoluteTahPath = "";
+        surveyRepository = new SurveyRepository();
+    }
+
+    public void setAbsoluteTahPath(String absoluteTahPath) {
+        this.absoluteTahPath = absoluteTahPath;
+    }
+
+    public String getAbsoluteTahPath() {
+        return absoluteTahPath;
+    }
+
+    public void setSurveyRepository(SurveyRepository surveyRepository) {
+        this.surveyRepository = surveyRepository;
+        absoluteTahPath = surveyRepository.getAbsoluteTahPath();
+    }
+
+    public SurveyRepository getSurveyRepository() {
+        return surveyRepository;
     }
 
     /**
@@ -27,13 +53,14 @@ public class SurveyServiceDefault implements SurveyService {
      */
     @Override
     public List<String> getTahList() {
+//        surveyRepository = parentFrame.getSurveyRepository();
         SurveyStation surveyStation;
         Picket picket;
         String sep = " ";
         List<String> list = new LinkedList<>();
         try {
-            for (int i = 0; i < parentFrame.getSurveyProject().sizeStations(); i++) {
-                surveyStation = parentFrame.getSurveyProject().getStation(i);
+            for (int i = 0; i < surveyRepository.sizeStations(); i++) {
+                surveyStation = surveyRepository.findById(i);
                 list.add(surveyStation.getName() + sep +
                         surveyStation.getX() + sep +
                         surveyStation.getY() + sep +
@@ -44,8 +71,8 @@ public class SurveyServiceDefault implements SurveyService {
                         surveyStation.getyOr());
             }
             list.add("//");
-            for (int i = 0; i < parentFrame.getSurveyProject().sizeStations(); i++) {
-                surveyStation = parentFrame.getSurveyProject().getStation(i);
+            for (int i = 0; i < surveyRepository.sizeStations(); i++) {
+                surveyStation = surveyRepository.findById(i);
                 for (int j = 0; j < surveyStation.sizePickets(); j++ ) {
                     picket = surveyStation.getPicket(j);
                     list.add(picket.getpName() + sep + picket.getLine() + sep +
@@ -67,13 +94,14 @@ public class SurveyServiceDefault implements SurveyService {
      */
     @Override
     public List<String> getPickets() {
+//        surveyRepository = parentFrame.getSurveyRepository();
         SurveyStation surveyStation;
         Picket picket;
         String sep = " ";
-        LinkedList<String> list = new LinkedList<>();
+        List<String> list = new LinkedList<>();
         try {
-            for (int i = 0; i < parentFrame.getSurveyProject().sizeStations(); i++) {
-                surveyStation = parentFrame.getSurveyProject().getStation(i);
+            for (int i = 0; i < surveyRepository.sizeStations(); i++) {
+                surveyStation = surveyRepository.findById(i);
                 for (int j = 0; j < surveyStation.sizePickets(); j++) {
                     picket = surveyStation.getPicket(j);
                     list.add(picket.getpName() + sep +
@@ -95,7 +123,8 @@ public class SurveyServiceDefault implements SurveyService {
      */
     @Override
     public List<String> getReport() {
-        HashMap<String, String> titlesReports = new Shell(parentFrame).getTitlesReports();
+        HashMap<String, String> titlesReports = parentFrame.getTitles();
+//        surveyRepository = parentFrame.getSurveyRepository();
         Picket picket;
         SurveyStation surveyStation;
         LinkedList<String> listReport = new LinkedList<>();
@@ -106,8 +135,8 @@ public class SurveyServiceDefault implements SurveyService {
             listReport.add(str);
         }
 
-        for (int i = 0; i < parentFrame.getSurveyProject().sizeStations(); i++) {
-            surveyStation = parentFrame.getSurveyProject().getStation(i);
+        for (int i = 0; i < surveyRepository.sizeStations(); i++) {
+            surveyStation = surveyRepository.findById(i);
             listReport.add("                                   " + titlesReports.get("SPstation") +
                     surveyStation.getName() +
                     "       " + titlesReports.get("SPorientir") +
@@ -155,6 +184,7 @@ public class SurveyServiceDefault implements SurveyService {
      */
     @Override
     public void processSourceData() {
+//        surveyRepository = parentFrame.getSurveyRepository();
         GeoCalc geoCalc = new GeoCalc();
         SurveyStation llStation;
         double dirBase;
@@ -166,8 +196,8 @@ public class SurveyServiceDefault implements SurveyService {
         Picket picket;
 //        for (SurveyStation llStation : surveyStations) {
 
-        for (int i = 0; i < parentFrame.getSurveyProject().sizeStations(); i++) {
-            llStation = parentFrame.getSurveyProject().getStation(i);
+        for (int i = 0; i < surveyRepository.sizeStations(); i++) {
+            llStation = surveyRepository.findById(i);
             dirBase = geoCalc.getDirAB(
                     llStation.getX(),
                     llStation.getY(),

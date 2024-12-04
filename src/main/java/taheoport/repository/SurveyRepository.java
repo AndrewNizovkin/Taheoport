@@ -1,6 +1,5 @@
 package taheoport.repository;
 
-import taheoport.gui.MainWin;
 import taheoport.model.SurveyStation;
 
 import java.util.*;
@@ -16,69 +15,28 @@ import java.util.*;
  * Copyright Nizovkin A.V. 2022
  */
 public class SurveyRepository {
+//    private SurveyRepository surveyRepository;
     private String absoluteTahPath;
-    private final LinkedList <SurveyStation> surveyStations;
-//    private final MainWin parentFrame;
+    private final List <SurveyStation> surveyStations;
 
     /**
      * Constructor
-//     * @param parentFrame MainWin
      */
     public SurveyRepository() {
-//        this.parentFrame = parentFrame;
         absoluteTahPath = "";
         surveyStations = new LinkedList <>();
     }
 
-    /**
-     * Appends new element Station to the end of list ll
-     * @param sName Station name
-     * @param sXst Station coordinate X, measured in metres
-     * @param sYst Station coordinate Y, measured in metres
-     * @param sZst Station coordinate Z, measured in metres
-     * @param sNameOr Oriented name
-     * @param sXor Oriented coordinate X, measured in metres
-     * @param sYor Oriented coordinate Y, measured in metres
-     * @param sZor Oriented coordinate Z, measured in metres
-     * @param sI Tool height
-     * @return Station
-     */
-     public SurveyStation addStation(String sName,
-                                     String sXst,
-                                     String sYst,
-                                     String sZst,
-                                     String sNameOr,
-                                     String sXor,
-                                     String sYor,
-                                     String sZor,
-                                     String sI) throws NullPointerException{
-        surveyStations.add(new SurveyStation(sName,
-                sXst,
-                sYst,
-                sZst,
-                sNameOr,
-                sXor,
-                sYor,
-                sZor,
-                sI));
-        return surveyStations.getLast();
+    public void clean() {
+        surveyStations.clear();
     }
 
     /**
-     * Appends new Empty instance of SurveyStation to the end of this.surveyStations
-     * @return Station
-     */
-    public SurveyStation addStation() {
-        surveyStations.add(new SurveyStation());
-         return surveyStations.getLast();
-    }
-
-    /**
-     * Addes new instance SurveyStation to this.surveyStations to index position
+     * Inserts new instance SurveyStation to this.surveyStations to index position
      * @param index int index
      * @return SurveyStation
      */
-    public SurveyStation addStation(int index) {
+    public SurveyStation insertStation(int index) {
         SurveyStation surveyStation;
         surveyStations.add(index, new SurveyStation());
         surveyStation = surveyStations.get(index);
@@ -90,8 +48,9 @@ public class SurveyRepository {
      * Addes new instance SurveyStation to this.surveyStations to end position
      * @param surveyStation instance of SurveyStation
      */
-    public void addStation(SurveyStation surveyStation) {
+    public SurveyStation addStation(SurveyStation surveyStation) {
         surveyStations.add(surveyStation);
+        return surveyStation;
     }
 
     /**
@@ -99,7 +58,7 @@ public class SurveyRepository {
      * @param index element index
      * @return element (Station)
      */
-    public SurveyStation getStation(int index){
+    public SurveyStation findById(int index){
             return surveyStations.get(index);
     }
 
@@ -141,8 +100,8 @@ public class SurveyRepository {
      * @return boolean
      */
     public boolean containPolygon() {
-        for (SurveyStation llStation : surveyStations) {
-            if (llStation.sizePickets() < 2) {
+        for (SurveyStation surveyStation : surveyStations) {
+            if (surveyStation.sizePickets() < 2) {
                 return false;
             }
         }

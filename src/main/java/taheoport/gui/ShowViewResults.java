@@ -30,7 +30,7 @@ public class ShowViewResults extends JDialog {
     public ShowViewResults(MainWin frame) {
         super( frame, frame.getTitles().get("SVRdialogTitle"), true);
         this.parentFrame = frame;
-        surveyRepository = parentFrame.getSurveyProject();
+        surveyRepository = parentFrame.getSurveyRepository();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         setUndecorated(true);
@@ -78,19 +78,19 @@ public class ShowViewResults extends JDialog {
 
         Catalog cView = new Catalog();
         for (int i = 0; i < surveyRepository.sizeStations(); i++) {
-            cView.add(new CatalogPoint(surveyRepository.getStation(i).getName(),
-                    surveyRepository.getStation(i).getX(),
-                    surveyRepository.getStation(i).getY(),
-                    surveyRepository.getStation(i).getZ()));
-            cView.add(new CatalogPoint(surveyRepository.getStation(i).getNameOr(),
-                    surveyRepository.getStation(i).getxOr(),
-                    surveyRepository.getStation(i).getyOr(),
-                    surveyRepository.getStation(i).getzOr()));
-            for (int j = 0; j < surveyRepository.getStation(i).sizePickets(); j++) {
-                cView.add(new CatalogPoint(surveyRepository.getStation(i).getPicket(j).getpName(),
-                        surveyRepository.getStation(i).getPicket(j).getX(),
-                        surveyRepository.getStation(i).getPicket(j).getY(),
-                        surveyRepository.getStation(i).getPicket(j).getZ()));
+            cView.add(new CatalogPoint(surveyRepository.findById(i).getName(),
+                    surveyRepository.findById(i).getX(),
+                    surveyRepository.findById(i).getY(),
+                    surveyRepository.findById(i).getZ()));
+            cView.add(new CatalogPoint(surveyRepository.findById(i).getNameOr(),
+                    surveyRepository.findById(i).getxOr(),
+                    surveyRepository.findById(i).getyOr(),
+                    surveyRepository.findById(i).getzOr()));
+            for (int j = 0; j < surveyRepository.findById(i).sizePickets(); j++) {
+                cView.add(new CatalogPoint(surveyRepository.findById(i).getPicket(j).getpName(),
+                        surveyRepository.findById(i).getPicket(j).getX(),
+                        surveyRepository.findById(i).getPicket(j).getY(),
+                        surveyRepository.findById(i).getPicket(j).getZ()));
             }
         }
         tblView = new JTable(new TmodelCatalog(cView));

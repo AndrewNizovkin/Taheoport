@@ -57,24 +57,24 @@ public class CatalogServiceDefault implements CatalogService {
         HashMap<String, String> titles = parentFrame.getTitles();
         switch (target) {
             case 0 -> {
-                if (parentFrame.getCatalog() != null & parentFrame.getSurveyProject() != null) {
-                    SurveyRepository surveyRepository = parentFrame.getSurveyProject();
+                if (parentFrame.getCatalog() != null & parentFrame.getSurveyRepository() != null) {
+                    SurveyRepository surveyRepository = parentFrame.getSurveyRepository();
                     Catalog catalog = parentFrame.getCatalog();
                     int q = 0;
                     for (int i = 0; i < surveyRepository.sizeStations(); i++) {
                         for (int j = 0; j < catalog.getSizeCatalog(); j++) {
-                            if (surveyRepository.getStation(i).getName().equals(catalog.get(j).getName())) {
-                                surveyRepository.getStation(i).setName(catalog.get(j).getName());
-                                surveyRepository.getStation(i).setX(catalog.get(j).getX());
-                                surveyRepository.getStation(i).setY(catalog.get(j).getY());
-                                surveyRepository.getStation(i).setZ(catalog.get(j).getZ());
+                            if (surveyRepository.findById(i).getName().equals(catalog.get(j).getName())) {
+                                surveyRepository.findById(i).setName(catalog.get(j).getName());
+                                surveyRepository.findById(i).setX(catalog.get(j).getX());
+                                surveyRepository.findById(i).setY(catalog.get(j).getY());
+                                surveyRepository.findById(i).setZ(catalog.get(j).getZ());
                                 q++;
                             }
-                            if (surveyRepository.getStation(i).getNameOr().equals(catalog.get(j).getName())) {
-                                surveyRepository.getStation(i).setNameOr(catalog.get(j).getName());
-                                surveyRepository.getStation(i).setxOr(catalog.get(j).getX());
-                                surveyRepository.getStation(i).setyOr(catalog.get(j).getY());
-                                surveyRepository.getStation(i).setzOr(catalog.get(j).getZ());
+                            if (surveyRepository.findById(i).getNameOr().equals(catalog.get(j).getName())) {
+                                surveyRepository.findById(i).setNameOr(catalog.get(j).getName());
+                                surveyRepository.findById(i).setxOr(catalog.get(j).getX());
+                                surveyRepository.findById(i).setyOr(catalog.get(j).getY());
+                                surveyRepository.findById(i).setzOr(catalog.get(j).getZ());
                                 q++;
                             }
                         }

@@ -41,11 +41,21 @@ public class ImportServiceDefault implements ImportService {
             while (!str.contains("//") && list.size() > 1) {
                 str = new DataHandler(str).compress(sep).getStr();
                 array = str.split(sep);
-                surveyRepository.addStation(array[0], array[1], array[2], array[3], array[5], array[6], array[7], "0.000", array[4]);
-                str = (String) list.remove(0);
+                surveyRepository.addStation(new SurveyStation(
+                        array[0],
+                        array[1],
+                        array[2],
+                        array[3],
+                        array[5],
+                        array[6],
+                        array[7],
+                        "0.000",
+                        array[4]));
+//                surveyRepository.addStation(array[0], array[1], array[2], array[3], array[5], array[6], array[7], "0.000", array[4]);
+                str = list.remove(0);
             }
             int index = 0;
-            surveyStation = surveyRepository.getStation(index);
+            surveyStation = surveyRepository.findById(index);
             while (!list.isEmpty()) {
                 str = (String) list.remove(0);
                 if (!str.contains("//")) {
@@ -55,7 +65,7 @@ public class ImportServiceDefault implements ImportService {
                 } else {
                     index = index + 1;
                     if (index < surveyRepository.sizeStations()) {
-                        surveyStation = surveyRepository.getStation(index);
+                        surveyStation = surveyRepository.findById(index);
                     }
                 }
             }
@@ -123,7 +133,7 @@ public class ImportServiceDefault implements ImportService {
                                     lineHandlers[4].getStr(),
                                     lineHandlers[6].getStr());
                         } else {
-                            surveyStation = surveyRepository.addStation();
+                            surveyStation = surveyRepository.addStation(new SurveyStation());
                             surveyStation.setVi(lineHandlers[5].getStr());
                             currentToolHeight = lineHandlers[5].getStr();
                             surveyStation.addPicket(lineHandlers[0].getStr(),
@@ -160,7 +170,7 @@ public class ImportServiceDefault implements ImportService {
         for (String row : array) {
             Matcher m = Pattern.compile("^.+?\\+").matcher(row);
             if (m.find()) {
-                surveyStation = surveyRepository.addStation();
+                surveyStation = surveyRepository.addStation(new SurveyStation());
                 surveyStation.setName(row.substring(0, row.indexOf("_", 0)));
                 surveyStation.setVi(new DataHandler(row.substring(row.indexOf(")", 0) + 1,
                         row.indexOf("_", row.indexOf(")", 0)))).format(3).getStr());
@@ -195,11 +205,29 @@ public class ImportServiceDefault implements ImportService {
             while (!list.isEmpty()){
                 String [] array = list.remove(0).split(",");
                 switch (array[0]) {
-                    case "ST" -> surveyStation = surveyRepository.addStation(array[1],
-                            "0.000", "0.000", "0.000",
+//                    case "ST" -> surveyStation = surveyRepository.addStation(
+//                            array[1],
+//                            "0.000",
+//                            "0.000",
+//                            "0.000",
+//                            array[3],
+//                            "0.000",
+//                            "0.000",
+//                            "0.000",
+//                            new DataHandler(array[5]).format(3).getStr());
+                    case "ST" -> {
+                        surveyRepository.addStation(new SurveyStation(
+                            array[1],
+                            "0.000",
+                            "0.000",
+                            "0.000",
                             array[3],
-                            "0.000", "0.000", "0.000",
-                            new DataHandler(array[5]).format(3).getStr());
+                            "0.000",
+                            "0.000",
+                            "0.000",
+                            new DataHandler(array[5]).format(3).getStr()
+                        ));
+                    }
                     case "SS" -> surveyStation.addPicket(array[7],
                             new DataHandler(array[3]).format(3).getStr(),
                             new DataHandler(array[4]).format(4).getStr(),
