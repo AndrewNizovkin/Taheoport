@@ -93,12 +93,12 @@ public class CatalogServiceDefault implements CatalogService {
                 int q = 0;
                 for (int i = 0; i < polygonRepository.getSizePolygonStations(); i++) {
                     for (int j = 0; j < catalog.getSizeCatalog(); j++) {
-                        if (polygonRepository.getPolygonStation(i).getName().equals(catalog.get(j).getName()) &
-                                polygonRepository.getPolygonStation(i).getStatus()) {
-                            polygonRepository.getPolygonStation(i).setName(catalog.get(j).getName());
-                            polygonRepository.getPolygonStation(i).setX(catalog.get(j).getX());
-                            polygonRepository.getPolygonStation(i).setY(catalog.get(j).getY());
-                            polygonRepository.getPolygonStation(i).setZ(catalog.get(j).getZ());
+                        if (polygonRepository.findById(i).getName().equals(catalog.get(j).getName()) &
+                                polygonRepository.findById(i).getStatus()) {
+                            polygonRepository.findById(i).setName(catalog.get(j).getName());
+                            polygonRepository.findById(i).setX(catalog.get(j).getX());
+                            polygonRepository.findById(i).setY(catalog.get(j).getY());
+                            polygonRepository.findById(i).setZ(catalog.get(j).getZ());
                             q++;
                         }
                     }

@@ -29,29 +29,35 @@ public class PaintProject extends LinkedList<PaintPoint>{
         super();
         if (surveyRepository != null) {
             PaintPoint sPoint;
+            SurveyStation surveyStation;
             for (int i = 0; i < surveyRepository.sizeStations(); i++) {
-                sPoint = new PaintPoint(surveyRepository.findById(i).getName(),
-                        surveyRepository.findById(i).getX(),
-                        surveyRepository.findById(i).getY(),
-                        surveyRepository.findById(i).getZ());
-                sPoint.setxOr(surveyRepository.findById(i).getxOr());
-                sPoint.setyOr(surveyRepository.findById(i).getyOr());
+                surveyStation = surveyRepository.findById(i);
+                sPoint = new PaintPoint(surveyStation.getName(),
+                        surveyStation.getX(),
+                        surveyStation.getY(),
+                        surveyStation.getZ());
+                sPoint.setxOr(surveyStation.getxOr());
+                sPoint.setyOr(surveyStation.getyOr());
                 sPoint.setStatus(true);
                 add(sPoint);
 
-                sPoint = new PaintPoint(surveyRepository.findById(i).getNameOr(), surveyRepository.findById(i).getxOr(), surveyRepository.findById(i).getyOr(), surveyRepository.findById(i).getzOr());
-                sPoint.setxOr(surveyRepository.findById(i).getX());
-                sPoint.setyOr(surveyRepository.findById(i).getY());
+                sPoint = new PaintPoint(
+                        surveyStation.getNameOr(),
+                        surveyStation.getxOr(),
+                        surveyStation.getyOr(),
+                        surveyStation.getzOr());
+                sPoint.setxOr(surveyStation.getX());
+                sPoint.setyOr(surveyStation.getY());
                 sPoint.setStatus(false);
                 add(sPoint);
 
-                for (int j = 0; j < surveyRepository.findById(i).sizePickets(); j++) {
-                    PaintPoint pPoint = new PaintPoint(surveyRepository.findById(i).getPicket(j).getpName(),
-                            surveyRepository.findById(i).getPicket(j).getX(),
-                            surveyRepository.findById(i).getPicket(j).getY(),
-                            surveyRepository.findById(i).getPicket(j).getZ());
-                    pPoint.setxOr(surveyRepository.findById(i).getX());
-                    pPoint.setyOr(surveyRepository.findById(i).getY());
+                for (int j = 0; j < surveyStation.sizePickets(); j++) {
+                    PaintPoint pPoint = new PaintPoint(surveyStation.getPicket(j).getpName(),
+                            surveyStation.getPicket(j).getX(),
+                            surveyStation.getPicket(j).getY(),
+                            surveyStation.getPicket(j).getZ());
+                    pPoint.setxOr(surveyStation.getX());
+                    pPoint.setyOr(surveyStation.getY());
                     pPoint.setStatus(false);
                     add(pPoint);
                 }
@@ -101,11 +107,11 @@ public class PaintProject extends LinkedList<PaintPoint>{
         if (polygonRepository != null) {
             PaintPoint tPoint;
             for (int i = 0; i < polygonRepository.getSizePolygonStations(); i++) {
-                tPoint = new PaintPoint(polygonRepository.getPolygonStation(i).getName(),
-                        polygonRepository.getPolygonStation(i).getX(),
-                        polygonRepository.getPolygonStation(i).getY(),
-                        polygonRepository.getPolygonStation(i).getZ());
-                tPoint.setStatus(polygonRepository.getPolygonStation(i).getStatus());
+                tPoint = new PaintPoint(polygonRepository.findById(i).getName(),
+                        polygonRepository.findById(i).getX(),
+                        polygonRepository.findById(i).getY(),
+                        polygonRepository.findById(i).getZ());
+                tPoint.setStatus(polygonRepository.findById(i).getStatus());
                 add(tPoint);
             }
             xMin = Double.parseDouble(get(0).getX());

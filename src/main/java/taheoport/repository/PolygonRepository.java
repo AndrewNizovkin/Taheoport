@@ -57,11 +57,11 @@ public class PolygonRepository {
     }
 
         /**
-         * return TheoStation from llTeoStations[idx]
+         * Find polygonStation by index
          * @param idx int index
          * @return String
          */
-        public PolygonStation getPolygonStation(int idx) {
+        public PolygonStation findById(int idx) {
         return listPolygonStations.get(idx);
         }
 
@@ -149,7 +149,7 @@ public class PolygonRepository {
          * Adds EMPTY Station at idx position
          * @param idx int idx
          */
-        public void addStation(int idx) {
+        public void insertStation(int idx) {
             listPolygonStations.add(idx, new PolygonStation());
         }
 

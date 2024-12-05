@@ -76,7 +76,7 @@ public class PolygonServiceDefault implements PolygonService {
         List <String> llPol = new LinkedList<>();
         PolygonStation polygonStation;
         for (int i = 0; i < parentFrame.getPolygonProject().getSizePolygonStations(); i++) {
-            polygonStation = parentFrame.getPolygonProject().getPolygonStation(i);
+            polygonStation = parentFrame.getPolygonProject().findById(i);
             s = polygonStation.getName() + sep +
                     polygonStation.getHor() + sep +
                     polygonStation.getLine() + sep +
@@ -109,97 +109,97 @@ public class PolygonServiceDefault implements PolygonService {
 
         switch (polygonRepository.getBindType()) {
             case TZ, TO, TT -> {
-                llReportXY.add("| " + new DataHandler(polygonRepository.getPolygonStation(0).getName()).toTable(10).getStr() +
+                llReportXY.add("| " + new DataHandler(polygonRepository.findById(0).getName()).toTable(10).getStr() +
                         " |          |          |         |          |          |        |          |        | " +
-                        new DataHandler(polygonRepository.getPolygonStation(0).getX()).toTable(12).getStr() +
+                        new DataHandler(polygonRepository.findById(0).getX()).toTable(12).getStr() +
                         " | " +
-                        new DataHandler(polygonRepository.getPolygonStation(0).getY()).toTable(12).getStr() +
+                        new DataHandler(polygonRepository.findById(0).getY()).toTable(12).getStr() +
                         " |");
                 llReportXY.add("|            |          |          |         |          |          |        |          |        |              |              |");
             }
             case ZT, OT, OO -> {
-                llReportXY.add("| " + new DataHandler(polygonRepository.getPolygonStation(0).getName()).toTable(10).getStr() +
+                llReportXY.add("| " + new DataHandler(polygonRepository.findById(0).getName()).toTable(10).getStr() +
                         " | " +
-                        new DataHandler(polygonRepository.getPolygonStation(0).getHor()).toTable(8).getStr() +
+                        new DataHandler(polygonRepository.findById(0).getHor()).toTable(8).getStr() +
                         " |          | " +
-                        new DataHandler(polygonRepository.getPolygonStation(0).getDDHor()).format(2).toTable(7).getStr() +
+                        new DataHandler(polygonRepository.findById(0).getDDHor()).format(2).toTable(7).getStr() +
                         " |          |          |        |          |        | " +
-                        new DataHandler(polygonRepository.getPolygonStation(0).getX()).toTable(12).getStr() +
+                        new DataHandler(polygonRepository.findById(0).getX()).toTable(12).getStr() +
                         " | " +
-                        new DataHandler(polygonRepository.getPolygonStation(0).getY()).toTable(12).getStr() +
+                        new DataHandler(polygonRepository.findById(0).getY()).toTable(12).getStr() +
                         " |");
                 llReportXY.add("|            |          | " +
-                        new DataHandler(polygonRepository.getPolygonStation(0).getLine()).toTable(8).getStr() +
+                        new DataHandler(polygonRepository.findById(0).getLine()).toTable(8).getStr() +
                         " |         | " +
-                        new DataHandler(polygonRepository.getPolygonStation(0).getDirection()).format(4).toTable(8).getStr() +
+                        new DataHandler(polygonRepository.findById(0).getDirection()).format(4).toTable(8).getStr() +
                         " | " +
-                        new DataHandler(polygonRepository.getPolygonStation(0).getDX()).format(3).toTable(8).getStr() +
+                        new DataHandler(polygonRepository.findById(0).getDX()).format(3).toTable(8).getStr() +
                         " | " +
-                        new DataHandler(polygonRepository.getPolygonStation(0).getDDX()).format(3).toTable(6).getStr() +
+                        new DataHandler(polygonRepository.findById(0).getDDX()).format(3).toTable(6).getStr() +
                         " | " +
-                        new DataHandler(polygonRepository.getPolygonStation(0).getDY()).format(3).toTable(8).getStr() +
+                        new DataHandler(polygonRepository.findById(0).getDY()).format(3).toTable(8).getStr() +
                         " | " +
-                        new DataHandler(polygonRepository.getPolygonStation(0).getDDY()).format(3).toTable(6).getStr() +
+                        new DataHandler(polygonRepository.findById(0).getDDY()).format(3).toTable(6).getStr() +
                         " |              |              |");
             }
         }
         for (int i = 1; i < polygonRepository.getSizePolygonStations() -2; i++) {
-            llReportXY.add("| " + new DataHandler(polygonRepository.getPolygonStation(i).getName()).toTable(10).getStr() +
+            llReportXY.add("| " + new DataHandler(polygonRepository.findById(i).getName()).toTable(10).getStr() +
                     " | " +
-                    new DataHandler(polygonRepository.getPolygonStation(i).getHor()).toTable(8).getStr() +
+                    new DataHandler(polygonRepository.findById(i).getHor()).toTable(8).getStr() +
                     " |          | " +
-                    new DataHandler(polygonRepository.getPolygonStation(i).getDDHor()).format(2).toTable(7).getStr() +
+                    new DataHandler(polygonRepository.findById(i).getDDHor()).format(2).toTable(7).getStr() +
                     " |          |          |        |          |        | " +
-                    new DataHandler(polygonRepository.getPolygonStation(i).getX()).toTable(12).getStr() +
+                    new DataHandler(polygonRepository.findById(i).getX()).toTable(12).getStr() +
                     " | " +
-                    new DataHandler(polygonRepository.getPolygonStation(i).getY()).toTable(12).getStr() +
+                    new DataHandler(polygonRepository.findById(i).getY()).toTable(12).getStr() +
                     " |");
             llReportXY.add("|            |          | " +
-                    new DataHandler(polygonRepository.getPolygonStation(i).getLine()).toTable(8).getStr() +
+                    new DataHandler(polygonRepository.findById(i).getLine()).toTable(8).getStr() +
                     " |         | " +
-                    new DataHandler(polygonRepository.getPolygonStation(i).getDirection()).format(4).toTable(8).getStr() +
+                    new DataHandler(polygonRepository.findById(i).getDirection()).format(4).toTable(8).getStr() +
                     " | " +
-                    new DataHandler(polygonRepository.getPolygonStation(i).getDX()).format(3).toTable(8).getStr() +
+                    new DataHandler(polygonRepository.findById(i).getDX()).format(3).toTable(8).getStr() +
                     " | " +
-                    new DataHandler(polygonRepository.getPolygonStation(i).getDDX()).format(3).toTable(6).getStr() +
+                    new DataHandler(polygonRepository.findById(i).getDDX()).format(3).toTable(6).getStr() +
                     " | " +
-                    new DataHandler(polygonRepository.getPolygonStation(i).getDY()).format(3).toTable(8).getStr() +
+                    new DataHandler(polygonRepository.findById(i).getDY()).format(3).toTable(8).getStr() +
                     " | " +
-                    new DataHandler(polygonRepository.getPolygonStation(i).getDDY()).format(3).toTable(6).getStr() +
+                    new DataHandler(polygonRepository.findById(i).getDDY()).format(3).toTable(6).getStr() +
                     " |              |              |");
         }
-        llReportXY.add("| " + new DataHandler(polygonRepository.getPolygonStation(polygonRepository.getSizePolygonStations() - 2).getName()).toTable(10).getStr() +
+        llReportXY.add("| " + new DataHandler(polygonRepository.findById(polygonRepository.getSizePolygonStations() - 2).getName()).toTable(10).getStr() +
                 " | " +
-                new DataHandler(polygonRepository.getPolygonStation(polygonRepository.getSizePolygonStations() - 2).getHor()).toTable(8).getStr() +
+                new DataHandler(polygonRepository.findById(polygonRepository.getSizePolygonStations() - 2).getHor()).toTable(8).getStr() +
                 " |          | " +
-                new DataHandler(polygonRepository.getPolygonStation(polygonRepository.getSizePolygonStations() - 2).getDDHor()).format(2).toTable(7).getStr() +
+                new DataHandler(polygonRepository.findById(polygonRepository.getSizePolygonStations() - 2).getDDHor()).format(2).toTable(7).getStr() +
                 " |          |          |        |          |        | " +
-                new DataHandler(polygonRepository.getPolygonStation(polygonRepository.getSizePolygonStations() - 2).getX()).toTable(12).getStr() +
+                new DataHandler(polygonRepository.findById(polygonRepository.getSizePolygonStations() - 2).getX()).toTable(12).getStr() +
                 " | " +
-                new DataHandler(polygonRepository.getPolygonStation(polygonRepository.getSizePolygonStations() - 2).getY()).toTable(12).getStr() +
+                new DataHandler(polygonRepository.findById(polygonRepository.getSizePolygonStations() - 2).getY()).toTable(12).getStr() +
                 " |");
 
         switch (polygonRepository.getBindType()) {
             case OO, TO, TZ -> llReportXY.add("|            |          | " +
-                    new DataHandler(polygonRepository.getPolygonStation(polygonRepository.getSizePolygonStations() - 2).getLine()).toTable(8).getStr() +
+                    new DataHandler(polygonRepository.findById(polygonRepository.getSizePolygonStations() - 2).getLine()).toTable(8).getStr() +
                     " |         | " +
-                    new DataHandler(polygonRepository.getPolygonStation(polygonRepository.getSizePolygonStations() - 2).getDirection()).format(4).toTable(8).getStr() +
+                    new DataHandler(polygonRepository.findById(polygonRepository.getSizePolygonStations() - 2).getDirection()).format(4).toTable(8).getStr() +
                     " | " +
-                    new DataHandler(polygonRepository.getPolygonStation(polygonRepository.getSizePolygonStations() - 2).getDX()).format(3).toTable(8).getStr() +
+                    new DataHandler(polygonRepository.findById(polygonRepository.getSizePolygonStations() - 2).getDX()).format(3).toTable(8).getStr() +
                     " | " +
-                    new DataHandler(polygonRepository.getPolygonStation(polygonRepository.getSizePolygonStations() - 2).getDDX()).format(3).toTable(6).getStr() +
+                    new DataHandler(polygonRepository.findById(polygonRepository.getSizePolygonStations() - 2).getDDX()).format(3).toTable(6).getStr() +
                     " | " +
-                    new DataHandler(polygonRepository.getPolygonStation(polygonRepository.getSizePolygonStations() - 2).getDY()).format(3).toTable(8).getStr() +
+                    new DataHandler(polygonRepository.findById(polygonRepository.getSizePolygonStations() - 2).getDY()).format(3).toTable(8).getStr() +
                     " | " +
-                    new DataHandler(polygonRepository.getPolygonStation(polygonRepository.getSizePolygonStations() - 2).getDDY()).format(3).toTable(6).getStr() +
+                    new DataHandler(polygonRepository.findById(polygonRepository.getSizePolygonStations() - 2).getDDY()).format(3).toTable(6).getStr() +
                     " |              |              |");
             case TT, ZT, OT -> llReportXY.add("|            |          |          |         |          |          |        |          |        |              |              |");
         }
-        llReportXY.add("| " + new DataHandler(polygonRepository.getPolygonStation(polygonRepository.getSizePolygonStations() - 1).getName()).toTable(10).getStr() +
+        llReportXY.add("| " + new DataHandler(polygonRepository.findById(polygonRepository.getSizePolygonStations() - 1).getName()).toTable(10).getStr() +
                 " |          |          |         |          |          |        |          |        | " +
-                new DataHandler(polygonRepository.getPolygonStation(polygonRepository.getSizePolygonStations() - 1).getX()).toTable(12).getStr() +
+                new DataHandler(polygonRepository.findById(polygonRepository.getSizePolygonStations() - 1).getX()).toTable(12).getStr() +
                 " | " +
-                new DataHandler(polygonRepository.getPolygonStation(polygonRepository.getSizePolygonStations() - 1).getY()).toTable(12).getStr() +
+                new DataHandler(polygonRepository.findById(polygonRepository.getSizePolygonStations() - 1).getY()).toTable(12).getStr() +
                 " |");
         llReportXY.add("-------------------------------------------------------------------------------------------------------------------------------");
         llReportXY.add("");
@@ -269,28 +269,28 @@ public class PolygonServiceDefault implements PolygonService {
             finish = polygonRepository.getSizePolygonStations() - 2;
         }
         for (int i = start; i < finish; i++) {
-            dZCorrected = Double.parseDouble(polygonRepository.getPolygonStation(i).getDZ()) +
-                    polygonRepository.getPolygonStation(i).getDDZ();
+            dZCorrected = Double.parseDouble(polygonRepository.findById(i).getDZ()) +
+                    polygonRepository.findById(i).getDDZ();
             sumDZCorrected += dZCorrected;
-            sumDDZ += polygonRepository.getPolygonStation(i).getDDZ();
-            sumDZ += Double.parseDouble(polygonRepository.getPolygonStation(i).getDZ());
-            llReportZ.add("| " + new DataHandler(polygonRepository.getPolygonStation(i).getName()).toTable(10).getStr() +
+            sumDDZ += polygonRepository.findById(i).getDDZ();
+            sumDZ += Double.parseDouble(polygonRepository.findById(i).getDZ());
+            llReportZ.add("| " + new DataHandler(polygonRepository.findById(i).getName()).toTable(10).getStr() +
                     " |          |            |        |            | " +
-                    new DataHandler(polygonRepository.getPolygonStation(i).getZ()).toTable(8).getStr() + " |");
+                    new DataHandler(polygonRepository.findById(i).getZ()).toTable(8).getStr() + " |");
             llReportZ.add("|            | " +
-                    new DataHandler(polygonRepository.getPolygonStation(i).getLine()).toTable(8).getStr() +
+                    new DataHandler(polygonRepository.findById(i).getLine()).toTable(8).getStr() +
                     " | " +
-                    new DataHandler(polygonRepository.getPolygonStation(i).getDZ()).toTable(10).getStr() +
+                    new DataHandler(polygonRepository.findById(i).getDZ()).toTable(10).getStr() +
                     " | " +
-                    new DataHandler(polygonRepository.getPolygonStation(i).getDDZ() * 1000).format(2).toTable(6).getStr() +
+                    new DataHandler(polygonRepository.findById(i).getDDZ() * 1000).format(2).toTable(6).getStr() +
                     " | " +
                     new DataHandler(dZCorrected).format(3).toTable(10).getStr() +
                     " |          |"
             );
         }
-        llReportZ.add("| " + new DataHandler(polygonRepository.getPolygonStation(finish).getName()).toTable(10).getStr() +
+        llReportZ.add("| " + new DataHandler(polygonRepository.findById(finish).getName()).toTable(10).getStr() +
                 " |          |            |        |            | " +
-                new DataHandler(polygonRepository.getPolygonStation(finish).getZ()).toTable(8).getStr() + " |");
+                new DataHandler(polygonRepository.findById(finish).getZ()).toTable(8).getStr() + " |");
         llReportZ.add("|------------|----------|------------|--------|------------|----------|");
         llReportZ.add("|" + titlesReports.get("TPcontrol") +" | " +
                 new DataHandler(polygonRepository.getPerimeter()).format(3).toTable(8).getStr() +
@@ -337,7 +337,7 @@ public class PolygonServiceDefault implements PolygonService {
         List<String> llReportNXYZ = new LinkedList<>();
         PolygonStation polygonStation;
         for (int i = 0; i < parentFrame.getPolygonProject().getSizePolygonStations(); i++) {
-            polygonStation = parentFrame.getPolygonProject().getPolygonStation(i);
+            polygonStation = parentFrame.getPolygonProject().findById(i);
             llReportNXYZ.add(polygonStation.getName() + sep +
                     polygonStation.getX() + sep +
                     polygonStation.getY() + sep +

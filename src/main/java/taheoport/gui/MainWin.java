@@ -451,18 +451,6 @@ public class MainWin extends JFrame{
         return titles;
     }
 
-//    /**
-//     * return theoProject
-//     * @return TheoProject theoProject
-//     */
-//    public PolygonProject getPolygonProject() {
-//        return polygonProject;
-//    }
-//
-//    public ExtractProject getExtractProject() {
-//        return extractProject;
-//    }
-
     /**
      * Return catalog coordinates
      * @return catalog
@@ -531,67 +519,36 @@ public class MainWin extends JFrame{
      * import from Leica
      */
     private void importLeica() {
-        switch (tpMain.getSelectedIndex()) {
-            case 0 -> {
-                List <String>  llLeicaList = ioService.readTextFile(settings.getPathWorkDir(), "gsi",
-                        titles.get("MWopenFileTitle"));
-                if (llLeicaList != null) {
-//                    surveyProject = new SurveyProject(this).loadLeicaList(llLeicaList);
-                    surveyService.setSurveyRepository(importService.loadLeica(llLeicaList));
-//                    surveyService.setAbsoluteTahPath(surveyRepository.getAbsoluteTahPath());
-                    reloadSurveyEditor();
-                    setControlsOn();
-                    surveyService.setAbsoluteTahPath(ioService.writeTextFile(surveyService.getTahList(),settings.getPathWorkDir(),
-                            "tah", "Write Tah"));
-                    setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
-                    surveyEditor.setFocusStations();
-                }
-            }
-            case 1 -> System.out.println("action from pnlPolygonometry");
-        }
+                surveyService.importLeica();
+                reloadSurveyEditor();
+                setControlsOn();
+                surveyService.saveProjectAs();
+                setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
+                surveyEditor.setFocusStations();
     }
 
     /**
      * import from Nicon
      */
     private void importNicon() {
-        switch (tpMain.getSelectedIndex()) {
-            case 0 -> {
-                List <String>  llNiconList = ioService.readTextFile(settings.getPathWorkDir(), "raw", titles.get("MWopenFileTitle"));
-                if (llNiconList != null) {
-                    surveyService.setSurveyRepository(importService.loadNicon(llNiconList));
-//                    surveyService.setAbsoluteTahPath(surveyRepository.getAbsoluteTahPath());
-                    reloadSurveyEditor();
-                    setControlsOn();
-                    surveyService.setAbsoluteTahPath(ioService.writeTextFile(surveyService.getTahList(), settings.getPathWorkDir(), "tah", "write Tah"));
-                    setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
-                    surveyEditor.setFocusStations();
-                }
-            }
-            case 1 -> System.out.println("action from pnlPolygonometry");
-        }
+                surveyService.importNicon();
+                reloadSurveyEditor();
+                setControlsOn();
+                surveyService.saveProjectAs();
+                setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
+                surveyEditor.setFocusStations();
     }
 
     /**
      * import from Topcon
      */
     private void importTopcon() {
-        switch (tpMain.getSelectedIndex()) {
-            case 0 -> {
-                List<String> llTopconList = ioService.readTextFile(settings.getPathWorkDir(), "txt", titles.get("MWopenFileTitle"));
-                if (llTopconList != null) {
-//                    surveyProject = new SurveyProject(this).loadTopconList(llTopconList);
-                    surveyService.setSurveyRepository(importService.loadTopcon(llTopconList));
-//                    surveyService.setAbsoluteTahPath(surveyRepository.getAbsoluteTahPath());
-                    reloadSurveyEditor();
-                    setControlsOn();
-                    surveyService.setAbsoluteTahPath(ioService.writeTextFile(surveyService.getTahList(), settings.getPathWorkDir(), "tah", "write Tah"));
-                    setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
-                    surveyEditor.setFocusStations();
-                }
-            }
-            case 1 -> System.out.println("action from pnlPolygonometry");
-        }
+        surveyService.importTopcon();
+        reloadSurveyEditor();
+        setControlsOn();
+        surveyService.saveProjectAs();
+        setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
+        surveyEditor.setFocusStations();
     }
 
     /**
@@ -600,12 +557,10 @@ public class MainWin extends JFrame{
     private void newFile() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                surveyService.setSurveyRepository(new SurveyRepository());
-//                surveyService.setAbsoluteTahPath(surveyRepository.getAbsoluteTahPath());
-                SurveyStation st = surveyService.getSurveyRepository().addStation(new SurveyStation());
-                st.addPicket();
+                surveyService.newProject();
                 reloadSurveyEditor();
                 setControlsOn();
+                setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
                 surveyEditor.setFocusStations();
             }
             case 1 -> {
@@ -625,14 +580,11 @@ public class MainWin extends JFrame{
     private void openFile() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                List<String> llTahList = ioService.readTextFile(settings.getPathWorkDir(), "tah", titles.get("MWopenFileTitle"));
-                if (llTahList != null) {
-                    surveyService.setSurveyRepository(importService.loadTah(llTahList));
-//                    surveyService.setAbsoluteTahPath(surveyRepository.getAbsoluteTahPath());
-                    reloadSurveyEditor();
-                    setControlsOn();
-                    surveyEditor.setFocusStations();
-            }
+                surveyService.importTah();
+                reloadSurveyEditor();
+                setControlsOn();
+                setTitle("Taheoport: " + polygonRepository.getAbsolutePolPath());
+                surveyEditor.setFocusStations();
             }
             case 1 -> {
                 List<String> llPolList = ioService.readTextFile(settings.getPathWorkDir(), "pol", titles.get("MWopenFileTitle"));
@@ -652,9 +604,8 @@ public class MainWin extends JFrame{
      */
     private void extractPol() {
         if (surveyService.getSurveyRepository() != null) {
-            if (surveyService.getSurveyRepository().containPolygon()) {
+            if (surveyService.containPolygon()) {
                 surveyService.processSourceData();
-//                extractProject = new ExtractProject(this);
                 polygonRepository = polygonService.loadPolList(extractService.extractPolygonProject());
                 tpMain.setSelectedIndex(1);
                 reloadPolygonEditor();
@@ -675,14 +626,7 @@ public class MainWin extends JFrame{
     private void save() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                if (surveyService.getAbsoluteTahPath().isEmpty()) {
-                    String s = ioService.writeTextFile(surveyService.getTahList(), settings.getPathWorkDir(), "tah", "Write Tah");
-                    if (s != null) {
-                        surveyService.setAbsoluteTahPath(s);
-                    }
-                } else {
-                    surveyService.setAbsoluteTahPath(ioService.writeTextFile(surveyService.getTahList(), surveyService.getAbsoluteTahPath()));
-                }
+                surveyService.saveProject();
                 setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
             }
             case 1 -> {
@@ -706,7 +650,11 @@ public class MainWin extends JFrame{
     private void saveAs() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                String s = ioService.writeTextFile(surveyService.getTahList(), settings.getPathWorkDir(), "tah", titles.get("MWsaveTahTitle"));
+                String s = ioService.writeTextFile(
+                        surveyService.getTahList(),
+                        settings.getPathWorkDir(),
+                        "tah",
+                        titles.get("MWsaveTahTitle"));
                 if (s != null) {
                     surveyService.setAbsoluteTahPath(s);
                     setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
@@ -729,7 +677,8 @@ public class MainWin extends JFrame{
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
                 surveyService.processSourceData();
-                ioService.writeTextFile(surveyService.getPickets(), settings.getPathWorkDir(), "dat", "Write DAT");
+//                ioService.writeTextFile(surveyService.getPickets(), settings.getPathWorkDir(), "dat", "Write DAT");
+                JOptionPane.showMessageDialog(this,"The data has been processed successfully");
             }
             case 1 -> {
                 polygonService.processSourceData();

@@ -205,18 +205,8 @@ public class ImportServiceDefault implements ImportService {
             while (!list.isEmpty()){
                 String [] array = list.remove(0).split(",");
                 switch (array[0]) {
-//                    case "ST" -> surveyStation = surveyRepository.addStation(
-//                            array[1],
-//                            "0.000",
-//                            "0.000",
-//                            "0.000",
-//                            array[3],
-//                            "0.000",
-//                            "0.000",
-//                            "0.000",
-//                            new DataHandler(array[5]).format(3).getStr());
-                    case "ST" -> {
-                        surveyRepository.addStation(new SurveyStation(
+                    case "ST" ->
+                        surveyStation = surveyRepository.addStation(new SurveyStation(
                             array[1],
                             "0.000",
                             "0.000",
@@ -227,7 +217,6 @@ public class ImportServiceDefault implements ImportService {
                             "0.000",
                             new DataHandler(array[5]).format(3).getStr()
                         ));
-                    }
                     case "SS" -> surveyStation.addPicket(array[7],
                             new DataHandler(array[3]).format(3).getStr(),
                             new DataHandler(array[4]).format(4).getStr(),

@@ -27,8 +27,12 @@ public class SurveyRepository {
         surveyStations = new LinkedList <>();
     }
 
+    /**
+     * Removes all records from surveyStations
+     */
     public void clean() {
         surveyStations.clear();
+        absoluteTahPath = "";
     }
 
     /**
@@ -54,7 +58,7 @@ public class SurveyRepository {
     }
 
     /**
-     * Rerurns the element (Station) at the specfied position of this.surveyStations
+     * Gets the element (Station) at the specified position of this.surveyStations
      * @param index element index
      * @return element (Station)
      */

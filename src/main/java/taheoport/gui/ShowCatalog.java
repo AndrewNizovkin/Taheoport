@@ -114,10 +114,10 @@ public class ShowCatalog extends JDialog {
                 parentFrame.getSurveyRepository().findById(index).setyOr(cp.getY());
             }
             if (target.equals("TheoStation")) {
-                parentFrame.getPolygonProject().getPolygonStation(index).setName(cp.getName());
-                parentFrame.getPolygonProject().getPolygonStation(index).setX(cp.getX());
-                parentFrame.getPolygonProject().getPolygonStation(index).setY(cp.getY());
-                parentFrame.getPolygonProject().getPolygonStation(index).setZ(cp.getZ());
+                parentFrame.getPolygonProject().findById(index).setName(cp.getName());
+                parentFrame.getPolygonProject().findById(index).setX(cp.getX());
+                parentFrame.getPolygonProject().findById(index).setY(cp.getY());
+                parentFrame.getPolygonProject().findById(index).setZ(cp.getZ());
             }
             this.dispose();
         }

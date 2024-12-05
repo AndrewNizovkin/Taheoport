@@ -2,10 +2,10 @@ package taheoport.service;
 
 import taheoport.gui.MainWin;
 import taheoport.model.Picket;
+import taheoport.model.Settings;
 import taheoport.model.Shell;
 import taheoport.model.SurveyStation;
 import taheoport.repository.SurveyRepository;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,6 +18,8 @@ public class SurveyServiceDefault implements SurveyService {
     private String absoluteTahPath;
     private final MainWin parentFrame;
     private SurveyRepository surveyRepository;
+    private final IOService ioService;
+    private final ImportService importService;
 
     /**
      * Constructor
@@ -27,33 +29,58 @@ public class SurveyServiceDefault implements SurveyService {
         parentFrame = frame;
         absoluteTahPath = "";
         surveyRepository = new SurveyRepository();
+        ioService = new IOServiceDefault(parentFrame);
+        importService = new ImportServiceDefault(parentFrame);
+
     }
 
+    /**
+     * Sets absoluteTahPath
+     * @param absoluteTahPath path to file
+     */
     public void setAbsoluteTahPath(String absoluteTahPath) {
         this.absoluteTahPath = absoluteTahPath;
     }
 
+    /**
+     * Gets absoluteTahPath
+     * @return String
+     */
     public String getAbsoluteTahPath() {
         return absoluteTahPath;
     }
 
+    /**
+     * Sets surveyRepository
+     * @param surveyRepository surveyRepository
+     */
     public void setSurveyRepository(SurveyRepository surveyRepository) {
         this.surveyRepository = surveyRepository;
         absoluteTahPath = surveyRepository.getAbsoluteTahPath();
     }
 
+    /**
+     * Gets surveyRepository
+     * @return surveyRepository
+     */
     public SurveyRepository getSurveyRepository() {
         return surveyRepository;
     }
 
     /**
+     * Checks the potential presence of a polygon in the measurements
+     * @return result of check
+     */
+    public boolean containPolygon() {
+        return surveyRepository.containPolygon();
+    }
+
+    /**
      * Gets SurveyProject as list
-     *
-     * @return LinkedList
+     * @return List
      */
     @Override
     public List<String> getTahList() {
-//        surveyRepository = parentFrame.getSurveyRepository();
         SurveyStation surveyStation;
         Picket picket;
         String sep = " ";
@@ -184,7 +211,6 @@ public class SurveyServiceDefault implements SurveyService {
      */
     @Override
     public void processSourceData() {
-//        surveyRepository = parentFrame.getSurveyRepository();
         GeoCalc geoCalc = new GeoCalc();
         SurveyStation llStation;
         double dirBase;
@@ -194,7 +220,6 @@ public class SurveyServiceDefault implements SurveyService {
         double dY;
         double dZ;
         Picket picket;
-//        for (SurveyStation llStation : surveyStations) {
 
         for (int i = 0; i < surveyRepository.sizeStations(); i++) {
             llStation = surveyRepository.findById(i);
@@ -236,6 +261,116 @@ public class SurveyServiceDefault implements SurveyService {
                 picket.setY(Double.parseDouble(llStation.getY()) + dY);
                 picket.setZ(Double.parseDouble(llStation.getZ()) + dZ);
             }
+        }
+    }
+
+    /**
+     * Imports measurement from Lieca gsi
+     */
+    @Override
+    public void importLeica() {
+        List <String>  list = ioService.readTextFile(
+                parentFrame.getSettings().getPathWorkDir(),
+                "gsi",
+                parentFrame.getTitles().get("MWopenFileTitle"));
+        if (list != null) {
+            surveyRepository = importService.loadLeica(list);
+        }
+        absoluteTahPath = surveyRepository.getAbsoluteTahPath();
+    }
+
+    /**
+     * Imports measurement from Nicon txt
+     */
+    @Override
+    public void importNicon() {
+        List <String>  list = ioService.readTextFile(
+                parentFrame.getSettings().getPathWorkDir(),
+                "raw",
+                parentFrame.getTitles().get("MWopenFileTitle"));
+
+        if (list != null) {
+            surveyRepository = importService.loadNicon(list);
+            absoluteTahPath = surveyRepository.getAbsoluteTahPath();
+        }
+    }
+
+    /**
+     * Imports measurement from Topcon txt
+     */
+    @Override
+    public void importTopcon() {
+        List<String> list = ioService.readTextFile(
+                parentFrame.getSettings().getPathWorkDir(),
+                "txt",
+                parentFrame.getTitles().get("MWopenFileTitle"));
+
+        if (list != null) {
+            surveyRepository = importService.loadTopcon(list);
+            absoluteTahPath = surveyRepository.getAbsoluteTahPath();
+        }
+    }
+
+    /**
+     * Imports measurement from *.tah
+     */
+    @Override
+    public void importTah() {
+        List<String> llTahList = ioService.readTextFile(
+                parentFrame.getSettings().getPathWorkDir(),
+                "tah",
+                parentFrame.getTitles().get("MWopenFileTitle"));
+
+        if (llTahList != null) {
+            surveyRepository = importService.loadTah(llTahList);
+            absoluteTahPath = surveyRepository.getAbsoluteTahPath();
+        }
+    }
+
+    /**
+     * Create new Survey Project
+     */
+    @Override
+    public void newProject() {
+        surveyRepository.clean();
+        absoluteTahPath = surveyRepository.getAbsoluteTahPath();
+        SurveyStation st = surveyRepository.addStation(new SurveyStation());
+        st.addPicket();
+    }
+
+    /**
+     * Save current survey project
+     */
+    @Override
+    public void saveProject() {
+        if (absoluteTahPath.isEmpty()) {
+            String s = ioService.writeTextFile(
+                    this.getTahList(),
+                    parentFrame.getSettings().getPathWorkDir(),
+                    "tah",
+                    "Write Tah");
+            if (s != null) {
+                absoluteTahPath = s;
+            }
+        } else {
+            absoluteTahPath = ioService.writeTextFile(
+                    this.getTahList(),
+                    absoluteTahPath);
+        }
+    }
+
+    /**
+     * Save current survey project
+     */
+    @Override
+    public void saveProjectAs() {
+        String s = ioService.writeTextFile(
+                this.getTahList(),
+                parentFrame.getSettings().getPathWorkDir(),
+                "tah",
+                parentFrame.getTitles().get("MWsaveTahTitle"));
+        if (s != null) {
+            absoluteTahPath = s;
         }
     }
 }
