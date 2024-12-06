@@ -1,6 +1,6 @@
 package taheoport.gui;
 
-import taheoport.model.Catalog;
+import taheoport.repository.CatalogRepository;
 import taheoport.model.CatalogPoint;
 import javax.swing.*;
 import java.awt.*;
@@ -115,14 +115,14 @@ public class ShowViewAdjustment extends JDialog {
 
 // tblNXYZ_______________________________________________________________________
 
-            Catalog catalogNXYZ = new Catalog();
-            for (int i = 0; i < parentFrame.getPolygonProject().getSizePolygonStations(); i++) {
-                catalogNXYZ.add(new CatalogPoint(parentFrame.getPolygonProject().findById(i).getName(),
-                        parentFrame.getPolygonProject().findById(i).getX(),
-                        parentFrame.getPolygonProject().findById(i).getY(),
-                        parentFrame.getPolygonProject().findById(i).getZ()));
+            CatalogRepository catalogRepositoryNXYZ = new CatalogRepository();
+            for (int i = 0; i < parentFrame.getPolygonRepository().getSizePolygonStations(); i++) {
+                catalogRepositoryNXYZ.add(new CatalogPoint(parentFrame.getPolygonRepository().findById(i).getName(),
+                        parentFrame.getPolygonRepository().findById(i).getX(),
+                        parentFrame.getPolygonRepository().findById(i).getY(),
+                        parentFrame.getPolygonRepository().findById(i).getZ()));
             }
-            JTable tblNXYZ = new JTable(new TmodelCatalog(catalogNXYZ));
+            JTable tblNXYZ = new JTable(new TmodelCatalog(catalogRepositoryNXYZ));
             tblNXYZ.getTableHeader().setReorderingAllowed(false);
             tblNXYZ.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             sellRow = -1;
@@ -137,7 +137,7 @@ public class ShowViewAdjustment extends JDialog {
             spNXYZ.setPreferredSize(new Dimension(widthFrame / 5 * 2, heightFrame));
 
         pnlNXYZ.add(spNXYZ, BorderLayout.WEST);
-        pnlViewNXYZ = new PolygonPaintPanel(parentFrame.getPolygonProject(), sellRow);
+        pnlViewNXYZ = new PolygonPaintPanel(parentFrame.getPolygonRepository(), sellRow);
         pnlNXYZ.add(pnlViewNXYZ, BorderLayout.CENTER);
 
 //        reloadPnlViewNXYZ();

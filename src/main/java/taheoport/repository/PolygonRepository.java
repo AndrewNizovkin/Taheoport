@@ -41,10 +41,18 @@ public class PolygonRepository {
     }
 
         /**
-         * sets absolutePolPath
-         * @param absolutePolPath String path
+         * Removes all elements from listPolygonStations
          */
-        public void setAbsolutePolPath(String absolutePolPath) {
+    public void clear() {
+        listPolygonStations.clear();
+        absolutePolPath = "";
+    }
+
+    /**
+     * sets absolutePolPath
+     * @param absolutePolPath String path
+     */
+    public void setAbsolutePolPath(String absolutePolPath) {
             this.absolutePolPath = absolutePolPath;
         }
 

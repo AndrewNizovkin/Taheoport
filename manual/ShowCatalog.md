@@ -21,7 +21,7 @@
 
 Модификатор и тип | Поле | Описание
 --- | ---|---
-`private final Catalog` | `catalog` | Отображаемый каталог координат.
+`private final Catalog` | `catalogRepository` | Отображаемый каталог координат.
 `private final int` | `index` | Индекс станции, в которой заменяются координаты.
 `private final MainWin` | `parentFrame` | Родительский MainWin.
 `private final int` | `selRow` | Индекс выделенной строки в отображаемой таблице координат опорных пунктов.

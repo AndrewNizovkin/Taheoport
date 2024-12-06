@@ -10,11 +10,42 @@ import java.util.List;
 public interface PolygonService {
 
     /**
+     * Create new polygon project
+     */
+    void newProject();
+
+    /**
+     * Loads polygon project from pol-file
+     */
+    void importPol();
+
+    /**
+     * Saves current polygon project to pol-file
+     */
+    void savePol();
+
+    /**
+     * Saves current polygon project to pol-file
+     */
+    void savePolAs();
+
+    /**
+     * Gets polygonRepository
+     * @return polygonRepository
+     */
+    PolygonRepository getPolygonRepository();
+
+    /**
+     * Gets absolutePolPath
+     * @return String
+     */
+    String getAbsolutePolPath();
+
+    /**
      * Load PolygonProject from LinkedList<String> list
      * @param list list
-     * @return PolygonProject
      */
-    PolygonRepository loadPolList(List<String> list);
+    void loadPolList(List<String> list);
 
     /**
      * gets list for writing to file current PolygonProject

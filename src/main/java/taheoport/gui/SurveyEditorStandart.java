@@ -72,7 +72,7 @@ public class SurveyEditorStandart extends JPanel  {
             surveyStation = this.surveyRepository.findById(index);
             SetCoordinates actionSetStation = new SetCoordinates("StationName");
             SetCoordinates actionSetOr = new SetCoordinates("OrName");
-            if (this.parentFrame.isCatalog()) {
+            if (this.parentFrame.hasCatalog()) {
                 actionSetStation.setEnabled(true);
                 actionSetOr.setEnabled(true);
             }
@@ -1097,11 +1097,11 @@ public class SurveyEditorStandart extends JPanel  {
         public SetCoordinates(String name) {
             super();
             this.name = name;
-            setEnabled(parentFrame.isCatalog());
+            setEnabled(parentFrame.hasCatalog());
         }
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (parentFrame.isCatalog()) {
+            if (parentFrame.hasCatalog()) {
                 new ShowCatalog(parentFrame, index, name);
                 surveyStation = surveyRepository.findById(index);
                 tfStationName.setText(surveyStation.getName());

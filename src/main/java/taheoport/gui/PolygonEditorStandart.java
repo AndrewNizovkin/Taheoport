@@ -45,7 +45,7 @@ public class PolygonEditorStandart extends JPanel {
             if (tmPolygonStations.getRowCount() > 1) {
                 int k = selRow;
                 tmPolygonStations.removeRow(selRow);
-                if (k == parentFrame.getPolygonProject().getSizePolygonStations()) k--;
+                if (k == parentFrame.getPolygonRepository().getSizePolygonStations()) k--;
                 selRow = k;
                 tblStations.getSelectionModel().setSelectionInterval(selRow, selRow);
                 tblStations.getColumnModel().getSelectionModel().setSelectionInterval(selColumn, selColumn);
@@ -62,7 +62,7 @@ public class PolygonEditorStandart extends JPanel {
         btnInsertRowBefore.setToolTipText(parentFrame.getTitles().get("TAHbtnInsertRowBeforeTT"));
         btnInsertRowBefore.addActionListener(e -> {
             if (isInsertBefore(selRow)) {
-                parentFrame.getPolygonProject().insertStation(selRow);
+                parentFrame.getPolygonRepository().insertStation(selRow);
                 tmPolygonStations.addRow(selRow, new Object[]{
                         "noname",
                         "0.0000",
@@ -89,7 +89,7 @@ public class PolygonEditorStandart extends JPanel {
         btnInsertRowAfter.addActionListener(e -> {
             if (isInsertAfter(selRow)) {
                 selRow++;
-                parentFrame.getPolygonProject().insertStation(selRow);
+                parentFrame.getPolygonRepository().insertStation(selRow);
                 tmPolygonStations.addRow(selRow, new Object[]{
                         "noname",
                         "0.0000",
@@ -114,12 +114,12 @@ public class PolygonEditorStandart extends JPanel {
         btnImportFromCatalog.setEnabled(true);
         btnImportFromCatalog.setToolTipText(parentFrame.getTitles().get("TAHbtnImportFromCatalogTT"));
         btnImportFromCatalog.addActionListener(e -> {
-            if (parentFrame.getPolygonProject().findById(selRow).getStatus()) {
+            if (parentFrame.getPolygonRepository().findById(selRow).getStatus()) {
                 new ShowCatalog(parentFrame, selRow, "TheoStation");
-                tmPolygonStations.setValueAt(parentFrame.getPolygonProject().findById(selRow).getName(), selRow, 0);
-                tmPolygonStations.setValueAt(parentFrame.getPolygonProject().findById(selRow).getX(), selRow, 4);
-                tmPolygonStations.setValueAt(parentFrame.getPolygonProject().findById(selRow).getY(), selRow, 5);
-                tmPolygonStations.setValueAt(parentFrame.getPolygonProject().findById(selRow).getZ(), selRow, 6);
+                tmPolygonStations.setValueAt(parentFrame.getPolygonRepository().findById(selRow).getName(), selRow, 0);
+                tmPolygonStations.setValueAt(parentFrame.getPolygonRepository().findById(selRow).getX(), selRow, 4);
+                tmPolygonStations.setValueAt(parentFrame.getPolygonRepository().findById(selRow).getY(), selRow, 5);
+                tmPolygonStations.setValueAt(parentFrame.getPolygonRepository().findById(selRow).getZ(), selRow, 6);
             }
         });
 //endregion
@@ -238,12 +238,12 @@ public class PolygonEditorStandart extends JPanel {
                 new Font(Font.DIALOG, Font.PLAIN, 12),
                 Color.BLUE));
 
-        if (parentFrame.getPolygonProject().getPerimeter() == 0.0) {
+        if (parentFrame.getPolygonRepository().getPerimeter() == 0.0) {
             JPanel pnlBlank = new JPanel();
             pnlPaint.add(pnlBlank, BorderLayout.CENTER);
 
         } else {
-            PolygonPaintPanel pnlTheoPaintPanel = new PolygonPaintPanel(parentFrame.getPolygonProject(), -1);
+            PolygonPaintPanel pnlTheoPaintPanel = new PolygonPaintPanel(parentFrame.getPolygonRepository(), -1);
             pnlPaint.add(pnlTheoPaintPanel, BorderLayout.CENTER);
         }
 //endregion
@@ -263,50 +263,50 @@ public class PolygonEditorStandart extends JPanel {
         tmPolygonStations = new TmodelPolygonStations();
         tblStations = new JTable(tmPolygonStations);
         Object[] array;
-        for (int i = 0; i < parentFrame.getPolygonProject().getSizePolygonStations(); i++) {
+        for (int i = 0; i < parentFrame.getPolygonRepository().getSizePolygonStations(); i++) {
             array = new Object[8];
-            if (parentFrame.getPolygonProject().findById(i).getName().equals("Not")) {
+            if (parentFrame.getPolygonRepository().findById(i).getName().equals("Not")) {
                 array[0] = "";
             } else {
-                array[0] = parentFrame.getPolygonProject().findById(i).getName();
+                array[0] = parentFrame.getPolygonRepository().findById(i).getName();
             }
-            if (parentFrame.getPolygonProject().findById(i).getHor().equals("Not")) {
+            if (parentFrame.getPolygonRepository().findById(i).getHor().equals("Not")) {
                 array[1] = "";
             } else {
-                array[1] = parentFrame.getPolygonProject().findById(i).getHor();
+                array[1] = parentFrame.getPolygonRepository().findById(i).getHor();
             }
-            if (parentFrame.getPolygonProject().findById(i).getLine().equals("Not")) {
+            if (parentFrame.getPolygonRepository().findById(i).getLine().equals("Not")) {
                 array[2] = "";
             } else {
-                array[2] = parentFrame.getPolygonProject().findById(i).getLine();
+                array[2] = parentFrame.getPolygonRepository().findById(i).getLine();
             }
-            if (parentFrame.getPolygonProject().findById(i).getDZ().equals("Not")) {
+            if (parentFrame.getPolygonRepository().findById(i).getDZ().equals("Not")) {
                 array[3] = "";
             } else {
-                array[3] = parentFrame.getPolygonProject().findById(i).getDZ();
+                array[3] = parentFrame.getPolygonRepository().findById(i).getDZ();
             }
-            if (parentFrame.getPolygonProject().findById(i).getStatus()) {
-                if (parentFrame.getPolygonProject().findById(i).getX().equals("Not")) {
+            if (parentFrame.getPolygonRepository().findById(i).getStatus()) {
+                if (parentFrame.getPolygonRepository().findById(i).getX().equals("Not")) {
                     array[4] = "";
                 } else {
-                    array[4] = parentFrame.getPolygonProject().findById(i).getX();
+                    array[4] = parentFrame.getPolygonRepository().findById(i).getX();
                 }
-                if (parentFrame.getPolygonProject().findById(i).getY().equals("Not")) {
+                if (parentFrame.getPolygonRepository().findById(i).getY().equals("Not")) {
                     array[5] = "";
                 } else {
-                    array[5] = parentFrame.getPolygonProject().findById(i).getY();
+                    array[5] = parentFrame.getPolygonRepository().findById(i).getY();
                 }
-                if (parentFrame.getPolygonProject().findById(i).getZ().equals("Not")) {
+                if (parentFrame.getPolygonRepository().findById(i).getZ().equals("Not")) {
                     array[6] = "";
                 } else {
-                    array[6] = parentFrame.getPolygonProject().findById(i).getZ();
+                    array[6] = parentFrame.getPolygonRepository().findById(i).getZ();
                 }
             } else {
                 array[4] = "";
                 array[5] = "";
                 array[6] = "";
             }
-            array[7] = parentFrame.getPolygonProject().findById(i).getStatus();
+            array[7] = parentFrame.getPolygonRepository().findById(i).getStatus();
 
             tmPolygonStations.addRow(array);
 
@@ -340,7 +340,7 @@ public class PolygonEditorStandart extends JPanel {
      * sets bindings value
      */
     public void setBindings() {
-        switch (parentFrame.getPolygonProject().getBindType()) {
+        switch (parentFrame.getPolygonRepository().getBindType()) {
             case ZZ -> {
                 lblAngleResidue.setText("-.-");
                 lblHeightResidue.setText("-.-");
@@ -352,22 +352,22 @@ public class PolygonEditorStandart extends JPanel {
             }
             case TT -> {
                 if (parentFrame.getSettings().getValueFHor() *
-                        Math.sqrt(parentFrame.getPolygonProject().getSizePolygonStations()) >
-                        Math.abs(parentFrame.getPolygonProject().getfHor())) {
+                        Math.sqrt(parentFrame.getPolygonRepository().getSizePolygonStations()) >
+                        Math.abs(parentFrame.getPolygonRepository().getfHor())) {
                     lblAngleResidue.setForeground(Color.GREEN);
                 } else {
                     lblAngleResidue.setForeground(Color.RED);
                 }
-                lblAngleResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfHor()).format(2).getStr());
+                lblAngleResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfHor()).format(2).getStr());
                 if (parentFrame.getSettings().getValueFH() *
-                        Math.sqrt(parentFrame.getPolygonProject().getPerimeter() / 1000) >
-                        Math.abs(parentFrame.getPolygonProject().getfZ() * 1000)) {
+                        Math.sqrt(parentFrame.getPolygonRepository().getPerimeter() / 1000) >
+                        Math.abs(parentFrame.getPolygonRepository().getfZ() * 1000)) {
                     lblHeightResidue.setForeground(Color.GREEN);
                 } else {
                     lblHeightResidue.setForeground(Color.RED);
                 }
-                lblHeightResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfZ()).format(3).getStr());
-                if (parentFrame.getSettings().getValueFAbs() > parentFrame.getPolygonProject().getfAbs()) {
+                lblHeightResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfZ()).format(3).getStr());
+                if (parentFrame.getSettings().getValueFAbs() > parentFrame.getPolygonRepository().getfAbs()) {
                     lblFXResidue.setForeground(Color.GREEN);
                     lblFYResidue.setForeground(Color.GREEN);
                     lblFAbsoluteResidue.setForeground(Color.GREEN);
@@ -376,29 +376,29 @@ public class PolygonEditorStandart extends JPanel {
                     lblFYResidue.setForeground(Color.RED);
                     lblFAbsoluteResidue.setForeground(Color.RED);
                 }
-                lblFXResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfX()).format(3).getStr());
-                lblFYResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfY()).format(3).getStr());
-                lblFAbsoluteResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfAbs()).format(3).getStr());
+                lblFXResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfX()).format(3).getStr());
+                lblFYResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfY()).format(3).getStr());
+                lblFAbsoluteResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfAbs()).format(3).getStr());
                 if (Double.parseDouble(parentFrame.getSettings().getValueFOtn()) <
-                        Double.parseDouble(parentFrame.getPolygonProject().getfOtn())) {
+                        Double.parseDouble(parentFrame.getPolygonRepository().getfOtn())) {
                     lblFRelativeResidue.setForeground(Color.GREEN);
                 } else {
                     lblFRelativeResidue.setForeground(Color.RED);
                 }
-                lblFRelativeResidue.setText("1 : " + parentFrame.getPolygonProject().getfOtn());
-                lblPerValue.setText(new DataHandler(parentFrame.getPolygonProject().getPerimeter()).format(3).getStr());
+                lblFRelativeResidue.setText("1 : " + parentFrame.getPolygonRepository().getfOtn());
+                lblPerValue.setText(new DataHandler(parentFrame.getPolygonRepository().getPerimeter()).format(3).getStr());
             }
             case OO, OT, TO -> {
                 lblAngleResidue.setText("-.-");
                 if (parentFrame.getSettings().getValueFH() *
-                        Math.sqrt(parentFrame.getPolygonProject().getPerimeter() / 1000) >
-                        Math.abs(parentFrame.getPolygonProject().getfZ() * 1000)) {
+                        Math.sqrt(parentFrame.getPolygonRepository().getPerimeter() / 1000) >
+                        Math.abs(parentFrame.getPolygonRepository().getfZ() * 1000)) {
                     lblHeightResidue.setForeground(Color.GREEN);
                 } else {
                     lblHeightResidue.setForeground(Color.RED);
                 }
-                lblHeightResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfZ()).format(3).getStr());
-                if (parentFrame.getSettings().getValueFAbs() > parentFrame.getPolygonProject().getfAbs()) {
+                lblHeightResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfZ()).format(3).getStr());
+                if (parentFrame.getSettings().getValueFAbs() > parentFrame.getPolygonRepository().getfAbs()) {
                     lblFXResidue.setForeground(Color.GREEN);
                     lblFYResidue.setForeground(Color.GREEN);
                     lblFAbsoluteResidue.setForeground(Color.GREEN);
@@ -407,17 +407,17 @@ public class PolygonEditorStandart extends JPanel {
                     lblFYResidue.setForeground(Color.RED);
                     lblFAbsoluteResidue.setForeground(Color.RED);
                 }
-                lblFXResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfX()).format(3).getStr());
-                lblFYResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfY()).format(3).getStr());
-                lblFAbsoluteResidue.setText(new DataHandler(parentFrame.getPolygonProject().getfAbs()).format(3).getStr());
+                lblFXResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfX()).format(3).getStr());
+                lblFYResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfY()).format(3).getStr());
+                lblFAbsoluteResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfAbs()).format(3).getStr());
                 if (Double.parseDouble(parentFrame.getSettings().getValueFOtn()) <
-                        Double.parseDouble(parentFrame.getPolygonProject().getfOtn())) {
+                        Double.parseDouble(parentFrame.getPolygonRepository().getfOtn())) {
                     lblFRelativeResidue.setForeground(Color.GREEN);
                 } else {
                     lblFRelativeResidue.setForeground(Color.RED);
                 }
-                lblFRelativeResidue.setText(parentFrame.getPolygonProject().getfOtn());
-                lblPerValue.setText(new DataHandler(parentFrame.getPolygonProject().getPerimeter()).format(3).getStr());
+                lblFRelativeResidue.setText(parentFrame.getPolygonRepository().getfOtn());
+                lblPerValue.setText(new DataHandler(parentFrame.getPolygonRepository().getPerimeter()).format(3).getStr());
             }
             case ZT, TZ -> {
                 lblAngleResidue.setText("-.-");
@@ -426,7 +426,7 @@ public class PolygonEditorStandart extends JPanel {
                 lblFYResidue.setText("-.-");
                 lblFAbsoluteResidue.setText("-.-");
                 lblFRelativeResidue.setText("-.-");
-                lblPerValue.setText(new DataHandler(parentFrame.getPolygonProject().getPerimeter()).format(3).getStr());
+                lblPerValue.setText(new DataHandler(parentFrame.getPolygonRepository().getPerimeter()).format(3).getStr());
             }
         }
     }
@@ -437,9 +437,9 @@ public class PolygonEditorStandart extends JPanel {
      * @return boolean
      */
     private Boolean isInsertBefore(int idx) {
-        if (!parentFrame.getPolygonProject().findById(idx).getStatus()) return true;
-        if (parentFrame.getPolygonProject().findById(idx).getStatus() & idx > 0) {
-            return !parentFrame.getPolygonProject().findById(idx - 1).getStatus();
+        if (!parentFrame.getPolygonRepository().findById(idx).getStatus()) return true;
+        if (parentFrame.getPolygonRepository().findById(idx).getStatus() & idx > 0) {
+            return !parentFrame.getPolygonRepository().findById(idx - 1).getStatus();
         }
         return false;
     }
@@ -450,9 +450,9 @@ public class PolygonEditorStandart extends JPanel {
      * @return boolean
      */
     private boolean isInsertAfter(int idx) {
-        if (!parentFrame.getPolygonProject().findById(idx).getStatus()) return true;
-        if (parentFrame.getPolygonProject().findById(idx).getStatus() & idx < parentFrame.getPolygonProject().getSizePolygonStations() - 1) {
-            return !parentFrame.getPolygonProject().findById(idx + 1).getStatus();
+        if (!parentFrame.getPolygonRepository().findById(idx).getStatus()) return true;
+        if (parentFrame.getPolygonRepository().findById(idx).getStatus() & idx < parentFrame.getPolygonRepository().getSizePolygonStations() - 1) {
+            return !parentFrame.getPolygonRepository().findById(idx + 1).getStatus();
         }
         return false;
     }
@@ -539,14 +539,14 @@ public class PolygonEditorStandart extends JPanel {
             switch (columnIndex) {
                 case 0 -> {
                     if (dataHandler.getStr().equals("")) {
-                        parentFrame.getPolygonProject().findById(rowIndex).setName("noname");
+                        parentFrame.getPolygonRepository().findById(rowIndex).setName("noname");
 
                         row[columnIndex] = "noname";
                         dataArrayList.set(rowIndex, row);
 
                     } else {
                         if (dataHandler.isValidName()) {
-                            parentFrame.getPolygonProject().findById(rowIndex).setName((String) object);
+                            parentFrame.getPolygonRepository().findById(rowIndex).setName((String) object);
                             row[columnIndex] = object;
                             dataArrayList.set(rowIndex, row);
                         }
@@ -555,13 +555,13 @@ public class PolygonEditorStandart extends JPanel {
 
                 case 1 -> {
                     if (dataHandler.getStr().equals("")) {
-                        parentFrame.getPolygonProject().findById(rowIndex).setHor("0.0000");
+                        parentFrame.getPolygonRepository().findById(rowIndex).setHor("0.0000");
                         row[columnIndex] = "0.0000";
                         dataArrayList.set(rowIndex, row);
 
                     } else {
                         if (dataHandler.isPositiveNumber()) {
-                            parentFrame.getPolygonProject().findById(rowIndex).setHor(dataHandler.format(4).getStr());
+                            parentFrame.getPolygonRepository().findById(rowIndex).setHor(dataHandler.format(4).getStr());
                             row[columnIndex] = dataHandler.format(4).getStr();
                             dataArrayList.set(rowIndex, row);
                         }
@@ -571,12 +571,12 @@ public class PolygonEditorStandart extends JPanel {
 
                 case 2 -> {
                     if (dataHandler.getStr().equals("")) {
-                        parentFrame.getPolygonProject().findById(rowIndex).setLine("0.000");
+                        parentFrame.getPolygonRepository().findById(rowIndex).setLine("0.000");
                         row[columnIndex] = "0.000";
                         dataArrayList.set(rowIndex, row);
                     } else {
                         if (dataHandler.isPositiveNumber()) {
-                            parentFrame.getPolygonProject().findById(rowIndex).setLine(dataHandler.format(3).getStr());
+                            parentFrame.getPolygonRepository().findById(rowIndex).setLine(dataHandler.format(3).getStr());
                             row[columnIndex] = dataHandler.format(3).getStr();
                             dataArrayList.set(rowIndex, row);
                         }
@@ -585,12 +585,12 @@ public class PolygonEditorStandart extends JPanel {
 
                 case 3 -> {
                     if (dataHandler.getStr().equals("")) {
-                        parentFrame.getPolygonProject().findById(rowIndex).setdZ("0.000");
+                        parentFrame.getPolygonRepository().findById(rowIndex).setdZ("0.000");
                         row[columnIndex] = "0.000";
                         dataArrayList.set(rowIndex, row);
                     } else {
                         if (dataHandler.isNumber()) {
-                            parentFrame.getPolygonProject().findById(rowIndex).setdZ(dataHandler.format(3).getStr());
+                            parentFrame.getPolygonRepository().findById(rowIndex).setdZ(dataHandler.format(3).getStr());
                             row[columnIndex] = dataHandler.format(3).getStr();
                             dataArrayList.set(rowIndex, row);
                         }
@@ -600,13 +600,13 @@ public class PolygonEditorStandart extends JPanel {
                 case 4 -> {
                     if ((Boolean) row [7]) {
                         if (dataHandler.getStr().equals("")) {
-                            parentFrame.getPolygonProject().findById(rowIndex).setX("0.000");
+                            parentFrame.getPolygonRepository().findById(rowIndex).setX("0.000");
                             row[columnIndex] = "0.000";
                             dataArrayList.set(rowIndex, row);
 
                         } else {
                             if (dataHandler.isNumber()) {
-                                parentFrame.getPolygonProject().findById(rowIndex).setX(dataHandler.format(3).getStr());
+                                parentFrame.getPolygonRepository().findById(rowIndex).setX(dataHandler.format(3).getStr());
                                 row[columnIndex] = dataHandler.format(3).getStr();
                                 dataArrayList.set(rowIndex, row);
                             }
@@ -616,12 +616,12 @@ public class PolygonEditorStandart extends JPanel {
                 case 5 -> {
                     if ((Boolean) row [7]) {
                         if (dataHandler.getStr().equals("")) {
-                            parentFrame.getPolygonProject().findById(rowIndex).setY("0.000");
+                            parentFrame.getPolygonRepository().findById(rowIndex).setY("0.000");
                             row[columnIndex] = "0.000";
                             dataArrayList.set(rowIndex, row);
                         } else {
                             if (dataHandler.isNumber()) {
-                                parentFrame.getPolygonProject().findById(rowIndex).setY(dataHandler.format(3).getStr());
+                                parentFrame.getPolygonRepository().findById(rowIndex).setY(dataHandler.format(3).getStr());
                                 row[columnIndex] = dataHandler.format(3).getStr();
                                 dataArrayList.set(rowIndex, row);
                             }
@@ -631,12 +631,12 @@ public class PolygonEditorStandart extends JPanel {
                 case 6 -> {
                     if ((Boolean) row [7]) {
                         if (dataHandler.getStr().equals("")) {
-                            parentFrame.getPolygonProject().findById(rowIndex).setZ("0.000");
+                            parentFrame.getPolygonRepository().findById(rowIndex).setZ("0.000");
                             row[columnIndex] = "0.000";
                             dataArrayList.set(rowIndex, row);
                         } else {
                             if (dataHandler.isNumber()) {
-                                parentFrame.getPolygonProject().findById(rowIndex).setZ(dataHandler.format(3).getStr());
+                                parentFrame.getPolygonRepository().findById(rowIndex).setZ(dataHandler.format(3).getStr());
                                 row[columnIndex] = dataHandler.format(3).getStr();
                                 dataArrayList.set(rowIndex, row);
                             }
@@ -645,30 +645,30 @@ public class PolygonEditorStandart extends JPanel {
                 }
                 case 7 -> {
                     if (!(rowIndex > 1 & rowIndex < dataArrayList.size() - 2)) {
-                        parentFrame.getPolygonProject().findById(rowIndex).setStatus((Boolean) object);
+                        parentFrame.getPolygonRepository().findById(rowIndex).setStatus((Boolean) object);
                         row[columnIndex] = object;
                         dataArrayList.set(rowIndex, row);
 
                         if ((Boolean) object) {
-                            if (parentFrame.getPolygonProject().findById(rowIndex).getX().equals("Not")) {
+                            if (parentFrame.getPolygonRepository().findById(rowIndex).getX().equals("Not")) {
                                 row[4] = "0.000";
                                 dataArrayList.set(rowIndex, row);
                             } else {
-                                row[4] = parentFrame.getPolygonProject().findById(rowIndex).getX();
+                                row[4] = parentFrame.getPolygonRepository().findById(rowIndex).getX();
                                 dataArrayList.set(rowIndex, row);
                             }
-                            if (parentFrame.getPolygonProject().findById(rowIndex).getY().equals("Not")) {
+                            if (parentFrame.getPolygonRepository().findById(rowIndex).getY().equals("Not")) {
                                 row[5] = "0.000";
                                 dataArrayList.set(rowIndex, row);
                             } else {
-                                row[5] = parentFrame.getPolygonProject().findById(rowIndex).getY();
+                                row[5] = parentFrame.getPolygonRepository().findById(rowIndex).getY();
                                 dataArrayList.set(rowIndex, row);
                                                             }
-                            if (parentFrame.getPolygonProject().findById(rowIndex).getZ().equals("Not")) {
+                            if (parentFrame.getPolygonRepository().findById(rowIndex).getZ().equals("Not")) {
                                 row[6] = "0.000";
                                 dataArrayList.set(rowIndex, row);
                             } else {
-                                row[6] = parentFrame.getPolygonProject().findById(rowIndex).getZ();
+                                row[6] = parentFrame.getPolygonRepository().findById(rowIndex).getZ();
                                 dataArrayList.set(rowIndex, row);
                             }
                         } else {
@@ -676,9 +676,9 @@ public class PolygonEditorStandart extends JPanel {
                             row[5] = "";
                             row[6] = "";
                             dataArrayList.set(rowIndex, row);
-                            parentFrame.getPolygonProject().findById(rowIndex).setX("Not");
-                            parentFrame.getPolygonProject().findById(rowIndex).setY("Not");
-                            parentFrame.getPolygonProject().findById(rowIndex).setZ("Not");
+                            parentFrame.getPolygonRepository().findById(rowIndex).setX("Not");
+                            parentFrame.getPolygonRepository().findById(rowIndex).setY("Not");
+                            parentFrame.getPolygonRepository().findById(rowIndex).setZ("Not");
                         }
                         fireTableCellUpdated(rowIndex, 4);
                         fireTableCellUpdated(rowIndex, 5);
@@ -710,7 +710,7 @@ public class PolygonEditorStandart extends JPanel {
          */
         public void removeRow(int index) {
             dataArrayList.remove(index);
-            parentFrame.getPolygonProject().removeStation(index);
+            parentFrame.getPolygonRepository().removeStation(index);
             fireTableRowsDeleted(index, index);
         }
     }

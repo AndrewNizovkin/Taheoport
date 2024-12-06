@@ -16,13 +16,88 @@ import static taheoport.repository.PolygonRepository.BindType.TZ;
  */
 public class PolygonServiceDefault implements PolygonService {
 
+    private final PolygonRepository polygonRepository;
+    private String absolutePolPath;
     private final MainWin parentFrame;
     private final Adjuster adjuster;
-
+    private final IOService ioService;
 
     public PolygonServiceDefault(MainWin frame) {
-        this.parentFrame = frame;
+        parentFrame = frame;
         adjuster = new AdjusterDefault(frame);
+        ioService = new IOServiceDefault(parentFrame);
+        polygonRepository = new PolygonRepository();
+        absolutePolPath = "";
+    }
+
+    /**
+     * Create new polygon project
+     */
+    @Override
+    public void newProject() {
+        polygonRepository.clear();
+        polygonRepository.addStation(new PolygonStation());
+        absolutePolPath = polygonRepository.getAbsolutePolPath();
+    }
+
+    /**
+     * Loads polygon project from pol-file
+     */
+    @Override
+    public void importPol() {
+        List<String> list = ioService.readTextFile(
+                parentFrame.getSettings().getPathWorkDir(),
+                "pol",
+                parentFrame.getTitles().get("MWopenFileTitle"));
+        if (list != null) {
+            loadPolList(list);
+        }
+    }
+
+    /**
+     * Saves current polygon project to pol-file
+     */
+    @Override
+    public void savePol() {
+        if (absolutePolPath.isEmpty()) {
+            String s = ioService.writeTextFile(
+                    getPolList(),
+                    parentFrame.getSettings().getPathWorkDir(),
+                    "pol",
+                    "Write *.pol");
+                    if (s != null) {
+                        absolutePolPath = s;
+                    }
+        } else {
+            ioService.writeTextFile(getPolList(), absolutePolPath);
+        }
+    }
+
+    /**
+     * Saves current polygon project to pol-file
+     */
+    @Override
+    public void savePolAs() {
+        String s = ioService.writeTextFile(
+                getPolList(),
+                parentFrame.getSettings().getPathWorkDir(),
+                "pol",
+                parentFrame.getTitles().get("MWsavePolTitle"));
+        if (s != null) {
+            absolutePolPath = s;
+        }
+    }
+
+    /**
+     * Gets polygonRepository
+     * @return polygonRepository
+     */
+    public PolygonRepository getPolygonRepository() {
+        return polygonRepository;
+    }
+
+    public String getAbsolutePolPath() {
+        return absolutePolPath;
     }
 
     /**
@@ -32,16 +107,16 @@ public class PolygonServiceDefault implements PolygonService {
      * @return PolygonProject
      */
     @Override
-    public PolygonRepository loadPolList(List<String> list) {
-        PolygonRepository polygonRepository = new PolygonRepository();
+    public void loadPolList(List<String> list) {
+        polygonRepository.clear();
         PolygonStation ts;
         String sep = " ";
         String str;
         String[] array;
         if (list == null) {
-            return null;
+            return;
         }
-        parentFrame.getPolygonProject().setAbsolutePolPath(list.remove(0));
+        absolutePolPath = list.remove(0);
         while (!list.isEmpty()) {
             str = new DataHandler(list.remove(0)).compress(sep).getStr();
             array = str.split(sep);
@@ -61,7 +136,6 @@ public class PolygonServiceDefault implements PolygonService {
             }
 
         }
-        return polygonRepository;
     }
 
     /**
@@ -75,8 +149,8 @@ public class PolygonServiceDefault implements PolygonService {
         String s;
         List <String> llPol = new LinkedList<>();
         PolygonStation polygonStation;
-        for (int i = 0; i < parentFrame.getPolygonProject().getSizePolygonStations(); i++) {
-            polygonStation = parentFrame.getPolygonProject().findById(i);
+        for (int i = 0; i < parentFrame.getPolygonRepository().getSizePolygonStations(); i++) {
+            polygonStation = parentFrame.getPolygonRepository().findById(i);
             s = polygonStation.getName() + sep +
                     polygonStation.getHor() + sep +
                     polygonStation.getLine() + sep +
@@ -104,7 +178,7 @@ public class PolygonServiceDefault implements PolygonService {
     public List<String> getReportXY() {
         List<String> llTopReportXY = new Shell(parentFrame).getTopReportXY();
         HashMap<String, String> titlesReports = new Shell(parentFrame).getTitlesReports();
-        PolygonRepository polygonRepository = parentFrame.getPolygonProject();
+        PolygonRepository polygonRepository = parentFrame.getPolygonRepository();
         List<String> llReportXY = new LinkedList<>(llTopReportXY);
 
         switch (polygonRepository.getBindType()) {
@@ -242,7 +316,7 @@ public class PolygonServiceDefault implements PolygonService {
      */
     @Override
     public List<String> getReportZ() {
-        PolygonRepository polygonRepository = parentFrame.getPolygonProject();
+        PolygonRepository polygonRepository = parentFrame.getPolygonRepository();
         double dZCorrected;
         double sumDZ = 0.0;
         double sumDDZ = 0.0;
@@ -336,8 +410,8 @@ public class PolygonServiceDefault implements PolygonService {
         String sep = " ";
         List<String> llReportNXYZ = new LinkedList<>();
         PolygonStation polygonStation;
-        for (int i = 0; i < parentFrame.getPolygonProject().getSizePolygonStations(); i++) {
-            polygonStation = parentFrame.getPolygonProject().findById(i);
+        for (int i = 0; i < parentFrame.getPolygonRepository().getSizePolygonStations(); i++) {
+            polygonStation = parentFrame.getPolygonRepository().findById(i);
             llReportNXYZ.add(polygonStation.getName() + sep +
                     polygonStation.getX() + sep +
                     polygonStation.getY() + sep +

@@ -30,7 +30,7 @@ public class SurveyRepository {
     /**
      * Removes all records from surveyStations
      */
-    public void clean() {
+    public void clear() {
         surveyStations.clear();
         absoluteTahPath = "";
     }

@@ -2,7 +2,6 @@ package taheoport.service;
 
 import taheoport.gui.MainWin;
 import taheoport.model.Picket;
-import taheoport.model.Settings;
 import taheoport.model.Shell;
 import taheoport.model.SurveyStation;
 import taheoport.repository.SurveyRepository;
@@ -332,7 +331,7 @@ public class SurveyServiceDefault implements SurveyService {
      */
     @Override
     public void newProject() {
-        surveyRepository.clean();
+        surveyRepository.clear();
         absoluteTahPath = surveyRepository.getAbsoluteTahPath();
         SurveyStation st = surveyRepository.addStation(new SurveyStation());
         st.addPicket();

@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> ...-> `java.util.Linkedlist<E>` -> `taheoport.model.Catalog`
+`java.lang.Object` -> ...-> `java.util.Linkedlist<E>` -> `taheoport.repository.CatalogRepository`
 
 ---
 

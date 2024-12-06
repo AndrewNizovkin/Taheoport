@@ -1,6 +1,6 @@
 package taheoport.gui;
 
-import taheoport.model.Catalog;
+import taheoport.repository.CatalogRepository;
 import taheoport.model.CatalogPoint;
 import taheoport.repository.SurveyRepository;
 
@@ -76,7 +76,7 @@ public class ShowViewResults extends JDialog {
 
 //tblVeiw______________________________________________
 
-        Catalog cView = new Catalog();
+        CatalogRepository cView = new CatalogRepository();
         for (int i = 0; i < surveyRepository.sizeStations(); i++) {
             cView.add(new CatalogPoint(surveyRepository.findById(i).getName(),
                     surveyRepository.findById(i).getX(),

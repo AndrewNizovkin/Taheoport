@@ -1,5 +1,6 @@
 package taheoport.gui;
 
+import taheoport.repository.CatalogRepository;
 import taheoport.repository.PolygonRepository;
 import taheoport.repository.SurveyRepository;
 import taheoport.service.*;
@@ -12,7 +13,6 @@ import java.awt.event.KeyEvent;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Vector;
-import java.util.List;
 
 /**
  * This main window of program
@@ -32,13 +32,13 @@ public class MainWin extends JFrame{
     private final JTabbedPane tpMain;
     private final JPanel pnlMeasurements;
     private final JPanel pnlPolygon;
-    private Catalog catalog;
+//    private CatalogRepository catalogRepository;
 //    private SurveyRepository surveyRepository;
-    private PolygonRepository polygonRepository;
+//    private PolygonRepository polygonRepository;
 //    private final String pathWorkDir;
     private final Settings settings;
     private HashMap<String, String> titles;
-    private boolean isCatalog;
+//    private boolean isCatalog;
     private final int wMain;
     private final int hMain;
     private final JMenu mFile;
@@ -76,10 +76,10 @@ public class MainWin extends JFrame{
      */
     public MainWin() {
         super("Taheoport");
+        polygonService = new PolygonServiceDefault(this);
         ioService = new IOServiceDefault(this);
         importService = new ImportServiceDefault(this);
         surveyService = new SurveyServiceDefault(this);
-        polygonService = new PolygonServiceDefault(this);
         extractService = new ExtractServiceDefault(this);
         catalogService = new CatalogServiceDefault(this);
         settingsService = new SettingsServiceDefault(this);
@@ -88,11 +88,10 @@ public class MainWin extends JFrame{
         settings = new Settings();
         settingsService.loadOptions();
         titles = new Shell(this).getTitles();
-//        pathWorkDir = settings.getPathWorkDir();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        isCatalog = false;
+//        isCatalog = false;
         wMain = 640;
         hMain = 650;
         setBounds((screenSize.width - wMain) / 2, (screenSize.height - hMain) / 2, wMain, hMain);
@@ -334,7 +333,7 @@ public class MainWin extends JFrame{
             }
             if (tpMain.getSelectedIndex() == 1) {
                 if (security.pass()) {
-                    setTitle("Taheoport: " + polygonRepository.getAbsolutePolPath());
+                    setTitle("Taheoport: " + polygonService.getAbsolutePolPath());
                     setControlsOn();
                     mImport.setEnabled(false);
                     btnImport.setEnabled(false);
@@ -345,15 +344,12 @@ public class MainWin extends JFrame{
             }
         });
         add(tpMain);
-
-        polygonRepository = new PolygonRepository();
-        polygonRepository.addStation(new PolygonStation());
+        polygonService.newProject();
         reloadPolygonEditor();
-        setTitle("Taheoport: " + polygonRepository.getAbsolutePolPath());
+        setTitle("Taheoport: ");
         polygonEditor.setFocusTable();
 
-        SurveyStation st = surveyService.getSurveyRepository().addStation(new SurveyStation());
-        st.addPicket();
+        surveyService.newProject();
         reloadSurveyEditor();
 
         setVisible(true);
@@ -419,8 +415,8 @@ public class MainWin extends JFrame{
         return polygonService;
     }
 
-    public PolygonRepository getPolygonProject() {
-        return polygonRepository;
+    public PolygonRepository getPolygonRepository() {
+        return polygonService.getPolygonRepository();
     }
 
     /**
@@ -455,16 +451,16 @@ public class MainWin extends JFrame{
      * Return catalog coordinates
      * @return catalog
      */
-    public Catalog getCatalog() {
-        return catalog;
+    public CatalogRepository getCatalog() {
+        return catalogService.getCatalogRepository();
     }
 
     /**
      * Return is Catalog
      * @return Boolean
      */
-    public Boolean isCatalog() {
-        return isCatalog;
+    public Boolean hasCatalog() {
+        return !catalogService.isEmpty();
     }
 
     public String getPathWorkDir() {
@@ -501,7 +497,7 @@ public class MainWin extends JFrame{
         btnView.setToolTipText(titles.get("MWbtnVewTT"));
         btnLoadCat.setToolTipText(titles.get("MWbtnLoadCatTT"));
         lblCatalog.setToolTipText(titles.get("MWlblCatalogTT"));
-        if (!isCatalog) {
+        if (catalogService.isEmpty()) {
             lblCatalog.setText(titles.get("MWlblCatalog"));
         }
         tpMain.setTitleAt(0, titles.get("MWtpMain0"));
@@ -564,11 +560,10 @@ public class MainWin extends JFrame{
                 surveyEditor.setFocusStations();
             }
             case 1 -> {
-                polygonRepository = new PolygonRepository();
-                polygonRepository.addStation(new PolygonStation());
+                polygonService.newProject();
                 reloadPolygonEditor();
                 setControlsOn();
-                setTitle("Taheoport: " + polygonRepository.getAbsolutePolPath());
+                setTitle("Taheoport: " + polygonService.getAbsolutePolPath());
                 polygonEditor.setFocusTable();
             }
         }
@@ -583,18 +578,15 @@ public class MainWin extends JFrame{
                 surveyService.importTah();
                 reloadSurveyEditor();
                 setControlsOn();
-                setTitle("Taheoport: " + polygonRepository.getAbsolutePolPath());
+                setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
                 surveyEditor.setFocusStations();
             }
             case 1 -> {
-                List<String> llPolList = ioService.readTextFile(settings.getPathWorkDir(), "pol", titles.get("MWopenFileTitle"));
-                if (llPolList != null) {
-                    polygonRepository = polygonService.loadPolList(llPolList);
-                    reloadPolygonEditor();
-                    setControlsOn();
-                    setTitle("Taheoport: " + polygonRepository.getAbsolutePolPath());
-                    polygonEditor.setFocusTable();
-                }
+                polygonService.importPol();
+                reloadPolygonEditor();
+                setControlsOn();
+                setTitle("Taheoport: " + polygonService.getAbsolutePolPath());
+                polygonEditor.setFocusTable();
             }
         }
     }
@@ -606,15 +598,19 @@ public class MainWin extends JFrame{
         if (surveyService.getSurveyRepository() != null) {
             if (surveyService.containPolygon()) {
                 surveyService.processSourceData();
-                polygonRepository = polygonService.loadPolList(extractService.extractPolygonProject());
+                polygonService.loadPolList(extractService.extractPolygonProject());
                 tpMain.setSelectedIndex(1);
                 reloadPolygonEditor();
                 setControlsOn();
-                setTitle("Taheoport: " + polygonRepository.getAbsolutePolPath());
+                setTitle("Taheoport: " + polygonService.getAbsolutePolPath());
                 polygonEditor.setFocusTable();
                 new ShowViewExtractPol(this);
             } else {
-                JOptionPane.showMessageDialog(this,"Недостаточно данных", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Недостаточно данных",
+                        "Ошибка",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -630,15 +626,8 @@ public class MainWin extends JFrame{
                 setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
             }
             case 1 -> {
-                if (polygonRepository.getAbsolutePolPath().isEmpty()) {
-                    String s = ioService.writeTextFile(polygonService.getPolList(), settings.getPathWorkDir(), "pol", "Write *.pol");
-                    if (s != null) {
-                        polygonRepository.setAbsolutePolPath(s);
-                    }
-                } else {
-                    polygonRepository.setAbsolutePolPath(ioService.writeTextFile(polygonService.getPolList(), polygonRepository.getAbsolutePolPath()));
-                }
-                setTitle("Taheoport: " + polygonRepository.getAbsolutePolPath());
+                polygonService.savePol();
+                setTitle("Taheoport: " + polygonService.getAbsolutePolPath());
             }
         }
     }
@@ -650,22 +639,12 @@ public class MainWin extends JFrame{
     private void saveAs() {
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
-                String s = ioService.writeTextFile(
-                        surveyService.getTahList(),
-                        settings.getPathWorkDir(),
-                        "tah",
-                        titles.get("MWsaveTahTitle"));
-                if (s != null) {
-                    surveyService.setAbsoluteTahPath(s);
+                surveyService.saveProjectAs();
                     setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
-                }
             }
             case 1 -> {
-                String s = ioService.writeTextFile(polygonService.getPolList(), settings.getPathWorkDir(), "pol", titles.get("MWsavePolTitle"));
-                if (s != null) {
-                    polygonRepository.setAbsolutePolPath(s);
-                    setTitle("Taheoport: " + polygonRepository.getAbsolutePolPath());
-                }
+                polygonService.savePolAs();
+                    setTitle("Taheoport: " + polygonService.getAbsolutePolPath());
             }
         }
     }
@@ -677,7 +656,6 @@ public class MainWin extends JFrame{
         switch (tpMain.getSelectedIndex()) {
             case 0 -> {
                 surveyService.processSourceData();
-//                ioService.writeTextFile(surveyService.getPickets(), settings.getPathWorkDir(), "dat", "Write DAT");
                 JOptionPane.showMessageDialog(this,"The data has been processed successfully");
             }
             case 1 -> {
@@ -763,28 +741,23 @@ public class MainWin extends JFrame{
             }
             case 1 -> {
                 processSourceData();
-                if (polygonRepository.getPerimeter() > 0.0) {
+                if (polygonService.getPolygonRepository().getPerimeter() > 0.0) {
                     new ShowViewAdjustment(this);
                 }
-
             }
-
         }
-
     }
 
     /**
      * This action load points coordinates from text file *.kat to sp (SurveyProject)
      */
     private void loadCatalog() {
-            catalog = catalogService.loadCatalogList(ioService.readTextFile(settings.getPathWorkDir(),
-                    "kat",
-                    titles.get("MWloadCatalogTitle")));
-        if (catalog.getSizeCatalog() > 0) {
+        catalogService.importCatalog();
+
+        if (!catalogService.isEmpty()) {
             lblCatalog.setEnabled(true);
-            lblCatalog.setText(catalog.getAbsoluteCatalogPath());
+            lblCatalog.setText(catalogService.getAbsoluteCatalogPath());
             tUpdate.setEnabled(true);
-            isCatalog = true;
             if(surveyEditor != null) {
                 surveyEditor.getBtnStationName().setEnabled(true);
                 surveyEditor.getBtnOrName().setEnabled(true);
@@ -792,7 +765,6 @@ public class MainWin extends JFrame{
         } else {
             lblCatalog.setEnabled(false);
             lblCatalog.setText("Каталог не установлен");
-            isCatalog = false;
         }
     }
 

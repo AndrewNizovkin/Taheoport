@@ -1,8 +1,6 @@
 package taheoport.service;
 
-import taheoport.model.Catalog;
-
-import java.util.List;
+import taheoport.repository.CatalogRepository;
 
 /**
  * This interface defines methods for working with the catalog of base points
@@ -10,10 +8,27 @@ import java.util.List;
 public interface CatalogService {
 
     /**
-     * Downloads catalog from list
-     * @param list LinkedList
+     * Checks catalog is Empty
+     * @return result
      */
-    Catalog loadCatalogList(List<String> list);
+    boolean isEmpty();
+
+    /**
+     * Gets catalogRepository
+     * @return catalogRepository
+     */
+    CatalogRepository getCatalogRepository();
+
+    /**
+     * Gets absoluteCatalogPath
+     * @return String
+     */
+    String getAbsoluteCatalogPath();
+
+    /**
+     * Downloads catalog from list
+     */
+    void importCatalog();
 
     /**
      * Updates base points with current catalog

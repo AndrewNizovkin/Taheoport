@@ -1,7 +1,7 @@
 package taheoport.service;
 
 import taheoport.gui.MainWin;
-import taheoport.model.Catalog;
+import taheoport.repository.CatalogRepository;
 import taheoport.model.CatalogPoint;
 import taheoport.repository.PolygonRepository;
 import taheoport.repository.SurveyRepository;
@@ -16,23 +16,56 @@ import java.util.List;
 public class CatalogServiceDefault implements CatalogService {
 
     private final MainWin parentFrame;
+    private final CatalogRepository catalogRepository;
+    IOService ioService;
+    private String absoluteCatalogPath;
 
+    /**
+     * Constructor
+     * @param parentFrame
+     */
     public CatalogServiceDefault(MainWin parentFrame) {
         this.parentFrame = parentFrame;
+        ioService = new IOServiceDefault(parentFrame);
+        catalogRepository = new CatalogRepository();
     }
 
     /**
-     * Downloads catalog from list
-     * @param list LinkedList
+     * Checks catalog is Empty
+     *
+     * @return result
      */
     @Override
-    public Catalog loadCatalogList(List<String> list) {
-        Catalog catalog = new Catalog();
+    public boolean isEmpty() {
+        return catalogRepository.isEmpty();
+    }
+
+    public CatalogRepository getCatalogRepository() {
+        return catalogRepository;
+    }
+
+    public String getAbsoluteCatalogPath() {
+        return absoluteCatalogPath;
+    }
+
+
+
+    /**
+     * Downloads catalog from list
+     */
+    @Override
+    public void importCatalog() {
+        List<String> list = ioService.readTextFile(
+                parentFrame.getSettings().getPathWorkDir(),
+                "kat",
+                parentFrame.getTitles().get("MWloadCatalogTitle"));
+
+        catalogRepository.clear();
         if (list != null) {
             String line;
             String[] array;
             CatalogPoint cPoint;
-            catalog.setAbsoluteCatalogPath(list.remove(0));
+            absoluteCatalogPath = list.remove(0);
             while (!list.isEmpty()) {
                 line = new DataHandler(list.remove(0)).compress(" ").getStr();
                 array = line.split(" ");
@@ -41,11 +74,10 @@ public class CatalogServiceDefault implements CatalogService {
                             new DataHandler(array[1]).commaToPoint().format(3).getStr(),
                             new DataHandler(array[2]).commaToPoint().format(3).getStr(),
                             new DataHandler(array[3]).commaToPoint().format(3).getStr());
-                    catalog.add(cPoint);
+                    catalogRepository.add(cPoint);
                 }
             }
         }
-        return catalog;
     }
 
     /**
@@ -59,22 +91,22 @@ public class CatalogServiceDefault implements CatalogService {
             case 0 -> {
                 if (parentFrame.getCatalog() != null & parentFrame.getSurveyRepository() != null) {
                     SurveyRepository surveyRepository = parentFrame.getSurveyRepository();
-                    Catalog catalog = parentFrame.getCatalog();
+                    CatalogRepository catalogRepository = parentFrame.getCatalog();
                     int q = 0;
                     for (int i = 0; i < surveyRepository.sizeStations(); i++) {
-                        for (int j = 0; j < catalog.getSizeCatalog(); j++) {
-                            if (surveyRepository.findById(i).getName().equals(catalog.get(j).getName())) {
-                                surveyRepository.findById(i).setName(catalog.get(j).getName());
-                                surveyRepository.findById(i).setX(catalog.get(j).getX());
-                                surveyRepository.findById(i).setY(catalog.get(j).getY());
-                                surveyRepository.findById(i).setZ(catalog.get(j).getZ());
+                        for (int j = 0; j < catalogRepository.getSizeCatalog(); j++) {
+                            if (surveyRepository.findById(i).getName().equals(catalogRepository.get(j).getName())) {
+                                surveyRepository.findById(i).setName(catalogRepository.get(j).getName());
+                                surveyRepository.findById(i).setX(catalogRepository.get(j).getX());
+                                surveyRepository.findById(i).setY(catalogRepository.get(j).getY());
+                                surveyRepository.findById(i).setZ(catalogRepository.get(j).getZ());
                                 q++;
                             }
-                            if (surveyRepository.findById(i).getNameOr().equals(catalog.get(j).getName())) {
-                                surveyRepository.findById(i).setNameOr(catalog.get(j).getName());
-                                surveyRepository.findById(i).setxOr(catalog.get(j).getX());
-                                surveyRepository.findById(i).setyOr(catalog.get(j).getY());
-                                surveyRepository.findById(i).setzOr(catalog.get(j).getZ());
+                            if (surveyRepository.findById(i).getNameOr().equals(catalogRepository.get(j).getName())) {
+                                surveyRepository.findById(i).setNameOr(catalogRepository.get(j).getName());
+                                surveyRepository.findById(i).setxOr(catalogRepository.get(j).getX());
+                                surveyRepository.findById(i).setyOr(catalogRepository.get(j).getY());
+                                surveyRepository.findById(i).setzOr(catalogRepository.get(j).getZ());
                                 q++;
                             }
                         }
@@ -88,17 +120,17 @@ public class CatalogServiceDefault implements CatalogService {
             }
 
             case 1 -> {
-                PolygonRepository polygonRepository = parentFrame.getPolygonProject();
-                Catalog catalog = parentFrame.getCatalog();
+                PolygonRepository polygonRepository = parentFrame.getPolygonRepository();
+                CatalogRepository catalogRepository = parentFrame.getCatalog();
                 int q = 0;
                 for (int i = 0; i < polygonRepository.getSizePolygonStations(); i++) {
-                    for (int j = 0; j < catalog.getSizeCatalog(); j++) {
-                        if (polygonRepository.findById(i).getName().equals(catalog.get(j).getName()) &
+                    for (int j = 0; j < catalogRepository.getSizeCatalog(); j++) {
+                        if (polygonRepository.findById(i).getName().equals(catalogRepository.get(j).getName()) &
                                 polygonRepository.findById(i).getStatus()) {
-                            polygonRepository.findById(i).setName(catalog.get(j).getName());
-                            polygonRepository.findById(i).setX(catalog.get(j).getX());
-                            polygonRepository.findById(i).setY(catalog.get(j).getY());
-                            polygonRepository.findById(i).setZ(catalog.get(j).getZ());
+                            polygonRepository.findById(i).setName(catalogRepository.get(j).getName());
+                            polygonRepository.findById(i).setX(catalogRepository.get(j).getX());
+                            polygonRepository.findById(i).setY(catalogRepository.get(j).getY());
+                            polygonRepository.findById(i).setZ(catalogRepository.get(j).getZ());
                             q++;
                         }
                     }

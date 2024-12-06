@@ -1,5 +1,5 @@
 package taheoport.gui;
-import taheoport.model.Catalog;
+import taheoport.repository.CatalogRepository;
 import taheoport.model.CatalogPoint;
 
 import javax.swing.*;
@@ -14,7 +14,7 @@ import java.awt.*;
  */
 public class ShowCatalog extends JDialog {
 
-    private final Catalog catalog;
+    private final CatalogRepository catalogRepository;
     private final int index;
     private final MainWin parentFrame;
     private int selRow;
@@ -37,7 +37,7 @@ public class ShowCatalog extends JDialog {
 
         this.target = target;
         this.index = index;
-        this.catalog = frame.getCatalog();
+        this.catalogRepository = frame.getCatalog();
         selRow = -1;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -49,7 +49,7 @@ public class ShowCatalog extends JDialog {
 
 // tblPoints_______________________________________________________
 
-        tblPoints = new JTable(new TmodelCatalog(catalog));
+        tblPoints = new JTable(new TmodelCatalog(catalogRepository));
 
         tblPoints.getTableHeader().setReorderingAllowed(false);
         tblPoints.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -101,7 +101,7 @@ public class ShowCatalog extends JDialog {
     private void replaceCoordinates() {
         if (selRow >= 0) {
 //            Station st = this.sp.getStation(index);
-            CatalogPoint cp = this.catalog.getCatalogPoint(selRow);
+            CatalogPoint cp = this.catalogRepository.findById(selRow);
             if (target.equals("StationName")) {
                 parentFrame.getSurveyRepository().findById(index).setName(cp.getName());
                 parentFrame.getSurveyRepository().findById(index).setX(cp.getX());
@@ -114,10 +114,10 @@ public class ShowCatalog extends JDialog {
                 parentFrame.getSurveyRepository().findById(index).setyOr(cp.getY());
             }
             if (target.equals("TheoStation")) {
-                parentFrame.getPolygonProject().findById(index).setName(cp.getName());
-                parentFrame.getPolygonProject().findById(index).setX(cp.getX());
-                parentFrame.getPolygonProject().findById(index).setY(cp.getY());
-                parentFrame.getPolygonProject().findById(index).setZ(cp.getZ());
+                parentFrame.getPolygonRepository().findById(index).setName(cp.getName());
+                parentFrame.getPolygonRepository().findById(index).setX(cp.getX());
+                parentFrame.getPolygonRepository().findById(index).setY(cp.getY());
+                parentFrame.getPolygonRepository().findById(index).setZ(cp.getZ());
             }
             this.dispose();
         }

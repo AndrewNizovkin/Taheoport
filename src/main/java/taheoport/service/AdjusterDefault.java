@@ -17,7 +17,7 @@ public class AdjusterDefault implements Adjuster{
     public AdjusterDefault(MainWin frame) {
 
         parentFrame = frame;
-        polygonRepository = parentFrame.getPolygonProject();
+//        polygonRepository = parentFrame.getPolygonRepository();
     }
 
     /**
@@ -25,7 +25,7 @@ public class AdjusterDefault implements Adjuster{
      */
     @Override
     public void adjustPolygon() {
-        polygonRepository = parentFrame.getPolygonProject();
+        polygonRepository = parentFrame.getPolygonRepository();
         int countStations = polygonRepository.getSizePolygonStations();
         polygonRepository.setPerimeter(0.0);
         double sumDX = 0.0;
@@ -187,6 +187,7 @@ public class AdjusterDefault implements Adjuster{
      * set and return bindings type of current TheoProject
      */
     private void defBindType() {
+        polygonRepository = parentFrame.getPolygonRepository();
         polygonRepository.setBindType(PolygonRepository.BindType.ZZ);
         int countStations = polygonRepository.getSizePolygonStations();
         if (countStations > 2) {
@@ -285,6 +286,7 @@ public class AdjusterDefault implements Adjuster{
      * @return boolean
      */
     private boolean isValidSourceData(int start, int finish) {
+        polygonRepository = parentFrame.getPolygonRepository();
         for (int i = start; i <= finish; i++) {
             if (!new DataHandler(polygonRepository.findById(i).getName()).isValidName() |
                     !new DataHandler(polygonRepository.findById(i).getHor()).isPositiveNumber() |
@@ -301,6 +303,7 @@ public class AdjusterDefault implements Adjuster{
      * @return boolen
      */
     private boolean noNeed() {
+        polygonRepository = parentFrame.getPolygonRepository();
         for (int i = 0; i < polygonRepository.getSizePolygonStations(); i++) {
             if (!polygonRepository.findById(i).getStatus()) {
                 return false;

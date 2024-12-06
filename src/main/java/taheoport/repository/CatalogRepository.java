@@ -1,4 +1,6 @@
-package taheoport.model;
+package taheoport.repository;
+
+import taheoport.model.CatalogPoint;
 
 import java.util.LinkedList;
 
@@ -7,15 +9,22 @@ import java.util.LinkedList;
  *@author Andrew Nizovkin
  *Copyright Nizovkin A.V. 2022
  */
-    public class Catalog extends LinkedList <CatalogPoint>{
+    public class CatalogRepository extends LinkedList <CatalogPoint>{
     private String absoluteCatalogPath;
+
+    /**
+     * Constructs an empty list.
+     */
+    public CatalogRepository() {
+        super();
+    }
 
     /**
      * Returns a Catalog item by index
      * @param index int index of catalog
      * @return CatalogPoint
      */
-    public CatalogPoint getCatalogPoint(int index) {
+    public CatalogPoint findById(int index) {
         return this.get(index);
     }
 
