@@ -1,5 +1,6 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.MainActionListener;
 import taheoport.repository.CatalogRepository;
 import taheoport.repository.PolygonRepository;
 import taheoport.repository.SurveyRepository;
@@ -8,6 +9,7 @@ import taheoport.model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.Enumeration;
@@ -20,9 +22,7 @@ import java.util.Vector;
  * Copyright Nizovkin A.V. 2022
  */
 public class MainWin extends JFrame{
-//    private static TahEditorFocusTransversalPolicy focusPolicy;
     private final IOService ioService;
-    private final ImportService importService;
     private final SurveyService surveyService;
     private final PolygonService polygonService;
     private final ExtractService extractService;
@@ -32,13 +32,8 @@ public class MainWin extends JFrame{
     private final JTabbedPane tpMain;
     private final JPanel pnlMeasurements;
     private final JPanel pnlPolygon;
-//    private CatalogRepository catalogRepository;
-//    private SurveyRepository surveyRepository;
-//    private PolygonRepository polygonRepository;
-//    private final String pathWorkDir;
     private final Settings settings;
     private HashMap<String, String> titles;
-//    private boolean isCatalog;
     private final int wMain;
     private final int hMain;
     private final JMenu mFile;
@@ -78,7 +73,6 @@ public class MainWin extends JFrame{
         super("Taheoport");
         polygonService = new PolygonServiceDefault(this);
         ioService = new IOServiceDefault(this);
-        importService = new ImportServiceDefault(this);
         surveyService = new SurveyServiceDefault(this);
         extractService = new ExtractServiceDefault(this);
         catalogService = new CatalogServiceDefault(this);
@@ -88,10 +82,9 @@ public class MainWin extends JFrame{
         settings = new Settings();
         settingsService.loadOptions();
         titles = new Shell(this).getTitles();
-
+        ActionListener actionListener = new MainActionListener(this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-//        isCatalog = false;
         wMain = 640;
         hMain = 650;
         setBounds((screenSize.width - wMain) / 2, (screenSize.height - hMain) / 2, wMain, hMain);
@@ -104,20 +97,6 @@ public class MainWin extends JFrame{
         setUndecorated(true);
         getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 
-/*
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedLookAndFeelException e) {
-            throw new RuntimeException(e);
-        }
-*/
-
         JMenuBar mbr = new JMenuBar();
         tpMain = new JTabbedPane();
 
@@ -125,22 +104,27 @@ public class MainWin extends JFrame{
 
         mFile = new JMenu(titles.get("MWmFile"));
             fNew = new JMenuItem(titles.get("MWfNew"));
+            fNew.setActionCommand("fNew");
             fNew.setIcon(new ImageIcon("images/new.png"));
-            fNew.addActionListener(e -> newFile());
+            fNew.addActionListener(actionListener);
 
             fOpen  = new JMenuItem(titles.get("MWfOpen"), new ImageIcon("images/open.png"));
-            fOpen.addActionListener(e -> openFile());
+            fOpen.setActionCommand("fOpen");
+            fOpen.addActionListener(actionListener);
             fOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
 
             mImport = new JMenu(titles.get("MWmImport"));
                 JMenuItem iLeica = new JMenuItem("Leica");
-                iLeica.addActionListener(e -> importLeica());
+                iLeica.setActionCommand("iLeica");
+                iLeica.addActionListener(actionListener);
 
                 JMenuItem iNicon = new JMenuItem("Nicon");
-                iNicon.addActionListener(e -> importNicon());
+                iNicon.setActionCommand("iNicon");
+                iNicon.addActionListener(actionListener);
 
                 JMenuItem iTopcon = new JMenuItem("Topcon");
-                iTopcon.addActionListener(e -> importTopcon());
+                iTopcon.setActionCommand("iTopcon");
+                iTopcon.addActionListener(actionListener);
 
             mImport.add(iLeica);
             mImport.add(iNicon);
@@ -148,17 +132,20 @@ public class MainWin extends JFrame{
 
             fSave = new JMenuItem(titles.get("MWfSave"), new ImageIcon("images/save.png"));
             fSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
-            fSave.addActionListener(e -> save());
+            fSave.setActionCommand("fSave");
+            fSave.addActionListener(actionListener);
             fSave.setEnabled(false);
 
             fSaveAs = new JMenuItem(titles.get("MWfSaveAs"));
+            fSaveAs.setActionCommand("fSaveAs");
             fSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K, InputEvent.CTRL_DOWN_MASK));
-            fSaveAs.addActionListener(e -> saveAs());
+            fSaveAs.addActionListener(actionListener);
             fSaveAs.setEnabled(false);
 
             fExit = new JMenuItem(titles.get("MWfExit"));
+            fExit.setActionCommand("fExit");
             fExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_DOWN_MASK));
-            fExit.addActionListener(e -> System.exit(0));
+            fExit.addActionListener(actionListener);
 
         mFile.add(fNew);
         mFile.add(fOpen);
@@ -177,32 +164,38 @@ public class MainWin extends JFrame{
         mTools = new JMenu(titles.get("MWmTools"));
 
             tLoadCat = new JMenuItem(titles.get("MWtLoadCat"), new ImageIcon("images/database.png"));
+            tLoadCat.setActionCommand("tLoadCat");
             tLoadCat.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_DOWN_MASK));
             tLoadCat.setEnabled(false);
-            tLoadCat.addActionListener(e -> loadCatalog());
+            tLoadCat.addActionListener(actionListener);
 
             tUpdate = new JMenuItem(titles.get("MWtUpdate"));
+            tUpdate.setActionCommand("tUpdate");
             tUpdate.setEnabled(false);
-            tUpdate.addActionListener(e -> catalogService.updateBasePoints(tpMain.getSelectedIndex()));
+            tUpdate.addActionListener(actionListener);
 
             tRun = new JMenuItem(titles.get("MWtRun"), new ImageIcon("images/run.png"));
+            tRun.setActionCommand("tRun");
             tRun.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));
-            tRun.addActionListener(e -> processSourceData());
+            tRun.addActionListener(actionListener);
             tRun.setEnabled(false);
 
             tView = new JMenuItem(titles.get("MWtView"), new ImageIcon("images/view.png"));
+            tView.setActionCommand("tView");
             tView.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
             tView.setEnabled(false);
-            tView.addActionListener(e -> viewResult());
+            tView.addActionListener(actionListener);
 
             tExtractPol = new JMenuItem(titles.get("MWtExtractPol"));
+            tExtractPol.setActionCommand("tExtractPol");
             tExtractPol.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_DOWN_MASK));
             tExtractPol.setEnabled(false);
-            tExtractPol.addActionListener(e -> extractPol());
+            tExtractPol.addActionListener(actionListener);
 
             tOptions = new JMenuItem(titles.get("MWtOptions"));
+            tOptions.setActionCommand("tOptions");
             tOptions.setEnabled(true);
-            tOptions.addActionListener(e -> new ShowSettings(this));
+            tOptions.addActionListener(actionListener);
 
 
         mTools.add(tLoadCat);
@@ -221,11 +214,13 @@ public class MainWin extends JFrame{
         mHelp = new JMenu(titles.get("MWmHelp"));
 
             hAbout = new JMenuItem(titles.get("MWhAbout"));
-            hAbout.addActionListener(e -> new ShowAbout(this));
+            hAbout.setActionCommand("hAbout");
+            hAbout.addActionListener(actionListener);
             hAbout.setEnabled(true);
 
             hHelp = new JMenuItem(titles.get("MWhHelp"));
-            hHelp.addActionListener(e -> new ShowHelp(this));
+            hHelp.setActionCommand("hHelp");
+            hHelp.addActionListener(actionListener);
             hHelp.setEnabled(true);
         mHelp.add(hAbout);
         mHelp.add(hHelp);
@@ -240,27 +235,35 @@ public class MainWin extends JFrame{
         JToolBar tb = new JToolBar();
 
             btnNew = new JButton(new ImageIcon("images/new.png"));
+            btnNew.setActionCommand("bntNew");
             btnNew.setToolTipText(titles.get("MWbtnNewTT"));
-            btnNew.addActionListener(e -> newFile());
+            btnNew.addActionListener(actionListener);
 
 
             btnOpen = new JButton(new ImageIcon("images/open.png"));
+            btnOpen.setActionCommand("btnOpen");
             btnOpen.setToolTipText(titles.get("MWbtnOpenTT"));
-            btnOpen.addActionListener(e -> openFile());
+            btnOpen.addActionListener(actionListener);
 
             btnImport = new JButton(new ImageIcon("images/import.png"));
+            btnImport.setActionCommand("btnImport");
             btnImport.setToolTipText(titles.get("MWbtnImportTT"));
-            btnImport.addActionListener(e -> ppImport.show(this, btnImport.getX(), btnImport.getY() + 20));
+            btnImport.addActionListener(e -> ppImport.show(this,
+                    btnImport.getX(),
+                    btnImport.getY() + 20));
 
         ppImport = new JPopupMenu();
         JMenuItem ppiLeica = new JMenuItem("Leica");
-        ppiLeica.addActionListener(e -> importLeica());
+        ppiLeica.setActionCommand("ppiLeica");
+        ppiLeica.addActionListener(actionListener);
 
         JMenuItem ppiNicon = new JMenuItem("Nicon");
-        ppiNicon.addActionListener(e -> importNicon());
+        ppiNicon.setActionCommand("ppiNicon");
+        ppiNicon.addActionListener(actionListener);
 
         JMenuItem ppiTopcon = new JMenuItem("Topcon");
-        ppiTopcon.addActionListener(e -> importTopcon());
+        ppiTopcon.setActionCommand("ppiTopcon");
+        ppiTopcon.addActionListener(actionListener);
 
         ppImport.add(ppiLeica);
         ppImport.add(ppiNicon);
@@ -268,24 +271,28 @@ public class MainWin extends JFrame{
         add(ppImport);
 
             btnSave = new JButton(new ImageIcon("images/save.png"));
-            btnSave.addActionListener(e -> save());
+            btnSave.setActionCommand("btnSave");
+            btnSave.addActionListener(actionListener);
             btnSave.setToolTipText(titles.get("MWbtnSaveTT"));
             btnSave.setEnabled(false);
 
             btnRun = new JButton(new ImageIcon("images/run.png"));
+            btnRun.setActionCommand("btnRun");
             btnRun.setToolTipText(titles.get("MWbtnRunTT"));
-            btnRun.addActionListener(e -> processSourceData());
-            btnRun.setEnabled(false)
-            ;
+            btnRun.addActionListener(actionListener);
+            btnRun.setEnabled(false);
+
             btnView = new JButton(new ImageIcon("images/view.png"));
+            btnView.setActionCommand("btnView");
             btnView.setToolTipText(titles.get("MWbtnVewTT"));
             btnView.setEnabled(false);
-            btnView.addActionListener(e -> viewResult());
+            btnView.addActionListener(actionListener);
 
             btnLoadCat = new JButton(new ImageIcon("images/database.png"));
+            btnLoadCat.setActionCommand("btnLoadCat");
             btnLoadCat.setToolTipText(titles.get("MWbtnLoadCatTT"));
             btnLoadCat.setEnabled(false);
-            btnLoadCat.addActionListener(e -> loadCatalog());
+            btnLoadCat.addActionListener(actionListener);
 
         lblCatalog = new JLabel(titles.get("MWlblCatalog"));
         lblCatalog.setToolTipText(titles.get("MWlblCatalogTT"));
@@ -364,7 +371,6 @@ public class MainWin extends JFrame{
                     JOptionPane.ERROR_MESSAGE);
         }
         surveyEditor.setFocusStations();
-
     }
 
     /**
@@ -399,11 +405,15 @@ public class MainWin extends JFrame{
         return this.ioService;
     }
 
+    public CatalogService getCatalogService() {
+        return catalogService;
+    }
+
     /**
      * Gets this.surveyController
      * @return SurveyController
      */
-    public SurveyService getSurveyController() {
+    public SurveyService getSurveyService() {
         return surveyService;
     }
 
@@ -411,7 +421,7 @@ public class MainWin extends JFrame{
      * Gets this.polygonController
      * @return PolygonController
      */
-    public PolygonService getPolygonController() {
+    public PolygonService getPolygonService() {
         return polygonService;
     }
 
@@ -423,7 +433,7 @@ public class MainWin extends JFrame{
      * Gets this.extractController
      * @return ExtractController
      */
-    public ExtractService getExtractController() {
+    public ExtractService getExtractService() {
         return extractService;
     }
 
@@ -451,7 +461,7 @@ public class MainWin extends JFrame{
      * Return catalog coordinates
      * @return catalog
      */
-    public CatalogRepository getCatalog() {
+    public CatalogRepository getCatalogRepository() {
         return catalogService.getCatalogRepository();
     }
 
@@ -512,162 +522,23 @@ public class MainWin extends JFrame{
     }
 
     /**
-     * import from Leica
+     * Gets index of active tab
+     * @return int
      */
-    private void importLeica() {
-                surveyService.importLeica();
-                reloadSurveyEditor();
-                setControlsOn();
-                surveyService.saveProjectAs();
-                setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
-                surveyEditor.setFocusStations();
+    public int getMode() {
+        return tpMain.getSelectedIndex();
     }
 
     /**
-     * import from Nicon
+     * Sets current mode
+     * @param mode int mode
      */
-    private void importNicon() {
-                surveyService.importNicon();
-                reloadSurveyEditor();
-                setControlsOn();
-                surveyService.saveProjectAs();
-                setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
-                surveyEditor.setFocusStations();
+    public void setMode(int mode) {
+        tpMain.setSelectedIndex(mode);
     }
 
     /**
-     * import from Topcon
-     */
-    private void importTopcon() {
-        surveyService.importTopcon();
-        reloadSurveyEditor();
-        setControlsOn();
-        surveyService.saveProjectAs();
-        setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
-        surveyEditor.setFocusStations();
-    }
-
-    /**
-     * Create new sp with one Station with one Picket
-     */
-    private void newFile() {
-        switch (tpMain.getSelectedIndex()) {
-            case 0 -> {
-                surveyService.newProject();
-                reloadSurveyEditor();
-                setControlsOn();
-                setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
-                surveyEditor.setFocusStations();
-            }
-            case 1 -> {
-                polygonService.newProject();
-                reloadPolygonEditor();
-                setControlsOn();
-                setTitle("Taheoport: " + polygonService.getAbsolutePolPath());
-                polygonEditor.setFocusTable();
-            }
-        }
-    }
-
-    /**
-     * open Tah file
-     */
-    private void openFile() {
-        switch (tpMain.getSelectedIndex()) {
-            case 0 -> {
-                surveyService.importTah();
-                reloadSurveyEditor();
-                setControlsOn();
-                setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
-                surveyEditor.setFocusStations();
-            }
-            case 1 -> {
-                polygonService.importPol();
-                reloadPolygonEditor();
-                setControlsOn();
-                setTitle("Taheoport: " + polygonService.getAbsolutePolPath());
-                polygonEditor.setFocusTable();
-            }
-        }
-    }
-
-    /**
-     * extracts llPolList from this.surveyProject and open new TheoProject
-     */
-    private void extractPol() {
-        if (surveyService.getSurveyRepository() != null) {
-            if (surveyService.containPolygon()) {
-                surveyService.processSourceData();
-                polygonService.loadPolList(extractService.extractPolygonProject());
-                tpMain.setSelectedIndex(1);
-                reloadPolygonEditor();
-                setControlsOn();
-                setTitle("Taheoport: " + polygonService.getAbsolutePolPath());
-                polygonEditor.setFocusTable();
-                new ShowViewExtractPol(this);
-            } else {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Недостаточно данных",
-                        "Ошибка",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-
-    /**
-     * save sp <SurveyProject> to Tah file to AbsoluteTahPath if it exists.
-     * set absoluteTahPath
-     */
-    private void save() {
-        switch (tpMain.getSelectedIndex()) {
-            case 0 -> {
-                surveyService.saveProject();
-                setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
-            }
-            case 1 -> {
-                polygonService.savePol();
-                setTitle("Taheoport: " + polygonService.getAbsolutePolPath());
-            }
-        }
-    }
-
-    /**
-     * save sp <SurveyProject> to Tah file
-     * set absoluteTahPath
-     */
-    private void saveAs() {
-        switch (tpMain.getSelectedIndex()) {
-            case 0 -> {
-                surveyService.saveProjectAs();
-                    setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
-            }
-            case 1 -> {
-                polygonService.savePolAs();
-                    setTitle("Taheoport: " + polygonService.getAbsolutePolPath());
-            }
-        }
-    }
-
-    /**
-     * Writes an *.dat file with the coordinates of the pickets to disk
-     */
-    private void processSourceData() {
-        switch (tpMain.getSelectedIndex()) {
-            case 0 -> {
-                surveyService.processSourceData();
-                JOptionPane.showMessageDialog(this,"The data has been processed successfully");
-            }
-            case 1 -> {
-                polygonService.processSourceData();
-                reloadPolygonEditor();
-                polygonEditor.setBindings();
-            }
-        }
-    }
-
-    /**
-     * Reload tahEditorStandart
+     * Reload surveyEditor
      */
     public void reloadSurveyEditor() {
         if (surveyEditor != null) {
@@ -678,10 +549,13 @@ public class MainWin extends JFrame{
         setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
         setFocusTraversalPolicy(new TahEditorFocusTransversalPolicy(surveyEditor.getOrder()));
         revalidate();
+        surveyEditor.setFocusStations();
+        setControlsOn();
+        setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
     }
 
     /**
-     * Reload TheoEditor
+     * Reload PolygonEditor
      */
     public void reloadPolygonEditor() {
         if (polygonEditor != null) {
@@ -689,6 +563,10 @@ public class MainWin extends JFrame{
         }
         polygonEditor = new PolygonEditorStandart(this);
         pnlPolygon.add(polygonEditor);
+        setControlsOn();
+        setTitle("Taheoport: " + polygonService.getAbsolutePolPath());
+        polygonEditor.setBindings();
+        polygonEditor.setFocusTable();
         revalidate();
     }
 
@@ -731,30 +609,11 @@ public class MainWin extends JFrame{
     }
 
     /**
-     * Show result of processing or Adjustments
+     * Sets or off current catalog
+     * @param turnOn choice action
      */
-    private void viewResult() {
-        switch (tpMain.getSelectedIndex()) {
-            case 0 -> {
-                surveyService.processSourceData();
-                new ShowViewResults(this);
-            }
-            case 1 -> {
-                processSourceData();
-                if (polygonService.getPolygonRepository().getPerimeter() > 0.0) {
-                    new ShowViewAdjustment(this);
-                }
-            }
-        }
-    }
-
-    /**
-     * This action load points coordinates from text file *.kat to sp (SurveyProject)
-     */
-    private void loadCatalog() {
-        catalogService.importCatalog();
-
-        if (!catalogService.isEmpty()) {
+    public void setCurrentCatalog(boolean turnOn) {
+        if (turnOn) {
             lblCatalog.setEnabled(true);
             lblCatalog.setText(catalogService.getAbsoluteCatalogPath());
             tUpdate.setEnabled(true);
@@ -762,10 +621,12 @@ public class MainWin extends JFrame{
                 surveyEditor.getBtnStationName().setEnabled(true);
                 surveyEditor.getBtnOrName().setEnabled(true);
             }
+
         } else {
             lblCatalog.setEnabled(false);
             lblCatalog.setText("Каталог не установлен");
         }
+
     }
 
     /**

@@ -37,7 +37,7 @@ public class ShowCatalog extends JDialog {
 
         this.target = target;
         this.index = index;
-        this.catalogRepository = frame.getCatalog();
+        this.catalogRepository = frame.getCatalogRepository();
         selRow = -1;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 

@@ -89,9 +89,9 @@ public class CatalogServiceDefault implements CatalogService {
         HashMap<String, String> titles = parentFrame.getTitles();
         switch (target) {
             case 0 -> {
-                if (parentFrame.getCatalog() != null & parentFrame.getSurveyRepository() != null) {
+                if (parentFrame.getCatalogRepository() != null & parentFrame.getSurveyRepository() != null) {
                     SurveyRepository surveyRepository = parentFrame.getSurveyRepository();
-                    CatalogRepository catalogRepository = parentFrame.getCatalog();
+                    CatalogRepository catalogRepository = parentFrame.getCatalogRepository();
                     int q = 0;
                     for (int i = 0; i < surveyRepository.sizeStations(); i++) {
                         for (int j = 0; j < catalogRepository.getSizeCatalog(); j++) {
@@ -121,7 +121,7 @@ public class CatalogServiceDefault implements CatalogService {
 
             case 1 -> {
                 PolygonRepository polygonRepository = parentFrame.getPolygonRepository();
-                CatalogRepository catalogRepository = parentFrame.getCatalog();
+                CatalogRepository catalogRepository = parentFrame.getCatalogRepository();
                 int q = 0;
                 for (int i = 0; i < polygonRepository.getSizePolygonStations(); i++) {
                     for (int j = 0; j < catalogRepository.getSizeCatalog(); j++) {

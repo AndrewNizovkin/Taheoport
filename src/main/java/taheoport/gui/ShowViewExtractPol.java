@@ -43,7 +43,7 @@
             JButton btnSaveReport = new JButton(new ImageIcon("images/save.png"));
             btnSaveReport.setToolTipText(parentFrame.getTitles().get("SVRbtnSaveReportTT"));
             btnSaveReport.addActionListener(e -> {
-                parentFrame.getIoController().writeTextFile(parentFrame.getExtractController().getExtractReport(),
+                parentFrame.getIoController().writeTextFile(parentFrame.getExtractService().getExtractReport(),
                         parentFrame.getPathWorkDir(), "txt",
                         parentFrame.getTitles().get("SVRsaveTitle1"));
             });
@@ -60,7 +60,7 @@
 // spExtractReport___________________________________________________________
 
             JTextArea textArea = new JTextArea();
-            List<String> llExtractReport = parentFrame.getExtractController().getExtractReport();
+            List<String> llExtractReport = parentFrame.getExtractService().getExtractReport();
             llExtractReport.forEach(x -> textArea.append(x + "\n"));
             textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
             textArea.setLineWrap(false);
