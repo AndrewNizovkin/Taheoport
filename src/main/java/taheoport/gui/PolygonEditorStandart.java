@@ -115,7 +115,7 @@ public class PolygonEditorStandart extends JPanel {
         btnImportFromCatalog.setToolTipText(parentFrame.getTitles().get("TAHbtnImportFromCatalogTT"));
         btnImportFromCatalog.addActionListener(e -> {
             if (parentFrame.getPolygonRepository().findById(selRow).getStatus()) {
-                new ShowCatalog(parentFrame, selRow, "TheoStation");
+                new ShowCatalog(parentFrame);
                 tmPolygonStations.setValueAt(parentFrame.getPolygonRepository().findById(selRow).getName(), selRow, 0);
                 tmPolygonStations.setValueAt(parentFrame.getPolygonRepository().findById(selRow).getX(), selRow, 4);
                 tmPolygonStations.setValueAt(parentFrame.getPolygonRepository().findById(selRow).getY(), selRow, 5);

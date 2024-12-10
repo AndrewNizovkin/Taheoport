@@ -372,4 +372,15 @@ public class SurveyServiceDefault implements SurveyService {
             absoluteTahPath = s;
         }
     }
+
+    /**
+     * Gets survey station from repository by id
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public SurveyStation findStationById(int id) {
+        return surveyRepository.findById(id);
+    }
 }

@@ -49,15 +49,15 @@ public class ShowViewAdjustment extends JDialog {
         btnSaveReport.setToolTipText(parentFrame.getTitles().get("SVRbtnSaveReportTT"));
         btnSaveReport.addActionListener(e -> {
             switch (tp.getSelectedIndex()) {
-                case 0 -> parentFrame.getIoController().writeTextFile(parentFrame.getPolygonService().getReportNXYZ(),
+                case 0 -> parentFrame.getIoService().writeTextFile(parentFrame.getPolygonService().getReportNXYZ(),
                         parentFrame.getPathWorkDir(),
                         "kat",
                         parentFrame.getTitles().get("SVRsaveTitle0"));
-                case 1 -> parentFrame.getIoController().writeTextFile(parentFrame.getPolygonService().getReportXY(),
+                case 1 -> parentFrame.getIoService().writeTextFile(parentFrame.getPolygonService().getReportXY(),
                         parentFrame.getPathWorkDir(),
                         "txt",
                         parentFrame.getTitles().get("SVRsaveTitle1"));
-                case 2 -> parentFrame.getIoController().writeTextFile(parentFrame.getPolygonService().getReportZ(),
+                case 2 -> parentFrame.getIoService().writeTextFile(parentFrame.getPolygonService().getReportZ(),
                         parentFrame.getPathWorkDir(),
                         "txt",
                         parentFrame.getTitles().get("SVRsaveTitle1"));

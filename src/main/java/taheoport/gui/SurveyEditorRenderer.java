@@ -1,5 +1,7 @@
 package taheoport.gui;
 
+import taheoport.model.SurveyStation;
+
 import javax.swing.*;
 
 /**
@@ -34,6 +36,12 @@ public interface SurveyEditorRenderer {
      * Sets controls enable is false
      */
     void controlOff();
+
+    /**
+     * Updates current station panel elements
+     * @param surveyStation SurveyStation
+     */
+    void updateStation(SurveyStation surveyStation);
 
     /**
      * refreshes Stations panel

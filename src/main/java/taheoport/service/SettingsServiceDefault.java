@@ -42,7 +42,7 @@ public class SettingsServiceDefault implements SettingsService {
         list.add("offsetDirectionType=" + settings.getOffsetDirectionType());
         list.add("offsetTiltAngleType=" + settings.getOffsetTiltType());
 
-        parentFrame.getIoController().writeTextFile(list, "taheoport.ini");
+        parentFrame.getIoService().writeTextFile(list, "taheoport.ini");
     }
 
     /**
@@ -56,14 +56,14 @@ public class SettingsServiceDefault implements SettingsService {
             saveOptions();
         }
 
-        List<String > list = parentFrame.getIoController().readTextFile("taheoport.ini");
+        List<String > list = parentFrame.getIoService().readTextFile("taheoport.ini");
         list.remove(0);
         String firstLine;
         firstLine = list.remove(0);
 
         if (firstLine  == null || !firstLine.equals("taheoport_ini")) {
             saveOptions();
-            list = parentFrame.getIoController().readTextFile("taheoport.ini");
+            list = parentFrame.getIoService().readTextFile("taheoport.ini");
             list.remove(0);
         }
 

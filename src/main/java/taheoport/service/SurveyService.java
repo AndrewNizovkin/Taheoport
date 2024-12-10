@@ -1,5 +1,6 @@
 package taheoport.service;
 
+import taheoport.model.SurveyStation;
 import taheoport.repository.SurveyRepository;
 
 import java.util.List;
@@ -97,5 +98,12 @@ public interface SurveyService {
      * Save current survey project
      */
     void saveProjectAs();
+
+    /**
+     * Gets survey station from repository by id
+     * @param id
+     * @return
+     */
+    SurveyStation findStationById(int id);
 }
 

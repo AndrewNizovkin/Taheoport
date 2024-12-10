@@ -17,8 +17,10 @@ public class CatalogServiceDefault implements CatalogService {
 
     private final MainWin parentFrame;
     private final CatalogRepository catalogRepository;
-    IOService ioService;
+    private final IOService ioService;
     private String absoluteCatalogPath;
+    private int choice;
+
 
     /**
      * Constructor
@@ -26,8 +28,9 @@ public class CatalogServiceDefault implements CatalogService {
      */
     public CatalogServiceDefault(MainWin parentFrame) {
         this.parentFrame = parentFrame;
-        ioService = new IOServiceDefault(parentFrame);
+        ioService = parentFrame.getIoService();
         catalogRepository = new CatalogRepository();
+        choice = -1;
     }
 
     /**
@@ -143,5 +146,33 @@ public class CatalogServiceDefault implements CatalogService {
                 parentFrame.reloadPolygonEditor();
             }
         }
+    }
+
+    /**
+     * Sets the index of the selected item
+     *
+     * @param choice int
+     */
+    @Override
+    public void setChoice(int choice) {
+        this.choice = choice;
+    }
+
+    /**
+     * Gets the index of the selected item
+     */
+    @Override
+    public int getChoice() {
+        return choice;
+    }
+
+    /**
+     * Gets catalogPoint by id
+     *
+     * @return CatalogPoint
+     */
+    @Override
+    public CatalogPoint findById(int id) {
+        return catalogRepository.findById(id);
     }
 }

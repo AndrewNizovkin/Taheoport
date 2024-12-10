@@ -401,7 +401,7 @@ public class MainWin extends JFrame{
      * Gets this.ioController
      * @return IOController
      */
-    public IOService getIoController() {
+    public IOService getIoService() {
         return this.ioService;
     }
 

@@ -1,5 +1,6 @@
 package taheoport.service;
 
+import taheoport.model.CatalogPoint;
 import taheoport.repository.CatalogRepository;
 
 /**
@@ -35,5 +36,22 @@ public interface CatalogService {
      * @param target 0: updates surveyProject; 1: updates polygonProject
      */
     void updateBasePoints(int target);
+
+    /**
+     * Sets the index of the selected item
+     * @param choice int
+     */
+    void setChoice(int choice);
+
+    /**
+     * Gets the index of the selected item
+     */
+    int getChoice();
+
+    /**
+     * Gets catalogPoint by id
+     * @return CatalogPoint
+     */
+    CatalogPoint findById(int id);
 
 }

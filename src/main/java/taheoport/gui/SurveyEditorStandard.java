@@ -1,4 +1,5 @@
 package taheoport.gui;
+import taheoport.dispatcher.SurveyEditorActionListener;
 import taheoport.repository.SurveyRepository;
 import taheoport.service.DataHandler;
 import taheoport.model.SurveyStation;
@@ -56,6 +57,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
             tfOrY;
     private JTable tblPickets;
     private TmodelPickets tmodelPickets;
+    private ActionListener actionListener;
 
     /**
      * Constructor
@@ -76,7 +78,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
                 actionSetStation.setEnabled(true);
                 actionSetOr.setEnabled(true);
             }
-
+            actionListener = new SurveyEditorActionListener(this);
             ImageIcon imageDeleteRow = new ImageIcon("images/delete_row.png");
             ImageIcon imageInsertRowBefore = new ImageIcon("images/insert_row.png");
             ImageIcon imageInsertRowAfter = new ImageIcon("images/insert_row_after.png");
@@ -106,7 +108,9 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
 //region btnStationName
 
-            btnStationName = new JButton(actionSetStation);
+            btnStationName = new JButton();
+            btnStationName.setActionCommand("btnStationName");
+            btnStationName.addActionListener(actionListener);
             btnStationName.setBorder(BorderFactory.createEtchedBorder());
             btnStationName.setText(this.parentFrame.getTitles().get("TAHbtnStationName"));
             btnStationName.setToolTipText(this.parentFrame.getTitles().get("TAHbtnStationNameTT"));
@@ -425,7 +429,9 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
 //region btnOrName
 
-            btnOrName = new JButton(actionSetOr);
+            btnOrName = new JButton();
+            btnOrName.setActionCommand("btnOrName");
+            btnOrName.addActionListener(actionListener);
             btnOrName.setBorder(BorderFactory.createEtchedBorder());
             btnOrName.setText(this.parentFrame.getTitles().get("TAHbtnOrName"));
             btnOrName.setToolTipText(this.parentFrame.getTitles().get("TAHbtnOrNameTT"));
@@ -1191,7 +1197,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
         @Override
         public void actionPerformed(ActionEvent e) {
             if (parentFrame.hasCatalog()) {
-                new ShowCatalog(parentFrame, currentStationIndex, name);
+                new ShowCatalog(parentFrame);
                 surveyStation = surveyRepository.findById(currentStationIndex);
                 updateStation(surveyStation);
             }

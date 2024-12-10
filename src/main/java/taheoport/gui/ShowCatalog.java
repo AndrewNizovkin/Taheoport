@@ -1,6 +1,7 @@
 package taheoport.gui;
 import taheoport.repository.CatalogRepository;
 import taheoport.model.CatalogPoint;
+import taheoport.service.CatalogService;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -13,30 +14,29 @@ import java.awt.*;
  * Copyright Nizovkin A.V. 2022
  */
 public class ShowCatalog extends JDialog {
-
+    private final CatalogService catalogService;
     private final CatalogRepository catalogRepository;
-    private final int index;
+//    private final int index;
     private final MainWin parentFrame;
     private int selRow;
-    private final String target;
+//    private final String target;
     private final JTable tblPoints;
 
     /**
      * Constructor
      * @param frame parent MainWin
-     * @param index station selected index in surveyProject
-     * @param target parameter to changed
      */
-    public ShowCatalog(MainWin frame, int index, String target) {
+    public ShowCatalog(MainWin frame) {
         super( frame,frame.getTitles().get("SCdialogTitle"), true);
         parentFrame = frame;
+        catalogService = parentFrame.getCatalogService();
 
         Toolkit kit = Toolkit.getDefaultToolkit();
         Image im = kit.getImage("images/teo.png");
         this.setIconImage(im);
 
-        this.target = target;
-        this.index = index;
+//        this.target = target;
+//        this.index = index;
         catalogRepository = parentFrame.getCatalogRepository();
         selRow = -1;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -45,6 +45,7 @@ public class ShowCatalog extends JDialog {
         int h = parentFrame.getHeightMain() / 2;
         setBounds(frame.getX() + frame.getWidth() / 2 - w / 2,frame.getY() + frame.getHeight() / 2 - h / 2, w, h);
         setLayout(new BorderLayout());
+
 
 
 // tblPoints_______________________________________________________
@@ -75,9 +76,11 @@ public class ShowCatalog extends JDialog {
 // btnInsertCoordinates________________________________________
 
         JButton btnInsertCoordinates = new JButton(parentFrame.getTitles().get("SCbtnInsertCoordinates"));
+        btnInsertCoordinates.setActionCommand("btnInsertCoordinates");
         btnInsertCoordinates.setToolTipText(parentFrame.getTitles().get("SCbtnInsertCoordinatesTT"));
         btnInsertCoordinates.addActionListener(e -> {
-            replaceCoordinates();
+            catalogService.setChoice(selRow);
+            this.dispose();
         });
         pnlControl.add(btnInsertCoordinates);
 // btnCancel________________________________________
@@ -110,29 +113,29 @@ public class ShowCatalog extends JDialog {
         return catalogPoint;
     }
 
-    private void replaceCoordinates() {
-        if (selRow >= 0) {
-//            Station st = this.sp.getStation(index);
-            CatalogPoint catalogPoint = this.catalogRepository.findById(selRow);
-            if (target.equals("StationName")) {
-                parentFrame.getSurveyRepository().findById(index).setName(catalogPoint.getName());
-                parentFrame.getSurveyRepository().findById(index).setX(catalogPoint.getX());
-                parentFrame.getSurveyRepository().findById(index).setY(catalogPoint.getY());
-                parentFrame.getSurveyRepository().findById(index).setZ(catalogPoint.getZ());
-            }
-            if (target.equals("OrName")) {
-                parentFrame.getSurveyRepository().findById(index).setNameOr(catalogPoint.getName());
-                parentFrame.getSurveyRepository().findById(index).setxOr(catalogPoint.getX());
-                parentFrame.getSurveyRepository().findById(index).setyOr(catalogPoint.getY());
-            }
-            if (target.equals("TheoStation")) {
-                parentFrame.getPolygonRepository().findById(index).setName(catalogPoint.getName());
-                parentFrame.getPolygonRepository().findById(index).setX(catalogPoint.getX());
-                parentFrame.getPolygonRepository().findById(index).setY(catalogPoint.getY());
-                parentFrame.getPolygonRepository().findById(index).setZ(catalogPoint.getZ());
-            }
-            this.dispose();
-        }
+//    private void replaceCoordinates() {
+//        if (selRow >= 0) {
+////            Station st = this.sp.getStation(index);
+//            CatalogPoint catalogPoint = this.catalogRepository.findById(selRow);
+//            if (target.equals("StationName")) {
+//                parentFrame.getSurveyRepository().findById(index).setName(catalogPoint.getName());
+//                parentFrame.getSurveyRepository().findById(index).setX(catalogPoint.getX());
+//                parentFrame.getSurveyRepository().findById(index).setY(catalogPoint.getY());
+//                parentFrame.getSurveyRepository().findById(index).setZ(catalogPoint.getZ());
+//            }
+//            if (target.equals("OrName")) {
+//                parentFrame.getSurveyRepository().findById(index).setNameOr(catalogPoint.getName());
+//                parentFrame.getSurveyRepository().findById(index).setxOr(catalogPoint.getX());
+//                parentFrame.getSurveyRepository().findById(index).setyOr(catalogPoint.getY());
+//            }
+//            if (target.equals("TheoStation")) {
+//                parentFrame.getPolygonRepository().findById(index).setName(catalogPoint.getName());
+//                parentFrame.getPolygonRepository().findById(index).setX(catalogPoint.getX());
+//                parentFrame.getPolygonRepository().findById(index).setY(catalogPoint.getY());
+//                parentFrame.getPolygonRepository().findById(index).setZ(catalogPoint.getZ());
+//            }
+//            this.dispose();
+//        }
 
-    }
+//    }
 }

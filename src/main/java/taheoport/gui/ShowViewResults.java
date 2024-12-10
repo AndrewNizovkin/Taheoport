@@ -54,10 +54,10 @@ public class ShowViewResults extends JDialog {
         btnSaveReport.setToolTipText(parentFrame.getTitles().get("SVRbtnSaveReportTT"));
         btnSaveReport.addActionListener(e -> {
             switch (tpSurvey.getSelectedIndex()) {
-                case 0 -> parentFrame.getIoController().writeTextFile(parentFrame.getSurveyService().getPickets(),
+                case 0 -> parentFrame.getIoService().writeTextFile(parentFrame.getSurveyService().getPickets(),
                         parentFrame.getPathWorkDir(),"dat",
                         parentFrame.getTitles().get("SVRsaveTitle0"));
-                case 1 -> parentFrame.getIoController().writeTextFile(parentFrame.getSurveyService().getReport(),
+                case 1 -> parentFrame.getIoService().writeTextFile(parentFrame.getSurveyService().getReport(),
                         this.parentFrame.getPathWorkDir(),
                         "txt",
                         this.parentFrame.getTitles().get("SVRsaveTitle1"));

@@ -43,7 +43,7 @@
             JButton btnSaveReport = new JButton(new ImageIcon("images/save.png"));
             btnSaveReport.setToolTipText(parentFrame.getTitles().get("SVRbtnSaveReportTT"));
             btnSaveReport.addActionListener(e -> {
-                parentFrame.getIoController().writeTextFile(parentFrame.getExtractService().getExtractReport(),
+                parentFrame.getIoService().writeTextFile(parentFrame.getExtractService().getExtractReport(),
                         parentFrame.getPathWorkDir(), "txt",
                         parentFrame.getTitles().get("SVRsaveTitle1"));
             });
