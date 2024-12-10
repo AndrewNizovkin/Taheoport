@@ -9,10 +9,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,7 +20,7 @@ import java.util.regex.Pattern;
  * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
-public class SurveyEditorStandart extends JPanel  {
+public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer {
     private JButton btnDeleteRow;
     private JButton btnInsertRowBefore;
     private JButton btnInsertRowAfter;
@@ -34,7 +32,7 @@ public class SurveyEditorStandart extends JPanel  {
     private JButton btnInsertStationAfter;
     private JButton btnStationName;
     private JButton btnOrName;
-    private int index;
+    private int currentStationIndex;
     private JLabel lblStationI;
     private JList<String> lstStations;
     private Vector<Component> order;
@@ -64,18 +62,21 @@ public class SurveyEditorStandart extends JPanel  {
      * @param parentFrame parent parentFrame
      * @param index int index of current SurveyStation of SurveyProject
      */
-    public SurveyEditorStandart(MainWin parentFrame, int index) {
+    public SurveyEditorStandard(MainWin parentFrame, int index) {
+        super();
         if (!(parentFrame == null)) {
-            this.index = index;
-            this.surveyRepository = parentFrame.getSurveyRepository();
+            currentStationIndex = index;
+            surveyRepository = parentFrame.getSurveyRepository();
             this.parentFrame = parentFrame;
-            surveyStation = this.surveyRepository.findById(index);
+            surveyStation = surveyRepository.findById(index);
             SetCoordinates actionSetStation = new SetCoordinates("StationName");
             SetCoordinates actionSetOr = new SetCoordinates("OrName");
+
             if (this.parentFrame.hasCatalog()) {
                 actionSetStation.setEnabled(true);
                 actionSetOr.setEnabled(true);
             }
+
             ImageIcon imageDeleteRow = new ImageIcon("images/delete_row.png");
             ImageIcon imageInsertRowBefore = new ImageIcon("images/insert_row.png");
             ImageIcon imageInsertRowAfter = new ImageIcon("images/insert_row_after.png");
@@ -665,12 +666,12 @@ public class SurveyEditorStandart extends JPanel  {
                 btnDeleteStation.setToolTipText(this.parentFrame.getTitles().get("TAHbtnDeleteStationTT"));
                 btnDeleteStation.addActionListener(e -> {
                     if (surveyRepository.sizeStations() > 1) {
-                        surveyRepository.removeStation(this.index);
-                        if (this.index == surveyRepository.sizeStations()) {
-                            this.index--;
+                        surveyRepository.removeStation(this.currentStationIndex);
+                        if (this.currentStationIndex == surveyRepository.sizeStations()) {
+                            this.currentStationIndex--;
                         }
-                        reloadStations(this.index);
-                        reloadStationPickets(this.index);
+                        reloadStations(this.currentStationIndex);
+                        reloadStationPickets(this.currentStationIndex);
                         lstStations.requestFocusInWindow();
                     }
                 });
@@ -681,9 +682,9 @@ public class SurveyEditorStandart extends JPanel  {
                 btnInsertStationBefore = new JButton(imageInsertRowBefore);
                 btnInsertStationBefore.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertStationBeforeTT"));
                 btnInsertStationBefore.addActionListener(e -> {
-                    surveyStation = surveyRepository.insertStation(this.index);
-                    reloadStations(this.index);
-                    reloadStationPickets(this.index);
+                    surveyStation = surveyRepository.insertStation(currentStationIndex);
+                    reloadStations(currentStationIndex);
+                    reloadStationPickets(currentStationIndex);
                     lstStations.requestFocusInWindow();
                 });
 //endregion
@@ -693,10 +694,10 @@ public class SurveyEditorStandart extends JPanel  {
                 btnInsertStationAfter = new JButton(imageInsertRowAfter);
                 btnInsertStationAfter.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertStationAfterTT"));
                 btnInsertStationAfter.addActionListener(e -> {
-                    this.index++;
-                    surveyStation = surveyRepository.insertStation(this.index);
-                    reloadStations(this.index);
-                    reloadStationPickets(this.index);
+                    currentStationIndex++;
+                    surveyStation = surveyRepository.insertStation(currentStationIndex);
+                    reloadStations(currentStationIndex);
+                    reloadStationPickets(currentStationIndex);
                     lstStations.requestFocusInWindow();
                 });
 //endregion
@@ -906,16 +907,65 @@ public class SurveyEditorStandart extends JPanel  {
         btnChangeDirection.setToolTipText(parentFrame.getTitles().get("TAHbtnChangeDirectionTT"));
         btnChangeTilt.setToolTipText(parentFrame.getTitles().get("TAHbtnChangeTiltAngleTT"));
 
-        reloadStationPickets(index);
+        reloadStationPickets(currentStationIndex);
 
         revalidate();
+    }
+
+    /**
+     * Sets current station index
+     *
+     * @param index int
+     */
+    @Override
+    public void setCurrentStationIndex(int index) {
+        currentStationIndex = index;
+    }
+
+    /**
+     * Gets current station index
+     *
+     * @return int
+     */
+    @Override
+    public int getCurrentStationIndex() {
+        return currentStationIndex;
+    }
+
+    /**
+     * Gets ParentFrame
+     *
+     * @return MainWin
+     */
+    @Override
+    public MainWin getParentFrame() {
+        return parentFrame;
+    }
+
+    /**
+     * Sets controls enable is true
+     */
+    @Override
+    public void controlOn() {
+        btnStationName.setEnabled(true);
+        btnOrName.setEnabled(true);
+    }
+
+    /**
+     * Sets controls enable is false
+     */
+    @Override
+    public void controlOff() {
+        btnStationName.setEnabled(false);
+        btnOrName.setEnabled(false);
+
     }
 
     /**
      * reload pnlStation
      * @param index int index of current SurveyStation of SurveyProject
      */
-    private void reloadStations(int index) {
+    public void reloadStations(int index) {
         if (scpStations != null) {
             pnlStations.remove(scpStations);
         }
@@ -927,13 +977,19 @@ public class SurveyEditorStandart extends JPanel  {
         lstStations.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         lstStations.setSelectedIndex(index);
         lstStations.addListSelectionListener(e -> {
-            this.index = lstStations.getSelectedIndex();
+            this.currentStationIndex = lstStations.getSelectedIndex();
             reloadStationPickets(lstStations.getSelectedIndex());
         });
         scpStations = new JScrollPane(lstStations);
 
 
         pnlStations.add(scpStations,BorderLayout.CENTER);
+
+        if (parentFrame.hasCatalog()) {
+            controlOn();
+        } else {
+            controlOff();
+        }
         revalidate();
     }
 
@@ -941,7 +997,7 @@ public class SurveyEditorStandart extends JPanel  {
      * reload
      * @param index int index of current SurveyStation of SurveyProject
      */
-    private void reloadStationPickets(int index) {
+    public void reloadStationPickets(int index) {
         surveyStation = surveyRepository.findById(index);
         tfStationName.setText(surveyStation.getName());
         tfStationX.setText(surveyStation.getX());
@@ -961,6 +1017,39 @@ public class SurveyEditorStandart extends JPanel  {
         add(pnlPickets, new GridBagConstraints(1, 0, 1,GridBagConstraints.REMAINDER, 1, 1,
                 GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 120, 0));
         revalidate();
+    }
+
+    /**
+     * Gets tmodelPickets
+     *
+     * @return TmodelPickets
+     */
+    @Override
+    public JTable getTablePickets() {
+        return tblPickets;
+    }
+
+    /**
+     * Gets selected row index of tablePickets
+     *
+     * @return int
+     */
+    @Override
+    public int getSelRow() {
+        return selRow;
+    }
+
+    /**
+     * Sets
+     */
+    @Override
+    public void setSelRow(int index) {
+        selRow = index;
+    }
+
+    @Override
+    public int getSelColumn() {
+        return selColumn;
     }
 
     /**
@@ -1102,20 +1191,24 @@ public class SurveyEditorStandart extends JPanel  {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (parentFrame.hasCatalog()) {
-                new ShowCatalog(parentFrame, index, name);
-                surveyStation = surveyRepository.findById(index);
-                tfStationName.setText(surveyStation.getName());
-                tfStationX.setText(surveyStation.getX());
-                tfStationY.setText(surveyStation.getY());
-                tfStationZ.setText(surveyStation.getZ());
-                tfStationI.setText(surveyStation.getVi());
-                tfOrName.setText(surveyStation.getNameOr());
-                tfOrX.setText(surveyStation.getNameOr());
-                tfOrX.setText(surveyStation.getxOr());
-                tfOrY.setText(surveyStation.getyOr());
-                reloadStations(index);
+                new ShowCatalog(parentFrame, currentStationIndex, name);
+                surveyStation = surveyRepository.findById(currentStationIndex);
+                updateStation(surveyStation);
             }
         }
+    }
+
+    public void updateStation(SurveyStation surveyStation) {
+        tfStationName.setText(surveyStation.getName());
+        tfStationX.setText(surveyStation.getX());
+        tfStationY.setText(surveyStation.getY());
+        tfStationZ.setText(surveyStation.getZ());
+        tfStationI.setText(surveyStation.getVi());
+        tfOrName.setText(surveyStation.getNameOr());
+        tfOrX.setText(surveyStation.getNameOr());
+        tfOrX.setText(surveyStation.getxOr());
+        tfOrY.setText(surveyStation.getyOr());
+        reloadStations(currentStationIndex);
     }
 
     /**
@@ -1126,7 +1219,7 @@ public class SurveyEditorStandart extends JPanel  {
             pnlPickets.remove(scpPickets);
         }
 
-        tmodelPickets = new TmodelPickets();
+        tmodelPickets = new TmodelPickets(parentFrame, currentStationIndex);
         tblPickets = new JTable(tmodelPickets);
         String[] str;
         for (int i = 0; i < surveyStation.sizePickets(); i++) {
@@ -1175,122 +1268,4 @@ public class SurveyEditorStandart extends JPanel  {
 
     }
 
-    /**
-     * Class TmodelPickets encapsulates tableModel of tblPickets
-     */
-
-    private class TmodelPickets extends AbstractTableModel {
-        private int columnCount = 5;
-        private final ArrayList<String []> dataArrayList;
-        /**
-         *
-         */
-        public TmodelPickets() {
-            dataArrayList = new ArrayList<String[]>();
-        }
-
-        @Override
-        public int getRowCount() {
-            return dataArrayList.size();
-        }
-
-        @Override
-        public int getColumnCount() {
-            return columnCount;
-        }
-
-        @Override
-        public String getColumnName(int column) {
-            switch (column) {
-                case 0: return parentFrame.getTitles().get("TAHtmColumnName0");
-                case 1: return parentFrame.getTitles().get("TAHtmColumnName1");
-                case 2: return parentFrame.getTitles().get("TAHtmColumnName2");
-                case 3: return parentFrame.getTitles().get("TAHtmColumnName3");
-                case 4: return parentFrame.getTitles().get("TAHtmColumnName4");
-            }
-
-
-            return "";
-        }
-
-        @Override
-        public Object getValueAt(int rowIndex, int columnIndex) {
-            String [] row = dataArrayList.get(rowIndex);
-            return row [columnIndex];
-        }
-
-        public Class getColumnClass(int c) {
-            return getValueAt(0, c).getClass();
-        }
-
-        public boolean isCellEditable(int rowIndex, int columnCount) {
-            return true;
-        }
-
-        public void setValueAt(Object str, int rowIndex, int columnIndex) {
-            String [] row = dataArrayList.get(rowIndex);
-            DataHandler dataHandler = new DataHandler((String) str).commaToPoint();
-            switch (columnIndex) {
-                case 0 -> {
-                    if (dataHandler.isValidName()) {
-                        parentFrame.getSurveyRepository().findById(index).getPicket(rowIndex).setpName((String) str);
-                        row [columnIndex] = (String) str;
-                        dataArrayList.set(rowIndex, row);
-                    }
-                }
-                case 1 -> {
-                    if (dataHandler.isPositiveNumber()) {
-                        parentFrame.getSurveyRepository().findById(index).getPicket(rowIndex).setLine(dataHandler.format(3).getStr());
-                        row[columnIndex] = dataHandler.format(3).getStr();
-                        dataArrayList.set(rowIndex, row);
-                    }
-                }
-                case 2 -> {
-                    if (dataHandler.isPositiveNumber()) {
-                        parentFrame.getSurveyRepository().findById(index).getPicket(rowIndex).setHor(dataHandler.format(4).getStr());
-                        row[columnIndex] = dataHandler.format(4).getStr();
-                        dataArrayList.set(rowIndex, row);
-                    }
-                }
-                case 3 -> {
-                    if (dataHandler.isNumber()) {
-                        parentFrame.getSurveyRepository().findById(index).getPicket(rowIndex).setVert(dataHandler.format(4).getStr());
-                        row[columnIndex] = dataHandler.format(4).getStr();
-                        dataArrayList.set(rowIndex, row);
-                    }
-                }
-                case 4 -> {
-                    if (dataHandler.isNumber()) {
-                        parentFrame.getSurveyRepository().findById(index).getPicket(rowIndex).setV(dataHandler.format(3).getStr());
-                        row[columnIndex] = dataHandler.format(3).getStr();
-                        dataArrayList.set(rowIndex, row);
-                    }
-                }
-            }
-
-            fireTableCellUpdated(rowIndex, columnIndex);
-        }
-
-        /**
-         * add row to dataArrayList
-         * @param row
-         */
-        public void addRow(String [] row) {
-            dataArrayList.add(row);
-        }
-
-        public void addRow(int index, String[] row) {
-            dataArrayList.add(index, row);
-            fireTableRowsInserted(index, index);
-        }
-
-        /**
-         * remove row from dataArrayList
-         * @param index
-         */
-        public void removeRow(int index) {
-            dataArrayList.remove(index);
-            fireTableRowsDeleted(index, index);
-        }
-    }
 }

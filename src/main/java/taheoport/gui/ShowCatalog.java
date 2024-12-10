@@ -37,7 +37,7 @@ public class ShowCatalog extends JDialog {
 
         this.target = target;
         this.index = index;
-        this.catalogRepository = frame.getCatalogRepository();
+        catalogRepository = parentFrame.getCatalogRepository();
         selRow = -1;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -98,26 +98,38 @@ public class ShowCatalog extends JDialog {
         revalidate();
     }
 
+    /**
+     * Gets selected catalog point
+     * @return CatalogPoint
+     */
+    public CatalogPoint getCatalogPoint() {
+        CatalogPoint catalogPoint = null;
+        if (selRow >= 0) {
+            catalogPoint = catalogRepository.findById(selRow);
+        }
+        return catalogPoint;
+    }
+
     private void replaceCoordinates() {
         if (selRow >= 0) {
 //            Station st = this.sp.getStation(index);
-            CatalogPoint cp = this.catalogRepository.findById(selRow);
+            CatalogPoint catalogPoint = this.catalogRepository.findById(selRow);
             if (target.equals("StationName")) {
-                parentFrame.getSurveyRepository().findById(index).setName(cp.getName());
-                parentFrame.getSurveyRepository().findById(index).setX(cp.getX());
-                parentFrame.getSurveyRepository().findById(index).setY(cp.getY());
-                parentFrame.getSurveyRepository().findById(index).setZ(cp.getZ());
+                parentFrame.getSurveyRepository().findById(index).setName(catalogPoint.getName());
+                parentFrame.getSurveyRepository().findById(index).setX(catalogPoint.getX());
+                parentFrame.getSurveyRepository().findById(index).setY(catalogPoint.getY());
+                parentFrame.getSurveyRepository().findById(index).setZ(catalogPoint.getZ());
             }
             if (target.equals("OrName")) {
-                parentFrame.getSurveyRepository().findById(index).setNameOr(cp.getName());
-                parentFrame.getSurveyRepository().findById(index).setxOr(cp.getX());
-                parentFrame.getSurveyRepository().findById(index).setyOr(cp.getY());
+                parentFrame.getSurveyRepository().findById(index).setNameOr(catalogPoint.getName());
+                parentFrame.getSurveyRepository().findById(index).setxOr(catalogPoint.getX());
+                parentFrame.getSurveyRepository().findById(index).setyOr(catalogPoint.getY());
             }
             if (target.equals("TheoStation")) {
-                parentFrame.getPolygonRepository().findById(index).setName(cp.getName());
-                parentFrame.getPolygonRepository().findById(index).setX(cp.getX());
-                parentFrame.getPolygonRepository().findById(index).setY(cp.getY());
-                parentFrame.getPolygonRepository().findById(index).setZ(cp.getZ());
+                parentFrame.getPolygonRepository().findById(index).setName(catalogPoint.getName());
+                parentFrame.getPolygonRepository().findById(index).setX(catalogPoint.getX());
+                parentFrame.getPolygonRepository().findById(index).setY(catalogPoint.getY());
+                parentFrame.getPolygonRepository().findById(index).setZ(catalogPoint.getZ());
             }
             this.dispose();
         }

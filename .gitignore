@@ -3,4 +3,5 @@ examples/
 .gitignore
 *.ini
 .idea/
+*.class
 ~*

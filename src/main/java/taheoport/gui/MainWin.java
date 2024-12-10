@@ -60,7 +60,7 @@ public class MainWin extends JFrame{
     private final JButton btnView;
     private final JButton btnLoadCat;
     private final JButton btnImport;
-    private SurveyEditorStandart surveyEditor;
+    private SurveyEditorStandard surveyEditor;
     private PolygonEditorStandart polygonEditor;
     private final JLabel lblCatalog;
     private JPopupMenu ppImport;
@@ -544,7 +544,7 @@ public class MainWin extends JFrame{
         if (surveyEditor != null) {
             pnlMeasurements.remove(surveyEditor);
         }
-        surveyEditor = new SurveyEditorStandart(this, 0);
+        surveyEditor = new SurveyEditorStandard(this, 0);
         pnlMeasurements.add(surveyEditor);
         setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
         setFocusTraversalPolicy(new TahEditorFocusTransversalPolicy(surveyEditor.getOrder()));
