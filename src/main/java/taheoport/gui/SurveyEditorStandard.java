@@ -46,8 +46,6 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
     private int selColumn;
     private JScrollPane scpPickets;
     private JScrollPane scpStations;
-    private SurveyRepository surveyRepository;
-//    private SurveyStation surveyStation;
     private JTextField tfStationName,
             tfStationX,
             tfStationY,
@@ -71,16 +69,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
         if (!(parentFrame == null)) {
             currentStationIndex = index;
             surveyService = parentFrame.getSurveyService();
-            surveyRepository = parentFrame.getSurveyRepository();
             this.parentFrame = parentFrame;
-//            surveyStation = surveyRepository.findById(index);
-//            SetCoordinates actionSetStation = new SetCoordinates("StationName");
-//            SetCoordinates actionSetOr = new SetCoordinates("OrName");
-
-//            if (this.parentFrame.hasCatalog()) {
-//                actionSetStation.setEnabled(true);
-//                actionSetOr.setEnabled(true);
-//            }
             surveyEditorActionListener = new SurveyEditorActionListener(this);
             ImageIcon imageDeleteRow = new ImageIcon("images/delete_row.png");
             ImageIcon imageInsertRowBefore = new ImageIcon("images/insert_row.png");
@@ -769,24 +758,25 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 //region btnChangeDistance
 
             btnChangeDistance = new JButton(new ImageIcon("images/rearrange.png"));
+            btnChangeDistance.setActionCommand("btnChangeDistance");
             btnChangeDistance.setToolTipText(this.parentFrame.getTitles().get("TAHbtnAddDistanceTT"));
-            btnChangeDistance.addActionListener(e -> {
-                changeDistance();
-            });
+            btnChangeDistance.addActionListener(surveyEditorActionListener);
 //endregion
 
 //region btnChangeDirection
 
             btnChangeDirection = new JButton(new ImageIcon("images/change_direction.png"));
+            btnChangeDirection.setActionCommand("btnChangeDirection");
             btnChangeDirection.setToolTipText(this.parentFrame.getTitles().get("TAHbtnChangeDirectionTT"));
-            btnChangeDirection.addActionListener(e -> changeDirection());
+            btnChangeDirection.addActionListener(surveyEditorActionListener);
 //endregion
 
 //region btnChangeTiltAngle
 
             btnChangeTilt = new JButton(new ImageIcon("images/change_tilt.png"));
+            btnChangeTilt.setActionCommand("btnChangeTilt");
             btnChangeTilt.setToolTipText(this.parentFrame.getTitles().get("TAHbtnChangeTiltAngleTT"));
-            btnChangeTilt.addActionListener(e -> changeTilt());
+            btnChangeTilt.addActionListener(surveyEditorActionListener);
 //endregion
 
 //region tbPickets
@@ -928,11 +918,11 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
         if (scpStations != null) {
             pnlStations.remove(scpStations);
         }
-        String [] stations = new String[surveyRepository.sizeStations()];
-        for (int i = 0; i < surveyRepository.sizeStations(); i++) {
-            stations [i] = surveyRepository.findById(i).getName();
+        String [] stations = new String[surveyService.sizeRepository()];
+        for (int i = 0; i < surveyService.sizeRepository(); i++) {
+            stations [i] = surveyService.findStationById(i).getName();
         }
-        lstStations = new JList<String>(stations);
+        lstStations = new JList<>(stations);
         lstStations.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         lstStations.setSelectedIndex(index);
         lstStations.addListSelectionListener(e -> {
@@ -948,7 +938,6 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
             controlOff();
         }
         lstStations.requestFocusInWindow();
-//        reloadStationPickets(currentStationIndex);
         revalidate();
     }
 
@@ -999,7 +988,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
     }
 
     /**
-     * Sets
+     * Sets selRow
      */
     @Override
     public void setSelRow(int index) {
@@ -1010,101 +999,6 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
     public int getSelColumn() {
         return selColumn;
     }
-
-    /**
-     * Change Distance in the tblPickets
-     */
-    private void changeDistance() {
-        new ShowChangeDistance(parentFrame);
-        if (parentFrame.getSettings().isChanged()) {
-            String str;
-            double line = Double.parseDouble((String) tmodelPickets.getValueAt(selRow, 1));
-            double tilt = new DataHandler((String) tmodelPickets.getValueAt(selRow, 3)).dmsToRad();
-            double offset = Double.parseDouble(parentFrame.getSettings().getOffsetDistance());
-            switch (parentFrame.getSettings().getOffsetDistanceType()) {
-                case 0 -> {
-                    str = new DataHandler(line + offset / Math.cos(tilt)).format(3).getStr();
-                    tmodelPickets.setValueAt(str, selRow, 1);
-                }
-                case 1 -> {
-                    str = new DataHandler(line + offset).format(3).getStr();
-                    tmodelPickets.setValueAt(str, selRow, 1);
-                }
-            }
-            tblPickets.getSelectionModel().setSelectionInterval(selRow, selRow);
-            tblPickets.getColumnModel().getSelectionModel().setSelectionInterval(selColumn, selColumn);
-//            tblPickets.requestFocusInWindow();
-
-        }
-        tblPickets.requestFocusInWindow();
-    }
-
-    /**
-     * Changes Direction in the tblPickets
-     */
-    private void changeDirection() {
-        new ShowChangeAngle(parentFrame,parentFrame.getTitles().get("SCAtitleChangeDirection"));
-        if (parentFrame.getSettings().isChanged()) {
-            switch (parentFrame.getSettings().getOffsetDirectionType()) {
-                case 0 -> {
-                    if (selRow < tmodelPickets.getRowCount() - 1) {
-                        tmodelPickets.setValueAt(tmodelPickets.getValueAt(selRow + 1, 2), selRow, 2);
-                    }
-                }
-                case 1 -> {
-                    double angle = new DataHandler((String) tmodelPickets.getValueAt(selRow, 2)).dmsToDeg();
-                    double offset = new DataHandler(parentFrame.getSettings().getOffsetDirection()).dmsToDeg();
-                    angle += offset;
-                    while (angle < 0) {
-                        angle += 360;
-                    }
-                    while (angle > 360) {
-                        angle -= 360;
-                    }
-                    tmodelPickets.setValueAt(new DataHandler().degToDms(angle).getStr(), selRow, 2);
-                }
-            }
-        }
-
-
-        tblPickets.getSelectionModel().setSelectionInterval(selRow, selRow);
-        tblPickets.getColumnModel().getSelectionModel().setSelectionInterval(selColumn, selColumn);
-        tblPickets.requestFocusInWindow();
-   }
-
-    /**
-     * Changes Direction in the tblPickets
-     */
-    private void changeTilt() {
-        new ShowChangeAngle(parentFrame, parentFrame.getTitles().get("SCAtitleChangeTiltAngle"));
-        if (parentFrame.getSettings().isChanged()) {
-            double line = Double.parseDouble((String) tmodelPickets.getValueAt(selRow, 1));
-            double tilt = new DataHandler((String) tmodelPickets.getValueAt(selRow, 3)).dmsToRad();
-            switch (parentFrame.getSettings().getOffsetTiltType()) {
-                case 0 -> {
-                    if (selRow < tmodelPickets.getRowCount() - 1) {
-                        double tiltNext = new DataHandler((String) tmodelPickets.getValueAt(selRow + 1, 3)).dmsToRad();
-                        line = line * Math.cos(tilt) / Math.cos(tiltNext);
-                        tmodelPickets.setValueAt(new DataHandler(line).format(3).getStr(), selRow, 1);
-                        tmodelPickets.setValueAt(tmodelPickets.getValueAt(selRow + 1, 3), selRow, 3);
-                        tmodelPickets.setValueAt("0.000", selRow,4);
-                    }
-
-                }
-                case 1 -> {
-                    double angle = new DataHandler((String) tmodelPickets.getValueAt(selRow, 3)).dmsToDeg();
-                    double offset = new DataHandler(parentFrame.getSettings().getOffsetTiltAngle()).dmsToDeg();
-                    line = line * Math.cos(tilt) / Math.cos(new DataHandler().degToDms(angle + offset).dmsToRad());
-                    tmodelPickets.setValueAt(new DataHandler(line).format(3).getStr(), selRow, 1);
-                    tmodelPickets.setValueAt(new DataHandler().degToDms(angle + offset).getStr(), selRow, 3);
-                }
-            }
-        }
-        tblPickets.getSelectionModel().setSelectionInterval(selRow, selRow);
-        tblPickets.getColumnModel().getSelectionModel().setSelectionInterval(selColumn, selColumn);
-        tblPickets.requestFocusInWindow();
-    }
-
 
     /**
      * set Focus lstStation
@@ -1133,29 +1027,6 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
     public Vector<Component> getOrder() {
         return this.order;
     }
-
-
-    /**
-     * This action set points coordinates from Catalog
-     */
-//    public class SetCoordinates extends AbstractAction{
-//
-//        private final String name;
-//
-//        public SetCoordinates(String name) {
-//            super();
-//            this.name = name;
-//            setEnabled(parentFrame.hasCatalog());
-//        }
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//            if (parentFrame.hasCatalog()) {
-//                new ShowCatalog(parentFrame);
-//                surveyStation = surveyRepository.findById(currentStationIndex);
-//                updateStation(surveyStation);
-//            }
-//        }
-//    }
 
     public void updateStation(SurveyStation surveyStation) {
         tfStationName.setText(surveyStation.getName());
@@ -1199,12 +1070,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
         tblPickets.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         ListSelectionModel selModel = tblPickets.getSelectionModel();
-        selModel.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                selRow = tblPickets.getSelectedRow();
-            }
-        });
+        selModel.addListSelectionListener(e -> selRow = tblPickets.getSelectedRow());
         tblPickets.getColumnModel().getSelectionModel().addListSelectionListener(e -> {
             selColumn = tblPickets.getSelectedColumn();
         });
@@ -1221,11 +1087,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
         tblPickets.getSelectionModel().setSelectionInterval(selRow, selRow);
         tblPickets.getColumnModel().getSelectionModel().setSelectionInterval(selColumn, selColumn);
         tblPickets.requestFocusInWindow();
-
         scpPickets = new JScrollPane(tblPickets);
         pnlPickets.add(scpPickets, BorderLayout.CENTER);
-
-
     }
-
 }

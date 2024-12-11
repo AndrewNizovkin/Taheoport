@@ -1,11 +1,10 @@
 package taheoport.dispatcher;
 
-import taheoport.gui.ShowCatalog;
-import taheoport.gui.SurveyEditorRenderer;
-import taheoport.gui.TmodelPickets;
+import taheoport.gui.*;
 import taheoport.model.CatalogPoint;
 import taheoport.model.SurveyStation;
 import taheoport.service.CatalogService;
+import taheoport.service.DataHandler;
 import taheoport.service.SurveyService;
 
 import javax.swing.*;
@@ -16,6 +15,7 @@ public class SurveyEditorActionListener implements ActionListener {
     private final SurveyEditorRenderer renderer;
     private final CatalogService catalogService;
     private final SurveyService surveyService;
+    private final MainWin parentFrame;
 
     /**
      * Constructor
@@ -23,6 +23,7 @@ public class SurveyEditorActionListener implements ActionListener {
      */
     public SurveyEditorActionListener(SurveyEditorRenderer surveyEditorRenderer) {
         renderer = surveyEditorRenderer;
+        parentFrame = renderer.getParentFrame();
         catalogService = renderer.getParentFrame().getCatalogService();
         surveyService = renderer.getParentFrame().getSurveyService();
     }
@@ -47,10 +48,10 @@ public class SurveyEditorActionListener implements ActionListener {
             case "btnDeleteRow" -> removePicket();
             case "btnInsertRowBefore" -> insertPicketBeforeCurrentPosition();
             case "btnInsertRowAfter" -> insertPicketAfterCurrentPosition();
-
+            case "btnChangeDistance" -> changeDistance();
+            case "btnChangeDirection" -> changeDirection();
+            case "btnChangeTilt" -> changeTilt();
         }
-
-
     }
 
     /**
@@ -58,7 +59,7 @@ public class SurveyEditorActionListener implements ActionListener {
      */
     private void setStationFromCatalog() {
         catalogService.setChoice(-1);
-        new ShowCatalog(renderer.getParentFrame());
+        new ShowCatalog(parentFrame);
         if (catalogService.getChoice() >=0) {
             SurveyStation surveyStation = surveyService.findStationById(renderer.getCurrentStationIndex());
             CatalogPoint catalogPoint = catalogService.findById(catalogService.getChoice());
@@ -75,7 +76,7 @@ public class SurveyEditorActionListener implements ActionListener {
      */
     private void setOrFromCatalog() {
         catalogService.setChoice(-1);
-        new ShowCatalog(renderer.getParentFrame());
+        new ShowCatalog(parentFrame);
         if (catalogService.getChoice() >=0) {
             SurveyStation surveyStation = surveyService.findStationById(renderer.getCurrentStationIndex());
             CatalogPoint catalogPoint = catalogService.findById(catalogService.getChoice());
@@ -164,6 +165,98 @@ public class SurveyEditorActionListener implements ActionListener {
         tblPickets.getSelectionModel().setSelectionInterval(renderer.getSelRow(), renderer.getSelRow());
         tblPickets.getColumnModel().getSelectionModel().setSelectionInterval(renderer.getSelRow(), renderer.getSelColumn());
         tblPickets.requestFocusInWindow();
+    }
+
+    /**
+     * Change Distance in the tblPickets
+     */
+    private void changeDistance() {
+        TmodelPickets tmodelPickets = (TmodelPickets) renderer.getTablePickets().getModel();
+        new ShowChangeDistance(parentFrame);
+        if (parentFrame.getSettings().isChanged()) {
+            String str;
+            double line = Double.parseDouble((String) tmodelPickets.getValueAt(renderer.getSelRow(), 1));
+            double tilt = new DataHandler((String) tmodelPickets.getValueAt(renderer.getSelRow(), 3)).dmsToRad();
+            double offset = Double.parseDouble(parentFrame.getSettings().getOffsetDistance());
+            switch (parentFrame.getSettings().getOffsetDistanceType()) {
+                case 0 -> {
+                    str = new DataHandler(line + offset / Math.cos(tilt)).format(3).getStr();
+                    tmodelPickets.setValueAt(str, renderer.getSelRow(), 1);
+                }
+                case 1 -> {
+                    str = new DataHandler(line + offset).format(3).getStr();
+                    tmodelPickets.setValueAt(str, renderer.getSelRow(), 1);
+                }
+            }
+        }
+        setPicketsSelectionInterval();
+    }
+
+    /**
+     * Changes Direction in the tblPickets
+     */
+    private void changeDirection() {
+        TmodelPickets tmodelPickets = (TmodelPickets) renderer.getTablePickets().getModel();
+        new ShowChangeAngle(parentFrame,parentFrame.getTitles().get("SCAtitleChangeDirection"));
+        if (parentFrame.getSettings().isChanged()) {
+            switch (parentFrame.getSettings().getOffsetDirectionType()) {
+                case 0 -> {
+                    if (renderer.getSelRow() < tmodelPickets.getRowCount() - 1) {
+                        tmodelPickets.setValueAt(tmodelPickets.getValueAt(
+                                renderer.getSelRow() + 1,
+                                2),
+                                renderer.getSelRow(),
+                                2);
+                    }
+                }
+                case 1 -> {
+                    double angle = new DataHandler((String) tmodelPickets.getValueAt(renderer.getSelRow(), 2)).dmsToDeg();
+                    double offset = new DataHandler(parentFrame.getSettings().getOffsetDirection()).dmsToDeg();
+                    angle += offset;
+                    while (angle < 0) {
+                        angle += 360;
+                    }
+                    while (angle > 360) {
+                        angle -= 360;
+                    }
+                    tmodelPickets.setValueAt(new DataHandler().degToDms(angle).getStr(), renderer.getSelRow(), 2);
+                }
+            }
+        }
+        setPicketsSelectionInterval();
+    }
+
+    /**
+     * Changes Direction in the tblPickets
+     */
+    private void changeTilt() {
+        TmodelPickets tmodelPickets = (TmodelPickets) renderer.getTablePickets().getModel();
+        int selRow = renderer.getSelRow();
+        new ShowChangeAngle(parentFrame, parentFrame.getTitles().get("SCAtitleChangeTiltAngle"));
+        if (parentFrame.getSettings().isChanged()) {
+            double line = Double.parseDouble((String) tmodelPickets.getValueAt(selRow, 1));
+            double tilt = new DataHandler((String) tmodelPickets.getValueAt(selRow, 3)).dmsToRad();
+            switch (parentFrame.getSettings().getOffsetTiltType()) {
+                case 0 -> {
+                    if (selRow < tmodelPickets.getRowCount() - 1) {
+                        double tiltNext = new DataHandler((String) tmodelPickets.getValueAt(selRow + 1, 3)).dmsToRad();
+                        line = line * Math.cos(tilt) / Math.cos(tiltNext);
+                        tmodelPickets.setValueAt(new DataHandler(line).format(3).getStr(), selRow, 1);
+                        tmodelPickets.setValueAt(tmodelPickets.getValueAt(selRow + 1, 3), selRow, 3);
+                        tmodelPickets.setValueAt("0.000", selRow,4);
+                    }
+
+                }
+                case 1 -> {
+                    double angle = new DataHandler((String) tmodelPickets.getValueAt(selRow, 3)).dmsToDeg();
+                    double offset = new DataHandler(parentFrame.getSettings().getOffsetTiltAngle()).dmsToDeg();
+                    line = line * Math.cos(tilt) / Math.cos(new DataHandler().degToDms(angle + offset).dmsToRad());
+                    tmodelPickets.setValueAt(new DataHandler(line).format(3).getStr(), selRow, 1);
+                    tmodelPickets.setValueAt(new DataHandler().degToDms(angle + offset).getStr(), selRow, 3);
+                }
+            }
+        }
+        setPicketsSelectionInterval();
     }
 
 }
