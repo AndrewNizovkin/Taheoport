@@ -105,5 +105,44 @@ public interface SurveyService {
      * @return
      */
     SurveyStation findStationById(int id);
+
+    /**
+     * Checks repository is empty
+     * @return result of check
+     */
+    boolean isEmptyRepository();
+
+    /**
+     * Gets repository sizi
+     * @return int
+     */
+    int sizeRepository();
+
+    /**
+     * Removes stations from repository by id
+     * @param id int
+     */
+    void removeStation(int id);
+
+    /**
+     * Inserts station to repository by id
+     * @param id int id
+     * @return SurveyStation
+     */
+    SurveyStation insertStation(int id);
+
+    /**
+     * Inserts picket by id to station by id
+     * @param stationId int station id
+     * @param picketId int picket id
+     */
+    void insertPicket(int stationId, int picketId);
+
+    /**
+     * Removes picket by id from station by id
+     * @param stationId int station index
+     * @param picketId int picket index
+     */
+    void removePicket(int stationId, int picketId);
 }
 

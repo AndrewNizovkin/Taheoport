@@ -383,4 +383,67 @@ public class SurveyServiceDefault implements SurveyService {
     public SurveyStation findStationById(int id) {
         return surveyRepository.findById(id);
     }
+
+    /**
+     * Checks repository is empty
+     *
+     * @return result of check
+     */
+    @Override
+    public boolean isEmptyRepository() {
+        return surveyRepository.sizeStations() > 0;
+    }
+
+    /**
+     * Gets repository sizi
+     *
+     * @return int
+     */
+    @Override
+    public int sizeRepository() {
+        return surveyRepository.sizeStations();
+    }
+
+    /**
+     * Removes stations from repository by id
+     *
+     * @param id int
+     */
+    @Override
+    public void removeStation(int id) {
+        surveyRepository.removeStation(id);
+    }
+
+    /**
+     * Inserts station to repository by id
+     *
+     * @param id int id
+     * @return SurveyStation
+     */
+    @Override
+    public SurveyStation insertStation(int id) {
+        return surveyRepository.insertStation(id);
+    }
+
+    /**
+     * Inserts picket by id to station by id
+     *
+     * @param stationId int station id
+     * @param picketId  int picket id
+     */
+    @Override
+    public void insertPicket(int stationId, int picketId) {
+        surveyRepository.findById(stationId).insertPicket(picketId);
+    }
+
+    /**
+     * Removes picket by id from station by id
+     *
+     * @param stationId int station index
+     * @param picketId  int picket index
+     */
+    @Override
+    public void removePicket(int stationId, int picketId) {
+        surveyRepository.findById(stationId).removePicket(picketId);
+    }
 }

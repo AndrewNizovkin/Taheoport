@@ -3,6 +3,7 @@ import taheoport.dispatcher.SurveyEditorActionListener;
 import taheoport.repository.SurveyRepository;
 import taheoport.service.DataHandler;
 import taheoport.model.SurveyStation;
+import taheoport.service.SurveyService;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -46,7 +47,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
     private JScrollPane scpPickets;
     private JScrollPane scpStations;
     private SurveyRepository surveyRepository;
-    private SurveyStation surveyStation;
+//    private SurveyStation surveyStation;
     private JTextField tfStationName,
             tfStationX,
             tfStationY,
@@ -57,7 +58,8 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
             tfOrY;
     private JTable tblPickets;
     private TmodelPickets tmodelPickets;
-    private ActionListener actionListener;
+    private ActionListener surveyEditorActionListener;
+    private SurveyService surveyService;
 
     /**
      * Constructor
@@ -68,17 +70,18 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
         super();
         if (!(parentFrame == null)) {
             currentStationIndex = index;
+            surveyService = parentFrame.getSurveyService();
             surveyRepository = parentFrame.getSurveyRepository();
             this.parentFrame = parentFrame;
-            surveyStation = surveyRepository.findById(index);
-            SetCoordinates actionSetStation = new SetCoordinates("StationName");
-            SetCoordinates actionSetOr = new SetCoordinates("OrName");
+//            surveyStation = surveyRepository.findById(index);
+//            SetCoordinates actionSetStation = new SetCoordinates("StationName");
+//            SetCoordinates actionSetOr = new SetCoordinates("OrName");
 
-            if (this.parentFrame.hasCatalog()) {
-                actionSetStation.setEnabled(true);
-                actionSetOr.setEnabled(true);
-            }
-            actionListener = new SurveyEditorActionListener(this);
+//            if (this.parentFrame.hasCatalog()) {
+//                actionSetStation.setEnabled(true);
+//                actionSetOr.setEnabled(true);
+//            }
+            surveyEditorActionListener = new SurveyEditorActionListener(this);
             ImageIcon imageDeleteRow = new ImageIcon("images/delete_row.png");
             ImageIcon imageInsertRowBefore = new ImageIcon("images/insert_row.png");
             ImageIcon imageInsertRowAfter = new ImageIcon("images/insert_row_after.png");
@@ -110,7 +113,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
             btnStationName = new JButton();
             btnStationName.setActionCommand("btnStationName");
-            btnStationName.addActionListener(actionListener);
+            btnStationName.addActionListener(surveyEditorActionListener);
             btnStationName.setBorder(BorderFactory.createEtchedBorder());
             btnStationName.setText(this.parentFrame.getTitles().get("TAHbtnStationName"));
             btnStationName.setToolTipText(this.parentFrame.getTitles().get("TAHbtnStationNameTT"));
@@ -122,7 +125,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 //region tfStationName
 
             tfStationName = new JTextField(15);
-            tfStationName.setText(surveyStation.getName());
+            tfStationName.setText(surveyService.findStationById(currentStationIndex).getName());
             tfStationName.addFocusListener(new FocusListener() {
                 @Override
                 public void focusGained(FocusEvent e) {
@@ -134,10 +137,10 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
                     if (tfStationName.getText().isEmpty()) {
                         tfStationName.setText("noname");
-                        surveyStation.setName("noname");
+                        surveyService.findStationById(currentStationIndex).setName("noname");
                         reloadStations(lstStations.getSelectedIndex());
                     } else {
-                        surveyStation.setName(tfStationName.getText());
+                        surveyService.findStationById(currentStationIndex).setName(tfStationName.getText());
                         reloadStations(lstStations.getSelectedIndex());
                     }
                 }
@@ -178,7 +181,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
 //region tfStationX
 
-            tfStationX = new JTextField(surveyStation.getX(), 15);
+            tfStationX = new JTextField(surveyService.findStationById(currentStationIndex).getX(), 15);
             tfStationX.setBorder(BorderFactory.createEtchedBorder());
             tfStationX.addFocusListener(new FocusListener() {
                 @Override
@@ -190,9 +193,9 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
                 public void focusLost(FocusEvent e) {
                     if (tfStationX.getText().isEmpty() | tfStationX.getText().equals(".") | tfStationX.getText().equals(",")) {
                         tfStationX.setText("0.000");
-                        surveyStation.setX("0.000");
+                        surveyService.findStationById(currentStationIndex).setX("0.000");
                     } else {
-                        surveyStation.setX(new DataHandler(tfStationX.getText()).commaToPoint().format(3).getStr());
+                        surveyService.findStationById(currentStationIndex).setX(new DataHandler(tfStationX.getText()).commaToPoint().format(3).getStr());
                     }
 
                 }
@@ -247,7 +250,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
 //region tfStationY
 
-            tfStationY = new JTextField(surveyStation.getY(), 15);
+            tfStationY = new JTextField(surveyService.findStationById(currentStationIndex).getY(), 15);
             tfStationY.setBorder(BorderFactory.createEtchedBorder());
             tfStationY.addFocusListener(new FocusListener() {
                 @Override
@@ -259,9 +262,9 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
                 public void focusLost(FocusEvent e) {
                     if (tfStationY.getText().isEmpty() | tfStationY.getText().equals(".") | tfStationY.getText().equals(",")) {
                         tfStationY.setText("0.000");
-                        surveyStation.setY("0.000");
+                        surveyService.findStationById(currentStationIndex).setY("0.000");
                     } else {
-                        surveyStation.setY(new DataHandler(tfStationY.getText()).commaToPoint().format(3).getStr());
+                        surveyService.findStationById(currentStationIndex).setY(new DataHandler(tfStationY.getText()).commaToPoint().format(3).getStr());
                     }
                 }
             });
@@ -309,7 +312,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
 //region tfStationZ
 
-            tfStationZ = new JTextField(surveyStation.getZ(), 15);
+            tfStationZ = new JTextField(surveyService.findStationById(currentStationIndex).getZ(), 15);
             tfStationZ.setBorder(BorderFactory.createEtchedBorder());
             tfStationZ.addFocusListener(new FocusListener() {
                 @Override
@@ -321,9 +324,9 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
                 public void focusLost(FocusEvent e) {
                     if (tfStationZ.getText().isEmpty() | tfStationZ.getText().equals(".") | tfStationZ.getText().equals(",")) {
                         tfStationZ.setText("0.000");
-                        surveyStation.setZ("0.000");
+                        surveyService.findStationById(currentStationIndex).setZ("0.000");
                     } else {
-                        surveyStation.setZ(new DataHandler(tfStationZ.getText()).commaToPoint().format(3).getStr());
+                        surveyService.findStationById(currentStationIndex).setZ(new DataHandler(tfStationZ.getText()).commaToPoint().format(3).getStr());
                     }
                 }
             });
@@ -369,7 +372,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
 //region tfStationI
 
-            tfStationI = new JTextField(surveyStation.getVi(), 15);
+            tfStationI = new JTextField(surveyService.findStationById(currentStationIndex).getVi(), 15);
             tfStationI.setBorder(BorderFactory.createEtchedBorder());
             tfStationI.addFocusListener(new FocusListener() {
                 @Override
@@ -381,9 +384,9 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
                 public void focusLost(FocusEvent e) {
                     if (tfStationI.getText().isEmpty() | tfStationI.getText().equals(".") | tfStationI.getText().equals(",")) {
                         tfStationI.setText("0.000");
-                        surveyStation.setVi("0.000");
+                        surveyService.findStationById(currentStationIndex).setVi("0.000");
                     } else {
-                        surveyStation.setVi(new DataHandler(tfStationI.getText()).commaToPoint().format(3).getStr());
+                        surveyService.findStationById(currentStationIndex).setVi(new DataHandler(tfStationI.getText()).commaToPoint().format(3).getStr());
                     }
                 }
             });
@@ -431,7 +434,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
             btnOrName = new JButton();
             btnOrName.setActionCommand("btnOrName");
-            btnOrName.addActionListener(actionListener);
+            btnOrName.addActionListener(surveyEditorActionListener);
             btnOrName.setBorder(BorderFactory.createEtchedBorder());
             btnOrName.setText(this.parentFrame.getTitles().get("TAHbtnOrName"));
             btnOrName.setToolTipText(this.parentFrame.getTitles().get("TAHbtnOrNameTT"));
@@ -450,7 +453,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
 //region tfOrName
 
-            tfOrName = new JTextField(surveyStation.getNameOr(), 15);
+            tfOrName = new JTextField(surveyService.findStationById(currentStationIndex).getNameOr(), 15);
             tfOrName.setBorder(BorderFactory.createEtchedBorder());
             tfOrName.addFocusListener(new FocusListener() {
                 @Override
@@ -462,9 +465,9 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
                 public void focusLost(FocusEvent e) {
                     if (tfOrName.getText().isEmpty()) {
                         tfOrName.setText("noname");
-                        surveyStation.setNameOr("noname");
+                        surveyService.findStationById(currentStationIndex).setNameOr("noname");
                     } else {
-                        surveyStation.setNameOr(tfOrName.getText());
+                        surveyService.findStationById(currentStationIndex).setNameOr(tfOrName.getText());
                     }
                 }
             });
@@ -521,7 +524,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
 //region tfOrX
 
-            tfOrX = new JTextField(surveyStation.getxOr());
+            tfOrX = new JTextField(surveyService.findStationById(currentStationIndex).getxOr());
             tfOrX.setBorder(BorderFactory.createEtchedBorder());
             tfOrX.addFocusListener(new FocusListener() {
                 @Override
@@ -533,9 +536,9 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
                 public void focusLost(FocusEvent e) {
                     if (tfOrX.getText().isEmpty() | tfOrX.getText().equals(".") | tfOrX.getText().equals(",")) {
                         tfOrX.setText("0.000");
-                        surveyStation.setxOr("0.000");
+                        surveyService.findStationById(currentStationIndex).setxOr("0.000");
                     } else {
-                        surveyStation.setxOr(new DataHandler(tfOrX.getText()).commaToPoint().format(3).getStr());
+                        surveyService.findStationById(currentStationIndex).setxOr(new DataHandler(tfOrX.getText()).commaToPoint().format(3).getStr());
                     }
 
                 }
@@ -598,7 +601,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
 //region tfOrY
 
-            tfOrY = new JTextField(surveyStation.getY());
+            tfOrY = new JTextField(surveyService.findStationById(currentStationIndex).getY());
             tfOrY.setBorder(BorderFactory.createEtchedBorder());
             tfOrY.addFocusListener(new FocusListener() {
                 @Override
@@ -610,9 +613,9 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
                 public void focusLost(FocusEvent e) {
                     if (tfOrY.getText().isEmpty() | tfOrY.getText().equals(".") | tfOrY.getText().equals(",")) {
                         tfOrY.setText("0.000");
-                        surveyStation.setyOr("0.000");
+                        surveyService.findStationById(currentStationIndex).setyOr("0.000");
                     } else {
-                        surveyStation.setyOr(new DataHandler(tfOrY.getText()).commaToPoint().format(3).getStr());
+                        surveyService.findStationById(currentStationIndex).setyOr(new DataHandler(tfOrY.getText()).commaToPoint().format(3).getStr());
                     }
                 }
             });
@@ -645,9 +648,9 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
             tfOrY.addActionListener(e -> {
                 if (tfOrY.getText().isEmpty() | tfOrY.getText().equals(".")) {
                     tfOrY.setText("0.000");
-                    surveyStation.setyOr("0.000");
+                    surveyService.findStationById(currentStationIndex).setyOr("0.000");
                 } else {
-                    surveyStation.setyOr(new DataHandler(tfOrY.getText()).format(3).getStr());
+                    surveyService.findStationById(currentStationIndex).setyOr(new DataHandler(tfOrY.getText()).format(3).getStr());
                 }
             });
 
@@ -669,43 +672,25 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 //region btnDeleteStation
 
                 btnDeleteStation = new JButton(imageDeleteRow);
+                btnDeleteStation.setActionCommand("btnDeleteStation");
                 btnDeleteStation.setToolTipText(this.parentFrame.getTitles().get("TAHbtnDeleteStationTT"));
-                btnDeleteStation.addActionListener(e -> {
-                    if (surveyRepository.sizeStations() > 1) {
-                        surveyRepository.removeStation(this.currentStationIndex);
-                        if (this.currentStationIndex == surveyRepository.sizeStations()) {
-                            this.currentStationIndex--;
-                        }
-                        reloadStations(this.currentStationIndex);
-                        reloadStationPickets(this.currentStationIndex);
-                        lstStations.requestFocusInWindow();
-                    }
-                });
+                btnDeleteStation.addActionListener(surveyEditorActionListener);
 //endregion
 
 //region btnInsertStationBefore
 
                 btnInsertStationBefore = new JButton(imageInsertRowBefore);
+                btnInsertStationBefore.setActionCommand("btnInsertStationBefore");
                 btnInsertStationBefore.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertStationBeforeTT"));
-                btnInsertStationBefore.addActionListener(e -> {
-                    surveyStation = surveyRepository.insertStation(currentStationIndex);
-                    reloadStations(currentStationIndex);
-                    reloadStationPickets(currentStationIndex);
-                    lstStations.requestFocusInWindow();
-                });
+                btnInsertStationBefore.addActionListener(surveyEditorActionListener);
 //endregion
 
 //region btnInsertStationAfter
 
                 btnInsertStationAfter = new JButton(imageInsertRowAfter);
+                btnInsertStationAfter.setActionCommand("btnInsertStationAfter");
                 btnInsertStationAfter.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertStationAfterTT"));
-                btnInsertStationAfter.addActionListener(e -> {
-                    currentStationIndex++;
-                    surveyStation = surveyRepository.insertStation(currentStationIndex);
-                    reloadStations(currentStationIndex);
-                    reloadStationPickets(currentStationIndex);
-                    lstStations.requestFocusInWindow();
-                });
+                btnInsertStationAfter.addActionListener(surveyEditorActionListener);
 //endregion
 
 //region tbStation
@@ -760,57 +745,25 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 //region btnDeleteRow
 
             btnDeleteRow = new JButton(new ImageIcon("images/delete_row.png"));
+            btnDeleteRow.setActionCommand("btnDeleteRow");
             btnDeleteRow.setToolTipText(this.parentFrame.getTitles().get("TAHbtnDeleteRowTT"));
-            btnDeleteRow.addActionListener(e -> {
-                if (tmodelPickets.getRowCount() > 1) {
-                    TmodelPickets model = (TmodelPickets) tblPickets.getModel();
-                    int k = selRow;
-                    surveyStation.removePicket(selRow);
-                    model.removeRow(selRow);
-                    if (k == surveyStation.sizePickets()) {
-                        k--;
-                    }
-                    selRow = k;
-                    tblPickets.getSelectionModel().setSelectionInterval(selRow, selRow);
-                    tblPickets.getColumnModel().getSelectionModel().setSelectionInterval(selColumn, selColumn);
-                    tblPickets.requestFocusInWindow();
-                }
-            });
+            btnDeleteRow.addActionListener(surveyEditorActionListener);
 //endregion
 
 //region btnInsertRowBefore
 
             btnInsertRowBefore = new JButton(new ImageIcon("images/insert_row.png"));
+            btnInsertRowBefore.setActionCommand("btnInsertRowBefore");
             btnInsertRowBefore.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertRowBeforeTT"));
-            btnInsertRowBefore.addActionListener(e -> {
-                if (selRow >= 0) {
-                    surveyStation.addPicket(selRow);
-                    TmodelPickets model = (TmodelPickets) tblPickets.getModel();
-                    model.addRow(selRow, new String[]{"noname", "0.000", "0.0000", "0.0000", "0.000"});
-                    selRow --;
-                    tblPickets.getSelectionModel().setSelectionInterval(selRow, selRow);
-                    tblPickets.getColumnModel().getSelectionModel().setSelectionInterval(selColumn, selColumn);
-                    tblPickets.requestFocusInWindow();
-                }
-            });
+            btnInsertRowBefore.addActionListener(surveyEditorActionListener);
 //endregion
 
 //region btnInsertRowAfter
 
             btnInsertRowAfter = new JButton(new ImageIcon("images/insert_row_after.png"));
+            btnInsertRowAfter.setActionCommand("btnInsertRowAfter");
             btnInsertRowAfter.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertRowAfterTT"));
-
-            btnInsertRowAfter.addActionListener(e -> {
-                if (selRow >= 0) {
-                    selRow++;
-                    surveyStation.addPicket(selRow);
-                    TmodelPickets model = (TmodelPickets) tblPickets.getModel();
-                    model.addRow(selRow, new String[]{"noname", "0.000", "0.0000", "0.0000", "0.000"});
-                    tblPickets.getSelectionModel().setSelectionInterval(selRow, selRow);
-                    tblPickets.getColumnModel().getSelectionModel().setSelectionInterval(selColumn, selColumn);
-                    tblPickets.requestFocusInWindow();
-                }
-            });
+            btnInsertRowAfter.addActionListener(surveyEditorActionListener);
 //endregion
 
 //region btnChangeDistance
@@ -983,12 +936,10 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
         lstStations.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         lstStations.setSelectedIndex(index);
         lstStations.addListSelectionListener(e -> {
-            this.currentStationIndex = lstStations.getSelectedIndex();
+            currentStationIndex = lstStations.getSelectedIndex();
             reloadStationPickets(lstStations.getSelectedIndex());
         });
         scpStations = new JScrollPane(lstStations);
-
-
         pnlStations.add(scpStations,BorderLayout.CENTER);
 
         if (parentFrame.hasCatalog()) {
@@ -996,6 +947,8 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
         } else {
             controlOff();
         }
+        lstStations.requestFocusInWindow();
+//        reloadStationPickets(currentStationIndex);
         revalidate();
     }
 
@@ -1004,7 +957,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
      * @param index int index of current SurveyStation of SurveyProject
      */
     public void reloadStationPickets(int index) {
-        surveyStation = surveyRepository.findById(index);
+        SurveyStation surveyStation = surveyService.findStationById(index);
         tfStationName.setText(surveyStation.getName());
         tfStationX.setText(surveyStation.getX());
         tfStationY.setText(surveyStation.getY());
@@ -1185,24 +1138,24 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
     /**
      * This action set points coordinates from Catalog
      */
-    public class SetCoordinates extends AbstractAction{
-
-        private final String name;
-
-        public SetCoordinates(String name) {
-            super();
-            this.name = name;
-            setEnabled(parentFrame.hasCatalog());
-        }
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (parentFrame.hasCatalog()) {
-                new ShowCatalog(parentFrame);
-                surveyStation = surveyRepository.findById(currentStationIndex);
-                updateStation(surveyStation);
-            }
-        }
-    }
+//    public class SetCoordinates extends AbstractAction{
+//
+//        private final String name;
+//
+//        public SetCoordinates(String name) {
+//            super();
+//            this.name = name;
+//            setEnabled(parentFrame.hasCatalog());
+//        }
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//            if (parentFrame.hasCatalog()) {
+//                new ShowCatalog(parentFrame);
+//                surveyStation = surveyRepository.findById(currentStationIndex);
+//                updateStation(surveyStation);
+//            }
+//        }
+//    }
 
     public void updateStation(SurveyStation surveyStation) {
         tfStationName.setText(surveyStation.getName());
@@ -1221,6 +1174,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
      * Updates tblPickets
      */
     private void updateTblPickets() {
+        SurveyStation surveyStation = surveyService.findStationById(currentStationIndex);
         if (scpPickets != null) {
             pnlPickets.remove(scpPickets);
         }

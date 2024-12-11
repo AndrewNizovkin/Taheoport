@@ -195,7 +195,7 @@ public class SurveyStation {
      * Append new Empty instance of Picket to index position of this.pickets
      * @param index int index
      */
-    public void addPicket(int index) {
+    public void insertPicket(int index) {
         pickets.add(index, new Picket("noname", "0.000", "0.000",
                 "0.000", "0.000", "noname"));
     }
