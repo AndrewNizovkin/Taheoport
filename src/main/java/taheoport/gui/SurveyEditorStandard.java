@@ -56,8 +56,8 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
             tfOrY;
     private JTable tblPickets;
     private TmodelPickets tmodelPickets;
-    private ActionListener surveyEditorActionListener;
-    private SurveyService surveyService;
+    private final ActionListener surveyEditorActionListener;
+    private final SurveyService surveyService;
 
     /**
      * Constructor
@@ -66,9 +66,10 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
      */
     public SurveyEditorStandard(MainWin parentFrame, int index) {
         super();
-        if (!(parentFrame == null)) {
+        surveyService = parentFrame.getSurveyService();
+//        if (!(parentFrame == null)) {
             currentStationIndex = index;
-            surveyService = parentFrame.getSurveyService();
+
             this.parentFrame = parentFrame;
             surveyEditorActionListener = new SurveyEditorActionListener(this);
             ImageIcon imageDeleteRow = new ImageIcon("images/delete_row.png");
@@ -822,7 +823,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
             order.add(tfOrY);
             order.add(pnlStations);
 //endregion
-        }
+//        }
     }
 
     /**

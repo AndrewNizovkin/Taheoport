@@ -354,7 +354,7 @@ public class MainWin extends JFrame{
         polygonService.newProject();
         reloadPolygonEditor();
         setTitle("Taheoport: ");
-        polygonEditor.setFocusTable();
+        polygonEditor.setFocusTable(0, 0);
 
         surveyService.newProject();
         reloadSurveyEditor();
@@ -566,7 +566,7 @@ public class MainWin extends JFrame{
         setControlsOn();
         setTitle("Taheoport: " + polygonService.getAbsolutePolPath());
         polygonEditor.setBindings();
-        polygonEditor.setFocusTable();
+        polygonEditor.setFocusTable(0, 0);
         revalidate();
     }
 

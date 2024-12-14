@@ -429,4 +429,65 @@ public class PolygonServiceDefault implements PolygonService {
     public void processSourceData() {
         adjuster.adjustPolygon();
     }
+
+    /**
+     * Сhecks the possibility of inserting before idx position
+     *
+     * @param idx int idx
+     * @return boolean
+     */
+    @Override
+    public boolean isInsertBefore(int idx) {
+        if (!polygonRepository.findById(idx).getStatus()) return true;
+        if (polygonRepository.findById(idx).getStatus() & idx > 0) {
+            return !polygonRepository.findById(idx - 1).getStatus();
+        }
+        return false;
+    }
+
+    /**
+     * Сhecks the possibility of inserting after idx position
+     *
+     * @param idx int idx
+     * @return boolean
+     */
+    @Override
+    public boolean isInsertAfter(int idx) {
+        if (!polygonRepository.findById(idx).getStatus()) return true;
+        if (polygonRepository.findById(idx).getStatus() & idx < parentFrame.getPolygonRepository().getSizePolygonStations() - 1) {
+            return !polygonRepository.findById(idx + 1).getStatus();
+        }
+        return false;
+    }
+
+    /**
+     * Inserts station to repository by index
+     *
+     * @param idx int
+     */
+    @Override
+    public void insertStation(int idx) {
+        polygonRepository.insertStation(idx);
+    }
+
+    /**
+     * Gets polygonStation by id from repository
+     *
+     * @param idx int index
+     * @return polygonStation
+     */
+    @Override
+    public PolygonStation findById(int idx) {
+        return polygonRepository.findById(idx);
+    }
+
+    /**
+     * Gets repository size
+     *
+     * @return int
+     */
+    @Override
+    public int getSizePolygonStations() {
+        return polygonRepository.getSizePolygonStations();
+    }
 }

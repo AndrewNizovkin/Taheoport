@@ -1,5 +1,6 @@
 package taheoport.service;
 
+import taheoport.model.PolygonStation;
 import taheoport.repository.PolygonRepository;
 
 import java.util.List;
@@ -76,4 +77,38 @@ public interface PolygonService {
      * Adjustment the network and determines the coordinates of the defined points llTheoStations
      */
     void processSourceData();
-}
+
+    /**
+     * Сhecks the possibility of inserting before idx position
+     * @param idx int idx
+     * @return boolean
+     */
+    boolean isInsertBefore(int idx);
+
+    /**
+     * Сhecks the possibility of inserting after idx position
+     * @param idx int idx
+     * @return boolean
+     */
+    boolean isInsertAfter(int idx);
+
+    /**
+     * Inserts station to repository by index
+     * @param idx int
+     */
+    void insertStation(int idx);
+
+    /**
+     * Gets polygonStation by id from repository
+     * @param idx int index
+     * @return polygonStation
+     */
+    PolygonStation findById(int idx);
+
+    /**
+     * Gets repository size
+     * @return int
+     */
+    int getSizePolygonStations();
+
+    }

@@ -15,42 +15,34 @@ import java.awt.*;
  */
 public class ShowCatalog extends JDialog {
     private final CatalogService catalogService;
-    private final CatalogRepository catalogRepository;
-//    private final int index;
-    private final MainWin parentFrame;
     private int selRow;
-//    private final String target;
     private final JTable tblPoints;
 
     /**
      * Constructor
-     * @param frame parent MainWin
+     * @param parentFrame parent MainWin
      */
-    public ShowCatalog(MainWin frame) {
-        super( frame,frame.getTitles().get("SCdialogTitle"), true);
-        parentFrame = frame;
+    public ShowCatalog(MainWin parentFrame) {
+        super( parentFrame, parentFrame.getTitles().get("SCdialogTitle"), true);
         catalogService = parentFrame.getCatalogService();
+        catalogService.setChoice(-1);
 
         Toolkit kit = Toolkit.getDefaultToolkit();
         Image im = kit.getImage("images/teo.png");
         this.setIconImage(im);
-
-//        this.target = target;
-//        this.index = index;
-        catalogRepository = parentFrame.getCatalogRepository();
         selRow = -1;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         int w = parentFrame.getWidthMain() / 2;
         int h = parentFrame.getHeightMain() / 2;
-        setBounds(frame.getX() + frame.getWidth() / 2 - w / 2,frame.getY() + frame.getHeight() / 2 - h / 2, w, h);
+        setBounds(parentFrame.getX() + parentFrame.getWidth() / 2 - w / 2,parentFrame.getY() + parentFrame.getHeight() / 2 - h / 2, w, h);
         setLayout(new BorderLayout());
 
 
 
 // tblPoints_______________________________________________________
 
-        tblPoints = new JTable(new TmodelCatalog(catalogRepository));
+        tblPoints = new JTable(new TmodelCatalog(catalogService.getCatalogRepository()));
 
         tblPoints.getTableHeader().setReorderingAllowed(false);
         tblPoints.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -100,42 +92,4 @@ public class ShowCatalog extends JDialog {
         tblPoints.requestFocusInWindow();
         revalidate();
     }
-
-    /**
-     * Gets selected catalog point
-     * @return CatalogPoint
-     */
-    public CatalogPoint getCatalogPoint() {
-        CatalogPoint catalogPoint = null;
-        if (selRow >= 0) {
-            catalogPoint = catalogRepository.findById(selRow);
-        }
-        return catalogPoint;
-    }
-
-//    private void replaceCoordinates() {
-//        if (selRow >= 0) {
-////            Station st = this.sp.getStation(index);
-//            CatalogPoint catalogPoint = this.catalogRepository.findById(selRow);
-//            if (target.equals("StationName")) {
-//                parentFrame.getSurveyRepository().findById(index).setName(catalogPoint.getName());
-//                parentFrame.getSurveyRepository().findById(index).setX(catalogPoint.getX());
-//                parentFrame.getSurveyRepository().findById(index).setY(catalogPoint.getY());
-//                parentFrame.getSurveyRepository().findById(index).setZ(catalogPoint.getZ());
-//            }
-//            if (target.equals("OrName")) {
-//                parentFrame.getSurveyRepository().findById(index).setNameOr(catalogPoint.getName());
-//                parentFrame.getSurveyRepository().findById(index).setxOr(catalogPoint.getX());
-//                parentFrame.getSurveyRepository().findById(index).setyOr(catalogPoint.getY());
-//            }
-//            if (target.equals("TheoStation")) {
-//                parentFrame.getPolygonRepository().findById(index).setName(catalogPoint.getName());
-//                parentFrame.getPolygonRepository().findById(index).setX(catalogPoint.getX());
-//                parentFrame.getPolygonRepository().findById(index).setY(catalogPoint.getY());
-//                parentFrame.getPolygonRepository().findById(index).setZ(catalogPoint.getZ());
-//            }
-//            this.dispose();
-//        }
-
-//    }
 }

@@ -58,7 +58,7 @@ public class SurveyEditorActionListener implements ActionListener {
      * Sets station coordinates from catalog
      */
     private void setStationFromCatalog() {
-        catalogService.setChoice(-1);
+//        catalogService.setChoice(-1);
         new ShowCatalog(parentFrame);
         if (catalogService.getChoice() >=0) {
             SurveyStation surveyStation = surveyService.findStationById(renderer.getCurrentStationIndex());
@@ -75,7 +75,7 @@ public class SurveyEditorActionListener implements ActionListener {
      * Sets orientir coordinates from catalog
      */
     private void setOrFromCatalog() {
-        catalogService.setChoice(-1);
+//        catalogService.setChoice(-1);
         new ShowCatalog(parentFrame);
         if (catalogService.getChoice() >=0) {
             SurveyStation surveyStation = surveyService.findStationById(renderer.getCurrentStationIndex());

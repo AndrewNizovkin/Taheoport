@@ -1,11 +1,15 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.PolygonEditorActionListener;
+import taheoport.model.PolygonStation;
 import taheoport.service.DataHandler;
+import taheoport.service.PolygonService;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +17,7 @@ import java.util.ArrayList;
  * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
-public class PolygonEditorStandart extends JPanel {
+public class PolygonEditorStandart extends JPanel implements PolygonEditorRenderer {
     private final JLabel lblAngleResidue;
     private final JLabel lblFXResidue;
     private final JLabel lblFYResidue;
@@ -26,6 +30,8 @@ public class PolygonEditorStandart extends JPanel {
     private int selRow;
     private JTable tblStations;
     private TmodelPolygonStations tmPolygonStations;
+    private final PolygonService polygonService;
+    private final ActionListener polygonActionListener;
 
     /**
      * Constructor
@@ -34,94 +40,47 @@ public class PolygonEditorStandart extends JPanel {
     public PolygonEditorStandart(MainWin frame) {
         super();
         parentFrame = frame;
+        polygonService = parentFrame.getPolygonService();
+        tmPolygonStations = new TmodelPolygonStations(parentFrame);
+        tblStations = new JTable(tmPolygonStations);
+        polygonActionListener = new PolygonEditorActionListener(this);
         setLayout(new BorderLayout());
 
 //region btnDeleteRow
 
         JButton btnDeleteRow = new JButton(new ImageIcon("images/delete_row.png"));
+        btnDeleteRow.setActionCommand("btnDeleteRow");
         btnDeleteRow.setEnabled(true);
         btnDeleteRow.setToolTipText(parentFrame.getTitles().get("TAHbtnDeleteRowTT"));
-        btnDeleteRow.addActionListener(e -> {
-            if (tmPolygonStations.getRowCount() > 1) {
-                int k = selRow;
-                tmPolygonStations.removeRow(selRow);
-                if (k == parentFrame.getPolygonRepository().getSizePolygonStations()) k--;
-                selRow = k;
-                tblStations.getSelectionModel().setSelectionInterval(selRow, selRow);
-                tblStations.getColumnModel().getSelectionModel().setSelectionInterval(selColumn, selColumn);
-                tblStations.requestFocusInWindow();
-            }
-        });
+        btnDeleteRow.addActionListener(polygonActionListener);
 
         //endregion
 
 //region btnInsertRowBefore
 
         JButton btnInsertRowBefore = new JButton(new ImageIcon("images/insert_row.png"));
+        btnInsertRowBefore.setActionCommand("btnInsertRowBefore");
         btnInsertRowBefore.setEnabled(true);
         btnInsertRowBefore.setToolTipText(parentFrame.getTitles().get("TAHbtnInsertRowBeforeTT"));
-        btnInsertRowBefore.addActionListener(e -> {
-            if (isInsertBefore(selRow)) {
-                parentFrame.getPolygonRepository().insertStation(selRow);
-                tmPolygonStations.addRow(selRow, new Object[]{
-                        "noname",
-                        "0.0000",
-                        "0.000",
-                        "0.000",
-                        "",
-                        "",
-                        "",
-                        false
-
-                });
-                tblStations.getSelectionModel().setSelectionInterval(selRow - 1, selRow - 1);
-                tblStations.getColumnModel().getSelectionModel().setSelectionInterval(selColumn, selColumn);
-                tblStations.requestFocusInWindow();
-            }
-        });
+        btnInsertRowBefore.addActionListener(polygonActionListener);
 //endregion
 
 // region btnInsertRowAfter
 
         JButton btnInsertRowAfter = new JButton(new ImageIcon("images/insert_row_after.png"));
+        btnInsertRowAfter.setActionCommand("btnInsertRowAfter");
         btnInsertRowAfter.setEnabled(true);
         btnInsertRowAfter.setToolTipText(parentFrame.getTitles().get("TAHbtnInsertRowAfterTT"));
-        btnInsertRowAfter.addActionListener(e -> {
-            if (isInsertAfter(selRow)) {
-                selRow++;
-                parentFrame.getPolygonRepository().insertStation(selRow);
-                tmPolygonStations.addRow(selRow, new Object[]{
-                        "noname",
-                        "0.0000",
-                        "0.000",
-                        "0.000",
-                        "",
-                        "",
-                        "",
-                        false
-
-                });
-                tblStations.getSelectionModel().setSelectionInterval(selRow, selRow);
-                tblStations.getColumnModel().getSelectionModel().setSelectionInterval(selColumn, selColumn);
-                tblStations.requestFocusInWindow();
-            }
-        });
+        btnInsertRowAfter.addActionListener(polygonActionListener);
 //endregion
 
 //region btnImportFromCatalog
 
         JButton btnImportFromCatalog = new JButton(new ImageIcon("images/database_export.png"));
+        btnImportFromCatalog.setActionCommand("btnImportFromCatalog");
         btnImportFromCatalog.setEnabled(true);
         btnImportFromCatalog.setToolTipText(parentFrame.getTitles().get("TAHbtnImportFromCatalogTT"));
-        btnImportFromCatalog.addActionListener(e -> {
-            if (parentFrame.getPolygonRepository().findById(selRow).getStatus()) {
-                new ShowCatalog(parentFrame);
-                tmPolygonStations.setValueAt(parentFrame.getPolygonRepository().findById(selRow).getName(), selRow, 0);
-                tmPolygonStations.setValueAt(parentFrame.getPolygonRepository().findById(selRow).getX(), selRow, 4);
-                tmPolygonStations.setValueAt(parentFrame.getPolygonRepository().findById(selRow).getY(), selRow, 5);
-                tmPolygonStations.setValueAt(parentFrame.getPolygonRepository().findById(selRow).getZ(), selRow, 6);
-            }
-        });
+        btnImportFromCatalog.addActionListener(polygonActionListener);
 //endregion
 
 //region tbTheoStations
@@ -157,7 +116,6 @@ public class PolygonEditorStandart extends JPanel {
 //endregion
 
 //region lblAngle
-
         JLabel lblAngle = new JLabel(parentFrame.getTitles().get("THEOlblAngle"), JLabel.RIGHT);
         pnlAdjustment.add(lblAngle);
 //endregion
@@ -259,54 +217,53 @@ public class PolygonEditorStandart extends JPanel {
 //endregion
 
 //region tblTheoStations
-
-        tmPolygonStations = new TmodelPolygonStations();
-        tblStations = new JTable(tmPolygonStations);
+        PolygonStation polygonStation;
         Object[] array;
-        for (int i = 0; i < parentFrame.getPolygonRepository().getSizePolygonStations(); i++) {
+        for (int i = 0; i < polygonService.getSizePolygonStations(); i++) {
+            polygonStation = polygonService.findById(i);
             array = new Object[8];
-            if (parentFrame.getPolygonRepository().findById(i).getName().equals("Not")) {
+            if (polygonStation.getName().equals("Not")) {
                 array[0] = "";
             } else {
-                array[0] = parentFrame.getPolygonRepository().findById(i).getName();
+                array[0] = polygonStation.getName();
             }
-            if (parentFrame.getPolygonRepository().findById(i).getHor().equals("Not")) {
+            if (polygonStation.getHor().equals("Not")) {
                 array[1] = "";
             } else {
-                array[1] = parentFrame.getPolygonRepository().findById(i).getHor();
+                array[1] = polygonStation.getHor();
             }
-            if (parentFrame.getPolygonRepository().findById(i).getLine().equals("Not")) {
+            if (polygonStation.getLine().equals("Not")) {
                 array[2] = "";
             } else {
-                array[2] = parentFrame.getPolygonRepository().findById(i).getLine();
+                array[2] = polygonStation.getLine();
             }
-            if (parentFrame.getPolygonRepository().findById(i).getDZ().equals("Not")) {
+            if (polygonStation.getDZ().equals("Not")) {
                 array[3] = "";
             } else {
-                array[3] = parentFrame.getPolygonRepository().findById(i).getDZ();
+                array[3] = polygonStation.getDZ();
             }
-            if (parentFrame.getPolygonRepository().findById(i).getStatus()) {
-                if (parentFrame.getPolygonRepository().findById(i).getX().equals("Not")) {
+            if (polygonStation.getStatus()) {
+                if (polygonStation.getX().equals("Not")) {
                     array[4] = "";
                 } else {
-                    array[4] = parentFrame.getPolygonRepository().findById(i).getX();
+                    array[4] = polygonStation.getX();
                 }
-                if (parentFrame.getPolygonRepository().findById(i).getY().equals("Not")) {
+                if (polygonStation.getY().equals("Not")) {
                     array[5] = "";
                 } else {
-                    array[5] = parentFrame.getPolygonRepository().findById(i).getY();
+                    array[5] = polygonStation.getY();
                 }
-                if (parentFrame.getPolygonRepository().findById(i).getZ().equals("Not")) {
+                if (polygonStation.getZ().equals("Not")) {
                     array[6] = "";
                 } else {
-                    array[6] = parentFrame.getPolygonRepository().findById(i).getZ();
+                    array[6] = polygonStation.getZ();
                 }
             } else {
                 array[4] = "";
                 array[5] = "";
                 array[6] = "";
             }
-            array[7] = parentFrame.getPolygonRepository().findById(i).getStatus();
+            array[7] = polygonStation.getStatus();
 
             tmPolygonStations.addRow(array);
 
@@ -325,11 +282,11 @@ public class PolygonEditorStandart extends JPanel {
     }
 
     /**
-     * set focus with current selRow and selColumn
+     * set focus on tblStations
      */
-    public void setFocusTable() {
-        selRow = 0;
-        selColumn = 0;
+    public void setFocusTable(int row, int column) {
+        selRow = row;
+        selColumn = column;
         tblStations.getSelectionModel().setSelectionInterval(selRow, selRow);
         tblStations.getColumnModel().getSelectionModel().setSelectionInterval(selColumn, selColumn);
         tblStations.requestFocusInWindow();
@@ -432,286 +389,48 @@ public class PolygonEditorStandart extends JPanel {
     }
 
     /**
-     * Сhecks the possibility of inserting before idx position
-     * @param idx int idx
-     * @return boolean
+     * Gets parentFrame
+     * @return MainWin
      */
-    private Boolean isInsertBefore(int idx) {
-        if (!parentFrame.getPolygonRepository().findById(idx).getStatus()) return true;
-        if (parentFrame.getPolygonRepository().findById(idx).getStatus() & idx > 0) {
-            return !parentFrame.getPolygonRepository().findById(idx - 1).getStatus();
-        }
-        return false;
+    @Override
+    public MainWin getParentFrame() {
+        return parentFrame;
     }
 
     /**
-     * Сhecks the possibility of inserting after idx position
-     * @param idx int idx
-     * @return boolean
+     * Gets polygon stations table
+     * @return JTable
      */
-    private boolean isInsertAfter(int idx) {
-        if (!parentFrame.getPolygonRepository().findById(idx).getStatus()) return true;
-        if (parentFrame.getPolygonRepository().findById(idx).getStatus() & idx < parentFrame.getPolygonRepository().getSizePolygonStations() - 1) {
-            return !parentFrame.getPolygonRepository().findById(idx + 1).getStatus();
-        }
-        return false;
+    @Override
+    public TmodelPolygonStations getModel() {
+        return tmPolygonStations;
     }
 
+    /**
+     * Gets index of selected row in polygon station table
+     * @return int index
+     */
+    @Override
+    public int getSelRow() {
+        return selRow;
+    }
 
     /**
-     * This model of tblPolygonStations
+     * Sets new value to selRow
+     * @param selRow int index
      */
-    private class TmodelPolygonStations extends AbstractTableModel {
-        private final ArrayList <Object []> dataArrayList;
+    @Override
+    public void setSelRow(int selRow) {
+        this.selRow = selRow;
+    }
 
-        public TmodelPolygonStations() {
-            dataArrayList = new ArrayList<>();
-        }
-        /**
-         * Returns the number of rows in the model. A
-         * <code>JTable</code> uses this method to determine how many rows it
-         * should display.  This method should be quick, as it
-         * is called frequently during rendering.
-         *
-         * @return the number of rows in the model
-         * @see #getColumnCount
-         */
-        @Override
-        public int getRowCount() {
-            return dataArrayList.size();
-        }
-
-        /**
-         * Returns the number of columns in the model. A
-         * <code>JTable</code> uses this method to determine how many columns it
-         * should create and display by default.
-         *
-         * @return the number of columns in the model
-         * @see #getRowCount
-         */
-        @Override
-        public int getColumnCount() {
-            return 8;
-        }
-
-        /**
-         * Returns the value for the cell at <code>columnIndex</code> and
-         * <code>rowIndex</code>.
-         *
-         * @param rowIndex    the row whose value is to be queried
-         * @param columnIndex the column whose value is to be queried
-         * @return the value Object at the specified cell
-         */
-        @Override
-        public Object getValueAt(int rowIndex, int columnIndex) {
-            Object [] row = dataArrayList.get(rowIndex);
-            return row [columnIndex];
-        }
-
-        @Override
-        public String getColumnName(int column) {
-            return switch (column) {
-                case 0 -> parentFrame.getTitles().get("THEOtmColumnName0");
-                case 1 -> parentFrame.getTitles().get("THEOtmColumnName1");
-                case 2 -> parentFrame.getTitles().get("THEOtmColumnName2");
-                case 3 -> parentFrame.getTitles().get("THEOtmColumnName3");
-                case 4 -> "X";
-                case 5 -> "Y";
-                case 6 -> "Z";
-                case 7 -> parentFrame.getTitles().get("THEOtmColumnName7");
-                default -> "";
-            };
-        }
-
-
-        public Class getColumnClass(int c) {
-            return getValueAt(0,c).getClass();
-        }
-
-        public boolean isCellEditable(int rowIndex, int columnCount) {
-            return true;
-        }
-
-        public void setValueAt(Object object, int rowIndex, int columnIndex) {
-            Object [] row = dataArrayList.get(rowIndex);
-            DataHandler dataHandler = new DataHandler();
-            if (columnIndex != 7) dataHandler = new DataHandler((String) object).commaToPoint();
-            switch (columnIndex) {
-                case 0 -> {
-                    if (dataHandler.getStr().equals("")) {
-                        parentFrame.getPolygonRepository().findById(rowIndex).setName("noname");
-
-                        row[columnIndex] = "noname";
-                        dataArrayList.set(rowIndex, row);
-
-                    } else {
-                        if (dataHandler.isValidName()) {
-                            parentFrame.getPolygonRepository().findById(rowIndex).setName((String) object);
-                            row[columnIndex] = object;
-                            dataArrayList.set(rowIndex, row);
-                        }
-                    }
-                }
-
-                case 1 -> {
-                    if (dataHandler.getStr().equals("")) {
-                        parentFrame.getPolygonRepository().findById(rowIndex).setHor("0.0000");
-                        row[columnIndex] = "0.0000";
-                        dataArrayList.set(rowIndex, row);
-
-                    } else {
-                        if (dataHandler.isPositiveNumber()) {
-                            parentFrame.getPolygonRepository().findById(rowIndex).setHor(dataHandler.format(4).getStr());
-                            row[columnIndex] = dataHandler.format(4).getStr();
-                            dataArrayList.set(rowIndex, row);
-                        }
-
-                    }
-                }
-
-                case 2 -> {
-                    if (dataHandler.getStr().equals("")) {
-                        parentFrame.getPolygonRepository().findById(rowIndex).setLine("0.000");
-                        row[columnIndex] = "0.000";
-                        dataArrayList.set(rowIndex, row);
-                    } else {
-                        if (dataHandler.isPositiveNumber()) {
-                            parentFrame.getPolygonRepository().findById(rowIndex).setLine(dataHandler.format(3).getStr());
-                            row[columnIndex] = dataHandler.format(3).getStr();
-                            dataArrayList.set(rowIndex, row);
-                        }
-                    }
-                }
-
-                case 3 -> {
-                    if (dataHandler.getStr().equals("")) {
-                        parentFrame.getPolygonRepository().findById(rowIndex).setdZ("0.000");
-                        row[columnIndex] = "0.000";
-                        dataArrayList.set(rowIndex, row);
-                    } else {
-                        if (dataHandler.isNumber()) {
-                            parentFrame.getPolygonRepository().findById(rowIndex).setdZ(dataHandler.format(3).getStr());
-                            row[columnIndex] = dataHandler.format(3).getStr();
-                            dataArrayList.set(rowIndex, row);
-                        }
-                    }
-                }
-
-                case 4 -> {
-                    if ((Boolean) row [7]) {
-                        if (dataHandler.getStr().equals("")) {
-                            parentFrame.getPolygonRepository().findById(rowIndex).setX("0.000");
-                            row[columnIndex] = "0.000";
-                            dataArrayList.set(rowIndex, row);
-
-                        } else {
-                            if (dataHandler.isNumber()) {
-                                parentFrame.getPolygonRepository().findById(rowIndex).setX(dataHandler.format(3).getStr());
-                                row[columnIndex] = dataHandler.format(3).getStr();
-                                dataArrayList.set(rowIndex, row);
-                            }
-                        }
-                    }
-                }
-                case 5 -> {
-                    if ((Boolean) row [7]) {
-                        if (dataHandler.getStr().equals("")) {
-                            parentFrame.getPolygonRepository().findById(rowIndex).setY("0.000");
-                            row[columnIndex] = "0.000";
-                            dataArrayList.set(rowIndex, row);
-                        } else {
-                            if (dataHandler.isNumber()) {
-                                parentFrame.getPolygonRepository().findById(rowIndex).setY(dataHandler.format(3).getStr());
-                                row[columnIndex] = dataHandler.format(3).getStr();
-                                dataArrayList.set(rowIndex, row);
-                            }
-                        }
-                    }
-                }
-                case 6 -> {
-                    if ((Boolean) row [7]) {
-                        if (dataHandler.getStr().equals("")) {
-                            parentFrame.getPolygonRepository().findById(rowIndex).setZ("0.000");
-                            row[columnIndex] = "0.000";
-                            dataArrayList.set(rowIndex, row);
-                        } else {
-                            if (dataHandler.isNumber()) {
-                                parentFrame.getPolygonRepository().findById(rowIndex).setZ(dataHandler.format(3).getStr());
-                                row[columnIndex] = dataHandler.format(3).getStr();
-                                dataArrayList.set(rowIndex, row);
-                            }
-                        }
-                    }
-                }
-                case 7 -> {
-                    if (!(rowIndex > 1 & rowIndex < dataArrayList.size() - 2)) {
-                        parentFrame.getPolygonRepository().findById(rowIndex).setStatus((Boolean) object);
-                        row[columnIndex] = object;
-                        dataArrayList.set(rowIndex, row);
-
-                        if ((Boolean) object) {
-                            if (parentFrame.getPolygonRepository().findById(rowIndex).getX().equals("Not")) {
-                                row[4] = "0.000";
-                                dataArrayList.set(rowIndex, row);
-                            } else {
-                                row[4] = parentFrame.getPolygonRepository().findById(rowIndex).getX();
-                                dataArrayList.set(rowIndex, row);
-                            }
-                            if (parentFrame.getPolygonRepository().findById(rowIndex).getY().equals("Not")) {
-                                row[5] = "0.000";
-                                dataArrayList.set(rowIndex, row);
-                            } else {
-                                row[5] = parentFrame.getPolygonRepository().findById(rowIndex).getY();
-                                dataArrayList.set(rowIndex, row);
-                                                            }
-                            if (parentFrame.getPolygonRepository().findById(rowIndex).getZ().equals("Not")) {
-                                row[6] = "0.000";
-                                dataArrayList.set(rowIndex, row);
-                            } else {
-                                row[6] = parentFrame.getPolygonRepository().findById(rowIndex).getZ();
-                                dataArrayList.set(rowIndex, row);
-                            }
-                        } else {
-                            row[4] = "";
-                            row[5] = "";
-                            row[6] = "";
-                            dataArrayList.set(rowIndex, row);
-                            parentFrame.getPolygonRepository().findById(rowIndex).setX("Not");
-                            parentFrame.getPolygonRepository().findById(rowIndex).setY("Not");
-                            parentFrame.getPolygonRepository().findById(rowIndex).setZ("Not");
-                        }
-                        fireTableCellUpdated(rowIndex, 4);
-                        fireTableCellUpdated(rowIndex, 5);
-                        fireTableCellUpdated(rowIndex, 6);
-
-                    }
-                }
-
-            }
-            fireTableCellUpdated(rowIndex, columnIndex);
-        }
-
-        /**
-         * add row to dataArrayList
-         * @param row array of Objects
-         */
-        public void addRow(Object [] row) {
-            dataArrayList.add(row);
-        }
-
-        public void addRow(int index, Object [] row) {
-            dataArrayList.add(index, row);
-            fireTableRowsInserted(index, index);
-        }
-
-        /**
-         * remove row from dataArrayList
-         * @param index index removes row
-         */
-        public void removeRow(int index) {
-            dataArrayList.remove(index);
-            parentFrame.getPolygonRepository().removeStation(index);
-            fireTableRowsDeleted(index, index);
-        }
+    /**
+     * Gets index of selected column in polygon station table
+     *
+     * @return int
+     */
+    @Override
+    public int getSelColumn() {
+        return selColumn;
     }
 }
