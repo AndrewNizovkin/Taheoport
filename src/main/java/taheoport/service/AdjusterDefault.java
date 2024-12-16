@@ -1,6 +1,7 @@
 package taheoport.service;
 
 import taheoport.gui.MainWin;
+import taheoport.model.BindType;
 import taheoport.repository.PolygonRepository;
 import taheoport.model.PolygonStation;
 import taheoport.model.SurveyStation;
@@ -188,17 +189,17 @@ public class AdjusterDefault implements Adjuster{
      */
     private void defBindType() {
         polygonRepository = parentFrame.getPolygonRepository();
-        polygonRepository.setBindType(PolygonRepository.BindType.ZZ);
+        polygonRepository.setBindType(BindType.ZZ);
         int countStations = polygonRepository.getSizePolygonStations();
         if (countStations > 2) {
             if (polygonRepository.findById(0).getStatus() &
                     polygonRepository.findById(1).getStatus() &
                     polygonRepository.findById(countStations - 1).getStatus() &
                     polygonRepository.findById(countStations - 2).getStatus()) {
-                polygonRepository.setBindType(PolygonRepository.BindType.TT);
+                polygonRepository.setBindType(BindType.TT);
                 if (isValidSourceData(1, countStations - 3) |
                         !new DataHandler(polygonRepository.findById(countStations - 2).getHor()).isPositiveNumber()) {
-                    polygonRepository.setBindType(PolygonRepository.BindType.ZZ);
+                    polygonRepository.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(parentFrame,
                             parentFrame.getTitles().get("TPmessageError"),
                             parentFrame.getTitles().get("TPmessageErrorTitle"),
@@ -209,9 +210,9 @@ public class AdjusterDefault implements Adjuster{
                     polygonRepository.findById(1).getStatus() &
                     polygonRepository.findById(countStations - 1).getStatus() &
                     !polygonRepository.findById(countStations - 2).getStatus()) {
-                polygonRepository.setBindType(PolygonRepository.BindType.TO);
+                polygonRepository.setBindType(BindType.TO);
                 if (isValidSourceData(1, countStations - 2)) {
-                    polygonRepository.setBindType(PolygonRepository.BindType.ZZ);
+                    polygonRepository.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(null,
                             parentFrame.getTitles().get("TPmessageError"),
                             parentFrame.getTitles().get("TPmessageErrorTitle"),
@@ -222,10 +223,10 @@ public class AdjusterDefault implements Adjuster{
                     !polygonRepository.findById(1).getStatus() &
                     polygonRepository.findById(countStations - 1).getStatus() &
                     polygonRepository.findById(countStations - 2).getStatus()) {
-                polygonRepository.setBindType(PolygonRepository.BindType.OT);
+                polygonRepository.setBindType(BindType.OT);
                 if (isValidSourceData(0, countStations - 3) |
                         !new DataHandler(polygonRepository.findById(countStations - 2).getHor()).isPositiveNumber()) {
-                    polygonRepository.setBindType(PolygonRepository.BindType.ZZ);
+                    polygonRepository.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(null,
                             parentFrame.getTitles().get("TPmessageError"),
                             parentFrame.getTitles().get("TPmessageErrorTitle"),
@@ -236,9 +237,9 @@ public class AdjusterDefault implements Adjuster{
                     !polygonRepository.findById(1).getStatus() &
                     polygonRepository.findById(countStations - 1).getStatus() &
                     !polygonRepository.findById(countStations - 2).getStatus()) {
-                polygonRepository.setBindType(PolygonRepository.BindType.OO);
+                polygonRepository.setBindType(BindType.OO);
                 if (isValidSourceData(0, countStations - 2)) {
-                    polygonRepository.setBindType(PolygonRepository.BindType.ZZ);
+                    polygonRepository.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(null,
                             parentFrame.getTitles().get("TPmessageError"),
                             parentFrame.getTitles().get("TPmessageErrorTitle"),
@@ -249,10 +250,10 @@ public class AdjusterDefault implements Adjuster{
                     polygonRepository.findById(1).getStatus() &
                     !polygonRepository.findById(countStations - 1).getStatus() &
                     !polygonRepository.findById(countStations - 2).getStatus()) {
-                polygonRepository.setBindType(PolygonRepository.BindType.TZ);
+                polygonRepository.setBindType(BindType.TZ);
                 if (isValidSourceData(1, countStations - 3) |
                         !new DataHandler(polygonRepository.findById(countStations - 2).getHor()).isPositiveNumber()) {
-                    polygonRepository.setBindType(PolygonRepository.BindType.ZZ);
+                    polygonRepository.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(null,
                             parentFrame.getTitles().get("TPmessageError"),
                             parentFrame.getTitles().get("TPmessageErrorTitle"),
@@ -263,10 +264,10 @@ public class AdjusterDefault implements Adjuster{
                     !polygonRepository.findById(1).getStatus() &
                     polygonRepository.findById(countStations - 1).getStatus() &
                     polygonRepository.findById(countStations - 2).getStatus()) {
-                polygonRepository.setBindType(PolygonRepository.BindType.ZT);
+                polygonRepository.setBindType(BindType.ZT);
                 if (isValidSourceData(0, countStations - 3) |
                         !new DataHandler(polygonRepository.findById(countStations - 2).getHor()).isPositiveNumber()) {
-                    polygonRepository.setBindType(PolygonRepository.BindType.ZZ);
+                    polygonRepository.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(null,
                             parentFrame.getTitles().get("TPmessageError"),
                             parentFrame.getTitles().get("TPmessageErrorTitle"),
@@ -275,7 +276,7 @@ public class AdjusterDefault implements Adjuster{
             }
         }
         if (noNeed()) {
-            polygonRepository.setBindType(PolygonRepository.BindType.ZZ);
+            polygonRepository.setBindType(BindType.ZZ);
         }
     }
 

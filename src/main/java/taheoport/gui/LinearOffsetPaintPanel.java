@@ -1,5 +1,7 @@
 package taheoport.gui;
 
+import taheoport.service.SettingsController;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,7 +11,7 @@ import java.awt.*;
  * Copyright Nizovkin A.V. 2022
  */
 public class LinearOffsetPaintPanel extends JPanel {
-    private final MainWin parentFrame;
+    SettingsController settingsController;
 
     /**
      * Constructor
@@ -17,7 +19,7 @@ public class LinearOffsetPaintPanel extends JPanel {
      */
     public LinearOffsetPaintPanel(MainWin parentFrame) {
         super();
-        this.parentFrame = parentFrame;
+        settingsController = parentFrame.getSettingsController();
         setPreferredSize(new Dimension(110, 110));
     }
 
@@ -29,7 +31,7 @@ public class LinearOffsetPaintPanel extends JPanel {
         super.paintComponent(g);
 
         g.setColor(Color.RED);
-        switch (parentFrame.getSettings().getOffsetDistanceType()) {
+        switch (settingsController.getOffsetDistanceType()) {
             case 0 -> {
                 g.drawLine(64, 43, 95, 43);
             }

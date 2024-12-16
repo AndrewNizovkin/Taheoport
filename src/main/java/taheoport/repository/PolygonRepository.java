@@ -1,5 +1,6 @@
     package taheoport.repository;
 
+    import taheoport.model.BindType;
     import taheoport.model.PolygonStation;
 
     import java.util.LinkedList;
@@ -23,7 +24,7 @@ public class PolygonRepository {
         private final List<PolygonStation> listPolygonStations;
         private double perimeter;
 
-    public enum BindType {ZZ,TT, TO, OT, OO, TZ, ZT}
+//    public enum BindType {ZZ,TT, TO, OT, OO, TZ, ZT}
 
         /**
          * Constructor
@@ -31,6 +32,7 @@ public class PolygonRepository {
     public PolygonRepository() {
         absolutePolPath = "";
         bindType = BindType.ZZ;
+//        bindType = BindType.ZZ;
         fHor = 0.0;
         fX = 0.0;
         fY = 0.0;

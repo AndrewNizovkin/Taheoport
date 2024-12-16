@@ -35,26 +35,82 @@ public class ShowAbout extends JDialog {
         pnlCopyright.setBorder(BorderFactory.createEtchedBorder());
         pnlCopyright.setLayout(new GridBagLayout());
 
-        pnlCopyright.add(new JLabel(new ImageIcon("images/teo.png")), new GridBagConstraints(0, 1, 1, 1, 1, 0,
-                GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+        pnlCopyright.add(new JLabel(new ImageIcon("images/teo.png")), new GridBagConstraints(
+                0,
+                1,
+                1,
+                1,
+                1,
+                0,
+                GridBagConstraints.NORTHWEST,
+                GridBagConstraints.BOTH,
+                new Insets(
+                        0,
+                        0,
+                        0,
+                        0),
+                0,
+                0));
 
         JLabel label = new JLabel("Taheoport");
         label.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
 
-        pnlCopyright.add(label, new GridBagConstraints(1, 0, 1, 1, 1, 0,
-                GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+        pnlCopyright.add(label, new GridBagConstraints(
+                1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                GridBagConstraints.NORTHWEST,
+                GridBagConstraints.BOTH,
+                new Insets(
+                        0,
+                        0,
+                        0,
+                        0),
+                0,
+                0));
 
         label = new JLabel("Version 2022.11.1 (build november 2022)");
         label.setFont(new Font(Font.DIALOG, Font.PLAIN, 12));
 
-        pnlCopyright.add(label, new GridBagConstraints(1, 1, 1, 1, 1, 0,
-                GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+        pnlCopyright.add(label, new GridBagConstraints(
+                1,
+                1,
+                1,
+                1,
+                1,
+                0,
+                GridBagConstraints.NORTHWEST,
+                GridBagConstraints.BOTH,
+                new Insets(
+                        0,
+                        0,
+                        0,
+                        0),
+                0,
+                0));
 
         label = new JLabel("Copyright 2022 Nizovkin A.V.");
         label.setFont(new Font(Font.DIALOG, Font.PLAIN, 12));
 
-        pnlCopyright.add(label, new GridBagConstraints(1, 2, 1, 1, 1, 0,
-                GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+        pnlCopyright.add(label, new GridBagConstraints(
+                1,
+                2,
+                1,
+                1,
+                1,
+                0,
+                GridBagConstraints.NORTHWEST,
+                GridBagConstraints.BOTH,
+                new Insets(
+                        0,
+                        0,
+                        0,
+                        0),
+                0,
+                0));
 
         add(pnlCopyright, BorderLayout.NORTH);
 

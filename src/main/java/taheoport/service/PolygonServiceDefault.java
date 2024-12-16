@@ -1,6 +1,7 @@
 package taheoport.service;
 
 import taheoport.gui.MainWin;
+import taheoport.model.BindType;
 import taheoport.repository.PolygonRepository;
 import taheoport.model.PolygonStation;
 import taheoport.model.Shell;
@@ -9,7 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import static taheoport.repository.PolygonRepository.BindType.TZ;
+//import static taheoport.repository.PolygonRepository.BindType.TZ;
 
 /**
  * This class encapsulates methods for working with polygon project
@@ -21,10 +22,12 @@ public class PolygonServiceDefault implements PolygonService {
     private final MainWin parentFrame;
     private final Adjuster adjuster;
     private final IOService ioService;
+    private final SettingsController settingsController;
 
     public PolygonServiceDefault(MainWin frame) {
         parentFrame = frame;
         adjuster = new AdjusterDefault(frame);
+        settingsController = frame.getSettingsController();
         ioService = new IOServiceDefault(parentFrame);
         polygonRepository = new PolygonRepository();
         absolutePolPath = "";
@@ -46,7 +49,7 @@ public class PolygonServiceDefault implements PolygonService {
     @Override
     public void importPol() {
         List<String> list = ioService.readTextFile(
-                parentFrame.getSettings().getPathWorkDir(),
+                settingsController.getPathWorkDir(),
                 "pol",
                 parentFrame.getTitles().get("MWopenFileTitle"));
         if (list != null) {
@@ -62,7 +65,7 @@ public class PolygonServiceDefault implements PolygonService {
         if (absolutePolPath.isEmpty()) {
             String s = ioService.writeTextFile(
                     getPolList(),
-                    parentFrame.getSettings().getPathWorkDir(),
+                    settingsController.getPathWorkDir(),
                     "pol",
                     "Write *.pol");
                     if (s != null) {
@@ -80,7 +83,7 @@ public class PolygonServiceDefault implements PolygonService {
     public void savePolAs() {
         String s = ioService.writeTextFile(
                 getPolList(),
-                parentFrame.getSettings().getPathWorkDir(),
+                settingsController.getPathWorkDir(),
                 "pol",
                 parentFrame.getTitles().get("MWsavePolTitle"));
         if (s != null) {
@@ -280,10 +283,10 @@ public class PolygonServiceDefault implements PolygonService {
         llReportXY.add(titlesReports.get("TPfoterTitle"));
         llReportXY.add(titlesReports.get("TPperimeter") + new DataHandler(polygonRepository.getPerimeter()).format(3).getStr() + titlesReports.get("TPm"));
         llReportXY.add(titlesReports.get("TPangleResidues"));
-        if (polygonRepository.getBindType() == PolygonRepository.BindType.TT) {
+        if (polygonRepository.getBindType() == BindType.TT) {
             llReportXY.add(titlesReports.get("TPactual") + new DataHandler(polygonRepository.getfHor()).format(2).getStr() + titlesReports.get("TPsek"));
             llReportXY.add(titlesReports.get("TPacceptable") +
-                    new DataHandler(parentFrame.getSettings().getValueFHor() * Math.sqrt(polygonRepository.getSizePolygonStations() - 2)).format(0).getStr() +
+                    new DataHandler(settingsController.getValueFHor() * Math.sqrt(polygonRepository.getSizePolygonStations() - 2)).format(0).getStr() +
                     titlesReports.get("TPsek"));
         } else {
             llReportXY.add(titlesReports.get("TPactual") + "-.-");
@@ -291,7 +294,7 @@ public class PolygonServiceDefault implements PolygonService {
 
         }
         llReportXY.add(titlesReports.get("TPlineResidues"));
-        if (polygonRepository.getBindType() == TZ | polygonRepository.getBindType() == PolygonRepository.BindType.ZT) {
+        if (polygonRepository.getBindType() == BindType.TZ | polygonRepository.getBindType() == BindType.ZT) {
             llReportXY.add(titlesReports.get("TPlineDX") + "-.-");
             llReportXY.add(titlesReports.get("TPlineDY") + "-.-");
             llReportXY.add(titlesReports.get("TPabsoluteDeviation") + "-.-");
@@ -302,7 +305,7 @@ public class PolygonServiceDefault implements PolygonService {
             llReportXY.add(titlesReports.get("TPlineDY") + new DataHandler(polygonRepository.getfY()).format(3).getStr() + "м.");
             llReportXY.add(titlesReports.get("TPabsoluteDeviation") + new DataHandler(polygonRepository.getfAbs()).format(3).getStr() + "м.");
             llReportXY.add(titlesReports.get("TPactualRelativeDeviation") + "1:" + polygonRepository.getfOtn());
-            llReportXY.add(titlesReports.get("TPacceptableRelativeDeviation") + "1:" + parentFrame.getSettings().getValueFOtn());
+            llReportXY.add(titlesReports.get("TPacceptableRelativeDeviation") + "1:" + settingsController.getValueFOtn());
 
         }
         return llReportXY;
@@ -332,14 +335,14 @@ public class PolygonServiceDefault implements PolygonService {
 //            llReportZ.add(str);
 //        }
 
-        if (polygonRepository.getBindType() == PolygonRepository.BindType.TT |
-                polygonRepository.getBindType() == PolygonRepository.BindType.TO |
-                polygonRepository.getBindType() == PolygonRepository.BindType.TZ) {
+        if (polygonRepository.getBindType() == BindType.TT |
+                polygonRepository.getBindType() == BindType.TO |
+                polygonRepository.getBindType() == BindType.TZ) {
             start = 1;
         }
-        if (polygonRepository.getBindType() == PolygonRepository.BindType.ZT |
-                polygonRepository.getBindType() == PolygonRepository.BindType.OT |
-                polygonRepository.getBindType() == PolygonRepository.BindType.TT) {
+        if (polygonRepository.getBindType() == BindType.ZT |
+                polygonRepository.getBindType() == BindType.OT |
+                polygonRepository.getBindType() == BindType.TT) {
             finish = polygonRepository.getSizePolygonStations() - 2;
         }
         for (int i = start; i < finish; i++) {
@@ -383,8 +386,8 @@ public class PolygonServiceDefault implements PolygonService {
         llReportZ.add(titlesReports.get("TPperimeter") +
                 new DataHandler(polygonRepository.getPerimeter()).format(3).getStr() +
                 titlesReports.get("TPm"));
-        if (polygonRepository.getBindType() == PolygonRepository.BindType.TZ |
-                polygonRepository.getBindType() == PolygonRepository.BindType.ZT) {
+        if (polygonRepository.getBindType() == BindType.TZ |
+                polygonRepository.getBindType() == BindType.ZT) {
             llReportZ.add(titlesReports.get("TPactualResidue") + "-.-");
             llReportZ.add(titlesReports.get("TPacceptableResidue") + "-.-");
 
@@ -393,7 +396,7 @@ public class PolygonServiceDefault implements PolygonService {
                     new DataHandler(polygonRepository.getfZ() * 1000).format(0).getStr() +
                     titlesReports.get("TPmm"));
             llReportZ.add(titlesReports.get("TPacceptableResidue") +
-                    new DataHandler(parentFrame.getSettings().getValueFH() *
+                    new DataHandler(settingsController.getValueFH() *
                             Math.sqrt(polygonRepository.getPerimeter() / 1000)).format(0).getStr() +
                     titlesReports.get("TPmm"));
         }
@@ -489,5 +492,80 @@ public class PolygonServiceDefault implements PolygonService {
     @Override
     public int getSizePolygonStations() {
         return polygonRepository.getSizePolygonStations();
+    }
+
+    /**
+     * Gets polygon perimeter
+     *
+     * @return double
+     */
+    @Override
+    public double getPerimeter() {
+        return polygonRepository.getPerimeter();
+    }
+
+    /**
+     * Gets the actual angular error
+     *
+     * @return double
+     */
+    @Override
+    public double getfHor() {
+        return polygonRepository.getfHor();
+    }
+
+    /**
+     * Gets linear actual error on the X-axis
+     * @return double
+     */
+    @Override
+    public double getfX() {
+        return polygonRepository.getfX();
+    }
+
+    /**
+     * Gets linear actual error on the Y-axis
+     * @return double
+     */
+    @Override
+    public double getfY() {
+        return polygonRepository.getfY();
+    }
+
+    /**
+     * Gets linear actual error on the Z-axis
+     * @return double
+     */
+    @Override
+    public double getfZ() {
+        return polygonRepository.getfZ();
+    }
+
+    /**
+     * the actual linear absolute error
+     * @return double
+     */
+    @Override
+    public double getfAbs() {
+        return polygonRepository.getfAbs();
+    }
+
+    /**
+     * the actual linear relative error
+     * @return String
+     */
+    @Override
+    public String getfOtn() {
+        return polygonRepository.getfOtn();
+    }
+
+    /**
+     * Gets type of binding the polygon to base points
+     *
+     * @return BindType
+     */
+    @Override
+    public BindType getBindType() {
+        return polygonRepository.getBindType();
     }
 }

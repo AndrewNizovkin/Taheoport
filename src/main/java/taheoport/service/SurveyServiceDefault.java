@@ -19,6 +19,7 @@ public class SurveyServiceDefault implements SurveyService {
     private SurveyRepository surveyRepository;
     private final IOService ioService;
     private final ImportService importService;
+    private final SettingsController settingsController;
 
     /**
      * Constructor
@@ -28,8 +29,9 @@ public class SurveyServiceDefault implements SurveyService {
         parentFrame = frame;
         absoluteTahPath = "";
         surveyRepository = new SurveyRepository();
-        ioService = new IOServiceDefault(parentFrame);
+        ioService = frame.getIoService();
         importService = new ImportServiceDefault(parentFrame);
+        settingsController = frame.getSettingsController();
 
     }
 
@@ -231,7 +233,7 @@ public class SurveyServiceDefault implements SurveyService {
                 picket = llStation.getPicket(j);
 
 
-                if (parentFrame.getSettings().getOrientStation() == 1) {
+                if (settingsController.getOrientStation() == 1) {
                     dirPicket = dirBase + new DataHandler(picket.getHor()).dmsToRad() -
                             new DataHandler(llStation.getPicket(0).getHor()).dmsToRad();
                     while (dirPicket < 0) {
@@ -269,7 +271,7 @@ public class SurveyServiceDefault implements SurveyService {
     @Override
     public void importLeica() {
         List <String>  list = ioService.readTextFile(
-                parentFrame.getSettings().getPathWorkDir(),
+                settingsController.getPathWorkDir(),
                 "gsi",
                 parentFrame.getTitles().get("MWopenFileTitle"));
         if (list != null) {
@@ -284,7 +286,7 @@ public class SurveyServiceDefault implements SurveyService {
     @Override
     public void importNicon() {
         List <String>  list = ioService.readTextFile(
-                parentFrame.getSettings().getPathWorkDir(),
+                settingsController.getPathWorkDir(),
                 "raw",
                 parentFrame.getTitles().get("MWopenFileTitle"));
 
@@ -300,7 +302,7 @@ public class SurveyServiceDefault implements SurveyService {
     @Override
     public void importTopcon() {
         List<String> list = ioService.readTextFile(
-                parentFrame.getSettings().getPathWorkDir(),
+                settingsController.getPathWorkDir(),
                 "txt",
                 parentFrame.getTitles().get("MWopenFileTitle"));
 
@@ -316,7 +318,7 @@ public class SurveyServiceDefault implements SurveyService {
     @Override
     public void importTah() {
         List<String> llTahList = ioService.readTextFile(
-                parentFrame.getSettings().getPathWorkDir(),
+                settingsController.getPathWorkDir(),
                 "tah",
                 parentFrame.getTitles().get("MWopenFileTitle"));
 
@@ -345,7 +347,7 @@ public class SurveyServiceDefault implements SurveyService {
         if (absoluteTahPath.isEmpty()) {
             String s = ioService.writeTextFile(
                     this.getTahList(),
-                    parentFrame.getSettings().getPathWorkDir(),
+                    settingsController.getPathWorkDir(),
                     "tah",
                     "Write Tah");
             if (s != null) {
@@ -365,7 +367,7 @@ public class SurveyServiceDefault implements SurveyService {
     public void saveProjectAs() {
         String s = ioService.writeTextFile(
                 this.getTahList(),
-                parentFrame.getSettings().getPathWorkDir(),
+                settingsController.getPathWorkDir(),
                 "tah",
                 parentFrame.getTitles().get("MWsaveTahTitle"));
         if (s != null) {

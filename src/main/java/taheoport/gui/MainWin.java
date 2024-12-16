@@ -27,12 +27,12 @@ public class MainWin extends JFrame{
     private final PolygonService polygonService;
     private final ExtractService extractService;
     private final CatalogService catalogService;
-    private final SettingsService settingsService;
+    private final SettingsController settingsController;
     private final Security security;
     private final JTabbedPane tpMain;
     private final JPanel pnlMeasurements;
     private final JPanel pnlPolygon;
-    private final Settings settings;
+//    private final Settings settings;
     private HashMap<String, String> titles;
     private final int wMain;
     private final int hMain;
@@ -71,16 +71,14 @@ public class MainWin extends JFrame{
      */
     public MainWin() {
         super("Taheoport");
-        polygonService = new PolygonServiceDefault(this);
         ioService = new IOServiceDefault(this);
+        settingsController = new SettingsControllerDefault(this);
         surveyService = new SurveyServiceDefault(this);
+        polygonService = new PolygonServiceDefault(this);
         extractService = new ExtractServiceDefault(this);
         catalogService = new CatalogServiceDefault(this);
-        settingsService = new SettingsServiceDefault(this);
-        security = new SecurityImpl();
 
-        settings = new Settings();
-        settingsService.loadOptions();
+        security = new SecurityImpl();
         titles = new Shell(this).getTitles();
         ActionListener actionListener = new MainActionListener(this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -377,9 +375,9 @@ public class MainWin extends JFrame{
      * gets settings
      * @return this.settings
      */
-    public Settings getSettings() {
-        return settings;
-    }
+//    public Settings getSettings() {
+//        return settings;
+//    }
 
     /**
      * gets width of MainWin
@@ -437,8 +435,9 @@ public class MainWin extends JFrame{
         return extractService;
     }
 
-    public SettingsService getSettingsController() {
-        return settingsService;
+
+    public SettingsController getSettingsController() {
+        return settingsController;
     }
 
     /**
@@ -474,7 +473,7 @@ public class MainWin extends JFrame{
     }
 
     public String getPathWorkDir() {
-        return settings.getPathWorkDir();
+        return settingsController.getPathWorkDir();
     }
 
     /**

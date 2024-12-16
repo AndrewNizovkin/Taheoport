@@ -16,11 +16,13 @@ public class ExtractServiceDefault implements ExtractService {
     private final MainWin parentFrame;
     private final ExtractRepository extractRepository;
     private final SurveyService surveyService;
+    private final SettingsController settingsController;
 
     public ExtractServiceDefault(MainWin frame) {
         this.parentFrame = frame;
         extractRepository = new ExtractRepository();
-        surveyService = parentFrame.getSurveyService();
+        surveyService = frame.getSurveyService();
+        settingsController = frame.getSettingsController();
     }
 
     /**
@@ -33,12 +35,12 @@ public class ExtractServiceDefault implements ExtractService {
         extractRepository.clear();
         List<String> llPolList = new LinkedList<>();
         SurveyRepository surveyCopyRepository = new SurveyRepository();
-        SurveyRepository parentSurveyRepository = surveyService.getSurveyRepository();
-        for (int i = 0; i < parentSurveyRepository.sizeStations(); i++) {
-            if (parentSurveyRepository.findById(i).getName().charAt(0)
-                    != (char) parentFrame.getSettings().getPrefixEX() &
-                    parentFrame.getSurveyRepository().findById(i).sizePickets() >= 2) {
-                surveyCopyRepository.addStation(parentSurveyRepository.findById(i));
+//        SurveyRepository parentSurveyRepository = surveyService.getSurveyRepository();
+        for (int i = 0; i < surveyService.sizeRepository(); i++) {
+            if (surveyService.findStationById(i).getName().charAt(0)
+                    != (char) settingsController.getPrefixEX() &
+                    surveyService.findStationById(i).sizePickets() >= 2) {
+                surveyCopyRepository.addStation(surveyService.findStationById(i));
             }
         }
 
@@ -118,8 +120,7 @@ public class ExtractServiceDefault implements ExtractService {
                     new DataHandler(extractStation.getDZTrue()).toTable(8).getStr() + " | " +
                     new DataHandler(extractStation.getDDZ()).toTable(6).getStr() + " |");
         }
-        listExtractReport.add("| " + new DataHandler(parentFrame.getSurveyRepository().
-                findById(parentFrame.getSurveyRepository().sizeStations() - 1).
+        listExtractReport.add("| " + new DataHandler(surveyService.findStationById(surveyService.sizeRepository() - 1).
                 getPicket(1).getpName()).toTable(10).getStr() +
                 " |          |          |          |        |          |          |          |        |");
         listExtractReport.add("--------------------------------------------------------------------------------------------------");

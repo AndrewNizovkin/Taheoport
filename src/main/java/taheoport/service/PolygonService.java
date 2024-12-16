@@ -1,5 +1,6 @@
 package taheoport.service;
 
+import taheoport.model.BindType;
 import taheoport.model.PolygonStation;
 import taheoport.repository.PolygonRepository;
 
@@ -110,5 +111,53 @@ public interface PolygonService {
      * @return int
      */
     int getSizePolygonStations();
+
+    /**
+     * Gets polygon perimeter
+     * @return double
+     */
+    double getPerimeter();
+
+    /**
+     * Gets the actual angular error
+     * @return double
+     */
+    double getfHor();
+
+    /**
+     * Gets linear actual error on the X-axis
+     * @return double
+     */
+    double getfX();
+
+    /**
+     * Gets linear actual error on the Y-axis
+     * @return double
+     */
+    double getfY();
+
+    /**
+     * Gets linear actual error on the Z-axis
+     * @return double
+     */
+    double getfZ();
+
+    /**
+     * the actual linear absolute error
+     * @return double
+     */
+    double getfAbs();
+
+    /**
+     * the actual linear relative error
+     * @return String
+     */
+    String getfOtn();
+
+    /**
+     * Gets type of binding the polygon to base points
+     * @return BindType
+     */
+    BindType getBindType();
 
     }

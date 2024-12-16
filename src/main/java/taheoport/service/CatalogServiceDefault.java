@@ -18,6 +18,7 @@ public class CatalogServiceDefault implements CatalogService {
     private final MainWin parentFrame;
     private final CatalogRepository catalogRepository;
     private final IOService ioService;
+    private final SettingsController settingsController;
     private String absoluteCatalogPath;
     private int choice;
 
@@ -29,6 +30,7 @@ public class CatalogServiceDefault implements CatalogService {
     public CatalogServiceDefault(MainWin parentFrame) {
         this.parentFrame = parentFrame;
         ioService = parentFrame.getIoService();
+        settingsController = parentFrame.getSettingsController();
         catalogRepository = new CatalogRepository();
         choice = -1;
     }
@@ -59,7 +61,7 @@ public class CatalogServiceDefault implements CatalogService {
     @Override
     public void importCatalog() {
         List<String> list = ioService.readTextFile(
-                parentFrame.getSettings().getPathWorkDir(),
+                settingsController.getPathWorkDir(),
                 "kat",
                 parentFrame.getTitles().get("MWloadCatalogTitle"));
 

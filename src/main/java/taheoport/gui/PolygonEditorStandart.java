@@ -4,6 +4,7 @@ import taheoport.dispatcher.PolygonEditorActionListener;
 import taheoport.model.PolygonStation;
 import taheoport.service.DataHandler;
 import taheoport.service.PolygonService;
+import taheoport.service.SettingsController;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -11,6 +12,7 @@ import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This class encapsulated panel for displaying and editing of polygon
@@ -28,10 +30,11 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
     private final MainWin parentFrame;
     private int selColumn;
     private int selRow;
-    private JTable tblStations;
-    private TmodelPolygonStations tmPolygonStations;
+    private final JTable tblStations;
+    private final TmodelPolygonStations tmPolygonStations;
     private final PolygonService polygonService;
-    private final ActionListener polygonActionListener;
+    private final SettingsController settingsController;
+    HashMap<String, String> titles;
 
     /**
      * Constructor
@@ -40,10 +43,12 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
     public PolygonEditorStandart(MainWin frame) {
         super();
         parentFrame = frame;
-        polygonService = parentFrame.getPolygonService();
-        tmPolygonStations = new TmodelPolygonStations(parentFrame);
+        polygonService = frame.getPolygonService();
+        settingsController = frame.getSettingsController();
+        titles = frame.getTitles();
+        tmPolygonStations = new TmodelPolygonStations(frame);
         tblStations = new JTable(tmPolygonStations);
-        polygonActionListener = new PolygonEditorActionListener(this);
+        ActionListener polygonActionListener = new PolygonEditorActionListener(this);
         setLayout(new BorderLayout());
 
 //region btnDeleteRow
@@ -61,7 +66,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
         JButton btnInsertRowBefore = new JButton(new ImageIcon("images/insert_row.png"));
         btnInsertRowBefore.setActionCommand("btnInsertRowBefore");
         btnInsertRowBefore.setEnabled(true);
-        btnInsertRowBefore.setToolTipText(parentFrame.getTitles().get("TAHbtnInsertRowBeforeTT"));
+        btnInsertRowBefore.setToolTipText(titles.get("TAHbtnInsertRowBeforeTT"));
         btnInsertRowBefore.addActionListener(polygonActionListener);
 //endregion
 
@@ -70,7 +75,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
         JButton btnInsertRowAfter = new JButton(new ImageIcon("images/insert_row_after.png"));
         btnInsertRowAfter.setActionCommand("btnInsertRowAfter");
         btnInsertRowAfter.setEnabled(true);
-        btnInsertRowAfter.setToolTipText(parentFrame.getTitles().get("TAHbtnInsertRowAfterTT"));
+        btnInsertRowAfter.setToolTipText(titles.get("TAHbtnInsertRowAfterTT"));
         btnInsertRowAfter.addActionListener(polygonActionListener);
 //endregion
 
@@ -79,7 +84,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
         JButton btnImportFromCatalog = new JButton(new ImageIcon("images/database_export.png"));
         btnImportFromCatalog.setActionCommand("btnImportFromCatalog");
         btnImportFromCatalog.setEnabled(true);
-        btnImportFromCatalog.setToolTipText(parentFrame.getTitles().get("TAHbtnImportFromCatalogTT"));
+        btnImportFromCatalog.setToolTipText(titles.get("TAHbtnImportFromCatalogTT"));
         btnImportFromCatalog.addActionListener(polygonActionListener);
 //endregion
 
@@ -100,12 +105,21 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
 //region pnlAdjustment
 
         JPanel pnlAdjustment = new JPanel(new GridLayout(7 , 2));
-        pnlAdjustment.setBorder(BorderFactory.createTitledBorder(null, parentFrame.getTitles().get("THEOlblTitleBinding"), TitledBorder.CENTER, TitledBorder.TOP, new Font(Font.DIALOG, Font.PLAIN, 12), Color.BLUE));
+        pnlAdjustment.setBorder(BorderFactory.createTitledBorder(
+                null,
+                titles.get("THEOlblTitleBinding"),
+                TitledBorder.CENTER,
+                TitledBorder.TOP,
+                new Font(
+                        Font.DIALOG,
+                        Font.PLAIN,
+                        12),
+                Color.BLUE));
 //endregion
 
 //region lblHeight
 
-        JLabel lblHeight = new JLabel(parentFrame.getTitles().get("THEOlblHeight"), JLabel.RIGHT);
+        JLabel lblHeight = new JLabel(titles.get("THEOlblHeight"), JLabel.RIGHT);
         pnlAdjustment.add(lblHeight);
 //endregion
 
@@ -116,7 +130,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
 //endregion
 
 //region lblAngle
-        JLabel lblAngle = new JLabel(parentFrame.getTitles().get("THEOlblAngle"), JLabel.RIGHT);
+        JLabel lblAngle = new JLabel(titles.get("THEOlblAngle"), JLabel.RIGHT);
         pnlAdjustment.add(lblAngle);
 //endregion
 
@@ -128,7 +142,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
 
 //region lblFX
 
-        JLabel lblFX = new JLabel(parentFrame.getTitles().get("THEOlblFX"), JLabel.RIGHT);
+        JLabel lblFX = new JLabel(titles.get("THEOlblFX"), JLabel.RIGHT);
         pnlAdjustment.add(lblFX);
 //endregion
 
@@ -140,7 +154,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
 
 //region lblFY
 
-        JLabel lblFY = new JLabel(parentFrame.getTitles().get("THEOlblFY"), JLabel.RIGHT);
+        JLabel lblFY = new JLabel(titles.get("THEOlblFY"), JLabel.RIGHT);
         pnlAdjustment.add(lblFY);
 //endregion
 
@@ -152,7 +166,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
 
 //region lblFAbsolute
 
-        JLabel lblFAbsolute = new JLabel(parentFrame.getTitles().get("THEOlblFAbsolute"), JLabel.RIGHT);
+        JLabel lblFAbsolute = new JLabel(titles.get("THEOlblFAbsolute"), JLabel.RIGHT);
         pnlAdjustment.add(lblFAbsolute);
 //endregion
 
@@ -164,7 +178,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
 
 //region lblFRelative
 
-        JLabel lblFRelative = new JLabel(parentFrame.getTitles().get("THEOlblRelative"), JLabel.RIGHT);
+        JLabel lblFRelative = new JLabel(titles.get("THEOlblRelative"), JLabel.RIGHT);
         pnlAdjustment.add(lblFRelative);
 //endregion
 
@@ -176,7 +190,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
 
 //region lblPer
 
-        JLabel lblPer = new JLabel(parentFrame.getTitles().get("THEOlblPer"), JLabel.RIGHT);
+        JLabel lblPer = new JLabel(titles.get("THEOlblPer"), JLabel.RIGHT);
         pnlAdjustment.add(lblPer);
 //endregion
 
@@ -190,18 +204,18 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
 
         JPanel pnlPaint = new JPanel(new BorderLayout());
         pnlPaint.setPreferredSize(new Dimension(200, 200));
-        pnlPaint.setBorder(BorderFactory.createTitledBorder(null, parentFrame.getTitles().get("THEOpnlPaintTitle"),
+        pnlPaint.setBorder(BorderFactory.createTitledBorder(null, titles.get("THEOpnlPaintTitle"),
                 TitledBorder.CENTER,
                 TitledBorder.TOP,
                 new Font(Font.DIALOG, Font.PLAIN, 12),
                 Color.BLUE));
 
-        if (parentFrame.getPolygonRepository().getPerimeter() == 0.0) {
+        if (polygonService.getPerimeter() == 0.0) {
             JPanel pnlBlank = new JPanel();
             pnlPaint.add(pnlBlank, BorderLayout.CENTER);
 
         } else {
-            PolygonPaintPanel pnlTheoPaintPanel = new PolygonPaintPanel(parentFrame.getPolygonRepository(), -1);
+            PolygonPaintPanel pnlTheoPaintPanel = new PolygonPaintPanel(polygonService.getPolygonRepository(), -1);
             pnlPaint.add(pnlTheoPaintPanel, BorderLayout.CENTER);
         }
 //endregion
@@ -209,10 +223,38 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
 //region pnlBottom
 
         JPanel pnlBottom = new JPanel(new GridBagLayout());
-        pnlBottom.add(pnlAdjustment, new GridBagConstraints(0, 0, 1, 1, 1, 0,
-                GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-        pnlBottom.add(pnlPaint, new GridBagConstraints(1, 0, 1, 1, 1, 0,
-                GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+        pnlBottom.add(pnlAdjustment, new GridBagConstraints(
+                0,
+                0,
+                1,
+                1,
+                1,
+                0,
+                GridBagConstraints.NORTHWEST,
+                GridBagConstraints.BOTH,
+                new Insets(
+                        0,
+                        0,
+                        0,
+                        0),
+                0,
+                0));
+        pnlBottom.add(pnlPaint, new GridBagConstraints(
+                1,
+                0,
+                1,
+                1,
+                1,
+                0,
+                GridBagConstraints.NORTHWEST,
+                GridBagConstraints.BOTH,
+                new Insets(
+                        0,
+                        0,
+                        0,
+                        0),
+                0,
+                0));
         add(pnlBottom, BorderLayout.SOUTH);
 //endregion
 
@@ -297,7 +339,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
      * sets bindings value
      */
     public void setBindings() {
-        switch (parentFrame.getPolygonRepository().getBindType()) {
+        switch (polygonService.getBindType()) {
             case ZZ -> {
                 lblAngleResidue.setText("-.-");
                 lblHeightResidue.setText("-.-");
@@ -308,23 +350,23 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
                 lblPerValue.setText("-.-");
             }
             case TT -> {
-                if (parentFrame.getSettings().getValueFHor() *
-                        Math.sqrt(parentFrame.getPolygonRepository().getSizePolygonStations()) >
-                        Math.abs(parentFrame.getPolygonRepository().getfHor())) {
+                if (settingsController.getValueFHor() *
+                        Math.sqrt(polygonService.getSizePolygonStations()) >
+                        Math.abs(polygonService.getfHor())) {
                     lblAngleResidue.setForeground(Color.GREEN);
                 } else {
                     lblAngleResidue.setForeground(Color.RED);
                 }
-                lblAngleResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfHor()).format(2).getStr());
-                if (parentFrame.getSettings().getValueFH() *
-                        Math.sqrt(parentFrame.getPolygonRepository().getPerimeter() / 1000) >
-                        Math.abs(parentFrame.getPolygonRepository().getfZ() * 1000)) {
+                lblAngleResidue.setText(new DataHandler(polygonService.getfHor()).format(2).getStr());
+                if (settingsController.getValueFH() *
+                        Math.sqrt(polygonService.getPerimeter() / 1000) >
+                        Math.abs(polygonService.getfZ() * 1000)) {
                     lblHeightResidue.setForeground(Color.GREEN);
                 } else {
                     lblHeightResidue.setForeground(Color.RED);
                 }
-                lblHeightResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfZ()).format(3).getStr());
-                if (parentFrame.getSettings().getValueFAbs() > parentFrame.getPolygonRepository().getfAbs()) {
+                lblHeightResidue.setText(new DataHandler(polygonService.getfZ()).format(3).getStr());
+                if (settingsController.getValueFAbs() > polygonService.getfAbs()) {
                     lblFXResidue.setForeground(Color.GREEN);
                     lblFYResidue.setForeground(Color.GREEN);
                     lblFAbsoluteResidue.setForeground(Color.GREEN);
@@ -333,29 +375,29 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
                     lblFYResidue.setForeground(Color.RED);
                     lblFAbsoluteResidue.setForeground(Color.RED);
                 }
-                lblFXResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfX()).format(3).getStr());
-                lblFYResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfY()).format(3).getStr());
-                lblFAbsoluteResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfAbs()).format(3).getStr());
-                if (Double.parseDouble(parentFrame.getSettings().getValueFOtn()) <
-                        Double.parseDouble(parentFrame.getPolygonRepository().getfOtn())) {
+                lblFXResidue.setText(new DataHandler(polygonService.getfX()).format(3).getStr());
+                lblFYResidue.setText(new DataHandler(polygonService.getfY()).format(3).getStr());
+                lblFAbsoluteResidue.setText(new DataHandler(polygonService.getfAbs()).format(3).getStr());
+                if (Double.parseDouble(settingsController.getValueFOtn()) <
+                        Double.parseDouble(polygonService.getfOtn())) {
                     lblFRelativeResidue.setForeground(Color.GREEN);
                 } else {
                     lblFRelativeResidue.setForeground(Color.RED);
                 }
-                lblFRelativeResidue.setText("1 : " + parentFrame.getPolygonRepository().getfOtn());
-                lblPerValue.setText(new DataHandler(parentFrame.getPolygonRepository().getPerimeter()).format(3).getStr());
+                lblFRelativeResidue.setText("1 : " + polygonService.getfOtn());
+                lblPerValue.setText(new DataHandler(polygonService.getPerimeter()).format(3).getStr());
             }
             case OO, OT, TO -> {
                 lblAngleResidue.setText("-.-");
-                if (parentFrame.getSettings().getValueFH() *
-                        Math.sqrt(parentFrame.getPolygonRepository().getPerimeter() / 1000) >
-                        Math.abs(parentFrame.getPolygonRepository().getfZ() * 1000)) {
+                if (settingsController.getValueFH() *
+                        Math.sqrt(polygonService.getPerimeter() / 1000) >
+                        Math.abs(polygonService.getfZ() * 1000)) {
                     lblHeightResidue.setForeground(Color.GREEN);
                 } else {
                     lblHeightResidue.setForeground(Color.RED);
                 }
-                lblHeightResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfZ()).format(3).getStr());
-                if (parentFrame.getSettings().getValueFAbs() > parentFrame.getPolygonRepository().getfAbs()) {
+                lblHeightResidue.setText(new DataHandler(polygonService.getfZ()).format(3).getStr());
+                if (settingsController.getValueFAbs() > polygonService.getfAbs()) {
                     lblFXResidue.setForeground(Color.GREEN);
                     lblFYResidue.setForeground(Color.GREEN);
                     lblFAbsoluteResidue.setForeground(Color.GREEN);
@@ -364,17 +406,17 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
                     lblFYResidue.setForeground(Color.RED);
                     lblFAbsoluteResidue.setForeground(Color.RED);
                 }
-                lblFXResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfX()).format(3).getStr());
-                lblFYResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfY()).format(3).getStr());
-                lblFAbsoluteResidue.setText(new DataHandler(parentFrame.getPolygonRepository().getfAbs()).format(3).getStr());
-                if (Double.parseDouble(parentFrame.getSettings().getValueFOtn()) <
-                        Double.parseDouble(parentFrame.getPolygonRepository().getfOtn())) {
+                lblFXResidue.setText(new DataHandler(polygonService.getfX()).format(3).getStr());
+                lblFYResidue.setText(new DataHandler(polygonService.getfY()).format(3).getStr());
+                lblFAbsoluteResidue.setText(new DataHandler(polygonService.getfAbs()).format(3).getStr());
+                if (Double.parseDouble(settingsController.getValueFOtn()) <
+                        Double.parseDouble(polygonService.getfOtn())) {
                     lblFRelativeResidue.setForeground(Color.GREEN);
                 } else {
                     lblFRelativeResidue.setForeground(Color.RED);
                 }
-                lblFRelativeResidue.setText(parentFrame.getPolygonRepository().getfOtn());
-                lblPerValue.setText(new DataHandler(parentFrame.getPolygonRepository().getPerimeter()).format(3).getStr());
+                lblFRelativeResidue.setText(polygonService.getfOtn());
+                lblPerValue.setText(new DataHandler(polygonService.getPerimeter()).format(3).getStr());
             }
             case ZT, TZ -> {
                 lblAngleResidue.setText("-.-");
@@ -383,7 +425,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
                 lblFYResidue.setText("-.-");
                 lblFAbsoluteResidue.setText("-.-");
                 lblFRelativeResidue.setText("-.-");
-                lblPerValue.setText(new DataHandler(parentFrame.getPolygonRepository().getPerimeter()).format(3).getStr());
+                lblPerValue.setText(new DataHandler(polygonService.getPerimeter()).format(3).getStr());
             }
         }
     }

@@ -1,6 +1,7 @@
 package taheoport.model;
 
 import taheoport.gui.MainWin;
+import taheoport.service.SettingsController;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -13,6 +14,7 @@ import java.util.LinkedList;
 public class Shell {
 
     private final MainWin parentFrame;
+    private final SettingsController settingsController;
 
     /**
      * Constructor
@@ -20,6 +22,7 @@ public class Shell {
      */
     public Shell(MainWin parentFrame) {
         this.parentFrame = parentFrame;
+        settingsController = parentFrame.getSettingsController();
     }
 
     /**
@@ -27,7 +30,7 @@ public class Shell {
      */
     public HashMap<String, String> getTitles() {
         HashMap<String, String> titles = new HashMap<>();
-        switch (parentFrame.getSettings().getLanguage()) {
+        switch (settingsController.getLanguage()) {
             case 0 -> {
                 titles.put("MWmFile", "File");
                 titles.put("MWmTools", "Tools");
@@ -324,7 +327,7 @@ public class Shell {
 
     public HashMap<String, String> getTitlesReports() {
         HashMap <String, String>titlesReports = new HashMap<>();
-        switch (parentFrame.getSettings().getLanguage()) {
+        switch (settingsController.getLanguage()) {
             case 0 -> {
                 titlesReports.put("SPstation", "Station ");
                 titlesReports.put("SPorientir", "Orientir ");
@@ -383,7 +386,7 @@ public class Shell {
      */
     public LinkedList<String> getTopReportExtract() {
     LinkedList<String> llReportExtract = new LinkedList<String>();
-        switch (parentFrame.getSettings().getLanguage()) {
+        switch (settingsController.getLanguage()) {
             case 0 -> {
                 llReportExtract.add("");
                 llReportExtract.add("                       REPORT OF DETERMINATION OF AVERAGE VALUES.");
@@ -419,7 +422,7 @@ public class Shell {
      */
     public LinkedList<String> getTopReportSurvey() {
         LinkedList<String> llReportSurvey = new LinkedList<String>();
-        switch (parentFrame.getSettings().getLanguage()) {
+        switch (settingsController.getLanguage()) {
             case 0 -> {
                 llReportSurvey.add("");
                 llReportSurvey.add("                           C  O  O  R  D  I  N  A  T  E   C  A  L  C  U  L  A  T  I  O  N   R  E  P  O  R  T");
@@ -454,7 +457,7 @@ public class Shell {
      */
     public LinkedList<String> getTopReportXY() {
         LinkedList<String> llTopReportXY = new LinkedList<String>();
-        switch (parentFrame.getSettings().getLanguage()) {
+        switch (settingsController.getLanguage()) {
             case 0 -> {
                 llTopReportXY.add("");
                 llTopReportXY.add("                       C  O  O  R  D  I  N  A  T  E   C  A  L  C  U  L  A  T  I  O  N   R  E  P  O  R  T");
@@ -492,7 +495,7 @@ public class Shell {
      */
     public LinkedList<String> getTopReportZ() {
         LinkedList<String> llReportZ = new LinkedList<String>();
-        switch (parentFrame.getSettings().getLanguage()) {
+        switch (settingsController.getLanguage()) {
             case 0 -> {
                 llReportZ.add("");
                 llReportZ.add("           H E I G H T   C A L C U L A T I O N   R E P O R T");
@@ -531,7 +534,7 @@ public class Shell {
      */
     public LinkedList<String> getLicense() {
         LinkedList<String> llLicense = new LinkedList<>();
-        switch (parentFrame.getSettings().getLanguage()) {
+        switch (settingsController.getLanguage()) {
             case 0 -> {
                 llLicense.add("                    LICENSE AGREEMENT");
                 llLicense.add("              To use the program Taheoport");
