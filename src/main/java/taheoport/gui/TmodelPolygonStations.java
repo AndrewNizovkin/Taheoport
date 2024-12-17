@@ -1,6 +1,9 @@
 package taheoport.gui;
 
+import taheoport.model.PolygonStation;
 import taheoport.service.DataHandler;
+import taheoport.service.PolygonService;
+import taheoport.service.SurveyService;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -8,11 +11,14 @@ import java.util.ArrayList;
 public class TmodelPolygonStations extends AbstractTableModel {
     private final ArrayList<Object []> dataArrayList;
     private final MainWin parentFrame;
+    private final PolygonService polygonService;
 
     /**
      * Constructor
      */
     public TmodelPolygonStations(MainWin frame) {
+        super();
+        polygonService = frame.getPolygonService();
         dataArrayList = new ArrayList<>();
         parentFrame = frame;
     }
@@ -84,18 +90,19 @@ public class TmodelPolygonStations extends AbstractTableModel {
     public void setValueAt(Object object, int rowIndex, int columnIndex) {
         Object [] row = dataArrayList.get(rowIndex);
         DataHandler dataHandler = new DataHandler();
+        PolygonStation polygonStation = polygonService.findById(rowIndex);
         if (columnIndex != 7) dataHandler = new DataHandler((String) object).commaToPoint();
         switch (columnIndex) {
             case 0 -> {
                 if (dataHandler.getStr().equals("")) {
-                    parentFrame.getPolygonRepository().findById(rowIndex).setName("noname");
+                    polygonStation.setName("noname");
 
                     row[columnIndex] = "noname";
                     dataArrayList.set(rowIndex, row);
 
                 } else {
                     if (dataHandler.isValidName()) {
-                        parentFrame.getPolygonRepository().findById(rowIndex).setName((String) object);
+                        polygonStation.setName((String) object);
                         row[columnIndex] = object;
                         dataArrayList.set(rowIndex, row);
                     }
@@ -104,13 +111,13 @@ public class TmodelPolygonStations extends AbstractTableModel {
 
             case 1 -> {
                 if (dataHandler.getStr().equals("")) {
-                    parentFrame.getPolygonRepository().findById(rowIndex).setHor("0.0000");
+                    polygonStation.setHor("0.0000");
                     row[columnIndex] = "0.0000";
                     dataArrayList.set(rowIndex, row);
 
                 } else {
                     if (dataHandler.isPositiveNumber()) {
-                        parentFrame.getPolygonRepository().findById(rowIndex).setHor(dataHandler.format(4).getStr());
+                        polygonStation.setHor(dataHandler.format(4).getStr());
                         row[columnIndex] = dataHandler.format(4).getStr();
                         dataArrayList.set(rowIndex, row);
                     }
@@ -120,12 +127,12 @@ public class TmodelPolygonStations extends AbstractTableModel {
 
             case 2 -> {
                 if (dataHandler.getStr().equals("")) {
-                    parentFrame.getPolygonRepository().findById(rowIndex).setLine("0.000");
+                    polygonStation.setLine("0.000");
                     row[columnIndex] = "0.000";
                     dataArrayList.set(rowIndex, row);
                 } else {
                     if (dataHandler.isPositiveNumber()) {
-                        parentFrame.getPolygonRepository().findById(rowIndex).setLine(dataHandler.format(3).getStr());
+                        polygonStation.setLine(dataHandler.format(3).getStr());
                         row[columnIndex] = dataHandler.format(3).getStr();
                         dataArrayList.set(rowIndex, row);
                     }
@@ -134,12 +141,12 @@ public class TmodelPolygonStations extends AbstractTableModel {
 
             case 3 -> {
                 if (dataHandler.getStr().equals("")) {
-                    parentFrame.getPolygonRepository().findById(rowIndex).setdZ("0.000");
+                    polygonStation.setdZ("0.000");
                     row[columnIndex] = "0.000";
                     dataArrayList.set(rowIndex, row);
                 } else {
                     if (dataHandler.isNumber()) {
-                        parentFrame.getPolygonRepository().findById(rowIndex).setdZ(dataHandler.format(3).getStr());
+                        polygonStation.setdZ(dataHandler.format(3).getStr());
                         row[columnIndex] = dataHandler.format(3).getStr();
                         dataArrayList.set(rowIndex, row);
                     }
@@ -149,13 +156,13 @@ public class TmodelPolygonStations extends AbstractTableModel {
             case 4 -> {
                 if ((Boolean) row [7]) {
                     if (dataHandler.getStr().equals("")) {
-                        parentFrame.getPolygonRepository().findById(rowIndex).setX("0.000");
+                        polygonStation.setX("0.000");
                         row[columnIndex] = "0.000";
                         dataArrayList.set(rowIndex, row);
 
                     } else {
                         if (dataHandler.isNumber()) {
-                            parentFrame.getPolygonRepository().findById(rowIndex).setX(dataHandler.format(3).getStr());
+                            polygonStation.setX(dataHandler.format(3).getStr());
                             row[columnIndex] = dataHandler.format(3).getStr();
                             dataArrayList.set(rowIndex, row);
                         }
@@ -165,12 +172,12 @@ public class TmodelPolygonStations extends AbstractTableModel {
             case 5 -> {
                 if ((Boolean) row [7]) {
                     if (dataHandler.getStr().equals("")) {
-                        parentFrame.getPolygonRepository().findById(rowIndex).setY("0.000");
+                        polygonStation.setY("0.000");
                         row[columnIndex] = "0.000";
                         dataArrayList.set(rowIndex, row);
                     } else {
                         if (dataHandler.isNumber()) {
-                            parentFrame.getPolygonRepository().findById(rowIndex).setY(dataHandler.format(3).getStr());
+                            polygonStation.setY(dataHandler.format(3).getStr());
                             row[columnIndex] = dataHandler.format(3).getStr();
                             dataArrayList.set(rowIndex, row);
                         }
@@ -180,12 +187,12 @@ public class TmodelPolygonStations extends AbstractTableModel {
             case 6 -> {
                 if ((Boolean) row [7]) {
                     if (dataHandler.getStr().equals("")) {
-                        parentFrame.getPolygonRepository().findById(rowIndex).setZ("0.000");
+                        polygonStation.setZ("0.000");
                         row[columnIndex] = "0.000";
                         dataArrayList.set(rowIndex, row);
                     } else {
                         if (dataHandler.isNumber()) {
-                            parentFrame.getPolygonRepository().findById(rowIndex).setZ(dataHandler.format(3).getStr());
+                            polygonStation.setZ(dataHandler.format(3).getStr());
                             row[columnIndex] = dataHandler.format(3).getStr();
                             dataArrayList.set(rowIndex, row);
                         }
@@ -194,30 +201,30 @@ public class TmodelPolygonStations extends AbstractTableModel {
             }
             case 7 -> {
                 if (!(rowIndex > 1 & rowIndex < dataArrayList.size() - 2)) {
-                    parentFrame.getPolygonRepository().findById(rowIndex).setStatus((Boolean) object);
+                    polygonStation.setStatus((Boolean) object);
                     row[columnIndex] = object;
                     dataArrayList.set(rowIndex, row);
 
                     if ((Boolean) object) {
-                        if (parentFrame.getPolygonRepository().findById(rowIndex).getX().equals("Not")) {
+                        if (polygonStation.getX().equals("Not")) {
                             row[4] = "0.000";
                             dataArrayList.set(rowIndex, row);
                         } else {
-                            row[4] = parentFrame.getPolygonRepository().findById(rowIndex).getX();
+                            row[4] = polygonStation.getX();
                             dataArrayList.set(rowIndex, row);
                         }
-                        if (parentFrame.getPolygonRepository().findById(rowIndex).getY().equals("Not")) {
+                        if (polygonStation.getY().equals("Not")) {
                             row[5] = "0.000";
                             dataArrayList.set(rowIndex, row);
                         } else {
-                            row[5] = parentFrame.getPolygonRepository().findById(rowIndex).getY();
+                            row[5] = polygonStation.getY();
                             dataArrayList.set(rowIndex, row);
                         }
-                        if (parentFrame.getPolygonRepository().findById(rowIndex).getZ().equals("Not")) {
+                        if (polygonStation.getZ().equals("Not")) {
                             row[6] = "0.000";
                             dataArrayList.set(rowIndex, row);
                         } else {
-                            row[6] = parentFrame.getPolygonRepository().findById(rowIndex).getZ();
+                            row[6] = polygonStation.getZ();
                             dataArrayList.set(rowIndex, row);
                         }
                     } else {
@@ -225,9 +232,9 @@ public class TmodelPolygonStations extends AbstractTableModel {
                         row[5] = "";
                         row[6] = "";
                         dataArrayList.set(rowIndex, row);
-                        parentFrame.getPolygonRepository().findById(rowIndex).setX("Not");
-                        parentFrame.getPolygonRepository().findById(rowIndex).setY("Not");
-                        parentFrame.getPolygonRepository().findById(rowIndex).setZ("Not");
+                        polygonStation.setX("Not");
+                        polygonStation.setY("Not");
+                        polygonStation.setZ("Not");
                     }
                     fireTableCellUpdated(rowIndex, 4);
                     fireTableCellUpdated(rowIndex, 5);
@@ -259,7 +266,7 @@ public class TmodelPolygonStations extends AbstractTableModel {
      */
     public void removeRow(int index) {
         dataArrayList.remove(index);
-        parentFrame.getPolygonRepository().removeStation(index);
+        polygonService.removeStation(index);
         fireTableRowsDeleted(index, index);
     }
 }

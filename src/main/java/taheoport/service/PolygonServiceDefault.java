@@ -38,7 +38,7 @@ public class PolygonServiceDefault implements PolygonService {
      */
     @Override
     public void newProject() {
-        polygonRepository.clear();
+        polygonRepository.clearRepository();
         polygonRepository.addStation(new PolygonStation());
         absolutePolPath = polygonRepository.getAbsolutePolPath();
     }
@@ -95,7 +95,7 @@ public class PolygonServiceDefault implements PolygonService {
      * Gets polygonRepository
      * @return polygonRepository
      */
-    public PolygonRepository getPolygonRepository() {
+    public PolygonRepository getAllPolygonStations() {
         return polygonRepository;
     }
 
@@ -111,7 +111,7 @@ public class PolygonServiceDefault implements PolygonService {
      */
     @Override
     public void loadPolList(List<String> list) {
-        polygonRepository.clear();
+        polygonRepository.clearRepository();
         PolygonStation ts;
         String sep = " ";
         String str;
@@ -474,6 +474,16 @@ public class PolygonServiceDefault implements PolygonService {
     }
 
     /**
+     * remove Station from llTheoStations
+     *
+     * @param idx int index removed element
+     */
+    @Override
+    public void removeStation(int idx) {
+        polygonRepository.removeStation(idx);
+    }
+
+    /**
      * Gets polygonStation by id from repository
      *
      * @param idx int index
@@ -502,6 +512,16 @@ public class PolygonServiceDefault implements PolygonService {
     @Override
     public double getPerimeter() {
         return polygonRepository.getPerimeter();
+    }
+
+    /**
+     * Sets perimeter
+     *
+     * @param perimeter double
+     */
+    @Override
+    public void setPerimeter(double perimeter) {
+        polygonRepository.setPerimeter(perimeter);
     }
 
     /**
@@ -568,4 +588,75 @@ public class PolygonServiceDefault implements PolygonService {
     public BindType getBindType() {
         return polygonRepository.getBindType();
     }
+
+    /**
+     * Sets bindType
+     *
+     * @param bindType BindType
+     */
+    @Override
+    public void setBindType(BindType bindType) {
+        polygonRepository.setBindType(bindType);
+    }
+
+    /**
+     * Sets fHor
+     *
+     * @param fHor
+     */
+    @Override
+    public void setfHor(double fHor) {
+        polygonRepository.setfHor(fHor);
+    }
+
+    /**
+     * Sets fX
+     *
+     * @param fX double fX
+     */
+    @Override
+    public void setfX(double fX) {
+        polygonRepository.setfX(fX);
+    }
+
+    /**
+     * Sets fY
+     *
+     * @param fY double fY
+     */
+    @Override
+    public void setfY(double fY) {
+        polygonRepository.setfY(fY);
+    }
+
+    /**
+     * Sets fZ
+     *
+     * @param fZ double fZ
+     */
+    @Override
+    public void setfZ(double fZ) {
+        polygonRepository.setfZ(fZ);
+    }
+
+    /**
+     * Sets fAbs
+     *
+     * @param fAbs double fAbs
+     */
+    @Override
+    public void setfAbs(double fAbs) {
+        polygonRepository.setfAbs(fAbs);
+    }
+
+    /**
+     * Sets fOtn
+     *
+     * @param fOtn String fOtn
+     */
+    @Override
+    public void setfOtn(String fOtn) {
+        polygonRepository.setfOtn(fOtn);
+    }
+
 }

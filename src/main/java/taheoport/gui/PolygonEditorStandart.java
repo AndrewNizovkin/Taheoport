@@ -8,10 +8,8 @@ import taheoport.service.SettingsController;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -215,7 +213,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
             pnlPaint.add(pnlBlank, BorderLayout.CENTER);
 
         } else {
-            PolygonPaintPanel pnlTheoPaintPanel = new PolygonPaintPanel(polygonService.getPolygonRepository(), -1);
+            PolygonPaintPanel pnlTheoPaintPanel = new PolygonPaintPanel(polygonService.getAllPolygonStations(), -1);
             pnlPaint.add(pnlTheoPaintPanel, BorderLayout.CENTER);
         }
 //endregion

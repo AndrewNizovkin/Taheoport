@@ -4,7 +4,6 @@
     import taheoport.model.PolygonStation;
 
     import java.util.LinkedList;
-    import java.util.List;
 
     /**
      * this class encapsulates data in a list of stations llTeoStation and
@@ -12,7 +11,7 @@
      * @author Andrew Nizovkin
      * Copyright Nizovkin A.V. 2022
      */
-public class PolygonRepository {
+public class PolygonRepository extends LinkedList<PolygonStation>{
         private String absolutePolPath;
         private BindType bindType;
         private double fHor;
@@ -21,7 +20,7 @@ public class PolygonRepository {
         private double fZ;
         private double fAbs;
         private String fOtn;
-        private final List<PolygonStation> listPolygonStations;
+//        private final List<PolygonStation> listPolygonStations;
         private double perimeter;
 
 //    public enum BindType {ZZ,TT, TO, OT, OO, TZ, ZT}
@@ -39,24 +38,16 @@ public class PolygonRepository {
         fAbs = 0.0;
         fOtn = "Not";
         perimeter = 0.0;
-        listPolygonStations = new LinkedList<>();
+//        listPolygonStations = new LinkedList<>();
     }
 
         /**
          * Removes all elements from listPolygonStations
          */
-    public void clear() {
-        listPolygonStations.clear();
+    public void clearRepository() {
+        this.clear();
         absolutePolPath = "";
     }
-
-    /**
-     * sets absolutePolPath
-     * @param absolutePolPath String path
-     */
-    public void setAbsolutePolPath(String absolutePolPath) {
-            this.absolutePolPath = absolutePolPath;
-        }
 
         /**
          * Return this.absolutePolPath
@@ -72,7 +63,7 @@ public class PolygonRepository {
          * @return String
          */
         public PolygonStation findById(int idx) {
-        return listPolygonStations.get(idx);
+        return this.get(idx);
         }
 
         /**
@@ -80,7 +71,7 @@ public class PolygonRepository {
          * @return int size
          */
         public int getSizePolygonStations() {
-            return listPolygonStations.size();
+            return this.size();
         }
 
         /**
@@ -152,7 +143,7 @@ public class PolygonRepository {
          * @param idx int index removed element
          */
         public void removeStation(int idx) {
-            listPolygonStations.remove(idx);
+            this.remove(idx);
         }
 
         /**
@@ -160,7 +151,7 @@ public class PolygonRepository {
          * @param idx int idx
          */
         public void insertStation(int idx) {
-            listPolygonStations.add(idx, new PolygonStation());
+            this.add(idx, new PolygonStation());
         }
 
         /**
@@ -168,7 +159,7 @@ public class PolygonRepository {
          * @param polygonStation instance of PolygonStation
          */
         public void addStation(PolygonStation polygonStation) {
-            listPolygonStations.add(polygonStation);
+            this.add(polygonStation);
         }
 
         /**

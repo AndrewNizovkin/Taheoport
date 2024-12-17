@@ -14,24 +14,24 @@ import java.util.*;
  * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
-public class SurveyRepository {
+public class SurveyRepository extends LinkedList<SurveyStation>{
 //    private SurveyRepository surveyRepository;
     private String absoluteTahPath;
-    private final List <SurveyStation> surveyStations;
+//    private final List <SurveyStation> surveyStations;
 
     /**
      * Constructor
      */
     public SurveyRepository() {
         absoluteTahPath = "";
-        surveyStations = new LinkedList <>();
+//        surveyStations = new LinkedList <>();
     }
 
     /**
      * Removes all records from surveyStations
      */
-    public void clear() {
-        surveyStations.clear();
+    public void clearRepository() {
+        this.clear();
         absoluteTahPath = "";
     }
 
@@ -42,8 +42,8 @@ public class SurveyRepository {
      */
     public SurveyStation insertStation(int index) {
         SurveyStation surveyStation;
-        surveyStations.add(index, new SurveyStation());
-        surveyStation = surveyStations.get(index);
+        this.add(index, new SurveyStation());
+        surveyStation = this.get(index);
         surveyStation.addPicket();
         return surveyStation;
     }
@@ -53,7 +53,7 @@ public class SurveyRepository {
      * @param surveyStation instance of SurveyStation
      */
     public SurveyStation addStation(SurveyStation surveyStation) {
-        surveyStations.add(surveyStation);
+        this.add(surveyStation);
         return surveyStation;
     }
 
@@ -63,7 +63,7 @@ public class SurveyRepository {
      * @return element (Station)
      */
     public SurveyStation findById(int index){
-            return surveyStations.get(index);
+            return this.get(index);
     }
 
     /**
@@ -71,7 +71,7 @@ public class SurveyRepository {
      * @param index element index
      */
     public void removeStation(int index){
-        surveyStations.remove(index);
+        this.remove(index);
     }
 
     /**
@@ -79,7 +79,7 @@ public class SurveyRepository {
      * @return int size list of Stations
      */
     public int sizeStations(){
-        return surveyStations.size();
+        return this.size();
     }
 
     /**
@@ -104,7 +104,7 @@ public class SurveyRepository {
      * @return boolean
      */
     public boolean containPolygon() {
-        for (SurveyStation surveyStation : surveyStations) {
+        for (SurveyStation surveyStation : this) {
             if (surveyStation.sizePickets() < 2) {
                 return false;
             }

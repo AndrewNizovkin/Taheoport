@@ -1,5 +1,6 @@
 package taheoport.service;
 
+import taheoport.model.Picket;
 import taheoport.model.SurveyStation;
 import taheoport.repository.SurveyRepository;
 
@@ -32,7 +33,7 @@ public interface SurveyService {
      * Gets surveyRepository
      * @return surveyRepository
      */
-    SurveyRepository getSurveyRepository();
+    SurveyRepository getAllStations();
 
     /**
      * Checks the potential presence of a polygon in the measurements
@@ -144,5 +145,20 @@ public interface SurveyService {
      * @param picketId int picket index
      */
     void removePicket(int stationId, int picketId);
+
+    /**
+     * Gets picket by stationId and picketId
+     * @param stationId int
+     * @param picketId int
+     * @return picket
+     */
+    Picket getPicketById(int stationId, int picketId);
+
+    /**
+     * Gets count of pickets at the survey station by id
+     * @param stationId int
+     * @return int
+     */
+    int sizePickets(int stationId);
 }
 

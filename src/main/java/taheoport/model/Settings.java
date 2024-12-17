@@ -110,22 +110,6 @@ public class Settings {
         isChanged = changed;
     }
 
-    public double getValueFH() {
-        return Double.parseDouble(FHs[idxFH].substring(0, FHs[idxFH].length() - 2));
-    }
-
-    public double getValueFHor() {
-        return Double.parseDouble(FHors[idxFHor].substring(0, FHors[idxFHor].length() - 2));
-    }
-
-    public double getValueFAbs() {
-        return Double.parseDouble(FAbss[idxFAbs]);
-    }
-
-    public String getValueFOtn() {
-        return FOtns[idxFOtn].substring(2);
-    }
-
     public int getOrientStation() {
         return orientStation;
     }

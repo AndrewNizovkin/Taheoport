@@ -439,7 +439,8 @@ public class SettingsControllerDefault implements SettingsController {
      */
     @Override
     public double getValueFHor() {
-        return settings.getValueFHor();
+        String currentFHor = settings.getFHors()[settings.getIdxFHor()];
+        return Double.parseDouble(currentFHor.substring(0, currentFHor.length() - 2));
     }
 
     /**
@@ -449,7 +450,8 @@ public class SettingsControllerDefault implements SettingsController {
      */
     @Override
     public double getValueFH() {
-        return settings.getValueFH();
+        String currentFH = settings.getFHs()[settings.getIdxFH()];
+        return Double.parseDouble(currentFH.substring(0, currentFH.length() - 2));
     }
 
     /**
@@ -459,7 +461,7 @@ public class SettingsControllerDefault implements SettingsController {
      */
     @Override
     public double getValueFAbs() {
-        return settings.getValueFAbs();
+        return Double.parseDouble(settings.getFAbss()[settings.getIdxFAbs()]);
     }
 
     /**
@@ -469,8 +471,6 @@ public class SettingsControllerDefault implements SettingsController {
      */
     @Override
     public String getValueFOtn() {
-        return settings.getValueFOtn();
+        return settings.getFOtns()[settings.getIdxFOtn()].substring(2);
     }
-
-
 }

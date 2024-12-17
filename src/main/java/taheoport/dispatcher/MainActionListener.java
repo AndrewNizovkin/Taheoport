@@ -20,13 +20,14 @@ public class MainActionListener implements ActionListener {
     private final PolygonService polygonService;
     private final CatalogService catalogService;
     private final ExtractService extractService;
-
+    private final MainRenderer renderer;
     /**
      * Constructor
-     * @param parentFrame instance of MainWin
+     * @param mainRenderer MainRenderer
      */
-    public MainActionListener(MainWin parentFrame) {
-        this.parentFrame = parentFrame;
+    public MainActionListener(MainRenderer mainRenderer) {
+        renderer = mainRenderer;
+        parentFrame = renderer.getParentFrame();
         surveyService = parentFrame.getSurveyService();
         polygonService = parentFrame.getPolygonService();
         catalogService = parentFrame.getCatalogService();
@@ -49,7 +50,7 @@ public class MainActionListener implements ActionListener {
             case "fSave", "btnSave" -> save();
             case "fSaveAs" -> saveAs();
             case "tLoadCat", "btnLoadCat" -> loadCatalog();
-            case "tUpdate" -> catalogService.updateBasePoints(parentFrame.getMode());
+            case "tUpdate" -> catalogService.updateBasePoints(renderer.getMode());
             case "tRun", "btnRun" -> processSourceData();
             case "tView", "btnView" -> viewResult();
             case "tExtractPol" -> extractPol();
@@ -63,12 +64,12 @@ public class MainActionListener implements ActionListener {
      * extracts polygon from survey project and open new polygon project
      */
     private void extractPol() {
-        if (surveyService.getSurveyRepository() != null) {
+        if (surveyService.getAllStations() != null) {
             if (surveyService.containPolygon()) {
                 surveyService.processSourceData();
                 polygonService.loadPolList(extractService.extractPolygonProject());
-                parentFrame.setMode(1);
-                parentFrame.reloadPolygonEditor();
+                renderer.setMode(1);
+                renderer.reloadPolygonEditor();
                 new ShowViewExtractPol(parentFrame);
             } else {
                 JOptionPane.showMessageDialog(
@@ -84,14 +85,14 @@ public class MainActionListener implements ActionListener {
      * Show result of processing or Adjustments
      */
     private void viewResult() {
-        switch (parentFrame.getMode()) {
+        switch (renderer.getMode()) {
             case 0 -> {
                 surveyService.processSourceData();
                 new ShowViewResults(parentFrame);
             }
             case 1 -> {
                 processSourceData();
-                if (polygonService.getPolygonRepository().getPerimeter() > 0.0) {
+                if (polygonService.getPerimeter() > 0.0) {
                     new ShowViewAdjustment(parentFrame);
                 }
             }
@@ -103,14 +104,14 @@ public class MainActionListener implements ActionListener {
      * Writes an *.dat file with the coordinates of the pickets to disk
      */
     private void processSourceData() {
-        switch (parentFrame.getMode()) {
+        switch (renderer.getMode()) {
             case 0 -> {
                 surveyService.processSourceData();
                 JOptionPane.showMessageDialog(parentFrame,"The data has been processed successfully");
             }
             case 1 -> {
                 polygonService.processSourceData();
-                parentFrame.reloadPolygonEditor();
+                renderer.reloadPolygonEditor();
             }
         }
     }
@@ -122,11 +123,11 @@ public class MainActionListener implements ActionListener {
         switch (parentFrame.getMode()) {
             case 0 -> {
                 surveyService.newProject();
-                parentFrame.reloadSurveyEditor();
+                renderer.reloadSurveyEditor();
             }
             case 1 -> {
                 polygonService.newProject();
-                parentFrame.reloadPolygonEditor();
+                renderer.reloadPolygonEditor();
             }
         }
     }
@@ -135,14 +136,14 @@ public class MainActionListener implements ActionListener {
      * open Tah file
      */
     private void openFile() {
-        switch (parentFrame.getMode()) {
+        switch (renderer.getMode()) {
             case 0 -> {
                 surveyService.importTah();
-                parentFrame.reloadSurveyEditor();
+                renderer.reloadSurveyEditor();
             }
             case 1 -> {
                 polygonService.importPol();
-                parentFrame.reloadPolygonEditor();
+                renderer.reloadPolygonEditor();
             }
         }
     }
@@ -152,7 +153,7 @@ public class MainActionListener implements ActionListener {
      */
     private void importLeica() {
         surveyService.importLeica();
-        parentFrame.reloadSurveyEditor();
+        renderer.reloadSurveyEditor();
         surveyService.saveProjectAs();
     }
 
@@ -161,7 +162,7 @@ public class MainActionListener implements ActionListener {
      */
     private void importNicon() {
         surveyService.importNicon();
-        parentFrame.reloadSurveyEditor();
+        renderer.reloadSurveyEditor();
         surveyService.saveProjectAs();
     }
 
@@ -170,7 +171,7 @@ public class MainActionListener implements ActionListener {
      */
     private void importTopcon() {
         surveyService.importTopcon();
-        parentFrame.reloadSurveyEditor();
+        renderer.reloadSurveyEditor();
         surveyService.saveProjectAs();
     }
 
@@ -179,7 +180,7 @@ public class MainActionListener implements ActionListener {
      * set absoluteTahPath
      */
     private void save() {
-        switch (parentFrame.getMode()) {
+        switch (renderer.getMode()) {
             case 0 -> {
                 surveyService.saveProject();
                 parentFrame.setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
@@ -213,6 +214,6 @@ public class MainActionListener implements ActionListener {
      */
     private void loadCatalog() {
         catalogService.importCatalog();
-        parentFrame.setCurrentCatalog(!catalogService.isEmpty());
+        renderer.setCurrentCatalog(!catalogService.isEmpty());
     }
 }

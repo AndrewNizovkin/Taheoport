@@ -35,7 +35,7 @@ public interface PolygonService {
      * Gets polygonRepository
      * @return polygonRepository
      */
-    PolygonRepository getPolygonRepository();
+    PolygonRepository getAllPolygonStations();
 
     /**
      * Gets absolutePolPath
@@ -100,6 +100,12 @@ public interface PolygonService {
     void insertStation(int idx);
 
     /**
+     * remove Station from llTheoStations
+     * @param idx int index removed element
+     */
+    void removeStation(int idx);
+
+    /**
      * Gets polygonStation by id from repository
      * @param idx int index
      * @return polygonStation
@@ -117,6 +123,12 @@ public interface PolygonService {
      * @return double
      */
     double getPerimeter();
+
+    /**
+     * Sets perimeter
+     * @param perimeter double
+     */
+    void setPerimeter(double perimeter);
 
     /**
      * Gets the actual angular error
@@ -160,4 +172,45 @@ public interface PolygonService {
      */
     BindType getBindType();
 
+    /**
+     * Sets bindType
+     * @param bindType BindType
+     */
+    void setBindType(BindType bindType);
+
+    /**
+     * Sets fHor
+     * @param fHor
+     */
+    void setfHor(double fHor);
+
+    /**
+     * Sets fX
+     * @param fX double fX
+     */
+    void setfX(double fX);
+
+    /**
+     * Sets fY
+     * @param fY double fY
+     */
+    void setfY(double fY);
+
+    /**
+     * Sets fZ
+     * @param fZ double fZ
+     */
+    void setfZ(double fZ);
+
+    /**
+     * Sets fAbs
+     * @param fAbs double fAbs
+     */
+    void setfAbs(double fAbs);
+
+    /**
+     * Sets fOtn
+     * @param fOtn String fOtn
+     */
+    void setfOtn(String fOtn);
     }

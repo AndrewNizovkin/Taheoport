@@ -17,6 +17,7 @@ public class CatalogServiceDefault implements CatalogService {
 
     private final MainWin parentFrame;
     private final CatalogRepository catalogRepository;
+    private final PolygonService polygonService;
     private final IOService ioService;
     private final SettingsController settingsController;
     private String absoluteCatalogPath;
@@ -31,6 +32,7 @@ public class CatalogServiceDefault implements CatalogService {
         this.parentFrame = parentFrame;
         ioService = parentFrame.getIoService();
         settingsController = parentFrame.getSettingsController();
+        polygonService = parentFrame.getPolygonService();
         catalogRepository = new CatalogRepository();
         choice = -1;
     }
@@ -125,17 +127,17 @@ public class CatalogServiceDefault implements CatalogService {
             }
 
             case 1 -> {
-                PolygonRepository polygonRepository = parentFrame.getPolygonRepository();
+//                PolygonRepository polygonRepository = parentFrame.getPolygonRepository();
                 CatalogRepository catalogRepository = parentFrame.getCatalogRepository();
                 int q = 0;
-                for (int i = 0; i < polygonRepository.getSizePolygonStations(); i++) {
+                for (int i = 0; i < polygonService.getSizePolygonStations(); i++) {
                     for (int j = 0; j < catalogRepository.getSizeCatalog(); j++) {
-                        if (polygonRepository.findById(i).getName().equals(catalogRepository.get(j).getName()) &
-                                polygonRepository.findById(i).getStatus()) {
-                            polygonRepository.findById(i).setName(catalogRepository.get(j).getName());
-                            polygonRepository.findById(i).setX(catalogRepository.get(j).getX());
-                            polygonRepository.findById(i).setY(catalogRepository.get(j).getY());
-                            polygonRepository.findById(i).setZ(catalogRepository.get(j).getZ());
+                        if (polygonService.findById(i).getName().equals(catalogRepository.get(j).getName()) &
+                                polygonService.findById(i).getStatus()) {
+                            polygonService.findById(i).setName(catalogRepository.get(j).getName());
+                            polygonService.findById(i).setX(catalogRepository.get(j).getX());
+                            polygonService.findById(i).setY(catalogRepository.get(j).getY());
+                            polygonService.findById(i).setZ(catalogRepository.get(j).getZ());
                             q++;
                         }
                     }

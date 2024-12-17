@@ -33,7 +33,8 @@ public class PolygonPaintPanel extends JPanel {
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        PaintProject ppTheoPaintPoints = new PaintProject(polygonRepository, this.getWidth(), this.getHeight());
+        PaintProject ppTheoPaintPoints = new PaintProject();
+        ppTheoPaintPoints.createPolygonPaintProject(polygonRepository, this.getWidth(), this.getHeight());
         if (ppTheoPaintPoints.getScale() < 10) {
             g.setColor(Color.BLUE);
             for (PaintPoint ppTheoPintPoint : ppTheoPaintPoints) {

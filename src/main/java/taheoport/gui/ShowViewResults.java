@@ -1,8 +1,11 @@
 package taheoport.gui;
 
+import taheoport.model.Picket;
+import taheoport.model.SurveyStation;
 import taheoport.repository.CatalogRepository;
 import taheoport.model.CatalogPoint;
 import taheoport.repository.SurveyRepository;
+import taheoport.service.SurveyService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,9 +22,10 @@ public class ShowViewResults extends JDialog {
     private final JPanel pnlKatalog;
     private PaintPanel pnlView;
     private int sellRow;
-    private final SurveyRepository surveyRepository;
+//    private final SurveyRepository surveyRepository;
     private final JTable tblView;
     private JTabbedPane tpSurvey;
+    private final SurveyService surveyService;
 
     /**
      * Constructor
@@ -29,8 +33,9 @@ public class ShowViewResults extends JDialog {
      */
     public ShowViewResults(MainWin frame) {
         super( frame, frame.getTitles().get("SVRdialogTitle"), true);
+        surveyService = frame.getSurveyService();
         this.parentFrame = frame;
-        surveyRepository = parentFrame.getSurveyRepository();
+//        surveyRepository = parentFrame.getSurveyRepository();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         setUndecorated(true);
@@ -77,20 +82,22 @@ public class ShowViewResults extends JDialog {
 //tblVeiw______________________________________________
 
         CatalogRepository cView = new CatalogRepository();
-        for (int i = 0; i < surveyRepository.sizeStations(); i++) {
-            cView.add(new CatalogPoint(surveyRepository.findById(i).getName(),
-                    surveyRepository.findById(i).getX(),
-                    surveyRepository.findById(i).getY(),
-                    surveyRepository.findById(i).getZ()));
-            cView.add(new CatalogPoint(surveyRepository.findById(i).getNameOr(),
-                    surveyRepository.findById(i).getxOr(),
-                    surveyRepository.findById(i).getyOr(),
-                    surveyRepository.findById(i).getzOr()));
-            for (int j = 0; j < surveyRepository.findById(i).sizePickets(); j++) {
-                cView.add(new CatalogPoint(surveyRepository.findById(i).getPicket(j).getpName(),
-                        surveyRepository.findById(i).getPicket(j).getX(),
-                        surveyRepository.findById(i).getPicket(j).getY(),
-                        surveyRepository.findById(i).getPicket(j).getZ()));
+        for (int i = 0; i < surveyService.sizeRepository(); i++) {
+            SurveyStation surveyStation = surveyService.findStationById(i);
+            cView.add(new CatalogPoint(surveyStation.getName(),
+                    surveyStation.getX(),
+                    surveyStation.getY(),
+                    surveyStation.getZ()));
+            cView.add(new CatalogPoint(surveyStation.getNameOr(),
+                    surveyStation.getxOr(),
+                    surveyStation.getyOr(),
+                    surveyStation.getzOr()));
+            for (int j = 0; j < surveyService.sizePickets(i); j++) {
+                Picket picket = surveyService.getPicketById(i, j);
+                cView.add(new CatalogPoint(picket.getpName(),
+                        picket.getX(),
+                        picket.getY(),
+                        picket.getZ()));
             }
         }
         tblView = new JTable(new TmodelCatalog(cView));
@@ -152,7 +159,7 @@ public class ShowViewResults extends JDialog {
      * @return SurveyProject
      */
     public SurveyRepository getSurveyProject() {
-        return surveyRepository;
+        return surveyService.getAllStations();
     }
 
 

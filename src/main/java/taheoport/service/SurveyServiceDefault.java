@@ -64,7 +64,7 @@ public class SurveyServiceDefault implements SurveyService {
      * Gets surveyRepository
      * @return surveyRepository
      */
-    public SurveyRepository getSurveyRepository() {
+    public SurveyRepository getAllStations() {
         return surveyRepository;
     }
 
@@ -333,7 +333,7 @@ public class SurveyServiceDefault implements SurveyService {
      */
     @Override
     public void newProject() {
-        surveyRepository.clear();
+        surveyRepository.clearRepository();
         absoluteTahPath = surveyRepository.getAbsoluteTahPath();
         SurveyStation st = surveyRepository.addStation(new SurveyStation());
         st.addPicket();
@@ -447,5 +447,28 @@ public class SurveyServiceDefault implements SurveyService {
     @Override
     public void removePicket(int stationId, int picketId) {
         surveyRepository.findById(stationId).removePicket(picketId);
+    }
+
+    /**
+     * Gets picket by stationId and picketId
+     *
+     * @param stationId int
+     * @param picketId  int
+     * @return picket
+     */
+    @Override
+    public Picket getPicketById(int stationId, int picketId) {
+        return surveyRepository.findById(stationId).getPicket(picketId);
+    }
+
+    /**
+     * Gets count of pickets at the survey station by id
+     *
+     * @param stationId int
+     * @return int
+     */
+    @Override
+    public int sizePickets(int stationId) {
+        return surveyRepository.findById(stationId).sizePickets();
     }
 }

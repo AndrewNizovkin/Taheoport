@@ -1,9 +1,9 @@
 package taheoport.model;
 
 import taheoport.repository.PolygonRepository;
-import taheoport.repository.SurveyRepository;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class converts coordinates for displayed on a panel
@@ -20,18 +20,22 @@ public class PaintProject extends LinkedList<PaintPoint>{
     private int y0;
 
     /**
-     * Constructor with surveyProject
-     * @param surveyRepository current SurveyProject
+     * Constructor
+     */
+    public PaintProject() {
+        super();
+    }
+
+    /**
+     * Creates panel for survey project
+     * @param surveyStations list of survey Station
      * @param pWidth width of panel
      * @param pHeight heigth of panel
      */
-    public PaintProject(SurveyRepository surveyRepository, int pWidth, int pHeight) {
-        super();
-        if (surveyRepository != null) {
+    public void createSurveyPaintProject(List<SurveyStation> surveyStations, int pWidth, int pHeight) {
+        if (surveyStations != null) {
             PaintPoint sPoint;
-            SurveyStation surveyStation;
-            for (int i = 0; i < surveyRepository.sizeStations(); i++) {
-                surveyStation = surveyRepository.findById(i);
+            for (SurveyStation surveyStation : surveyStations) {
                 sPoint = new PaintPoint(surveyStation.getName(),
                         surveyStation.getX(),
                         surveyStation.getY(),
@@ -97,21 +101,20 @@ public class PaintProject extends LinkedList<PaintPoint>{
     }
 
     /**
-     * Constructor with TheoProject
-     * @param polygonRepository TheoProject
+     * Creates panel for polygon project
+     * @param polygonStations Polygon station list
      * @param pWidth width of panel
      * @param pHeight height of panel
      */
-    public PaintProject(PolygonRepository polygonRepository, int pWidth, int pHeight) {
-        super();
-        if (polygonRepository != null) {
+    public void createPolygonPaintProject(List<PolygonStation> polygonStations, int pWidth, int pHeight) {
+        if (polygonStations != null) {
             PaintPoint tPoint;
-            for (int i = 0; i < polygonRepository.getSizePolygonStations(); i++) {
-                tPoint = new PaintPoint(polygonRepository.findById(i).getName(),
-                        polygonRepository.findById(i).getX(),
-                        polygonRepository.findById(i).getY(),
-                        polygonRepository.findById(i).getZ());
-                tPoint.setStatus(polygonRepository.findById(i).getStatus());
+            for (PolygonStation polygonStation: polygonStations) {
+                tPoint = new PaintPoint(polygonStation.getName(),
+                        polygonStation.getX(),
+                        polygonStation.getY(),
+                        polygonStation.getZ());
+                tPoint.setStatus(polygonStation.getStatus());
                 add(tPoint);
             }
             xMin = Double.parseDouble(get(0).getX());
@@ -151,55 +154,54 @@ public class PaintProject extends LinkedList<PaintPoint>{
      * @param pWidth width of panel
      * @param pHeight height of panel
      */
-    public PaintProject(LinkedList<PaintPoint> paintPoints, int pWidth, int pHeight ) {
-        super();
-        if (paintPoints != null) {
-            this.addAll(paintPoints);
-
-            xMin = Double.parseDouble(get(0).getX());
-            xMax = Double.parseDouble(get(0).getX());
-            yMax = Double.parseDouble((get(0).getY()));
-            yMin = Double.parseDouble((get(0).getY()));
-            for (PaintPoint paintPoint : this) {
-                if (!paintPoint.getStatus()) {
-                    xMin = Math.min(xMin, Double.parseDouble(paintPoint.getX()));
-                    yMin = Math.min(yMin, Double.parseDouble(paintPoint.getY()));
-                    xMax = Math.max(xMax, Double.parseDouble(paintPoint.getX()));
-                    yMax = Math.max(yMax, Double.parseDouble(paintPoint.getY()));
-                    xMin = Math.min(xMin, Double.parseDouble(paintPoint.getxOr()));
-                    yMin = Math.min(yMin, Double.parseDouble(paintPoint.getyOr()));
-                    xMax = Math.max(xMax, Double.parseDouble(paintPoint.getxOr()));
-                    yMax = Math.max(yMax, Double.parseDouble(paintPoint.getyOr()));
-
-                }
-            }
-            scale = (xMax - xMin) / (pHeight);
-
-            if (scale < ((yMax - yMin) / (pWidth))) {
-                scale = (yMax - yMin) / (pWidth);
-                x0 = 0;
-                y0 = (pHeight - (int) ((xMax - xMin) / scale)) / 2;
-            } else {
-                x0 = (pWidth - (int) ((yMax - yMin) / scale)) / 2;
-                y0 = 0;
-            }
-
-            if (scale == 0) {
-                scale = 1.0;
-            }
-            for (PaintPoint paintPoint : this) {
-                paintPoint.setxPaint(x0 + (int) ((paintPoint.getyDbl() - yMin) / scale));
-                paintPoint.setyPaint(pHeight - y0 - (int) ((paintPoint.getxDbl() - xMin) / scale));
-                if (!paintPoint.getStatus()) {
-                    paintPoint.setxOrPaint(x0 + (int) ((paintPoint.getyOrDbl() - yMin) / scale));
-                    paintPoint.setyPaint(pHeight - y0 - (int) ((paintPoint.getxOrDbl() - xMin) / scale));
-                } else {
-                    paintPoint.setxOrPaint((int) (paintPoint.getyOrDbl() / scale));
-                    paintPoint.setyPaint((int) (paintPoint.getxOrDbl() / scale));
-                }
-            }
-        }
-    }
+//    public void createPaintProject(List<PaintPoint> paintPoints, int pWidth, int pHeight ) {
+//        if (paintPoints != null) {
+//            this.addAll(paintPoints);
+//
+//            xMin = Double.parseDouble(get(0).getX());
+//            xMax = Double.parseDouble(get(0).getX());
+//            yMax = Double.parseDouble((get(0).getY()));
+//            yMin = Double.parseDouble((get(0).getY()));
+//            for (PaintPoint paintPoint : this) {
+//                if (!paintPoint.getStatus()) {
+//                    xMin = Math.min(xMin, Double.parseDouble(paintPoint.getX()));
+//                    yMin = Math.min(yMin, Double.parseDouble(paintPoint.getY()));
+//                    xMax = Math.max(xMax, Double.parseDouble(paintPoint.getX()));
+//                    yMax = Math.max(yMax, Double.parseDouble(paintPoint.getY()));
+//                    xMin = Math.min(xMin, Double.parseDouble(paintPoint.getxOr()));
+//                    yMin = Math.min(yMin, Double.parseDouble(paintPoint.getyOr()));
+//                    xMax = Math.max(xMax, Double.parseDouble(paintPoint.getxOr()));
+//                    yMax = Math.max(yMax, Double.parseDouble(paintPoint.getyOr()));
+//
+//                }
+//            }
+//            scale = (xMax - xMin) / (pHeight);
+//
+//            if (scale < ((yMax - yMin) / (pWidth))) {
+//                scale = (yMax - yMin) / (pWidth);
+//                x0 = 0;
+//                y0 = (pHeight - (int) ((xMax - xMin) / scale)) / 2;
+//            } else {
+//                x0 = (pWidth - (int) ((yMax - yMin) / scale)) / 2;
+//                y0 = 0;
+//            }
+//
+//            if (scale == 0) {
+//                scale = 1.0;
+//            }
+//            for (PaintPoint paintPoint : this) {
+//                paintPoint.setxPaint(x0 + (int) ((paintPoint.getyDbl() - yMin) / scale));
+//                paintPoint.setyPaint(pHeight - y0 - (int) ((paintPoint.getxDbl() - xMin) / scale));
+//                if (!paintPoint.getStatus()) {
+//                    paintPoint.setxOrPaint(x0 + (int) ((paintPoint.getyOrDbl() - yMin) / scale));
+//                    paintPoint.setyPaint(pHeight - y0 - (int) ((paintPoint.getxOrDbl() - xMin) / scale));
+//                } else {
+//                    paintPoint.setxOrPaint((int) (paintPoint.getyOrDbl() / scale));
+//                    paintPoint.setyPaint((int) (paintPoint.getxOrDbl() / scale));
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Gets scale

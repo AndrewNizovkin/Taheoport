@@ -2,6 +2,8 @@ package taheoport.gui;
 
 import taheoport.model.PaintPoint;
 import taheoport.model.PaintProject;
+import taheoport.model.SurveyStation;
+import taheoport.service.SurveyService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +17,7 @@ public class PaintPanel extends JPanel {
     private int index;
     private final ShowViewResults parentFrame;
     private PaintProject ppPaintPoints;
+//    private final SurveyService surveyService;
 
 //    private LinkedList <JLabel> llLabel;
 
@@ -25,6 +28,7 @@ public class PaintPanel extends JPanel {
      */
     public PaintPanel(ShowViewResults frame, int sellRow) {
         super();
+//        surveyService = f
         parentFrame = frame;
         index = sellRow;
     }
@@ -43,7 +47,8 @@ public class PaintPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 //        Insets insets = getInsets();
-        ppPaintPoints = new PaintProject(parentFrame.getSurveyProject(), this.getWidth(), this.getHeight());
+        ppPaintPoints = new PaintProject();
+        ppPaintPoints.createSurveyPaintProject(parentFrame.getSurveyProject(), this.getWidth(), this.getHeight());
         if (ppPaintPoints.getScale() < 10) {
             for (PaintPoint paintPoint : ppPaintPoints) {
                 if (!paintPoint.getStatus()) {

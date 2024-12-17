@@ -21,7 +21,7 @@ import java.util.Vector;
  * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
-public class MainWin extends JFrame{
+public class MainWin extends JFrame implements MainRenderer{
     private final IOService ioService;
     private final SurveyService surveyService;
     private final PolygonService polygonService;
@@ -423,9 +423,9 @@ public class MainWin extends JFrame{
         return polygonService;
     }
 
-    public PolygonRepository getPolygonRepository() {
-        return polygonService.getPolygonRepository();
-    }
+//    public PolygonRepository getPolygonRepository() {
+//        return polygonService.getAllPolygonStations();
+//    }
 
     /**
      * Gets this.extractController
@@ -445,7 +445,7 @@ public class MainWin extends JFrame{
      * @return SurveyProject sp
      */
     public SurveyRepository getSurveyRepository() {
-        return surveyService.getSurveyRepository();
+        return surveyService.getAllStations();
     }
 
     /**
@@ -626,6 +626,15 @@ public class MainWin extends JFrame{
             lblCatalog.setText("Каталог не установлен");
         }
 
+    }
+
+    /**
+     * Gets parentFrame
+     * @return MainWin
+     */
+    @Override
+    public MainWin getParentFrame() {
+        return this;
     }
 
     /**

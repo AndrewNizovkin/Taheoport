@@ -13,10 +13,11 @@ import javax.swing.*;
  */
 public class AdjusterDefault implements Adjuster{
     private final MainWin parentFrame;
-    private PolygonRepository polygonRepository;
+//    private PolygonRepository polygonRepository;
+    private final PolygonService polygonService;
 
     public AdjusterDefault(MainWin frame) {
-
+        polygonService = frame.getPolygonService();
         parentFrame = frame;
 //        polygonRepository = parentFrame.getPolygonRepository();
     }
@@ -26,15 +27,19 @@ public class AdjusterDefault implements Adjuster{
      */
     @Override
     public void adjustPolygon() {
-        polygonRepository = parentFrame.getPolygonRepository();
-        int countStations = polygonRepository.getSizePolygonStations();
-        polygonRepository.setPerimeter(0.0);
+//        polygonRepository = parentFrame.getPolygonRepository();
+        int countStations = polygonService.getSizePolygonStations();
+        polygonService.setPerimeter(0.0);
         double sumDX = 0.0;
         double sumDY = 0.0;
         double sumDZ = 0.0;
         GeoCalc geoCalc = new GeoCalc();
         defBindType();
-        switch (polygonRepository.getBindType()) {
+        PolygonStation basePointA = polygonService.findById(0);
+        PolygonStation basePointB = polygonService.findById(1);
+        PolygonStation basePointC = polygonService.findById(countStations - 2);
+        PolygonStation basePointD = polygonService.findById(countStations - 1);
+        switch (polygonService.getBindType()) {
             case ZZ -> JOptionPane.showMessageDialog(parentFrame,
                     parentFrame.getTitles().get("TPmessageNoAdjustment"),
                     parentFrame.getTitles().get("TPmessageNoAdjustmentTitle"),
@@ -42,16 +47,16 @@ public class AdjusterDefault implements Adjuster{
             case TT -> {
                 iniDDs();
                 defPerimeter(1, countStations - 3);
-                polygonRepository.findById(0).setDirection(Math.toDegrees(geoCalc.getDirAB(
-                        polygonRepository.findById(0).getX(),
-                        polygonRepository.findById(0).getY(),
-                        polygonRepository.findById(1).getX(),
-                        polygonRepository.findById(1).getY())));
-                polygonRepository.findById(countStations - 2).setDirection(Math.toDegrees(geoCalc.getDirAB(
-                        polygonRepository.findById(countStations - 2).getX(),
-                        polygonRepository.findById(countStations - 2).getY(),
-                        polygonRepository.findById(countStations - 1).getX(),
-                        polygonRepository.findById(countStations - 1).getY())));
+                basePointA.setDirection(Math.toDegrees(geoCalc.getDirAB(
+                        basePointA.getX(),
+                        basePointA.getY(),
+                        basePointB.getX(),
+                        basePointB.getY())));
+                basePointC.setDirection(Math.toDegrees(geoCalc.getDirAB(
+                        basePointC.getX(),
+                        basePointC.getY(),
+                        basePointD.getX(),
+                        basePointD.getY())));
                 setDDHors();
                 setDirections(1, countStations - 3);
                 setDXDYs(1, countStations - 3);
@@ -62,14 +67,14 @@ public class AdjusterDefault implements Adjuster{
             case TO -> {
                 iniDDs();
                 defPerimeter(1, countStations - 2);
-                polygonRepository.findById(0).setDirection(Math.toDegrees(new SurveyStation("Not",
-                        polygonRepository.findById(0).getX(),
-                        polygonRepository.findById(0).getY(),
-                        polygonRepository.findById(0).getZ(),
+                basePointA.setDirection(Math.toDegrees(new SurveyStation("Not",
+                        basePointA.getX(),
+                        basePointA.getY(),
+                        basePointA.getZ(),
                         "Not",
-                        polygonRepository.findById(1).getX(),
-                        polygonRepository.findById(1).getY(),
-                        polygonRepository.findById(1).getZ(),
+                        basePointB.getX(),
+                        basePointB.getY(),
+                        basePointB.getZ(),
                         "0.000").getDirection()));
                 setDirections(1, countStations - 2);
                 setDXDYs(1, countStations - 2);
@@ -80,14 +85,14 @@ public class AdjusterDefault implements Adjuster{
             case OT -> {
                 iniDDs();
                 defPerimeter(0, countStations - 3);
-                polygonRepository.findById(countStations - 2).setDirection(Math.toDegrees(new SurveyStation("Not",
-                        polygonRepository.findById(countStations - 2).getX(),
-                        polygonRepository.findById(countStations - 2).getY(),
-                        polygonRepository.findById(countStations - 2).getZ(),
+                basePointC.setDirection(Math.toDegrees(new SurveyStation("Not",
+                        basePointC.getX(),
+                        basePointC.getY(),
+                        basePointC.getZ(),
                         "Not",
-                        polygonRepository.findById(countStations - 1).getX(),
-                        polygonRepository.findById(countStations - 1).getY(),
-                        polygonRepository.findById(countStations - 1).getZ(),
+                        basePointD.getX(),
+                        basePointD.getY(),
+                        basePointD.getZ(),
                         "0.000").getDirection()));
                 setDirections(countStations - 3, 0);
                 setDXDYs(0, countStations - 3);
@@ -98,27 +103,27 @@ public class AdjusterDefault implements Adjuster{
             case OO -> {
                 iniDDs();
                 defPerimeter(0, countStations - 2);
-                polygonRepository.findById(0).setDirection(0.0);
+                basePointA.setDirection(0.0);
                 setDirections(1, countStations - 2);
                 setDXDYs(0, countStations - 2);
                 for (int i = 0; i <= countStations - 2; i++) {
-                    sumDX = sumDX + polygonRepository.findById(i).getDX();
-                    sumDY = sumDY + polygonRepository.findById(i).getDY();
+                    sumDX = sumDX + polygonService.findById(i).getDX();
+                    sumDY = sumDY + polygonService.findById(i).getDY();
                 }
-                sumDX = sumDX + Double.parseDouble(polygonRepository.findById(0).getX());
-                sumDY = sumDY + Double.parseDouble(polygonRepository.findById(0).getY());
+                sumDX = sumDX + Double.parseDouble(basePointA.getX());
+                sumDY = sumDY + Double.parseDouble(basePointA.getY());
                 sumDZ = Math.toDegrees(new SurveyStation("Not",
-                        polygonRepository.findById(0).getX(),
-                        polygonRepository.findById(0).getY(),
+                        basePointA.getX(),
+                        basePointA.getY(),
                         "0.000",
                         "Not",
-                        polygonRepository.findById(countStations - 1).getX(),
-                        polygonRepository.findById(countStations - 1).getY(),
+                        basePointD.getX(),
+                        basePointD.getY(),
                         "0.000",
                         "0.000").getDirection()) -
                         Math.toDegrees(new SurveyStation("Not",
-                                polygonRepository.findById(0).getX(),
-                                polygonRepository.findById(0).getY(),
+                                basePointA.getX(),
+                                basePointA.getY(),
                                 "0.000",
                                 "Not",
                                 new DataHandler(sumDX).format(3).getStr(),
@@ -128,7 +133,7 @@ public class AdjusterDefault implements Adjuster{
                 while (sumDZ < 0.0) {
                     sumDZ = sumDZ + 360;
                 }
-                polygonRepository.findById(0).setDirection(sumDZ);
+                basePointA.setDirection(sumDZ);
                 setDirections(1, countStations - 2);
                 setDXDYs(0, countStations - 2);
                 setDDXDDYs(0, countStations - 2);
@@ -138,14 +143,14 @@ public class AdjusterDefault implements Adjuster{
             case TZ -> {
                 iniDDs();
                 defPerimeter(1,countStations - 2);
-                polygonRepository.findById(0).setDirection(Math.toDegrees(new SurveyStation("Not",
-                        polygonRepository.findById(0).getX(),
-                        polygonRepository.findById(0).getY(),
-                        polygonRepository.findById(0).getZ(),
+                basePointA.setDirection(Math.toDegrees(new SurveyStation("Not",
+                        basePointA.getX(),
+                        basePointA.getY(),
+                        basePointA.getZ(),
                         "Not",
-                        polygonRepository.findById(1).getX(),
-                        polygonRepository.findById(1).getY(),
-                        polygonRepository.findById(1).getZ(),
+                        basePointB.getX(),
+                        basePointB.getY(),
+                        basePointB.getZ(),
                         "0.000").getDirection()));
                 setDirections(1, countStations - 2);
                 setDXDYs(1, countStations - 2);
@@ -154,30 +159,30 @@ public class AdjusterDefault implements Adjuster{
             case ZT -> {
                 iniDDs();
                 defPerimeter(0, countStations - 3);
-                polygonRepository.findById(countStations - 2).setDirection(Math.toDegrees(new SurveyStation("Not",
-                        polygonRepository.findById(countStations - 2).getX(),
-                        polygonRepository.findById(countStations - 2).getY(),
-                        polygonRepository.findById(countStations - 2).getZ(),
+                basePointC.setDirection(Math.toDegrees(new SurveyStation("Not",
+                        basePointC.getX(),
+                        basePointC.getY(),
+                        basePointC.getZ(),
                         "Not",
-                        polygonRepository.findById(countStations - 1).getX(),
-                        polygonRepository.findById(countStations - 1).getY(),
-                        polygonRepository.findById(countStations - 1).getZ(),
+                        basePointD.getX(),
+                        basePointD.getY(),
+                        basePointD.getZ(),
                         "0.000").getDirection()));
                 setDirections(countStations - 3, 0);
                 setDXDYs(0, countStations - 3);
                 for (int i = 0; i <= countStations - 3; i++) {
-                    sumDX = sumDX + polygonRepository.findById(i).getDX();
-                    sumDY = sumDY + polygonRepository.findById(i).getDY();
-                    sumDZ = sumDZ + Double.parseDouble(polygonRepository.findById(i).getDZ());
+                    sumDX = sumDX + polygonService.findById(i).getDX();
+                    sumDY = sumDY + polygonService.findById(i).getDY();
+                    sumDZ = sumDZ + Double.parseDouble(polygonService.findById(i).getDZ());
                 }
-                polygonRepository.findById(0).setX(
-                        new DataHandler(Double.parseDouble(polygonRepository.findById(countStations - 2).getX()) -
+                basePointA.setX(
+                        new DataHandler(Double.parseDouble(basePointC.getX()) -
                                 sumDX).format(3).getStr());
-                polygonRepository.findById(0).setY(
-                        new DataHandler(Double.parseDouble(polygonRepository.findById(countStations - 2).getY()) -
+                basePointA.setY(
+                        new DataHandler(Double.parseDouble(basePointC.getY()) -
                                 sumDY).format(3).getStr());
-                polygonRepository.findById(0).setZ(
-                        new DataHandler(Double.parseDouble(polygonRepository.findById(countStations - 2).getZ()) -
+                basePointA.setZ(
+                        new DataHandler(Double.parseDouble(basePointC.getZ()) -
                                 sumDZ).format(3).getStr());
                 setXYZs(1, countStations - 3);
             }
@@ -188,86 +193,92 @@ public class AdjusterDefault implements Adjuster{
      * set and return bindings type of current TheoProject
      */
     private void defBindType() {
-        polygonRepository = parentFrame.getPolygonRepository();
-        polygonRepository.setBindType(BindType.ZZ);
-        int countStations = polygonRepository.getSizePolygonStations();
+//        polygonRepository = parentFrame.getPolygonRepository();
+
+        polygonService.setBindType(BindType.ZZ);
+        int countStations = polygonService.getSizePolygonStations();
+        PolygonStation basePointA = polygonService.findById(0);
+        PolygonStation basePointB = polygonService.findById(1);
+        PolygonStation basePointC = polygonService.findById(countStations - 2);
+        PolygonStation basePointD = polygonService.findById(countStations - 1);
+
         if (countStations > 2) {
-            if (polygonRepository.findById(0).getStatus() &
-                    polygonRepository.findById(1).getStatus() &
-                    polygonRepository.findById(countStations - 1).getStatus() &
-                    polygonRepository.findById(countStations - 2).getStatus()) {
-                polygonRepository.setBindType(BindType.TT);
+            if (basePointA.getStatus() &
+                    basePointB.getStatus() &
+                    basePointD.getStatus() &
+                    basePointC.getStatus()) {
+                polygonService.setBindType(BindType.TT);
                 if (isValidSourceData(1, countStations - 3) |
-                        !new DataHandler(polygonRepository.findById(countStations - 2).getHor()).isPositiveNumber()) {
-                    polygonRepository.setBindType(BindType.ZZ);
+                        !new DataHandler(basePointC.getHor()).isPositiveNumber()) {
+                    polygonService.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(parentFrame,
                             parentFrame.getTitles().get("TPmessageError"),
                             parentFrame.getTitles().get("TPmessageErrorTitle"),
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
-            if (polygonRepository.findById(0).getStatus() &
-                    polygonRepository.findById(1).getStatus() &
-                    polygonRepository.findById(countStations - 1).getStatus() &
-                    !polygonRepository.findById(countStations - 2).getStatus()) {
-                polygonRepository.setBindType(BindType.TO);
+            if (basePointA.getStatus() &
+                    basePointB.getStatus() &
+                    basePointD.getStatus() &
+                    !basePointC.getStatus()) {
+                polygonService.setBindType(BindType.TO);
                 if (isValidSourceData(1, countStations - 2)) {
-                    polygonRepository.setBindType(BindType.ZZ);
+                    polygonService.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(null,
                             parentFrame.getTitles().get("TPmessageError"),
                             parentFrame.getTitles().get("TPmessageErrorTitle"),
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
-            if (polygonRepository.findById(0).getStatus() &
-                    !polygonRepository.findById(1).getStatus() &
-                    polygonRepository.findById(countStations - 1).getStatus() &
-                    polygonRepository.findById(countStations - 2).getStatus()) {
-                polygonRepository.setBindType(BindType.OT);
+            if (basePointA.getStatus() &
+                    !basePointB.getStatus() &
+                    basePointD.getStatus() &
+                    basePointC.getStatus()) {
+                polygonService.setBindType(BindType.OT);
                 if (isValidSourceData(0, countStations - 3) |
-                        !new DataHandler(polygonRepository.findById(countStations - 2).getHor()).isPositiveNumber()) {
-                    polygonRepository.setBindType(BindType.ZZ);
+                        !new DataHandler(basePointC.getHor()).isPositiveNumber()) {
+                    polygonService.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(null,
                             parentFrame.getTitles().get("TPmessageError"),
                             parentFrame.getTitles().get("TPmessageErrorTitle"),
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
-            if (polygonRepository.findById(0).getStatus() &
-                    !polygonRepository.findById(1).getStatus() &
-                    polygonRepository.findById(countStations - 1).getStatus() &
-                    !polygonRepository.findById(countStations - 2).getStatus()) {
-                polygonRepository.setBindType(BindType.OO);
+            if (basePointA.getStatus() &
+                    !basePointB.getStatus() &
+                    basePointD.getStatus() &
+                    !basePointC.getStatus()) {
+                polygonService.setBindType(BindType.OO);
                 if (isValidSourceData(0, countStations - 2)) {
-                    polygonRepository.setBindType(BindType.ZZ);
+                    polygonService.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(null,
                             parentFrame.getTitles().get("TPmessageError"),
                             parentFrame.getTitles().get("TPmessageErrorTitle"),
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
-            if (polygonRepository.findById(0).getStatus() &
-                    polygonRepository.findById(1).getStatus() &
-                    !polygonRepository.findById(countStations - 1).getStatus() &
-                    !polygonRepository.findById(countStations - 2).getStatus()) {
-                polygonRepository.setBindType(BindType.TZ);
+            if (basePointA.getStatus() &
+                    basePointB.getStatus() &
+                    !basePointD.getStatus() &
+                    !basePointC.getStatus()) {
+                polygonService.setBindType(BindType.TZ);
                 if (isValidSourceData(1, countStations - 3) |
-                        !new DataHandler(polygonRepository.findById(countStations - 2).getHor()).isPositiveNumber()) {
-                    polygonRepository.setBindType(BindType.ZZ);
+                        !new DataHandler(basePointC.getHor()).isPositiveNumber()) {
+                    polygonService.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(null,
                             parentFrame.getTitles().get("TPmessageError"),
                             parentFrame.getTitles().get("TPmessageErrorTitle"),
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
-            if (!polygonRepository.findById(0).getStatus() &
-                    !polygonRepository.findById(1).getStatus() &
-                    polygonRepository.findById(countStations - 1).getStatus() &
-                    polygonRepository.findById(countStations - 2).getStatus()) {
-                polygonRepository.setBindType(BindType.ZT);
+            if (!basePointA.getStatus() &
+                    !basePointB.getStatus() &
+                    basePointD.getStatus() &
+                    basePointC.getStatus()) {
+                polygonService.setBindType(BindType.ZT);
                 if (isValidSourceData(0, countStations - 3) |
-                        !new DataHandler(polygonRepository.findById(countStations - 2).getHor()).isPositiveNumber()) {
-                    polygonRepository.setBindType(BindType.ZZ);
+                        !new DataHandler(basePointC.getHor()).isPositiveNumber()) {
+                    polygonService.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(null,
                             parentFrame.getTitles().get("TPmessageError"),
                             parentFrame.getTitles().get("TPmessageErrorTitle"),
@@ -276,7 +287,7 @@ public class AdjusterDefault implements Adjuster{
             }
         }
         if (noNeed()) {
-            polygonRepository.setBindType(BindType.ZZ);
+            polygonService.setBindType(BindType.ZZ);
         }
     }
 
@@ -287,12 +298,12 @@ public class AdjusterDefault implements Adjuster{
      * @return boolean
      */
     private boolean isValidSourceData(int start, int finish) {
-        polygonRepository = parentFrame.getPolygonRepository();
+//        polygonRepository = parentFrame.getPolygonRepository();
         for (int i = start; i <= finish; i++) {
-            if (!new DataHandler(polygonRepository.findById(i).getName()).isValidName() |
-                    !new DataHandler(polygonRepository.findById(i).getHor()).isPositiveNumber() |
-                    !new DataHandler(polygonRepository.findById(i).getLine()).isPositiveNumber() |
-                    !new DataHandler(polygonRepository.findById(i).getDZ()).isNumber()) {
+            if (!new DataHandler(polygonService.findById(i).getName()).isValidName() |
+                    !new DataHandler(polygonService.findById(i).getHor()).isPositiveNumber() |
+                    !new DataHandler(polygonService.findById(i).getLine()).isPositiveNumber() |
+                    !new DataHandler(polygonService.findById(i).getDZ()).isNumber()) {
                 return true;
             }
         }
@@ -304,9 +315,9 @@ public class AdjusterDefault implements Adjuster{
      * @return boolen
      */
     private boolean noNeed() {
-        polygonRepository = parentFrame.getPolygonRepository();
-        for (int i = 0; i < polygonRepository.getSizePolygonStations(); i++) {
-            if (!polygonRepository.findById(i).getStatus()) {
+//        polygonRepository = parentFrame.getPolygonRepository();
+        for (int i = 0; i < polygonService.getSizePolygonStations(); i++) {
+            if (!polygonService.findById(i).getStatus()) {
                 return false;
             }
         }
@@ -321,9 +332,9 @@ public class AdjusterDefault implements Adjuster{
     private void defPerimeter(int start, int finish) {
         double sum = 0.0;
         for (int i = start; i <= finish; i++) {
-            sum += Double.parseDouble(polygonRepository.findById(i).getLine());
+            sum += Double.parseDouble(polygonService.findById(i).getLine());
         }
-        polygonRepository.setPerimeter(sum);
+        polygonService.setPerimeter(sum);
     }
 
 
@@ -333,8 +344,8 @@ public class AdjusterDefault implements Adjuster{
     private void iniDDs() {
 //        for (PolygonStation station : listPolygonStatons) {
         PolygonStation station;
-        for (int i = 0; i < polygonRepository.getSizePolygonStations(); i++) {
-            station = polygonRepository.findById(i);
+        for (int i = 0; i < polygonService.getSizePolygonStations(); i++) {
+            station = polygonService.findById(i);
             station.setDDHor(0.0);
             station.setDDX(0.0);
             station.setDDY(0.0);
@@ -347,19 +358,19 @@ public class AdjusterDefault implements Adjuster{
      */
     private void setDDHors() {
         DataHandler hor;
-        int countStations = polygonRepository.getSizePolygonStations();
-        double d = polygonRepository.findById(0).getDirection();
+        int countStations = polygonService.getSizePolygonStations();
+        double d = polygonService.findById(0).getDirection();
         for (int i = 1; i <= countStations - 2; i++) {
-            hor = new DataHandler(polygonRepository.findById(i).getHor());
+            hor = new DataHandler(polygonService.findById(i).getHor());
             d = d + hor.dmsToDeg() + 180;
         }
         while (d >= 360) {
             d = d - 360;
         }
-        polygonRepository.setfHor((d - polygonRepository.findById(countStations - 2).getDirection()) * 3600);
+        polygonService.setfHor((d - polygonService.findById(countStations - 2).getDirection()) * 3600);
         for (int i = 1; i <= countStations - 2; i++) {
-            d = -1 * polygonRepository.getfHor() / (countStations - 2);
-            polygonRepository.findById(i).setDDHor(d);
+            d = -1 * polygonService.getfHor() / (countStations - 2);
+            polygonService.findById(i).setDDHor(d);
         }
     }
 
@@ -373,22 +384,22 @@ public class AdjusterDefault implements Adjuster{
         DataHandler hor;
         if (start <= finish) {
             for (int i = start; i <= finish; i++) {
-                hor = new DataHandler(polygonRepository.findById(i).getHor());
-                dir = polygonRepository.findById(i - 1).getDirection() + 180 + hor.dmsToDeg() +
-                        polygonRepository.findById(i).getDDHor() / 3600;
+                hor = new DataHandler(polygonService.findById(i).getHor());
+                dir = polygonService.findById(i - 1).getDirection() + 180 + hor.dmsToDeg() +
+                        polygonService.findById(i).getDDHor() / 3600;
                 while (dir >= 360) {
                     dir = dir - 360;
                 }
-                polygonRepository.findById(i).setDirection(dir);
+                polygonService.findById(i).setDirection(dir);
             }
         } else {
             for (int i = start; i >= finish; i--) {
-                hor = new DataHandler(polygonRepository.findById(i+1).getHor());
-                dir = polygonRepository.findById(i +1).getDirection() - 180 - hor.dmsToDeg();
+                hor = new DataHandler(polygonService.findById(i + 1).getHor());
+                dir = polygonService.findById(i + 1).getDirection() - 180 - hor.dmsToDeg();
                 while (dir < 0) {
                     dir = dir + 360;
                 }
-                polygonRepository.findById(i).setDirection(dir);
+                polygonService.findById(i).setDirection(dir);
             }
         }
     }
@@ -400,11 +411,11 @@ public class AdjusterDefault implements Adjuster{
     private void setDXDYs(int start, int finish) {
         DataHandler line;
         for (int i = start; i <= finish; i++) {
-            line = new DataHandler(polygonRepository.findById(i).getLine());
-            polygonRepository.findById(i).setDX(line.getDbl() *
-                    Math.cos(Math.toRadians(polygonRepository.findById(i).getDirection())));
-            polygonRepository.findById(i).setDY(line.getDbl() *
-                    Math.sin(Math.toRadians(polygonRepository.findById(i).getDirection())));
+            line = new DataHandler(polygonService.findById(i).getLine());
+            polygonService.findById(i).setDX(line.getDbl() *
+                    Math.cos(Math.toRadians(polygonService.findById(i).getDirection())));
+            polygonService.findById(i).setDY(line.getDbl() *
+                    Math.sin(Math.toRadians(polygonService.findById(i).getDirection())));
         }
     }
 
@@ -417,21 +428,21 @@ public class AdjusterDefault implements Adjuster{
         double sumDX = 0.0;
         double sumDY = 0.0;
         for (int i = start; i <= end; i++) {
-            sumDX = sumDX + polygonRepository.findById(i).getDX();
-            sumDY = sumDY + polygonRepository.findById(i).getDY();
+            sumDX = sumDX + polygonService.findById(i).getDX();
+            sumDY = sumDY + polygonService.findById(i).getDY();
         }
-        polygonRepository.setfX(sumDX + Double.parseDouble(polygonRepository.findById(start).getX()) -
-                Double.parseDouble(polygonRepository.findById(end + 1).getX()));
-        polygonRepository.setfY(sumDY + Double.parseDouble(polygonRepository.findById(start).getY()) -
-                Double.parseDouble(polygonRepository.findById(end + 1).getY()));
-        polygonRepository.setfAbs(Math.hypot(polygonRepository.getfX(), polygonRepository.getfY()));
-        polygonRepository.setfOtn(new DataHandler(1 / (new DataHandler(polygonRepository.getfAbs()).format(3).getDbl() /
-                new DataHandler(polygonRepository.getPerimeter()).format(3).getDbl())).format(0).getStr());
+        polygonService.setfX(sumDX + Double.parseDouble(polygonService.findById(start).getX()) -
+                Double.parseDouble(polygonService.findById(end + 1).getX()));
+        polygonService.setfY(sumDY + Double.parseDouble(polygonService.findById(start).getY()) -
+                Double.parseDouble(polygonService.findById(end + 1).getY()));
+        polygonService.setfAbs(Math.hypot(polygonService.getfX(), polygonService.getfY()));
+        polygonService.setfOtn(new DataHandler(1 / (new DataHandler(polygonService.getfAbs()).format(3).getDbl() /
+                new DataHandler(polygonService.getPerimeter()).format(3).getDbl())).format(0).getStr());
         for (int i = start; i <= end; i++) {
-            polygonRepository.findById(i).setDDX(-1 * polygonRepository.getfX() / polygonRepository.getPerimeter() *
-                    Double.parseDouble(polygonRepository.findById(i).getLine()));
-            polygonRepository.findById(i).setDDY(-1 * polygonRepository.getfY() / polygonRepository.getPerimeter() *
-                    Double.parseDouble(polygonRepository.findById(i).getLine()));
+            polygonService.findById(i).setDDX(-1 * polygonService.getfX() / polygonService.getPerimeter() *
+                    Double.parseDouble(polygonService.findById(i).getLine()));
+            polygonService.findById(i).setDDY(-1 * polygonService.getfY() / polygonService.getPerimeter() *
+                    Double.parseDouble(polygonService.findById(i).getLine()));
         }
     }
 
@@ -443,13 +454,13 @@ public class AdjusterDefault implements Adjuster{
     private void setDDZs(int start, int finish) {
         double sumZ = 0.0;
         for (int i = start; i <= finish; i++) {
-            sumZ = sumZ + Double.parseDouble(polygonRepository.findById(i).getDZ());
+            sumZ = sumZ + Double.parseDouble(polygonService.findById(i).getDZ());
         }
-        polygonRepository.setfZ(sumZ + Double.parseDouble(polygonRepository.findById(start).getZ()) -
-                Double.parseDouble(polygonRepository.findById(finish +1).getZ()));
+        polygonService.setfZ(sumZ + Double.parseDouble(polygonService.findById(start).getZ()) -
+                Double.parseDouble(polygonService.findById(finish +1).getZ()));
         for (int i = start; i <= finish; i++) {
-            polygonRepository.findById(i).setDDZ(-1 * polygonRepository.getfZ() / polygonRepository.getPerimeter() *
-                    Double.parseDouble(polygonRepository.findById(i).getLine()));
+            polygonService.findById(i).setDDZ(-1 * polygonService.getfZ() / polygonService.getPerimeter() *
+                    Double.parseDouble(polygonService.findById(i).getLine()));
         }
     }
 
@@ -463,20 +474,19 @@ public class AdjusterDefault implements Adjuster{
         double parentY;
         double parentZ;
         for (int i = start; i <= finish; i++) {
-            parentX = Double.parseDouble(polygonRepository.findById(i - 1).getX());
-            parentY = Double.parseDouble(polygonRepository.findById(i - 1).getY());
-            parentZ = Double.parseDouble(polygonRepository.findById(i -1).getZ());
-            polygonRepository.findById(i).setX(new DataHandler(parentX +
-                    polygonRepository.findById(i - 1).getDX() +
-                    polygonRepository.findById(i - 1).getDDX()).format(3).getStr());
-            polygonRepository.findById(i).setY(new DataHandler(parentY +
-                    polygonRepository.findById(i - 1).getDY() +
-                    polygonRepository.findById(i - 1).getDDY()).format(3).getStr());
-            polygonRepository.findById(i).setZ(new DataHandler(parentZ +
-                    Double.parseDouble(polygonRepository.findById(i -1).getDZ()) +
-                    polygonRepository.findById(i - 1).getDDZ()).format(3).getStr());
+            parentX = Double.parseDouble(polygonService.findById(i - 1).getX());
+            parentY = Double.parseDouble(polygonService.findById(i - 1).getY());
+            parentZ = Double.parseDouble(polygonService.findById(i -1).getZ());
+            polygonService.findById(i).setX(new DataHandler(parentX +
+                    polygonService.findById(i - 1).getDX() +
+                    polygonService.findById(i - 1).getDDX()).format(3).getStr());
+            polygonService.findById(i).setY(new DataHandler(parentY +
+                    polygonService.findById(i - 1).getDY() +
+                    polygonService.findById(i - 1).getDDY()).format(3).getStr());
+            polygonService.findById(i).setZ(new DataHandler(parentZ +
+                    Double.parseDouble(polygonService.findById(i -1).getDZ()) +
+                    polygonService.findById(i - 1).getDDZ()).format(3).getStr());
         }
 
     }
-
 }
