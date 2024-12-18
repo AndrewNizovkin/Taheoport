@@ -14,10 +14,10 @@ import java.util.regex.Pattern;
  * This class encapsulates methods for import data from different types of total stations
  */
 public class ImportServiceDefault implements ImportService {
-    private final MainWin parentFrame;
+//    private final MainWin parentFrame;
 
-    public ImportServiceDefault(MainWin frame) {
-        this.parentFrame = frame;
+    public ImportServiceDefault() {
+//        this.parentFrame = frame;
     }
 
     /**

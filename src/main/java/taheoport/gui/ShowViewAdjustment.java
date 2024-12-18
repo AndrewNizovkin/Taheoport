@@ -1,7 +1,12 @@
 package taheoport.gui;
 
+import taheoport.model.PolygonStation;
 import taheoport.repository.CatalogRepository;
 import taheoport.model.CatalogPoint;
+import taheoport.service.IOService;
+import taheoport.service.PolygonService;
+import taheoport.service.SettingsController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -13,7 +18,9 @@ import java.util.List;
  */
 public class ShowViewAdjustment extends JDialog {
     private final MainWin parentFrame;
-    private final JPanel pnlNXYZ;
+    private final PolygonService polygonService;
+    private final SettingsController settingsController;
+    private final IOService ioService;
     private PolygonPaintPanel pnlViewNXYZ;
     private int sellRow;
     private JTabbedPane tp;
@@ -24,6 +31,9 @@ public class ShowViewAdjustment extends JDialog {
      */
     public ShowViewAdjustment(MainWin frame) {
         super(frame,frame.getTitles().get("SVAdialogTitle"), true);
+        polygonService = frame.getPolygonService();
+        settingsController = frame.getSettingsController();
+        ioService = frame.getIoService();
         this.parentFrame = frame;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -49,16 +59,16 @@ public class ShowViewAdjustment extends JDialog {
         btnSaveReport.setToolTipText(parentFrame.getTitles().get("SVRbtnSaveReportTT"));
         btnSaveReport.addActionListener(e -> {
             switch (tp.getSelectedIndex()) {
-                case 0 -> parentFrame.getIoService().writeTextFile(parentFrame.getPolygonService().getReportNXYZ(),
-                        parentFrame.getPathWorkDir(),
+                case 0 -> ioService.writeTextFile(polygonService.getReportNXYZ(),
+                        settingsController.getPathWorkDir(),
                         "kat",
                         parentFrame.getTitles().get("SVRsaveTitle0"));
-                case 1 -> parentFrame.getIoService().writeTextFile(parentFrame.getPolygonService().getReportXY(),
-                        parentFrame.getPathWorkDir(),
+                case 1 -> ioService.writeTextFile(polygonService.getReportXY(),
+                        settingsController.getPathWorkDir(),
                         "txt",
                         parentFrame.getTitles().get("SVRsaveTitle1"));
-                case 2 -> parentFrame.getIoService().writeTextFile(parentFrame.getPolygonService().getReportZ(),
-                        parentFrame.getPathWorkDir(),
+                case 2 -> ioService.writeTextFile(polygonService.getReportZ(),
+                        settingsController.getPathWorkDir(),
                         "txt",
                         parentFrame.getTitles().get("SVRsaveTitle1"));
             }
@@ -76,7 +86,7 @@ public class ShowViewAdjustment extends JDialog {
 // spReportXY_______________________________________________________________________
 
         JTextArea textAreaXY = new JTextArea();
-        List<String> llReportXY = parentFrame.getPolygonService().getReportXY();
+        List<String> llReportXY = polygonService.getReportXY();
         String s;
         llReportXY.remove(0);
         while (!llReportXY.isEmpty()) {
@@ -98,7 +108,7 @@ public class ShowViewAdjustment extends JDialog {
         JPanel pnlReportZ = new JPanel();
         JTextArea textAreaZ = new JTextArea();
         pnlReportZ.setLayout(new GridLayout(0, 1));
-        List<String> llReportZ = parentFrame.getPolygonService().getReportZ();
+        List<String> llReportZ = polygonService.getReportZ();
         llReportZ.forEach(x -> textAreaZ.append(x + "\n"));
         textAreaZ.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         textAreaZ.setLineWrap(false);
@@ -110,18 +120,21 @@ public class ShowViewAdjustment extends JDialog {
 
 // pnlNXYZ______________________________________________________________________
 
-        pnlNXYZ = new JPanel();
+        JPanel pnlNXYZ = new JPanel();
         pnlNXYZ.setLayout(new BorderLayout());
 
 // tblNXYZ_______________________________________________________________________
 
             CatalogRepository catalogRepositoryNXYZ = new CatalogRepository();
-            for (int i = 0; i < parentFrame.getPolygonRepository().getSizePolygonStations(); i++) {
-                catalogRepositoryNXYZ.add(new CatalogPoint(parentFrame.getPolygonRepository().findById(i).getName(),
-                        parentFrame.getPolygonRepository().findById(i).getX(),
-                        parentFrame.getPolygonRepository().findById(i).getY(),
-                        parentFrame.getPolygonRepository().findById(i).getZ()));
+            for (PolygonStation polygonStation: polygonService.getAllPolygonStations()) {
+                catalogRepositoryNXYZ.add(new CatalogPoint(
+                        polygonStation.getName(),
+                        polygonStation.getX(),
+                        polygonStation.getY(),
+                        polygonStation.getZ()));
+
             }
+
             JTable tblNXYZ = new JTable(new TmodelCatalog(catalogRepositoryNXYZ));
             tblNXYZ.getTableHeader().setReorderingAllowed(false);
             tblNXYZ.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -130,14 +143,13 @@ public class ShowViewAdjustment extends JDialog {
                 sellRow = tblNXYZ.getSelectedRow();
                 pnlViewNXYZ.setIndex(sellRow);
                 pnlViewNXYZ.repaint();
-//                this.reloadPnlViewNXYZ();
             });
 
             JScrollPane spNXYZ = new JScrollPane(tblNXYZ);
             spNXYZ.setPreferredSize(new Dimension(widthFrame / 5 * 2, heightFrame));
 
         pnlNXYZ.add(spNXYZ, BorderLayout.WEST);
-        pnlViewNXYZ = new PolygonPaintPanel(parentFrame.getPolygonRepository(), sellRow);
+        pnlViewNXYZ = new PolygonPaintPanel(polygonService.getAllPolygonStations(), sellRow);
         pnlNXYZ.add(pnlViewNXYZ, BorderLayout.CENTER);
 
 //        reloadPnlViewNXYZ();

@@ -1,6 +1,4 @@
 package taheoport.gui;
-import taheoport.repository.CatalogRepository;
-import taheoport.model.CatalogPoint;
 import taheoport.service.CatalogService;
 
 import javax.swing.*;
@@ -42,7 +40,7 @@ public class ShowCatalog extends JDialog {
 
 // tblPoints_______________________________________________________
 
-        tblPoints = new JTable(new TmodelCatalog(catalogService.getCatalogRepository()));
+        tblPoints = new JTable(new TmodelCatalog(catalogService.getAllCatalogPoints()));
 
         tblPoints.getTableHeader().setReorderingAllowed(false);
         tblPoints.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

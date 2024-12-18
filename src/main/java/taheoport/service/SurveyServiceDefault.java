@@ -30,7 +30,7 @@ public class SurveyServiceDefault implements SurveyService {
         absoluteTahPath = "";
         surveyRepository = new SurveyRepository();
         ioService = frame.getIoService();
-        importService = new ImportServiceDefault(parentFrame);
+        importService = new ImportServiceDefault();
         settingsController = frame.getSettingsController();
 
     }
@@ -122,7 +122,6 @@ public class SurveyServiceDefault implements SurveyService {
      */
     @Override
     public List<String> getPickets() {
-//        surveyRepository = parentFrame.getSurveyRepository();
         SurveyStation surveyStation;
         Picket picket;
         String sep = " ";

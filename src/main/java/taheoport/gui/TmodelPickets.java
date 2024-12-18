@@ -1,6 +1,7 @@
 package taheoport.gui;
 
 import taheoport.service.DataHandler;
+import taheoport.service.SurveyService;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 public class TmodelPickets extends AbstractTableModel {
     private int columnCount = 5;
     private final ArrayList<String []> dataArrayList;
+    private final SurveyService surveyService;
     private final MainWin parentFrame;
     private int index;
     /**
@@ -19,6 +21,7 @@ public class TmodelPickets extends AbstractTableModel {
      */
     public TmodelPickets(MainWin frame, int index) {
         super();
+        surveyService = frame.getSurveyService();
         parentFrame = frame;
         this.index = index;
         dataArrayList = new ArrayList<String[]>();
@@ -68,35 +71,35 @@ public class TmodelPickets extends AbstractTableModel {
         switch (columnIndex) {
             case 0 -> {
                 if (dataHandler.isValidName()) {
-                    parentFrame.getSurveyRepository().findById(index).getPicket(rowIndex).setpName((String) str);
+                    surveyService.findStationById(index).getPicket(rowIndex).setpName((String) str);
                     row [columnIndex] = (String) str;
                     dataArrayList.set(rowIndex, row);
                 }
             }
             case 1 -> {
                 if (dataHandler.isPositiveNumber()) {
-                    parentFrame.getSurveyRepository().findById(index).getPicket(rowIndex).setLine(dataHandler.format(3).getStr());
+                    surveyService.findStationById(index).getPicket(rowIndex).setLine(dataHandler.format(3).getStr());
                     row[columnIndex] = dataHandler.format(3).getStr();
                     dataArrayList.set(rowIndex, row);
                 }
             }
             case 2 -> {
                 if (dataHandler.isPositiveNumber()) {
-                    parentFrame.getSurveyRepository().findById(index).getPicket(rowIndex).setHor(dataHandler.format(4).getStr());
+                    surveyService.findStationById(index).getPicket(rowIndex).setHor(dataHandler.format(4).getStr());
                     row[columnIndex] = dataHandler.format(4).getStr();
                     dataArrayList.set(rowIndex, row);
                 }
             }
             case 3 -> {
                 if (dataHandler.isNumber()) {
-                    parentFrame.getSurveyRepository().findById(index).getPicket(rowIndex).setVert(dataHandler.format(4).getStr());
+                    surveyService.findStationById(index).getPicket(rowIndex).setVert(dataHandler.format(4).getStr());
                     row[columnIndex] = dataHandler.format(4).getStr();
                     dataArrayList.set(rowIndex, row);
                 }
             }
             case 4 -> {
                 if (dataHandler.isNumber()) {
-                    parentFrame.getSurveyRepository().findById(index).getPicket(rowIndex).setV(dataHandler.format(3).getStr());
+                    surveyService.findStationById(index).getPicket(rowIndex).setV(dataHandler.format(3).getStr());
                     row[columnIndex] = dataHandler.format(3).getStr();
                     dataArrayList.set(rowIndex, row);
                 }

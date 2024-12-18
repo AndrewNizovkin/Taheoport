@@ -13,13 +13,11 @@ import javax.swing.*;
  */
 public class AdjusterDefault implements Adjuster{
     private final MainWin parentFrame;
-//    private PolygonRepository polygonRepository;
     private final PolygonService polygonService;
 
-    public AdjusterDefault(MainWin frame) {
-        polygonService = frame.getPolygonService();
+    public AdjusterDefault(MainWin frame, PolygonService polygonService) {
+        this.polygonService = polygonService;
         parentFrame = frame;
-//        polygonRepository = parentFrame.getPolygonRepository();
     }
 
     /**
@@ -27,7 +25,6 @@ public class AdjusterDefault implements Adjuster{
      */
     @Override
     public void adjustPolygon() {
-//        polygonRepository = parentFrame.getPolygonRepository();
         int countStations = polygonService.getSizePolygonStations();
         polygonService.setPerimeter(0.0);
         double sumDX = 0.0;

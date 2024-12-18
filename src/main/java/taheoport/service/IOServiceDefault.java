@@ -12,10 +12,12 @@ import java.util.List;
  * This class encapsulates methods for working with file system
  */
 public class IOServiceDefault implements IOService {
-    private final MainWin parentFrame;
+    private final JFrame parentFrame;
+    private final SettingsController settingsController;
 
     public IOServiceDefault(MainWin parentFrame) {
         this.parentFrame = parentFrame;
+        settingsController = parentFrame.getSettingsController();
     }
 
     /**
@@ -77,7 +79,7 @@ public class IOServiceDefault implements IOService {
      */
     @Override
     public String writeTextFile(List<String> list, String... args) {
-        String absolutePath = parentFrame.getPathWorkDir();
+        String absolutePath = settingsController.getPathWorkDir();
         if (args.length != 0) {
             switch (args.length) {
                 case 1 -> {

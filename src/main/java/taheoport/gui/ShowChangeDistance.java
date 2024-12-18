@@ -190,7 +190,7 @@ public class ShowChangeDistance extends JDialog implements ChangeListener, Actio
         if (pnlPaintPanel != null) {
             remove(pnlPaintPanel);
         }
-         pnlPaintPanel = new LinearOffsetPaintPanel(parentFrame);
+         pnlPaintPanel = new LinearOffsetPaintPanel(settingsController);
          add(pnlPaintPanel, BorderLayout.WEST);
         revalidate();
     }
@@ -219,7 +219,7 @@ public class ShowChangeDistance extends JDialog implements ChangeListener, Actio
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (tfOffset.getText().equals("")) {
+        if (tfOffset.getText().isEmpty()) {
             tfOffset.setText("0.000");
         }
         if (new DataHandler(tfOffset.getText()).commaToPoint().isNumber()) {

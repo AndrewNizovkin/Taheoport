@@ -11,15 +11,15 @@ import java.awt.*;
  * Copyright Nizovkin A.V. 2022
  */
 public class LinearOffsetPaintPanel extends JPanel {
-    SettingsController settingsController;
+    private final SettingsController settingsController;
 
     /**
      * Constructor
-     * @param parentFrame MainWin
+     * @param settingsController settingsController
      */
-    public LinearOffsetPaintPanel(MainWin parentFrame) {
+    public LinearOffsetPaintPanel(SettingsController settingsController) {
         super();
-        settingsController = parentFrame.getSettingsController();
+        this.settingsController = settingsController;
         setPreferredSize(new Dimension(110, 110));
     }
 

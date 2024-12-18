@@ -2,8 +2,6 @@ package taheoport.gui;
 
 import taheoport.dispatcher.MainActionListener;
 import taheoport.repository.CatalogRepository;
-import taheoport.repository.PolygonRepository;
-import taheoport.repository.SurveyRepository;
 import taheoport.service.*;
 import taheoport.model.*;
 
@@ -32,7 +30,6 @@ public class MainWin extends JFrame implements MainRenderer{
     private final JTabbedPane tpMain;
     private final JPanel pnlMeasurements;
     private final JPanel pnlPolygon;
-//    private final Settings settings;
     private HashMap<String, String> titles;
     private final int wMain;
     private final int hMain;
@@ -77,7 +74,6 @@ public class MainWin extends JFrame implements MainRenderer{
         polygonService = new PolygonServiceDefault(this);
         extractService = new ExtractServiceDefault(this);
         catalogService = new CatalogServiceDefault(this);
-
         security = new SecurityImpl();
         titles = new Shell(this).getTitles();
         ActionListener actionListener = new MainActionListener(this);
@@ -372,14 +368,6 @@ public class MainWin extends JFrame implements MainRenderer{
     }
 
     /**
-     * gets settings
-     * @return this.settings
-     */
-//    public Settings getSettings() {
-//        return settings;
-//    }
-
-    /**
      * gets width of MainWin
      * @return wMain
      */
@@ -423,10 +411,6 @@ public class MainWin extends JFrame implements MainRenderer{
         return polygonService;
     }
 
-//    public PolygonRepository getPolygonRepository() {
-//        return polygonService.getAllPolygonStations();
-//    }
-
     /**
      * Gets this.extractController
      * @return ExtractController
@@ -444,9 +428,6 @@ public class MainWin extends JFrame implements MainRenderer{
      * Return sp
      * @return SurveyProject sp
      */
-    public SurveyRepository getSurveyRepository() {
-        return surveyService.getAllStations();
-    }
 
     /**
      * gets HashMap titles
@@ -454,14 +435,6 @@ public class MainWin extends JFrame implements MainRenderer{
      */
     public HashMap<String, String> getTitles() {
         return titles;
-    }
-
-    /**
-     * Return catalog coordinates
-     * @return catalog
-     */
-    public CatalogRepository getCatalogRepository() {
-        return catalogService.getCatalogRepository();
     }
 
     /**

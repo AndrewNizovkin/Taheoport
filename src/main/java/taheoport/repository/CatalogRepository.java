@@ -37,6 +37,14 @@ import java.util.LinkedList;
     }
 
     /**
+     * Checks  for the presence of items in the repository
+     * @return check result
+     */
+    public boolean isEmptyCatalog() {
+        return this.isEmpty();
+    }
+
+    /**
      * Gets absolute path of file with basic point catalog
      * @return string absoluteCatalogPath
      */

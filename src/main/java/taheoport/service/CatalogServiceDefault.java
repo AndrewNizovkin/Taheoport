@@ -1,6 +1,8 @@
 package taheoport.service;
 
 import taheoport.gui.MainWin;
+import taheoport.model.PolygonStation;
+import taheoport.model.SurveyStation;
 import taheoport.repository.CatalogRepository;
 import taheoport.model.CatalogPoint;
 import taheoport.repository.PolygonRepository;
@@ -18,6 +20,7 @@ public class CatalogServiceDefault implements CatalogService {
     private final MainWin parentFrame;
     private final CatalogRepository catalogRepository;
     private final PolygonService polygonService;
+    private final SurveyService surveyService;
     private final IOService ioService;
     private final SettingsController settingsController;
     private String absoluteCatalogPath;
@@ -33,6 +36,7 @@ public class CatalogServiceDefault implements CatalogService {
         ioService = parentFrame.getIoService();
         settingsController = parentFrame.getSettingsController();
         polygonService = parentFrame.getPolygonService();
+        surveyService = parentFrame.getSurveyService();
         catalogRepository = new CatalogRepository();
         choice = -1;
     }
@@ -47,7 +51,7 @@ public class CatalogServiceDefault implements CatalogService {
         return catalogRepository.isEmpty();
     }
 
-    public CatalogRepository getCatalogRepository() {
+    public CatalogRepository getAllCatalogPoints() {
         return catalogRepository;
     }
 
@@ -96,24 +100,21 @@ public class CatalogServiceDefault implements CatalogService {
         HashMap<String, String> titles = parentFrame.getTitles();
         switch (target) {
             case 0 -> {
-                if (parentFrame.getCatalogRepository() != null & parentFrame.getSurveyRepository() != null) {
-                    SurveyRepository surveyRepository = parentFrame.getSurveyRepository();
-                    CatalogRepository catalogRepository = parentFrame.getCatalogRepository();
                     int q = 0;
-                    for (int i = 0; i < surveyRepository.sizeStations(); i++) {
-                        for (int j = 0; j < catalogRepository.getSizeCatalog(); j++) {
-                            if (surveyRepository.findById(i).getName().equals(catalogRepository.get(j).getName())) {
-                                surveyRepository.findById(i).setName(catalogRepository.get(j).getName());
-                                surveyRepository.findById(i).setX(catalogRepository.get(j).getX());
-                                surveyRepository.findById(i).setY(catalogRepository.get(j).getY());
-                                surveyRepository.findById(i).setZ(catalogRepository.get(j).getZ());
+                    for (SurveyStation surveyStation: surveyService.getAllStations()) {
+                        for (CatalogPoint catalogPoint: catalogRepository) {
+                            if (surveyStation.getName().equals(catalogPoint.getName())) {
+                                surveyStation.setName(catalogPoint.getName());
+                                surveyStation.setX(catalogPoint.getX());
+                                surveyStation.setY(catalogPoint.getY());
+                                surveyStation.setZ(catalogPoint.getZ());
                                 q++;
                             }
-                            if (surveyRepository.findById(i).getNameOr().equals(catalogRepository.get(j).getName())) {
-                                surveyRepository.findById(i).setNameOr(catalogRepository.get(j).getName());
-                                surveyRepository.findById(i).setxOr(catalogRepository.get(j).getX());
-                                surveyRepository.findById(i).setyOr(catalogRepository.get(j).getY());
-                                surveyRepository.findById(i).setzOr(catalogRepository.get(j).getZ());
+                            if (surveyStation.getNameOr().equals(catalogPoint.getName())) {
+                                surveyStation.setNameOr(catalogPoint.getName());
+                                surveyStation.setxOr(catalogPoint.getX());
+                                surveyStation.setyOr(catalogPoint.getY());
+                                surveyStation.setzOr(catalogPoint.getZ());
                                 q++;
                             }
                         }
@@ -122,22 +123,19 @@ public class CatalogServiceDefault implements CatalogService {
                             q + titles.get("MWupdateMessage"),
                             titles.get("MWupdateMessageTitle"),
                             JOptionPane.INFORMATION_MESSAGE);
-                }
                 parentFrame.reloadSurveyEditor();
             }
 
             case 1 -> {
-//                PolygonRepository polygonRepository = parentFrame.getPolygonRepository();
-                CatalogRepository catalogRepository = parentFrame.getCatalogRepository();
                 int q = 0;
-                for (int i = 0; i < polygonService.getSizePolygonStations(); i++) {
-                    for (int j = 0; j < catalogRepository.getSizeCatalog(); j++) {
-                        if (polygonService.findById(i).getName().equals(catalogRepository.get(j).getName()) &
-                                polygonService.findById(i).getStatus()) {
-                            polygonService.findById(i).setName(catalogRepository.get(j).getName());
-                            polygonService.findById(i).setX(catalogRepository.get(j).getX());
-                            polygonService.findById(i).setY(catalogRepository.get(j).getY());
-                            polygonService.findById(i).setZ(catalogRepository.get(j).getZ());
+                for (PolygonStation polygonStation: polygonService.getAllPolygonStations()) {
+                    for (CatalogPoint catalogPoint: catalogRepository) {
+                        if (polygonStation.getName().equals(catalogPoint.getName()) &
+                                polygonStation.getStatus()) {
+                            polygonStation.setName(catalogPoint.getName());
+                            polygonStation.setX(catalogPoint.getX());
+                            polygonStation.setY(catalogPoint.getY());
+                            polygonStation.setZ(catalogPoint.getZ());
                             q++;
                         }
                     }

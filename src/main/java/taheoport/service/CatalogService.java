@@ -18,7 +18,7 @@ public interface CatalogService {
      * Gets catalogRepository
      * @return catalogRepository
      */
-    CatalogRepository getCatalogRepository();
+    CatalogRepository getAllCatalogPoints();
 
     /**
      * Gets absoluteCatalogPath

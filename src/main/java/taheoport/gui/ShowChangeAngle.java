@@ -308,7 +308,7 @@ public class ShowChangeAngle extends JDialog implements ChangeListener, ActionLi
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (tfOffset.getText().equals("")) {
+        if (tfOffset.getText().isEmpty()) {
             tfOffset.setText("0.0000");
         }
         if (title.equals(parentFrame.getTitles().get("SCAtitleChangeDirection"))) {

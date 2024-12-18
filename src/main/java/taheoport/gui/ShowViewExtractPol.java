@@ -1,6 +1,8 @@
     package taheoport.gui;
 
-//    import taheoport.controllers.MyChooser;
+
+    import taheoport.service.ExtractService;
+    import taheoport.service.IOService;
 
     import javax.swing.*;
     import java.awt.*;
@@ -13,6 +15,8 @@
      */
     public class ShowViewExtractPol extends JDialog {
         private final MainWin parentFrame;
+        private final ExtractService extractService;
+        private final IOService ioService;
 
         /**
          * Constructor
@@ -20,6 +24,8 @@
          */
         public ShowViewExtractPol(MainWin frame) {
             super(frame, frame.getTitles().get("SVEdialogTitle"), true);
+            extractService = frame.getExtractService();
+            ioService = frame.getIoService();
             this.parentFrame = frame;
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             setLayout(new BorderLayout());
@@ -43,7 +49,7 @@
             JButton btnSaveReport = new JButton(new ImageIcon("images/save.png"));
             btnSaveReport.setToolTipText(parentFrame.getTitles().get("SVRbtnSaveReportTT"));
             btnSaveReport.addActionListener(e -> {
-                parentFrame.getIoService().writeTextFile(parentFrame.getExtractService().getExtractReport(),
+                ioService.writeTextFile(extractService.getExtractReport(),
                         parentFrame.getPathWorkDir(), "txt",
                         parentFrame.getTitles().get("SVRsaveTitle1"));
             });
@@ -60,7 +66,7 @@
 // spExtractReport___________________________________________________________
 
             JTextArea textArea = new JTextArea();
-            List<String> llExtractReport = parentFrame.getExtractService().getExtractReport();
+            List<String> llExtractReport = extractService.getExtractReport();
             llExtractReport.forEach(x -> textArea.append(x + "\n"));
             textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
             textArea.setLineWrap(false);

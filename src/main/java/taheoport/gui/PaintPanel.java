@@ -7,6 +7,7 @@ import taheoport.service.SurveyService;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
  * Display results of processing and highlights current position
@@ -15,21 +16,16 @@ import java.awt.*;
  */
 public class PaintPanel extends JPanel {
     private int index;
-    private final ShowViewResults parentFrame;
-    private PaintProject ppPaintPoints;
-//    private final SurveyService surveyService;
-
-//    private LinkedList <JLabel> llLabel;
+    private final List<SurveyStation> surveyStations;
 
     /**
      * Constructor
-     * @param frame ShowViewResults
      * @param sellRow index of selected row
+     * @param surveyStationList SurveyStation list
      */
-    public PaintPanel(ShowViewResults frame, int sellRow) {
+    public PaintPanel(List<SurveyStation> surveyStationList, int sellRow) {
         super();
-//        surveyService = f
-        parentFrame = frame;
+        surveyStations = surveyStationList;
         index = sellRow;
     }
 
@@ -37,18 +33,10 @@ public class PaintPanel extends JPanel {
         this.index = index;
     }
 
-    /*
-    public PaintProject getPpPaintPoints() {
-        return ppPaintPoints;
-    }
-*/
-
-
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-//        Insets insets = getInsets();
-        ppPaintPoints = new PaintProject();
-        ppPaintPoints.createSurveyPaintProject(parentFrame.getSurveyProject(), this.getWidth(), this.getHeight());
+        PaintProject ppPaintPoints = new PaintProject();
+        ppPaintPoints.createSurveyPaintProject(surveyStations, this.getWidth(), this.getHeight());
         if (ppPaintPoints.getScale() < 10) {
             for (PaintPoint paintPoint : ppPaintPoints) {
                 if (!paintPoint.getStatus()) {
@@ -97,12 +85,7 @@ public class PaintPanel extends JPanel {
                         ppPaintPoints.get(index).getyPaint(),
                         ppPaintPoints.get(index).getxOrPaint(),
                         ppPaintPoints.get(index).getyOrPaint());
-
             }
-
-
-//--->>
         }
     }
-
 }

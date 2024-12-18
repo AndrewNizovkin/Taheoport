@@ -19,10 +19,8 @@ import java.util.List;
 public class ShowViewResults extends JDialog {
 
     private final MainWin parentFrame;
-    private final JPanel pnlKatalog;
     private PaintPanel pnlView;
     private int sellRow;
-//    private final SurveyRepository surveyRepository;
     private final JTable tblView;
     private JTabbedPane tpSurvey;
     private final SurveyService surveyService;
@@ -35,7 +33,6 @@ public class ShowViewResults extends JDialog {
         super( frame, frame.getTitles().get("SVRdialogTitle"), true);
         surveyService = frame.getSurveyService();
         this.parentFrame = frame;
-//        surveyRepository = parentFrame.getSurveyRepository();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         setUndecorated(true);
@@ -115,14 +112,14 @@ public class ShowViewResults extends JDialog {
 
 //pnlView__________________________________________________
 
-        pnlView = new PaintPanel(this, -1);
+        pnlView = new PaintPanel(surveyService.getAllStations(), -1);
 
 // pnlKatalog________________________________________________
 
-        pnlKatalog = new JPanel();
-        pnlKatalog.setLayout(new BorderLayout());
-        pnlKatalog.add(spnlTblView, BorderLayout.WEST);
-        pnlKatalog.add(pnlView, BorderLayout.CENTER);
+        JPanel pnlCatalog = new JPanel();
+        pnlCatalog.setLayout(new BorderLayout());
+        pnlCatalog.add(spnlTblView, BorderLayout.WEST);
+        pnlCatalog.add(pnlView, BorderLayout.CENTER);
 
 // spReport__________________________________________________
 
@@ -145,7 +142,7 @@ public class ShowViewResults extends JDialog {
 // tpSurvey____________________________________________________
 
         tpSurvey = new JTabbedPane();
-        tpSurvey.add(pnlKatalog);
+        tpSurvey.add(pnlCatalog);
         tpSurvey.add(spReport);
         tpSurvey.setTitleAt(0, this.parentFrame.getTitles().get("SVRtpSurveyTitle0"));
         tpSurvey.setTitleAt(1, this.parentFrame.getTitles().get("SVRtpSurveyTitle1"));
