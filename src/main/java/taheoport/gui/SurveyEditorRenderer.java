@@ -63,7 +63,7 @@ public interface SurveyEditorRenderer {
 
     /**
      * Gets selected row index of tablePickets
-     * @return
+     * @return int
      */
     int getSelRow();
 
@@ -72,6 +72,10 @@ public interface SurveyEditorRenderer {
      */
     void setSelRow(int index);
 
+    /**
+     * Gets selected column of tablePickets
+     * @return int
+     */
     int getSelColumn();
 
 }

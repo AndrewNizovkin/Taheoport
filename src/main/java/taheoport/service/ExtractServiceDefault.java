@@ -2,7 +2,7 @@ package taheoport.service;
 
 import taheoport.gui.MainWin;
 import taheoport.model.ExtractStation;
-import taheoport.model.Shell;
+import taheoport.gui.Shell;
 import taheoport.repository.ExtractRepository;
 import taheoport.repository.SurveyRepository;
 
@@ -16,13 +16,13 @@ public class ExtractServiceDefault implements ExtractService {
     private final MainWin parentFrame;
     private final ExtractRepository extractRepository;
     private final SurveyService surveyService;
-    private final SettingsController settingsController;
+    private final SettingsService settingsService;
 
     public ExtractServiceDefault(MainWin frame) {
         this.parentFrame = frame;
         extractRepository = new ExtractRepository();
         surveyService = frame.getSurveyService();
-        settingsController = frame.getSettingsController();
+        settingsService = frame.getSettingsService();
     }
 
     /**
@@ -38,7 +38,7 @@ public class ExtractServiceDefault implements ExtractService {
 //        SurveyRepository parentSurveyRepository = surveyService.getSurveyRepository();
         for (int i = 0; i < surveyService.sizeRepository(); i++) {
             if (surveyService.findStationById(i).getName().charAt(0)
-                    != (char) settingsController.getPrefixEX() &
+                    != (char) settingsService.getPrefixEX() &
                     surveyService.findStationById(i).sizePickets() >= 2) {
                 surveyCopyRepository.addStation(surveyService.findStationById(i));
             }
@@ -105,7 +105,7 @@ public class ExtractServiceDefault implements ExtractService {
      */
     @Override
     public List<String> getExtractReport() {
-        List<String> listExtractReport = new Shell(parentFrame).getTopReportExtract();
+        List<String> listExtractReport = parentFrame.getShell().getTopReportExtract();
 
         for (ExtractStation extractStation : extractRepository) {
             listExtractReport.add("| " + new DataHandler(extractStation.getName()).toTable(10).getStr() +

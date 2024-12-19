@@ -4,7 +4,7 @@ import taheoport.dispatcher.PolygonEditorActionListener;
 import taheoport.model.PolygonStation;
 import taheoport.service.DataHandler;
 import taheoport.service.PolygonService;
-import taheoport.service.SettingsController;
+import taheoport.service.SettingsService;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -31,7 +31,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
     private final JTable tblStations;
     private final TmodelPolygonStations tmPolygonStations;
     private final PolygonService polygonService;
-    private final SettingsController settingsController;
+    private final SettingsService settingsService;
     HashMap<String, String> titles;
 
     /**
@@ -42,7 +42,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
         super();
         parentFrame = frame;
         polygonService = frame.getPolygonService();
-        settingsController = frame.getSettingsController();
+        settingsService = frame.getSettingsService();
         titles = frame.getTitles();
         tmPolygonStations = new TmodelPolygonStations(frame);
         tblStations = new JTable(tmPolygonStations);
@@ -348,7 +348,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
                 lblPerValue.setText("-.-");
             }
             case TT -> {
-                if (settingsController.getValueFHor() *
+                if (settingsService.getValueFHor() *
                         Math.sqrt(polygonService.getSizePolygonStations()) >
                         Math.abs(polygonService.getfHor())) {
                     lblAngleResidue.setForeground(Color.GREEN);
@@ -356,7 +356,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
                     lblAngleResidue.setForeground(Color.RED);
                 }
                 lblAngleResidue.setText(new DataHandler(polygonService.getfHor()).format(2).getStr());
-                if (settingsController.getValueFH() *
+                if (settingsService.getValueFH() *
                         Math.sqrt(polygonService.getPerimeter() / 1000) >
                         Math.abs(polygonService.getfZ() * 1000)) {
                     lblHeightResidue.setForeground(Color.GREEN);
@@ -364,7 +364,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
                     lblHeightResidue.setForeground(Color.RED);
                 }
                 lblHeightResidue.setText(new DataHandler(polygonService.getfZ()).format(3).getStr());
-                if (settingsController.getValueFAbs() > polygonService.getfAbs()) {
+                if (settingsService.getValueFAbs() > polygonService.getfAbs()) {
                     lblFXResidue.setForeground(Color.GREEN);
                     lblFYResidue.setForeground(Color.GREEN);
                     lblFAbsoluteResidue.setForeground(Color.GREEN);
@@ -376,7 +376,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
                 lblFXResidue.setText(new DataHandler(polygonService.getfX()).format(3).getStr());
                 lblFYResidue.setText(new DataHandler(polygonService.getfY()).format(3).getStr());
                 lblFAbsoluteResidue.setText(new DataHandler(polygonService.getfAbs()).format(3).getStr());
-                if (Double.parseDouble(settingsController.getValueFOtn()) <
+                if (Double.parseDouble(settingsService.getValueFOtn()) <
                         Double.parseDouble(polygonService.getfOtn())) {
                     lblFRelativeResidue.setForeground(Color.GREEN);
                 } else {
@@ -387,7 +387,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
             }
             case OO, OT, TO -> {
                 lblAngleResidue.setText("-.-");
-                if (settingsController.getValueFH() *
+                if (settingsService.getValueFH() *
                         Math.sqrt(polygonService.getPerimeter() / 1000) >
                         Math.abs(polygonService.getfZ() * 1000)) {
                     lblHeightResidue.setForeground(Color.GREEN);
@@ -395,7 +395,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
                     lblHeightResidue.setForeground(Color.RED);
                 }
                 lblHeightResidue.setText(new DataHandler(polygonService.getfZ()).format(3).getStr());
-                if (settingsController.getValueFAbs() > polygonService.getfAbs()) {
+                if (settingsService.getValueFAbs() > polygonService.getfAbs()) {
                     lblFXResidue.setForeground(Color.GREEN);
                     lblFYResidue.setForeground(Color.GREEN);
                     lblFAbsoluteResidue.setForeground(Color.GREEN);
@@ -407,7 +407,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
                 lblFXResidue.setText(new DataHandler(polygonService.getfX()).format(3).getStr());
                 lblFYResidue.setText(new DataHandler(polygonService.getfY()).format(3).getStr());
                 lblFAbsoluteResidue.setText(new DataHandler(polygonService.getfAbs()).format(3).getStr());
-                if (Double.parseDouble(settingsController.getValueFOtn()) <
+                if (Double.parseDouble(settingsService.getValueFOtn()) <
                         Double.parseDouble(polygonService.getfOtn())) {
                     lblFRelativeResidue.setForeground(Color.GREEN);
                 } else {

@@ -1,7 +1,5 @@
 package taheoport.gui;
 
-import taheoport.model.Shell;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
@@ -117,7 +115,7 @@ public class ShowAbout extends JDialog {
 // spLicense_________________________________________
 
         JTextArea textArea = new JTextArea();
-        LinkedList<String> llLicense = new Shell(parentFrame).getLicense();
+        LinkedList<String> llLicense = parentFrame.getShell().getLicense();
         String s = llLicense.pollFirst();
 
         while (s != null) {

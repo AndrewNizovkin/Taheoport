@@ -5,8 +5,6 @@ import taheoport.model.PolygonStation;
 import taheoport.model.SurveyStation;
 import taheoport.repository.CatalogRepository;
 import taheoport.model.CatalogPoint;
-import taheoport.repository.PolygonRepository;
-import taheoport.repository.SurveyRepository;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -22,7 +20,7 @@ public class CatalogServiceDefault implements CatalogService {
     private final PolygonService polygonService;
     private final SurveyService surveyService;
     private final IOService ioService;
-    private final SettingsController settingsController;
+    private final SettingsService settingsService;
     private String absoluteCatalogPath;
     private int choice;
 
@@ -34,7 +32,7 @@ public class CatalogServiceDefault implements CatalogService {
     public CatalogServiceDefault(MainWin parentFrame) {
         this.parentFrame = parentFrame;
         ioService = parentFrame.getIoService();
-        settingsController = parentFrame.getSettingsController();
+        settingsService = parentFrame.getSettingsService();
         polygonService = parentFrame.getPolygonService();
         surveyService = parentFrame.getSurveyService();
         catalogRepository = new CatalogRepository();
@@ -67,7 +65,7 @@ public class CatalogServiceDefault implements CatalogService {
     @Override
     public void importCatalog() {
         List<String> list = ioService.readTextFile(
-                settingsController.getPathWorkDir(),
+                settingsService.getPathWorkDir(),
                 "kat",
                 parentFrame.getTitles().get("MWloadCatalogTitle"));
 

@@ -1,6 +1,6 @@
 package taheoport.gui;
 
-import taheoport.service.SettingsController;
+import taheoport.service.SettingsService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,15 +11,15 @@ import java.awt.*;
  * Copyright Nizovkin A.V. 2022
  */
 public class LinearOffsetPaintPanel extends JPanel {
-    private final SettingsController settingsController;
+    private final SettingsService settingsService;
 
     /**
      * Constructor
-     * @param settingsController settingsController
+     * @param settingsService settingsController
      */
-    public LinearOffsetPaintPanel(SettingsController settingsController) {
+    public LinearOffsetPaintPanel(SettingsService settingsService) {
         super();
-        this.settingsController = settingsController;
+        this.settingsService = settingsService;
         setPreferredSize(new Dimension(110, 110));
     }
 
@@ -31,7 +31,7 @@ public class LinearOffsetPaintPanel extends JPanel {
         super.paintComponent(g);
 
         g.setColor(Color.RED);
-        switch (settingsController.getOffsetDistanceType()) {
+        switch (settingsService.getOffsetDistanceType()) {
             case 0 -> {
                 g.drawLine(64, 43, 95, 43);
             }

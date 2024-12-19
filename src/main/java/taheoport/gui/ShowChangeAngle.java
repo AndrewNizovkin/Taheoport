@@ -1,7 +1,7 @@
 package taheoport.gui;
 
 import taheoport.service.DataHandler;
-import taheoport.service.SettingsController;
+import taheoport.service.SettingsService;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -20,7 +20,7 @@ public class ShowChangeAngle extends JDialog implements ChangeListener, ActionLi
 
     private final JLabel lblOffset;
     private final MainWin parentFrame;
-    private final SettingsController settingsController;
+    private final SettingsService settingsService;
     private final JRadioButton rbOffset = new JRadioButton();
     private final JRadioButton rbCopy = new JRadioButton();
     private final String title;
@@ -34,10 +34,10 @@ public class ShowChangeAngle extends JDialog implements ChangeListener, ActionLi
      */
     public ShowChangeAngle(MainWin frame, String title) {
         super(frame, title, true);
-        settingsController = frame.getSettingsController();
+        settingsService = frame.getSettingsService();
         parentFrame  = frame;
         this.title = title;
-        settingsController.setChanged(false);
+        settingsService.setChanged(false);
         setBounds(parentFrame.getX() + parentFrame.getWidthMain() / 2 - parentFrame.getWidthMain() / 3 * 2 / 2,
                 parentFrame.getY() + parentFrame.getHeightMain() / 2 - parentFrame.getHeightMain() / 2 / 2,
                 290,
@@ -70,8 +70,8 @@ public class ShowChangeAngle extends JDialog implements ChangeListener, ActionLi
 
         tfOffset = new JTextField(15);
         if (title.equals(parentFrame.getTitles().get("SCAtitleChangeDirection"))) {
-            tfOffset.setText(settingsController.getOffsetDirection());
-            switch (settingsController.getOffsetDirectionType()) {
+            tfOffset.setText(settingsService.getOffsetDirection());
+            switch (settingsService.getOffsetDirectionType()) {
                 case 0 -> {
                     rbCopy.setSelected(true);
                 }
@@ -81,8 +81,8 @@ public class ShowChangeAngle extends JDialog implements ChangeListener, ActionLi
             }
         }
         if (title.equals(parentFrame.getTitles().get("SCAtitleChangeTiltAngle"))) {
-            tfOffset.setText(settingsController.getOffsetTiltAngle());
-            switch (settingsController.getOffsetTiltType()) {
+            tfOffset.setText(settingsService.getOffsetTiltAngle());
+            switch (settingsService.getOffsetTiltType()) {
                 case 0 -> {
                     rbCopy.setSelected(true);
                 }
@@ -244,7 +244,7 @@ public class ShowChangeAngle extends JDialog implements ChangeListener, ActionLi
      */
     private void updateStatus() {
         if (title.equals(parentFrame.getTitles().get("SCAtitleChangeDirection"))) {
-            switch (settingsController.getOffsetDirectionType()) {
+            switch (settingsService.getOffsetDirectionType()) {
                 case 0 -> {
                     lblOffset.setEnabled(false);
                     tfOffset.setEnabled(false);
@@ -257,7 +257,7 @@ public class ShowChangeAngle extends JDialog implements ChangeListener, ActionLi
             }
         }
         if (title.equals(parentFrame.getTitles().get("SCAtitleChangeTiltAngle"))) {
-            switch (settingsController.getOffsetTiltType()) {
+            switch (settingsService.getOffsetTiltType()) {
                 case 0 -> {
                     lblOffset.setEnabled(false);
                     tfOffset.setEnabled(false);
@@ -279,25 +279,25 @@ public class ShowChangeAngle extends JDialog implements ChangeListener, ActionLi
     public void stateChanged(ChangeEvent e) {
         if (rbCopy.isSelected()) {
             if (title.equals(parentFrame.getTitles().get("SCAtitleChangeDirection"))) {
-                settingsController.setOffsetDirectionType(0);
+                settingsService.setOffsetDirectionType(0);
             }
             if (title.equals(parentFrame.getTitles().get("SCAtitleChangeTiltAngle"))) {
-                settingsController.setOffsetTiltType(0);
+                settingsService.setOffsetTiltType(0);
             }
         }
         if (rbOffset.isSelected()){
             if (title.equals(parentFrame.getTitles().get("SCAtitleChangeDirection"))) {
-                settingsController.setOffsetDirectionType(1);
+                settingsService.setOffsetDirectionType(1);
                 tfOffset.requestFocusInWindow();
             }
             if (title.equals(parentFrame.getTitles().get("SCAtitleChangeTiltAngle"))) {
-                settingsController.setOffsetTiltType(1);
+                settingsService.setOffsetTiltType(1);
                 tfOffset.requestFocusInWindow();
             }
 
         }
 
-        parentFrame.getSettingsController().saveOptions();
+        parentFrame.getSettingsService().saveOptions();
         updateStatus();
     }
 
@@ -312,15 +312,15 @@ public class ShowChangeAngle extends JDialog implements ChangeListener, ActionLi
             tfOffset.setText("0.0000");
         }
         if (title.equals(parentFrame.getTitles().get("SCAtitleChangeDirection"))) {
-            switch (settingsController.getOffsetDirectionType()) {
+            switch (settingsService.getOffsetDirectionType()) {
                 case 0 -> {
-                    settingsController.setChanged(true);
+                    settingsService.setChanged(true);
                 }
                 case 1 -> {
                     DataHandler dataHandler = new DataHandler(tfOffset.getText()).commaToPoint();
                     if (dataHandler.isNumber()) {
-                        settingsController.setOffsetDirection(dataHandler.format(4).getStr());
-                        settingsController.setChanged(true);
+                        settingsService.setOffsetDirection(dataHandler.format(4).getStr());
+                        settingsService.setChanged(true);
                     }
 
                 }
@@ -329,15 +329,15 @@ public class ShowChangeAngle extends JDialog implements ChangeListener, ActionLi
         }
 
         if (title.equals(parentFrame.getTitles().get("SCAtitleChangeTiltAngle"))) {
-            switch (settingsController.getOffsetTiltType()) {
+            switch (settingsService.getOffsetTiltType()) {
                 case 0 -> {
-                    settingsController.setChanged(true);
+                    settingsService.setChanged(true);
                 }
                 case 1 -> {
                     DataHandler dataHandler = new DataHandler(tfOffset.getText()).commaToPoint();
                     if (dataHandler.isNumber()) {
-                        settingsController.setOffsetTiltAngle(dataHandler.format(4).getStr());
-                        settingsController.setChanged(true);
+                        settingsService.setOffsetTiltAngle(dataHandler.format(4).getStr());
+                        settingsService.setChanged(true);
                     }
 
                 }

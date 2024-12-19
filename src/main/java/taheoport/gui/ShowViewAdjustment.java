@@ -5,7 +5,7 @@ import taheoport.repository.CatalogRepository;
 import taheoport.model.CatalogPoint;
 import taheoport.service.IOService;
 import taheoport.service.PolygonService;
-import taheoport.service.SettingsController;
+import taheoport.service.SettingsService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +19,7 @@ import java.util.List;
 public class ShowViewAdjustment extends JDialog {
     private final MainWin parentFrame;
     private final PolygonService polygonService;
-    private final SettingsController settingsController;
+    private final SettingsService settingsService;
     private final IOService ioService;
     private PolygonPaintPanel pnlViewNXYZ;
     private int sellRow;
@@ -32,7 +32,7 @@ public class ShowViewAdjustment extends JDialog {
     public ShowViewAdjustment(MainWin frame) {
         super(frame,frame.getTitles().get("SVAdialogTitle"), true);
         polygonService = frame.getPolygonService();
-        settingsController = frame.getSettingsController();
+        settingsService = frame.getSettingsService();
         ioService = frame.getIoService();
         this.parentFrame = frame;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -60,15 +60,15 @@ public class ShowViewAdjustment extends JDialog {
         btnSaveReport.addActionListener(e -> {
             switch (tp.getSelectedIndex()) {
                 case 0 -> ioService.writeTextFile(polygonService.getReportNXYZ(),
-                        settingsController.getPathWorkDir(),
+                        settingsService.getPathWorkDir(),
                         "kat",
                         parentFrame.getTitles().get("SVRsaveTitle0"));
                 case 1 -> ioService.writeTextFile(polygonService.getReportXY(),
-                        settingsController.getPathWorkDir(),
+                        settingsService.getPathWorkDir(),
                         "txt",
                         parentFrame.getTitles().get("SVRsaveTitle1"));
                 case 2 -> ioService.writeTextFile(polygonService.getReportZ(),
-                        settingsController.getPathWorkDir(),
+                        settingsService.getPathWorkDir(),
                         "txt",
                         parentFrame.getTitles().get("SVRsaveTitle1"));
             }

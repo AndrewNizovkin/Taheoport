@@ -2,7 +2,7 @@ package taheoport.service;
 
 import taheoport.gui.MainWin;
 import taheoport.model.Picket;
-import taheoport.model.Shell;
+import taheoport.gui.Shell;
 import taheoport.model.SurveyStation;
 import taheoport.repository.SurveyRepository;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ public class SurveyServiceDefault implements SurveyService {
     private SurveyRepository surveyRepository;
     private final IOService ioService;
     private final ImportService importService;
-    private final SettingsController settingsController;
+    private final SettingsService settingsService;
 
     /**
      * Constructor
@@ -31,7 +31,7 @@ public class SurveyServiceDefault implements SurveyService {
         surveyRepository = new SurveyRepository();
         ioService = frame.getIoService();
         importService = new ImportServiceDefault();
-        settingsController = frame.getSettingsController();
+        settingsService = frame.getSettingsService();
 
     }
 
@@ -151,11 +151,10 @@ public class SurveyServiceDefault implements SurveyService {
     @Override
     public List<String> getReport() {
         HashMap<String, String> titlesReports = parentFrame.getTitles();
-//        surveyRepository = parentFrame.getSurveyRepository();
         Picket picket;
         SurveyStation surveyStation;
         LinkedList<String> listReport = new LinkedList<>();
-        LinkedList<String> listTopReport = new Shell(parentFrame).getTopReportSurvey();
+        LinkedList<String> listTopReport = parentFrame.getShell().getTopReportSurvey();
         String str;
 
         while ((str = listTopReport.pollFirst()) != null) {
@@ -211,7 +210,7 @@ public class SurveyServiceDefault implements SurveyService {
      */
     @Override
     public void processSourceData() {
-        GeoCalc geoCalc = new GeoCalc();
+        GeoCalculator geoCalculator = new GeoCalculator();
         SurveyStation llStation;
         double dirBase;
         double dirPicket;
@@ -223,7 +222,7 @@ public class SurveyServiceDefault implements SurveyService {
 
         for (int i = 0; i < surveyRepository.sizeStations(); i++) {
             llStation = surveyRepository.findById(i);
-            dirBase = geoCalc.getDirAB(
+            dirBase = geoCalculator.getDirAB(
                     llStation.getX(),
                     llStation.getY(),
                     llStation.getxOr(),
@@ -232,7 +231,7 @@ public class SurveyServiceDefault implements SurveyService {
                 picket = llStation.getPicket(j);
 
 
-                if (settingsController.getOrientStation() == 1) {
+                if (settingsService.getOrientStation() == 1) {
                     dirPicket = dirBase + new DataHandler(picket.getHor()).dmsToRad() -
                             new DataHandler(llStation.getPicket(0).getHor()).dmsToRad();
                     while (dirPicket < 0) {
@@ -246,9 +245,9 @@ public class SurveyServiceDefault implements SurveyService {
                 while (dirPicket > 2 * Math.PI) {
                     dirPicket -= 2 * Math.PI;
                 }
-                horLine = geoCalc.getHorLine(picket.getLine(), picket.getVert());
-                dX = geoCalc.getDX(horLine, dirPicket);
-                dY = geoCalc.getDY(horLine, dirPicket);
+                horLine = geoCalculator.getHorLine(picket.getLine(), picket.getVert());
+                dX = geoCalculator.getDX(horLine, dirPicket);
+                dY = geoCalculator.getDY(horLine, dirPicket);
                 dZ = Double.parseDouble(llStation.getVi()) -
                         Double.parseDouble(llStation.getPicket(j).getV()) +
                         Double.parseDouble(picket.getLine()) * Math.sin(new DataHandler(picket.getVert()).dmsToRad());
@@ -270,7 +269,7 @@ public class SurveyServiceDefault implements SurveyService {
     @Override
     public void importLeica() {
         List <String>  list = ioService.readTextFile(
-                settingsController.getPathWorkDir(),
+                settingsService.getPathWorkDir(),
                 "gsi",
                 parentFrame.getTitles().get("MWopenFileTitle"));
         if (list != null) {
@@ -285,7 +284,7 @@ public class SurveyServiceDefault implements SurveyService {
     @Override
     public void importNicon() {
         List <String>  list = ioService.readTextFile(
-                settingsController.getPathWorkDir(),
+                settingsService.getPathWorkDir(),
                 "raw",
                 parentFrame.getTitles().get("MWopenFileTitle"));
 
@@ -301,7 +300,7 @@ public class SurveyServiceDefault implements SurveyService {
     @Override
     public void importTopcon() {
         List<String> list = ioService.readTextFile(
-                settingsController.getPathWorkDir(),
+                settingsService.getPathWorkDir(),
                 "txt",
                 parentFrame.getTitles().get("MWopenFileTitle"));
 
@@ -317,7 +316,7 @@ public class SurveyServiceDefault implements SurveyService {
     @Override
     public void importTah() {
         List<String> llTahList = ioService.readTextFile(
-                settingsController.getPathWorkDir(),
+                settingsService.getPathWorkDir(),
                 "tah",
                 parentFrame.getTitles().get("MWopenFileTitle"));
 
@@ -346,7 +345,7 @@ public class SurveyServiceDefault implements SurveyService {
         if (absoluteTahPath.isEmpty()) {
             String s = ioService.writeTextFile(
                     this.getTahList(),
-                    settingsController.getPathWorkDir(),
+                    settingsService.getPathWorkDir(),
                     "tah",
                     "Write Tah");
             if (s != null) {
@@ -366,7 +365,7 @@ public class SurveyServiceDefault implements SurveyService {
     public void saveProjectAs() {
         String s = ioService.writeTextFile(
                 this.getTahList(),
-                settingsController.getPathWorkDir(),
+                settingsService.getPathWorkDir(),
                 "tah",
                 parentFrame.getTitles().get("MWsaveTahTitle"));
         if (s != null) {

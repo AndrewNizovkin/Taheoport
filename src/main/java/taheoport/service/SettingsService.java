@@ -3,7 +3,7 @@ package taheoport.service;
 /**
  * This interface defines methods for working with program settings
  */
-public interface SettingsController {
+public interface SettingsService {
 
     /**
      * Writes settings to file taheoport.ini

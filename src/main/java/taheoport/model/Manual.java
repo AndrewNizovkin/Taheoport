@@ -1,7 +1,7 @@
 package taheoport.model;
 
 import taheoport.gui.MainWin;
-import taheoport.service.SettingsController;
+import taheoport.service.SettingsService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +13,7 @@ import java.awt.*;
  */
 public class Manual {
     private final MainWin parentFrame;
-    private final SettingsController settingsController;
+    private final SettingsService settingsService;
     private final String newLine = "\n";
     private final Insets insets= new Insets(10, 10, 10, 10);
 
@@ -23,7 +23,7 @@ public class Manual {
      */
     public Manual(MainWin parentFrame) {
         this.parentFrame = parentFrame;
-        settingsController = parentFrame.getSettingsController();
+        settingsService = parentFrame.getSettingsService();
     }
 
     /**
@@ -32,7 +32,7 @@ public class Manual {
      */
     public JTextArea getIntroduction() {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("    Total stations are used in carrying out any geodetic work related to measurements:" + newLine +newLine);
                 textArea.append("\t• creation of basic points networks;" + newLine + newLine);
@@ -133,7 +133,7 @@ public class Manual {
      */
     public JTextArea getImport() {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("    Taheoport may to import data from measurement files into its own format and saved" +
                         " the data on disk in a file with the tah extension. In addition, it is possible to create a" +
@@ -190,7 +190,7 @@ public class Manual {
      */
     public JTextArea getExtract() {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("    Taheoport extracts the polygon from the measurement file," +
                         " if the first measurement record at each station is measurements at the back point of the polygon," +
@@ -283,7 +283,7 @@ public class Manual {
      */
     public JTextArea getAdjustment() {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("    Taheoport adjust and calculates the accuracy of a single polygon that" +
                         " has one of the following types of binding to the basic network:" + newLine + newLine);
@@ -382,7 +382,7 @@ public class Manual {
      */
     public JTextArea getMainMenu() {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("    Actions related to the selection of menu items are determined by the active" +
                         " (user-selected) tab. When the program starts, the \"Measurements\" tab is active." + newLine + newLine);
@@ -492,7 +492,7 @@ public class Manual {
      */
     public JTextArea getToolbarDemo() {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("    The toolbar of the main window of the Taheoport program contains buttons" +
                         " duplicating the actions of the corresponding main menu items and a text field displaying" +
@@ -524,7 +524,7 @@ public class Manual {
      */
     public JTextArea getToolbarNew () {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("    Clicking the button is similar to selecting the FILE - CREATE menu item and depends on the selected tab:" + newLine + newLine);
                 textArea.append("\t• \"Measurements\" - creates a measurement project containing a set of one station and measurements for one picket with zero values;" + newLine + newLine);
@@ -553,7 +553,7 @@ public class Manual {
      */
     public JTextArea getToolbarOpen () {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("    Clicking the button is similar to selecting the FILE - OPEN menu item and depends on the selected tab:" + newLine + newLine);
                 textArea.append("\t• \"Measurements\" - offers a standard dialog for searching and opening a measurement file (*.tah). Opens the file in the measurements editor;" + newLine + newLine);
@@ -581,7 +581,7 @@ public class Manual {
      */
     public JTextArea getToolbarImport () {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("    Clicking the button is similar to selecting the FILE - IMPORT. Is available only when the \"Measurements\" tab is active" + newLine + newLine);
             }
@@ -604,7 +604,7 @@ public class Manual {
      */
     public JTextArea getToolbarSave () {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("    Clicking the button is similar to selecting the FILE - SAVE menu item" +
                         " and depends on the selected tab:" + newLine + newLine);
@@ -638,7 +638,7 @@ public class Manual {
      */
     public JTextArea getToolbarRun () {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("    Clicking the button is similar to selecting the menu item TOOLS - PROCESS (EQUALIZE) and depends on the selected tab:" + newLine + newLine);
                 textArea.append("\t• \"Measurements\" - performs mathematical data processing and offers a standard dialog for saving" +
@@ -671,7 +671,7 @@ public class Manual {
      */
     public JTextArea getToolbarView () {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("    Clicking the button is similar to selecting the menu item TOOLS - PROCESS AND VIEW and depends" +
                         " on the selected tab:" + newLine + newLine);
@@ -734,7 +734,7 @@ public class Manual {
      */
     public JTextArea getToolbarLoadCat() {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("Clicking the button is similar to selecting the TOOLS - UPLOAD CATALOG menu item." + newLine + newLine);
                 textArea.append("    It offers a standard dialog for searching and opening" +
@@ -768,7 +768,7 @@ public class Manual {
      */
     public JTextArea getMeasurements() {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("    The \"Measurements\" tab is designed for creating and/or editing a measurement file and consists of three panels:" + newLine + newLine);
                 textArea.append("    • \"Station parameters\" - includes text fields and buttons for editing station parameters:" + newLine + newLine);
@@ -902,7 +902,7 @@ public class Manual {
      */
     public JTextArea getPolygon() {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("    The \"Polygon\" tab is designed for creating and/or editing a polygon and consists of three main components:" + newLine + newLine);
                 textArea.append("    • Data table – has a toolbar for deleting existing and inserting new, empty fields into the measurement table," +
@@ -960,7 +960,7 @@ public class Manual {
      */
     public JTextArea getSettings() {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("    The \"Settings\" window contains the \"General\" and \"Deviations\" tabs." + newLine + newLine);
                 textArea.append("    The \"General\" tab includes the following components:" + newLine + newLine);
@@ -1019,7 +1019,7 @@ public class Manual {
      */
     public JTextArea getFiles() {
         JTextArea textArea = new JTextArea();
-        switch (settingsController.getLanguage()) {
+        switch (settingsService.getLanguage()) {
             case 0 -> {
                 textArea.append("    The files used by Taheport, depending on the purpose, have the following extensions:" + newLine);
                 textArea.append(newLine);

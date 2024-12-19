@@ -14,10 +14,8 @@ import java.util.regex.Pattern;
  * This class encapsulates methods for import data from different types of total stations
  */
 public class ImportServiceDefault implements ImportService {
-//    private final MainWin parentFrame;
 
     public ImportServiceDefault() {
-//        this.parentFrame = frame;
     }
 
     /**
@@ -51,13 +49,12 @@ public class ImportServiceDefault implements ImportService {
                         array[7],
                         "0.000",
                         array[4]));
-//                surveyRepository.addStation(array[0], array[1], array[2], array[3], array[5], array[6], array[7], "0.000", array[4]);
                 str = list.remove(0);
             }
             int index = 0;
             surveyStation = surveyRepository.findById(index);
             while (!list.isEmpty()) {
-                str = (String) list.remove(0);
+                str = list.remove(0);
                 if (!str.contains("//")) {
                     str = new DataHandler(str).compress(sep).getStr();
                     array = str.split(sep);
@@ -88,7 +85,6 @@ public class ImportServiceDefault implements ImportService {
         String code = "Not";
         String currentToolHeight = "Not";
         DataHandler[] lineHandlers;
-//        int res = 0;
         String [] array;
         surveyRepository.setAbsoluteTahPath(list.remove(0));
         try {

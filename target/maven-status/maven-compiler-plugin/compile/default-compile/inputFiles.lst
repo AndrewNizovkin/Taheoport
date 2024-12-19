@@ -10,6 +10,7 @@
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/PolygonEditorRenderer.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/PolygonEditorStandart.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/PolygonPaintPanel.java
+/home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/Shell.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/ShowAbout.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/ShowCatalog.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/ShowChangeAngle.java
@@ -33,7 +34,6 @@
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/model/Picket.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/model/PolygonStation.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/model/Settings.java
-/home/andrew/MyJava/Taheoport/src/main/java/taheoport/model/Shell.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/model/SurveyStation.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/repository/CatalogRepository.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/repository/ExtractRepository.java
@@ -46,7 +46,7 @@
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/DataHandler.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/ExtractService.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/ExtractServiceDefault.java
-/home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/GeoCalc.java
+/home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/GeoCalculator.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/IOService.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/IOServiceDefault.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/ImportService.java
@@ -55,7 +55,7 @@
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/PolygonServiceDefault.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/Security.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/SecurityImpl.java
-/home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/SettingsController.java
-/home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/SettingsControllerDefault.java
+/home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/SettingsService.java
+/home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/SettingsServiceDefault.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/SurveyService.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/SurveyServiceDefault.java

@@ -1,9 +1,7 @@
 package taheoport.gui;
 
 import taheoport.dispatcher.MainActionListener;
-import taheoport.repository.CatalogRepository;
 import taheoport.service.*;
-import taheoport.model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,11 +23,12 @@ public class MainWin extends JFrame implements MainRenderer{
     private final PolygonService polygonService;
     private final ExtractService extractService;
     private final CatalogService catalogService;
-    private final SettingsController settingsController;
+    private final SettingsService settingsService;
     private final Security security;
     private final JTabbedPane tpMain;
     private final JPanel pnlMeasurements;
     private final JPanel pnlPolygon;
+    private final Shell shell;
     private HashMap<String, String> titles;
     private final int wMain;
     private final int hMain;
@@ -69,13 +68,14 @@ public class MainWin extends JFrame implements MainRenderer{
     public MainWin() {
         super("Taheoport");
         ioService = new IOServiceDefault(this);
-        settingsController = new SettingsControllerDefault(this);
+        settingsService = new SettingsServiceDefault(this);
         surveyService = new SurveyServiceDefault(this);
         polygonService = new PolygonServiceDefault(this);
         extractService = new ExtractServiceDefault(this);
         catalogService = new CatalogServiceDefault(this);
         security = new SecurityImpl();
-        titles = new Shell(this).getTitles();
+        shell = new Shell(settingsService);
+        titles = shell.getTitles();
         ActionListener actionListener = new MainActionListener(this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -420,8 +420,8 @@ public class MainWin extends JFrame implements MainRenderer{
     }
 
 
-    public SettingsController getSettingsController() {
-        return settingsController;
+    public SettingsService getSettingsService() {
+        return settingsService;
     }
 
     /**
@@ -438,6 +438,14 @@ public class MainWin extends JFrame implements MainRenderer{
     }
 
     /**
+     * Gets object translating shell
+     * @return shell
+     */
+    public Shell getShell() {
+        return shell;
+    }
+
+    /**
      * Return is Catalog
      * @return Boolean
      */
@@ -446,14 +454,14 @@ public class MainWin extends JFrame implements MainRenderer{
     }
 
     public String getPathWorkDir() {
-        return settingsController.getPathWorkDir();
+        return settingsService.getPathWorkDir();
     }
 
     /**
      * Translate interface
      */
     public void translate() {
-        titles = new Shell(this).getTitles();
+        titles = shell.getTitles();
         mFile.setText(titles.get("MWmFile"));
         mTools.setText(titles.get("MWmTools"));
         mHelp.setText(titles.get("MWmHelp"));

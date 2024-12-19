@@ -5,7 +5,7 @@ package taheoport.service;
  * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
-public class GeoCalc {
+public class GeoCalculator {
 
     /**
      * gets direction AB in radians
@@ -50,9 +50,7 @@ public class GeoCalc {
                 }
             }
         }
-
         return dir;
-
     }
 
     /**

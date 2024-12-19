@@ -92,24 +92,96 @@ class DataHandlerTest {
         assertFalse(expect);
     }
 
-    @Test
-    void isNumber() {
+    @ParameterizedTest
+    @CsvSource({"1.345", "0", "1", "1000.2332", "-1.345", "-1", "-1000.2332"})
+    void isNumberTrueTest(String str) {
+        DataHandler dataHandler = new DataHandler(str);
+
+        boolean actual = dataHandler.isNumber();
+
+        assertTrue(actual);
     }
 
-    @Test
-    void zenithToVert() {
+    @ParameterizedTest
+    @CsvSource({"1.345a", "sdf", "//1"})
+    void isNumberTrueFalse(String str) {
+        DataHandler dataHandler = new DataHandler(str);
+
+        boolean actual = dataHandler.isNumber();
+
+        assertFalse(actual);
     }
 
-    @org.junit.jupiter.api.Test
-    void degToDms() {
+    @ParameterizedTest
+    @CsvSource({
+            "090.02380, -0.0238",
+            "089.53090, 0.0651",
+            "090.51020, -0.5102",
+            "090.00000, 0.0000"
+    })
+    void zenithToVertTest(String zenithAngle, String vertAngle) {
+        DataHandler dataHandler = new DataHandler(zenithAngle);
+
+        String actual = dataHandler.ZenithToVert().format(4).getStr();
+
+        assertEquals(vertAngle, actual);
     }
 
-    @org.junit.jupiter.api.Test
-    void dmsToDeg() {
+    @ParameterizedTest
+    @CsvSource({
+            "10.50861111, 10.3031",
+            "0.033611111, 0.0201",
+            "-0.033611111, -0.0201",
+            "0, 0.0000",
+            "359.9997222, 359.5959",
+            "-359.9997222, -359.5959",
+            "89.99972222, 89.5959",
+            "180, 180.0000",
+            "270.0169444, 270.0101"
+    })
+    void degToDmsTest(double angleOnDegree, String expectResult ) {
+        DataHandler dataHandler = new DataHandler();
+
+        String actual = dataHandler.degToDms(angleOnDegree).format(4).getStr();
+
+        assertEquals(expectResult, actual);
     }
 
-    @org.junit.jupiter.api.Test
-    void removeFirstZero() {
+    @ParameterizedTest
+    @CsvSource({
+            "10.3031, 10.50861111",
+            "0.0201, 0.033611111",
+            "-0.0201, -0.033611111",
+            "0.0000, 0",
+            "359.5959, 359.9997222",
+            "-359.5959, -359.9997222",
+            "89.5959, 89.99972222",
+            "180.0000, 180",
+            "270.0101, 270.0169444"
+    })
+    void dmsToDegTest(String angleDMS, double expectResult) {
+        DataHandler dataHandler = new DataHandler(angleDMS);
+
+        double actualResult = dataHandler.dmsToDeg();
+
+        assertEquals(expectResult, actualResult, 0.0000001);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "000010.3031, 10.3031",
+            "0000.0201, 0.0201",
+            "00000, 0",
+            "0, 0",
+            ".0201, .0201",
+            "35454545000, 35454545000"
+    })
+    void removeFirstZeroTest(String rowString, String expectResult) {
+        DataHandler dataHandler = new DataHandler(rowString);
+
+        String actualResult = dataHandler.removeFirstZero().getStr();
+
+        assertEquals(expectResult, actualResult);
     }
 
     @org.junit.jupiter.api.Test

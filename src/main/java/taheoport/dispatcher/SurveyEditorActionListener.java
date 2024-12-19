@@ -5,7 +5,7 @@ import taheoport.model.CatalogPoint;
 import taheoport.model.SurveyStation;
 import taheoport.service.CatalogService;
 import taheoport.service.DataHandler;
-import taheoport.service.SettingsController;
+import taheoport.service.SettingsService;
 import taheoport.service.SurveyService;
 
 import javax.swing.*;
@@ -16,7 +16,7 @@ public class SurveyEditorActionListener implements ActionListener {
     private final SurveyEditorRenderer renderer;
     private final CatalogService catalogService;
     private final SurveyService surveyService;
-    private final SettingsController settingsController;
+    private final SettingsService settingsService;
     private final MainWin parentFrame;
 
     /**
@@ -28,7 +28,7 @@ public class SurveyEditorActionListener implements ActionListener {
         parentFrame = renderer.getParentFrame();
         catalogService = renderer.getParentFrame().getCatalogService();
         surveyService = renderer.getParentFrame().getSurveyService();
-        settingsController = renderer.getParentFrame().getSettingsController();
+        settingsService = renderer.getParentFrame().getSettingsService();
     }
 
 
@@ -176,12 +176,12 @@ public class SurveyEditorActionListener implements ActionListener {
     private void changeDistance() {
         TmodelPickets tmodelPickets = (TmodelPickets) renderer.getTablePickets().getModel();
         new ShowChangeDistance(parentFrame);
-        if (settingsController.isChanged()) {
+        if (settingsService.isChanged()) {
             String str;
             double line = Double.parseDouble((String) tmodelPickets.getValueAt(renderer.getSelRow(), 1));
             double tilt = new DataHandler((String) tmodelPickets.getValueAt(renderer.getSelRow(), 3)).dmsToRad();
-            double offset = Double.parseDouble(settingsController.getOffsetDistance());
-            switch (settingsController.getOffsetDistanceType()) {
+            double offset = Double.parseDouble(settingsService.getOffsetDistance());
+            switch (settingsService.getOffsetDistanceType()) {
                 case 0 -> {
                     str = new DataHandler(line + offset / Math.cos(tilt)).format(3).getStr();
                     tmodelPickets.setValueAt(str, renderer.getSelRow(), 1);
@@ -201,8 +201,8 @@ public class SurveyEditorActionListener implements ActionListener {
     private void changeDirection() {
         TmodelPickets tmodelPickets = (TmodelPickets) renderer.getTablePickets().getModel();
         new ShowChangeAngle(parentFrame,parentFrame.getTitles().get("SCAtitleChangeDirection"));
-        if (settingsController.isChanged()) {
-            switch (settingsController.getOffsetDirectionType()) {
+        if (settingsService.isChanged()) {
+            switch (settingsService.getOffsetDirectionType()) {
                 case 0 -> {
                     if (renderer.getSelRow() < tmodelPickets.getRowCount() - 1) {
                         tmodelPickets.setValueAt(tmodelPickets.getValueAt(
@@ -214,7 +214,7 @@ public class SurveyEditorActionListener implements ActionListener {
                 }
                 case 1 -> {
                     double angle = new DataHandler((String) tmodelPickets.getValueAt(renderer.getSelRow(), 2)).dmsToDeg();
-                    double offset = new DataHandler(settingsController.getOffsetDirection()).dmsToDeg();
+                    double offset = new DataHandler(settingsService.getOffsetDirection()).dmsToDeg();
                     angle += offset;
                     while (angle < 0) {
                         angle += 360;
@@ -236,10 +236,10 @@ public class SurveyEditorActionListener implements ActionListener {
         TmodelPickets tmodelPickets = (TmodelPickets) renderer.getTablePickets().getModel();
         int selRow = renderer.getSelRow();
         new ShowChangeAngle(parentFrame, parentFrame.getTitles().get("SCAtitleChangeTiltAngle"));
-        if (settingsController.isChanged()) {
+        if (settingsService.isChanged()) {
             double line = Double.parseDouble((String) tmodelPickets.getValueAt(selRow, 1));
             double tilt = new DataHandler((String) tmodelPickets.getValueAt(selRow, 3)).dmsToRad();
-            switch (settingsController.getOffsetTiltType()) {
+            switch (settingsService.getOffsetTiltType()) {
                 case 0 -> {
                     if (selRow < tmodelPickets.getRowCount() - 1) {
                         double tiltNext = new DataHandler((String) tmodelPickets.getValueAt(selRow + 1, 3)).dmsToRad();
@@ -252,7 +252,7 @@ public class SurveyEditorActionListener implements ActionListener {
                 }
                 case 1 -> {
                     double angle = new DataHandler((String) tmodelPickets.getValueAt(selRow, 3)).dmsToDeg();
-                    double offset = new DataHandler(settingsController.getOffsetTiltAngle()).dmsToDeg();
+                    double offset = new DataHandler(settingsService.getOffsetTiltAngle()).dmsToDeg();
                     line = line * Math.cos(tilt) / Math.cos(new DataHandler().degToDms(angle + offset).dmsToRad());
                     tmodelPickets.setValueAt(new DataHandler(line).format(3).getStr(), selRow, 1);
                     tmodelPickets.setValueAt(new DataHandler().degToDms(angle + offset).getStr(), selRow, 3);

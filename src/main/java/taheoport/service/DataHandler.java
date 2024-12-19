@@ -123,7 +123,7 @@ public class DataHandler {
 
     /**
      * Checks the validity of the entered number
-     * @return
+     * @return result of check
      */
     public boolean isNumber() {
         String s = str;
@@ -209,8 +209,12 @@ public class DataHandler {
      */
     public DataHandler removeFirstZero() {
         StringBuilder s = new StringBuilder(str);
-        while (s.charAt(0) == '0') {
-            s.deleteCharAt(0);
+        if (s.length() > 1) {
+            while (s.charAt(0) == '0') {
+                if ((s.length() >= 2) & (s.charAt(1) == '.')) break;
+                s.deleteCharAt(0);
+                if (s.length() == 1) break;
+            }
         }
         str = String.valueOf(s);
         return this;

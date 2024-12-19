@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * This class encapsulates methods for working with program settings
  */
-public class SettingsControllerDefault implements SettingsController {
+public class SettingsServiceDefault implements SettingsService {
 
 //    private final MainWin parentFrame;
     private final Settings settings;
@@ -20,7 +20,7 @@ public class SettingsControllerDefault implements SettingsController {
      * Constructor
      * @param parentFrame MainWin
      */
-    public SettingsControllerDefault(MainWin parentFrame) {
+    public SettingsServiceDefault(MainWin parentFrame) {
 //        this.parentFrame = parentFrame;
         settings = new Settings();
         ioService = parentFrame.getIoService();

@@ -4,7 +4,7 @@ import taheoport.gui.MainWin;
 import taheoport.model.BindType;
 import taheoport.repository.PolygonRepository;
 import taheoport.model.PolygonStation;
-import taheoport.model.Shell;
+import taheoport.gui.Shell;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -22,11 +22,11 @@ public class PolygonServiceDefault implements PolygonService {
     private final MainWin parentFrame;
     private final Adjuster adjuster;
     private final IOService ioService;
-    private final SettingsController settingsController;
+    private final SettingsService settingsService;
 
     public PolygonServiceDefault(MainWin frame) {
         parentFrame = frame;
-        settingsController = frame.getSettingsController();
+        settingsService = frame.getSettingsService();
         ioService = new IOServiceDefault(parentFrame);
         polygonRepository = new PolygonRepository();
         absolutePolPath = "";
@@ -49,7 +49,7 @@ public class PolygonServiceDefault implements PolygonService {
     @Override
     public void importPol() {
         List<String> list = ioService.readTextFile(
-                settingsController.getPathWorkDir(),
+                settingsService.getPathWorkDir(),
                 "pol",
                 parentFrame.getTitles().get("MWopenFileTitle"));
         if (list != null) {
@@ -65,7 +65,7 @@ public class PolygonServiceDefault implements PolygonService {
         if (absolutePolPath.isEmpty()) {
             String s = ioService.writeTextFile(
                     getPolList(),
-                    settingsController.getPathWorkDir(),
+                    settingsService.getPathWorkDir(),
                     "pol",
                     "Write *.pol");
                     if (s != null) {
@@ -83,7 +83,7 @@ public class PolygonServiceDefault implements PolygonService {
     public void savePolAs() {
         String s = ioService.writeTextFile(
                 getPolList(),
-                settingsController.getPathWorkDir(),
+                settingsService.getPathWorkDir(),
                 "pol",
                 parentFrame.getTitles().get("MWsavePolTitle"));
         if (s != null) {
@@ -178,8 +178,8 @@ public class PolygonServiceDefault implements PolygonService {
      */
     @Override
     public List<String> getReportXY() {
-        List<String> llTopReportXY = new Shell(parentFrame).getTopReportXY();
-        HashMap<String, String> titlesReports = new Shell(parentFrame).getTitlesReports();
+        List<String> llTopReportXY = parentFrame.getShell().getTopReportXY();
+        HashMap<String, String> titlesReports = parentFrame.getShell().getTitlesReports();
         List<String> llReportXY = new LinkedList<>(llTopReportXY);
         PolygonStation firstPolygonStation = findById(0);
         switch (getBindType()) {
@@ -288,7 +288,7 @@ public class PolygonServiceDefault implements PolygonService {
         if (getBindType() == BindType.TT) {
             llReportXY.add(titlesReports.get("TPactual") + new DataHandler(getfHor()).format(2).getStr() + titlesReports.get("TPsek"));
             llReportXY.add(titlesReports.get("TPacceptable") +
-                    new DataHandler(settingsController.getValueFHor() * Math.sqrt(getSizePolygonStations() - 2)).format(0).getStr() +
+                    new DataHandler(settingsService.getValueFHor() * Math.sqrt(getSizePolygonStations() - 2)).format(0).getStr() +
                     titlesReports.get("TPsek"));
         } else {
             llReportXY.add(titlesReports.get("TPactual") + "-.-");
@@ -307,7 +307,7 @@ public class PolygonServiceDefault implements PolygonService {
             llReportXY.add(titlesReports.get("TPlineDY") + new DataHandler(getfY()).format(3).getStr() + "м.");
             llReportXY.add(titlesReports.get("TPabsoluteDeviation") + new DataHandler(getfAbs()).format(3).getStr() + "м.");
             llReportXY.add(titlesReports.get("TPactualRelativeDeviation") + "1:" + getfOtn());
-            llReportXY.add(titlesReports.get("TPacceptableRelativeDeviation") + "1:" + settingsController.getValueFOtn());
+            llReportXY.add(titlesReports.get("TPacceptableRelativeDeviation") + "1:" + settingsService.getValueFOtn());
 
         }
         return llReportXY;
@@ -321,7 +321,6 @@ public class PolygonServiceDefault implements PolygonService {
      */
     @Override
     public List<String> getReportZ() {
-//        PolygonRepository polygonRepository = parentFrame.getPolygonRepository();
         double dZCorrected;
         double sumDZ = 0.0;
         double sumDDZ = 0.0;
@@ -329,9 +328,9 @@ public class PolygonServiceDefault implements PolygonService {
         int start = 0;
         int finish = getSizePolygonStations() - 1;
 
-        LinkedList<String> llTopReportZ = new Shell(parentFrame).getTopReportZ();
+        LinkedList<String> llTopReportZ = parentFrame.getShell().getTopReportZ();
         LinkedList<String> llReportZ = new LinkedList<>(llTopReportZ);
-        HashMap<String, String> titlesReports = new Shell(parentFrame).getTitlesReports();
+        HashMap<String, String> titlesReports = parentFrame.getShell().getTitlesReports();
 
         if (getBindType() == BindType.TT |
                 getBindType() == BindType.TO |
@@ -396,7 +395,7 @@ public class PolygonServiceDefault implements PolygonService {
                     new DataHandler(getfZ() * 1000).format(0).getStr() +
                     titlesReports.get("TPmm"));
             llReportZ.add(titlesReports.get("TPacceptableResidue") +
-                    new DataHandler(settingsController.getValueFH() *
+                    new DataHandler(settingsService.getValueFH() *
                             Math.sqrt(getPerimeter() / 1000)).format(0).getStr() +
                     titlesReports.get("TPmm"));
         }

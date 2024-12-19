@@ -9,7 +9,6 @@ taheoport/gui/PaintPanel.class
 taheoport/model/PaintPoint.class
 taheoport/gui/ShowChangeDistance.class
 taheoport/gui/MainWin.class
-taheoport/model/Shell.class
 taheoport/model/PolygonStation.class
 taheoport/gui/ShowHelp.class
 taheoport/gui/ShowAbout.class

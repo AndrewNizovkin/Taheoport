@@ -2,7 +2,6 @@ package taheoport.service;
 
 import taheoport.gui.MainWin;
 import taheoport.model.BindType;
-import taheoport.repository.PolygonRepository;
 import taheoport.model.PolygonStation;
 import taheoport.model.SurveyStation;
 
@@ -30,7 +29,7 @@ public class AdjusterDefault implements Adjuster{
         double sumDX = 0.0;
         double sumDY = 0.0;
         double sumDZ = 0.0;
-        GeoCalc geoCalc = new GeoCalc();
+        GeoCalculator geoCalculator = new GeoCalculator();
         defBindType();
         PolygonStation basePointA = polygonService.findById(0);
         PolygonStation basePointB = polygonService.findById(1);
@@ -44,12 +43,12 @@ public class AdjusterDefault implements Adjuster{
             case TT -> {
                 iniDDs();
                 defPerimeter(1, countStations - 3);
-                basePointA.setDirection(Math.toDegrees(geoCalc.getDirAB(
+                basePointA.setDirection(Math.toDegrees(geoCalculator.getDirAB(
                         basePointA.getX(),
                         basePointA.getY(),
                         basePointB.getX(),
                         basePointB.getY())));
-                basePointC.setDirection(Math.toDegrees(geoCalc.getDirAB(
+                basePointC.setDirection(Math.toDegrees(geoCalculator.getDirAB(
                         basePointC.getX(),
                         basePointC.getY(),
                         basePointD.getX(),
