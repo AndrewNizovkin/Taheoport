@@ -184,27 +184,79 @@ class DataHandlerTest {
         assertEquals(expectResult, actualResult);
     }
 
-    @org.junit.jupiter.api.Test
-    void setPointPosition() {
+    @ParameterizedTest
+    @CsvSource({
+            "12344, 2, 12.344",
+            "12344, 3, 123.44",
+            "12344, 4, 1234.4",
+            "12344, 1, 1.2344",
+            "12344, 0, .12344"
+    })
+    void setPointPositionTest(String rawData, int pointPosition, String expectResult) {
+        DataHandler dataHandler = new DataHandler(rawData);
+
+        String actualResult = dataHandler.setPointPosition(pointPosition).getStr();
+
+        assertEquals(expectResult, actualResult);
     }
 
-    @org.junit.jupiter.api.Test
-    void getStr() {
+    @ParameterizedTest
+    @CsvSource({
+            "0", "10000", "sdfasdf", "-2345678", "000000"
+    })
+    void getStrTest(String expectData) {
+        DataHandler dataHandler = new DataHandler(expectData);
+
+        String actualResult = dataHandler.getStr();
+
+        assertEquals(expectData, actualResult);
     }
 
-    @org.junit.jupiter.api.Test
-    void getDbl() {
+    @ParameterizedTest
+    @CsvSource({
+            "0, 0",
+            "10000, 10000",
+            "-23.45678, -23.45678"
+    })
+    void getDbl(String rawData, double expectResult) {
+        DataHandler dataHandler = new DataHandler(rawData);
+
+        double actualResult = dataHandler.getDbl();
+
+        assertEquals(expectResult, actualResult, 0.0000001);
     }
 
-    @org.junit.jupiter.api.Test
-    void dmsToRad() {
+    @ParameterizedTest
+    @CsvSource({
+            "0.0002, 0.000009696",
+            "359.5959, 6.283180459",
+            "90.0001, 1.570801175",
+            "180.1245, 3.145301478",
+            "270.1513, 4.716815329"
+    })
+    void dmsToRadTest(String angleDMS, double angleRadian) {
+        DataHandler dataHandler = new DataHandler(angleDMS);
+
+        double actualResult = dataHandler.dmsToRad();
+
+        assertEquals(angleRadian, actualResult, 0.0000001);
     }
 
-    @org.junit.jupiter.api.Test
-    void radToDms() {
+    @ParameterizedTest
+    @CsvSource({
+            "0.000009696, 0.0002",
+            "6.283180459, 359.5959",
+            "1.570801175, 90.0001",
+            "3.145301478, 180.1245",
+            "4.716815329, 270.1513"
+    })
+    void radToDmsTest(double angleRadian, String expectAngleDMS) {
+        DataHandler dataHandler = new DataHandler();
+
+        String actualResult = dataHandler.radToDms(angleRadian).getStr();
+
+        assertEquals(expectAngleDMS, actualResult);
+
     }
 
-    @org.junit.jupiter.api.Test
-    void setStr() {
-    }
 }

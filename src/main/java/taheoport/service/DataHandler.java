@@ -223,7 +223,7 @@ public class DataHandler {
     /**
      * Sets the decimal separator to the specified position
      * @param k int the position of the decimal point
-     *          from the begining of the line
+     *          from the start of the line
      * @return String modified stroka
      */
     public DataHandler setPointPosition(int k) {
@@ -266,7 +266,7 @@ public class DataHandler {
     }
 
     //Setter
-    public void setStr(String str) {
-        this.str = str;
-    }
+//    public void setStr(String str) {
+//        this.str = str;
+//    }
 }
