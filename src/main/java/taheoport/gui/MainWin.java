@@ -1,5 +1,6 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyContainer;
 import taheoport.dispatcher.DependencyInjector;
 import taheoport.dispatcher.MainActionListener;
 import taheoport.service.*;
@@ -70,18 +71,34 @@ public class MainWin extends JFrame implements MainRenderer, DependencyInjector 
      */
     public MainWin() {
         super("Taheoport");
-        importService = new ImportServiceDefault();
-        ioService = new IOServiceDefault(this);
-        settingsService = new SettingsServiceDefault(this);
-        shell = new Shell(this);
-        catalogService = new CatalogServiceDefault(this);
-        surveyService = new SurveyServiceDefault(this);
-        polygonService = new PolygonServiceDefault(this);
-        extractService = new ExtractServiceDefault(this);
-        manualService = new ManualService(this);
+
+        DependencyContainer dependencyContainer = DependencyContainer.getInstance();
+        dependencyContainer.initDependencyContainer(this);
+
+        importService = dependencyContainer.getImportService();
+        ioService = dependencyContainer.getIoService();
+        settingsService = dependencyContainer.getSettingsService();
+        shell = dependencyContainer.getShell();
+        catalogService = dependencyContainer.getCatalogService();
+        surveyService = dependencyContainer.getSurveyService();
+        polygonService = dependencyContainer.getPolygonService();
+        extractService = dependencyContainer.getExtractService();
+        manualService = dependencyContainer.getManual();
+
+
+//        importService = new ImportServiceDefault();
+//        ioService = new IOServiceDefault(this);
+//        settingsService = new SettingsServiceDefault(this);
+//        shell = new Shell(this);
+//        catalogService = new CatalogServiceDefault(this);
+//        surveyService = new SurveyServiceDefault(this);
+//        polygonService = new PolygonServiceDefault(this);
+//        extractService = new ExtractServiceDefault(this);
+//        manualService = new ManualService(this);
+
         security = new SecurityImpl();
         titles = shell.getTitles();
-        ActionListener actionListener = new MainActionListener(this,this);
+        ActionListener actionListener = new MainActionListener(this);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -532,7 +549,7 @@ public class MainWin extends JFrame implements MainRenderer, DependencyInjector 
         if (surveyEditor != null) {
             pnlMeasurements.remove(surveyEditor);
         }
-        surveyEditor = new SurveyEditorStandard(this, 0);
+        surveyEditor = new SurveyEditorStandard(0);
         pnlMeasurements.add(surveyEditor);
         setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());
         setFocusTraversalPolicy(new TahEditorFocusTransversalPolicy(surveyEditor.getOrder()));

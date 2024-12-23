@@ -1,5 +1,6 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyContainer;
 import taheoport.dispatcher.DependencyInjector;
 import taheoport.model.PolygonStation;
 import taheoport.service.DataHandler;
@@ -18,10 +19,10 @@ public class TmodelPolygonStations extends AbstractTableModel {
 
     /**
      * Constructor
-     * @param dependencyInjector DependencyInjector
      */
-    public TmodelPolygonStations(DependencyInjector dependencyInjector) {
+    public TmodelPolygonStations() {
         super();
+        DependencyInjector dependencyInjector = DependencyContainer.getInstance();
         polygonService = dependencyInjector.getPolygonService();
         shell = dependencyInjector.getShell();
         dataArrayList = new ArrayList<>();

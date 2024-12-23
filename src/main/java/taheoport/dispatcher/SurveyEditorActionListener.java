@@ -21,8 +21,8 @@ public class SurveyEditorActionListener implements ActionListener {
      * Constructor
      * @param surveyEditorRenderer SurveyEditorRenderer
      */
-    public SurveyEditorActionListener(DependencyInjector dependencyInjector, SurveyEditorRenderer surveyEditorRenderer) {
-        this.dependencyInjector = dependencyInjector;
+    public SurveyEditorActionListener(SurveyEditorRenderer surveyEditorRenderer) {
+        dependencyInjector = DependencyContainer.getInstance();
         renderer = surveyEditorRenderer;
         catalogService = dependencyInjector.getCatalogService();
         surveyService = dependencyInjector.getSurveyService();

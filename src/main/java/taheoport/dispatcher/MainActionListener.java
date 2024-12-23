@@ -28,10 +28,10 @@ public class MainActionListener implements ActionListener {
     private final DependencyInjector dependencyInjector;
     /**
      * Constructor
-     * @param dependencyInjector DependencyInjector
+     * @param mainRenderer MainRenderer
      */
-    public MainActionListener(DependencyInjector dependencyInjector, MainRenderer mainRenderer) {
-        this.dependencyInjector = dependencyInjector;
+    public MainActionListener(MainRenderer mainRenderer) {
+        dependencyInjector = DependencyContainer.getInstance();
         renderer = mainRenderer;
         parentFrame = renderer.getParentFrame();
         surveyService = dependencyInjector.getSurveyService();
@@ -115,7 +115,7 @@ public class MainActionListener implements ActionListener {
         switch (renderer.getMode()) {
             case 0 -> {
                 surveyService.processSourceData();
-                new ShowViewResults(dependencyInjector);
+                new ShowViewResults();
             }
             case 1 -> {
                 processSourceData();

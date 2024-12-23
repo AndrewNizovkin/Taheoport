@@ -45,9 +45,9 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
         polygonService = dependencyInjector.getPolygonService();
         settingsService = dependencyInjector.getSettingsService();
         titles = dependencyInjector.getShell().getTitles();
-        tmPolygonStations = new TmodelPolygonStations(dependencyInjector);
+        tmPolygonStations = new TmodelPolygonStations();
         tblStations = new JTable(tmPolygonStations);
-        ActionListener polygonActionListener = new PolygonEditorActionListener(dependencyInjector,this);
+        ActionListener polygonActionListener = new PolygonEditorActionListener(this);
         setLayout(new BorderLayout());
 
 //region btnDeleteRow

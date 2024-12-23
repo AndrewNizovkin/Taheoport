@@ -1,4 +1,5 @@
 package taheoport.gui;
+import taheoport.dispatcher.DependencyContainer;
 import taheoport.dispatcher.DependencyInjector;
 import taheoport.dispatcher.SurveyEditorActionListener;
 import taheoport.repository.SurveyRepository;
@@ -68,18 +69,17 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
     /**
      * Constructor
-     * @param dependencyInjector DependencyInjector
      * @param index int index of current SurveyStation of SurveyProject
      */
-    public SurveyEditorStandard(DependencyInjector dependencyInjector, int index) {
+    public SurveyEditorStandard(int index) {
         super();
-        this.dependencyInjector = dependencyInjector;
+        dependencyInjector = DependencyContainer.getInstance();
         surveyService = dependencyInjector.getSurveyService();
         catalogService = dependencyInjector.getCatalogService();
         shell = dependencyInjector.getShell();
         currentStationIndex = index;
         parentFrame = dependencyInjector.getMainFrame();
-        surveyEditorActionListener = new SurveyEditorActionListener(dependencyInjector,this);
+        surveyEditorActionListener = new SurveyEditorActionListener(this);
         HashMap<String, String> titles = dependencyInjector.getTitles();
 
             ImageIcon imageDeleteRow = new ImageIcon("images/delete_row.png");
@@ -1062,7 +1062,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
             pnlPickets.remove(scpPickets);
         }
 
-        tmodelPickets = new TmodelPickets(dependencyInjector, currentStationIndex);
+        tmodelPickets = new TmodelPickets(currentStationIndex);
         tblPickets = new JTable(tmodelPickets);
         String[] str;
         for (int i = 0; i < surveyStation.sizePickets(); i++) {

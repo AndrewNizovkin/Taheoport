@@ -19,11 +19,10 @@ public class PolygonEditorActionListener implements ActionListener {
 
     /**
      * Constructor
-     * @param dependencyInjector DependencyInjector
      * @param renderer PolygonEditorRenderer
      */
-    public PolygonEditorActionListener(DependencyInjector dependencyInjector, PolygonEditorRenderer renderer) {
-        this.dependencyInjector = dependencyInjector;
+    public PolygonEditorActionListener(PolygonEditorRenderer renderer) {
+        dependencyInjector = DependencyContainer.getInstance();
         this.renderer = renderer;
         polygonService = dependencyInjector.getPolygonService();
         catalogService = dependencyInjector.getCatalogService();

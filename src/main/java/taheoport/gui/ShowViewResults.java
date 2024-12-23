@@ -1,5 +1,6 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyContainer;
 import taheoport.dispatcher.DependencyInjector;
 import taheoport.model.Picket;
 import taheoport.model.SurveyStation;
@@ -32,10 +33,19 @@ public class ShowViewResults extends JDialog {
 
     /**
      * Constructor
-     * @param dependencyInjector DependencyInjector
      */
-    public ShowViewResults(DependencyInjector dependencyInjector) {
-        super( dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SVRdialogTitle"), true);
+    public ShowViewResults() {
+        super( DependencyContainer
+                        .getInstance()
+                        .getMainFrame(),
+                DependencyContainer
+                        .getInstance()
+                        .getShell()
+                        .getTitles()
+                        .get("SVRdialogTitle"),
+                true);
+
+        DependencyInjector dependencyInjector = DependencyContainer.getInstance();
         surveyService = dependencyInjector.getSurveyService();
         settingsService = dependencyInjector.getSettingsService();
         ioService = dependencyInjector.getIoService();

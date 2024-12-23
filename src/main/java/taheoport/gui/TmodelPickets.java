@@ -1,5 +1,6 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyContainer;
 import taheoport.dispatcher.DependencyInjector;
 import taheoport.service.DataHandler;
 import taheoport.service.Shell;
@@ -23,8 +24,9 @@ public class TmodelPickets extends AbstractTableModel {
     /**
      *Constructor
      */
-    public TmodelPickets(DependencyInjector dependencyInjector, int index) {
+    public TmodelPickets(int index) {
         super();
+        DependencyInjector dependencyInjector = DependencyContainer.getInstance();
         surveyService = dependencyInjector.getSurveyService();
         shell = dependencyInjector.getShell();
 //        parentFrame = frame;
