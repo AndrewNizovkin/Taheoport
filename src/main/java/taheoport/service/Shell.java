@@ -1,6 +1,6 @@
-package taheoport.gui;
+package taheoport.service;
 
-import taheoport.service.SettingsService;
+import taheoport.dispatcher.DependencyInjector;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -12,15 +12,13 @@ import java.util.LinkedList;
  */
 public class Shell {
 
-//    private final MainWin parentFrame;
     private final SettingsService settingsService;
 
     /**
      * Constructor
      */
-    public Shell(SettingsService settingsService) {
-//        this.parentFrame = parentFrame;
-        this.settingsService = settingsService;
+    public Shell(DependencyInjector dependencyInjector) {
+        settingsService = dependencyInjector.getSettingsService();
     }
 
     /**

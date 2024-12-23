@@ -1,5 +1,6 @@
 package taheoport.service;
 
+import taheoport.dispatcher.DependencyInjector;
 import taheoport.gui.MainWin;
 import taheoport.model.Settings;
 
@@ -12,18 +13,16 @@ import java.util.List;
  */
 public class SettingsServiceDefault implements SettingsService {
 
-//    private final MainWin parentFrame;
     private final Settings settings;
     private final IOService ioService;
 
     /**
      * Constructor
-     * @param parentFrame MainWin
+     * @param dependencyInjector DependencyInjector
      */
-    public SettingsServiceDefault(MainWin parentFrame) {
-//        this.parentFrame = parentFrame;
+    public SettingsServiceDefault(DependencyInjector dependencyInjector) {
         settings = new Settings();
-        ioService = parentFrame.getIoService();
+        ioService = dependencyInjector.getIoService();
         loadOptions();
 
     }

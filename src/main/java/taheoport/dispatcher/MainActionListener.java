@@ -1,6 +1,10 @@
 package taheoport.dispatcher;
 
 import taheoport.gui.*;
+import taheoport.model.BindType;
+import taheoport.model.CatalogPoint;
+import taheoport.model.PolygonStation;
+import taheoport.model.SurveyStation;
 import taheoport.service.CatalogService;
 import taheoport.service.ExtractService;
 import taheoport.service.PolygonService;
@@ -15,23 +19,25 @@ import java.awt.event.ActionListener;
  * @author Nizovkin A.V.
  */
 public class MainActionListener implements ActionListener {
-    private final MainWin parentFrame;
+    private final JFrame parentFrame;
     private final SurveyService surveyService;
     private final PolygonService polygonService;
     private final CatalogService catalogService;
     private final ExtractService extractService;
     private final MainRenderer renderer;
+    private final DependencyInjector dependencyInjector;
     /**
      * Constructor
-     * @param mainRenderer MainRenderer
+     * @param dependencyInjector DependencyInjector
      */
-    public MainActionListener(MainRenderer mainRenderer) {
+    public MainActionListener(DependencyInjector dependencyInjector, MainRenderer mainRenderer) {
+        this.dependencyInjector = dependencyInjector;
         renderer = mainRenderer;
         parentFrame = renderer.getParentFrame();
-        surveyService = parentFrame.getSurveyService();
-        polygonService = parentFrame.getPolygonService();
-        catalogService = parentFrame.getCatalogService();
-        extractService = parentFrame.getExtractService();
+        surveyService = dependencyInjector.getSurveyService();
+        polygonService = dependencyInjector.getPolygonService();
+        catalogService = dependencyInjector.getCatalogService();
+        extractService = dependencyInjector.getExtractService();
     }
 
     /**
@@ -50,14 +56,34 @@ public class MainActionListener implements ActionListener {
             case "fSave", "btnSave" -> save();
             case "fSaveAs" -> saveAs();
             case "tLoadCat", "btnLoadCat" -> loadCatalog();
-            case "tUpdate" -> catalogService.updateBasePoints(renderer.getMode());
+            case "tUpdate" -> updateBasePoints();
             case "tRun", "btnRun" -> processSourceData();
             case "tView", "btnView" -> viewResult();
             case "tExtractPol" -> extractPol();
-            case "tOptions" -> new ShowSettings(parentFrame);
-            case "hAbout" -> new ShowAbout(parentFrame);
-            case "hHelp" -> new ShowHelp(parentFrame);
+            case "tOptions" -> new ShowSettings(dependencyInjector, renderer);
+            case "hAbout" -> new ShowAbout(dependencyInjector);
+            case "hHelp" -> new ShowHelp(dependencyInjector);
         }
+    }
+
+
+    /**
+     * Updates basePoints
+     */
+    private void updateBasePoints() {
+        switch (renderer.getMode()) {
+            case 0 -> {
+                surveyService.updateBasePoints();
+                renderer.reloadSurveyEditor();
+            }
+
+            case 1 -> {
+                polygonService.updateBasePoints();
+                polygonService.setBindType(BindType.ZZ);
+                renderer.reloadPolygonEditor();
+            }
+        }
+
     }
 
     /**
@@ -69,8 +95,9 @@ public class MainActionListener implements ActionListener {
                 surveyService.processSourceData();
                 polygonService.loadPolList(extractService.extractPolygonProject());
                 renderer.setMode(1);
+                polygonService.setBindType(BindType.ZZ);
                 renderer.reloadPolygonEditor();
-                new ShowViewExtractPol(parentFrame);
+                new ShowViewExtractPol(dependencyInjector);
             } else {
                 JOptionPane.showMessageDialog(
                         parentFrame,
@@ -88,12 +115,12 @@ public class MainActionListener implements ActionListener {
         switch (renderer.getMode()) {
             case 0 -> {
                 surveyService.processSourceData();
-                new ShowViewResults(parentFrame);
+                new ShowViewResults(dependencyInjector);
             }
             case 1 -> {
                 processSourceData();
                 if (polygonService.getPerimeter() > 0.0) {
-                    new ShowViewAdjustment(parentFrame);
+                    new ShowViewAdjustment(dependencyInjector);
                 }
             }
         }
@@ -120,13 +147,14 @@ public class MainActionListener implements ActionListener {
      * Create new sp with one Station with one Picket
      */
     private void newFile() {
-        switch (parentFrame.getMode()) {
+        switch (renderer.getMode()) {
             case 0 -> {
                 surveyService.newProject();
                 renderer.reloadSurveyEditor();
             }
             case 1 -> {
                 polygonService.newProject();
+                polygonService.setBindType(BindType.ZZ);
                 renderer.reloadPolygonEditor();
             }
         }
@@ -143,6 +171,7 @@ public class MainActionListener implements ActionListener {
             }
             case 1 -> {
                 polygonService.importPol();
+                polygonService.setBindType(BindType.ZZ);
                 renderer.reloadPolygonEditor();
             }
         }
@@ -197,7 +226,7 @@ public class MainActionListener implements ActionListener {
      * set absoluteTahPath
      */
     private void saveAs() {
-        switch (parentFrame.getMode()) {
+        switch (renderer.getMode()) {
             case 0 -> {
                 surveyService.saveProjectAs();
                 parentFrame.setTitle("Taheoport: " + surveyService.getAbsoluteTahPath());

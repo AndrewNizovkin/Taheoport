@@ -1,10 +1,12 @@
 package taheoport.gui;
+import taheoport.dispatcher.DependencyInjector;
 import taheoport.service.CatalogService;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.util.HashMap;
 
 /**
  * This class display external coordinate catalog
@@ -18,12 +20,14 @@ public class ShowCatalog extends JDialog {
 
     /**
      * Constructor
-     * @param parentFrame parent MainWin
+     * @param dependencyInjector DependencyInjector
      */
-    public ShowCatalog(MainWin parentFrame) {
-        super( parentFrame, parentFrame.getTitles().get("SCdialogTitle"), true);
-        catalogService = parentFrame.getCatalogService();
+    public ShowCatalog(DependencyInjector dependencyInjector) {
+        super( dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SCdialogTitle"), true);
+        catalogService = dependencyInjector.getCatalogService();
         catalogService.setChoice(-1);
+        JFrame parentFrame = dependencyInjector.getMainFrame();
+        HashMap<String, String> titles = dependencyInjector.getTitles();
 
         Toolkit kit = Toolkit.getDefaultToolkit();
         Image im = kit.getImage("images/teo.png");
@@ -31,8 +35,8 @@ public class ShowCatalog extends JDialog {
         selRow = -1;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        int w = parentFrame.getWidthMain() / 2;
-        int h = parentFrame.getHeightMain() / 2;
+        int w = parentFrame.getWidth() / 2;
+        int h = parentFrame.getHeight() / 2;
         setBounds(parentFrame.getX() + parentFrame.getWidth() / 2 - w / 2,parentFrame.getY() + parentFrame.getHeight() / 2 - h / 2, w, h);
         setLayout(new BorderLayout());
 
@@ -65,9 +69,9 @@ public class ShowCatalog extends JDialog {
 
 // btnInsertCoordinates________________________________________
 
-        JButton btnInsertCoordinates = new JButton(parentFrame.getTitles().get("SCbtnInsertCoordinates"));
+        JButton btnInsertCoordinates = new JButton(titles.get("SCbtnInsertCoordinates"));
         btnInsertCoordinates.setActionCommand("btnInsertCoordinates");
-        btnInsertCoordinates.setToolTipText(parentFrame.getTitles().get("SCbtnInsertCoordinatesTT"));
+        btnInsertCoordinates.setToolTipText(titles.get("SCbtnInsertCoordinatesTT"));
         btnInsertCoordinates.addActionListener(e -> {
             catalogService.setChoice(selRow);
             this.dispose();
@@ -75,8 +79,8 @@ public class ShowCatalog extends JDialog {
         pnlControl.add(btnInsertCoordinates);
 // btnCancel________________________________________
 
-        JButton btnCancel = new JButton(parentFrame.getTitles().get("SCbtnCancel"));
-        btnCancel.setToolTipText(parentFrame.getTitles().get("SCbtnCancel"));
+        JButton btnCancel = new JButton(titles.get("SCbtnCancel"));
+        btnCancel.setToolTipText(titles.get("SCbtnCancel"));
         btnCancel.addActionListener(e -> {
             this.dispose();
         });

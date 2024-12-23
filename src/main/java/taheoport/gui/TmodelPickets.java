@@ -1,10 +1,13 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyInjector;
 import taheoport.service.DataHandler;
+import taheoport.service.Shell;
 import taheoport.service.SurveyService;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Class TmodelPickets encapsulates tableModel of tblPickets
@@ -14,15 +17,17 @@ public class TmodelPickets extends AbstractTableModel {
     private int columnCount = 5;
     private final ArrayList<String []> dataArrayList;
     private final SurveyService surveyService;
-    private final MainWin parentFrame;
+//    private final MainWin parentFrame;
+    private final Shell shell;
     private int index;
     /**
      *Constructor
      */
-    public TmodelPickets(MainWin frame, int index) {
+    public TmodelPickets(DependencyInjector dependencyInjector, int index) {
         super();
-        surveyService = frame.getSurveyService();
-        parentFrame = frame;
+        surveyService = dependencyInjector.getSurveyService();
+        shell = dependencyInjector.getShell();
+//        parentFrame = frame;
         this.index = index;
         dataArrayList = new ArrayList<String[]>();
     }
@@ -39,12 +44,13 @@ public class TmodelPickets extends AbstractTableModel {
 
     @Override
     public String getColumnName(int column) {
+        HashMap<String, String> titles = shell.getTitles();
         switch (column) {
-            case 0: return parentFrame.getTitles().get("TAHtmColumnName0");
-            case 1: return parentFrame.getTitles().get("TAHtmColumnName1");
-            case 2: return parentFrame.getTitles().get("TAHtmColumnName2");
-            case 3: return parentFrame.getTitles().get("TAHtmColumnName3");
-            case 4: return parentFrame.getTitles().get("TAHtmColumnName4");
+            case 0: return titles.get("TAHtmColumnName0");
+            case 1: return titles.get("TAHtmColumnName1");
+            case 2: return titles.get("TAHtmColumnName2");
+            case 3: return titles.get("TAHtmColumnName3");
+            case 4: return titles.get("TAHtmColumnName4");
         }
 
 

@@ -3,10 +3,7 @@ package taheoport.dispatcher;
 import taheoport.gui.*;
 import taheoport.model.CatalogPoint;
 import taheoport.model.SurveyStation;
-import taheoport.service.CatalogService;
-import taheoport.service.DataHandler;
-import taheoport.service.SettingsService;
-import taheoport.service.SurveyService;
+import taheoport.service.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -17,18 +14,20 @@ public class SurveyEditorActionListener implements ActionListener {
     private final CatalogService catalogService;
     private final SurveyService surveyService;
     private final SettingsService settingsService;
-    private final MainWin parentFrame;
+    private final DependencyInjector dependencyInjector;
+    private final Shell shell;
 
     /**
      * Constructor
      * @param surveyEditorRenderer SurveyEditorRenderer
      */
-    public SurveyEditorActionListener(SurveyEditorRenderer surveyEditorRenderer) {
+    public SurveyEditorActionListener(DependencyInjector dependencyInjector, SurveyEditorRenderer surveyEditorRenderer) {
+        this.dependencyInjector = dependencyInjector;
         renderer = surveyEditorRenderer;
-        parentFrame = renderer.getParentFrame();
-        catalogService = renderer.getParentFrame().getCatalogService();
-        surveyService = renderer.getParentFrame().getSurveyService();
-        settingsService = renderer.getParentFrame().getSettingsService();
+        catalogService = dependencyInjector.getCatalogService();
+        surveyService = dependencyInjector.getSurveyService();
+        settingsService = dependencyInjector.getSettingsService();
+        shell = dependencyInjector.getShell();
     }
 
 
@@ -61,8 +60,7 @@ public class SurveyEditorActionListener implements ActionListener {
      * Sets station coordinates from catalog
      */
     private void setStationFromCatalog() {
-//        catalogService.setChoice(-1);
-        new ShowCatalog(parentFrame);
+        new ShowCatalog(dependencyInjector);
         if (catalogService.getChoice() >=0) {
             SurveyStation surveyStation = surveyService.findStationById(renderer.getCurrentStationIndex());
             CatalogPoint catalogPoint = catalogService.findById(catalogService.getChoice());
@@ -79,7 +77,7 @@ public class SurveyEditorActionListener implements ActionListener {
      */
     private void setOrFromCatalog() {
 //        catalogService.setChoice(-1);
-        new ShowCatalog(parentFrame);
+        new ShowCatalog(dependencyInjector);
         if (catalogService.getChoice() >=0) {
             SurveyStation surveyStation = surveyService.findStationById(renderer.getCurrentStationIndex());
             CatalogPoint catalogPoint = catalogService.findById(catalogService.getChoice());
@@ -175,7 +173,7 @@ public class SurveyEditorActionListener implements ActionListener {
      */
     private void changeDistance() {
         TmodelPickets tmodelPickets = (TmodelPickets) renderer.getTablePickets().getModel();
-        new ShowChangeDistance(parentFrame);
+        new ShowChangeDistance(dependencyInjector);
         if (settingsService.isChanged()) {
             String str;
             double line = Double.parseDouble((String) tmodelPickets.getValueAt(renderer.getSelRow(), 1));
@@ -200,7 +198,7 @@ public class SurveyEditorActionListener implements ActionListener {
      */
     private void changeDirection() {
         TmodelPickets tmodelPickets = (TmodelPickets) renderer.getTablePickets().getModel();
-        new ShowChangeAngle(parentFrame,parentFrame.getTitles().get("SCAtitleChangeDirection"));
+        new ShowChangeAngle(dependencyInjector,shell.getTitles().get("SCAtitleChangeDirection"));
         if (settingsService.isChanged()) {
             switch (settingsService.getOffsetDirectionType()) {
                 case 0 -> {
@@ -235,7 +233,7 @@ public class SurveyEditorActionListener implements ActionListener {
     private void changeTilt() {
         TmodelPickets tmodelPickets = (TmodelPickets) renderer.getTablePickets().getModel();
         int selRow = renderer.getSelRow();
-        new ShowChangeAngle(parentFrame, parentFrame.getTitles().get("SCAtitleChangeTiltAngle"));
+        new ShowChangeAngle(dependencyInjector, shell.getTitles().get("SCAtitleChangeTiltAngle"));
         if (settingsService.isChanged()) {
             double line = Double.parseDouble((String) tmodelPickets.getValueAt(selRow, 1));
             double tilt = new DataHandler((String) tmodelPickets.getValueAt(selRow, 3)).dmsToRad();

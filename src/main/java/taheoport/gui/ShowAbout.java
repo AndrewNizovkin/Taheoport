@@ -1,5 +1,8 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyInjector;
+import taheoport.service.Shell;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
@@ -13,14 +16,16 @@ public class ShowAbout extends JDialog {
 
     /**
      * Constructor
-     * @param parentFrame MainWin
+     * @param dependencyInjector DependencyInjector
      */
-    public ShowAbout(MainWin parentFrame) {
-        super(parentFrame, parentFrame.getTitles().get("SAdialogTitle"), true);
-        setBounds(parentFrame.getX() + parentFrame.getWidthMain() / 2 - parentFrame.getWidthMain() / 3 * 2 / 2,
-                parentFrame.getY() + parentFrame.getHeightMain() / 2 - parentFrame.getHeightMain() / 2 / 2,
-                parentFrame.getWidthMain() / 3 * 2,
-                parentFrame.getHeightMain() / 2);
+    public ShowAbout(DependencyInjector dependencyInjector) {
+        super(dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SAdialogTitle"), true);
+        JFrame parentFrame = dependencyInjector.getMainFrame();
+        Shell shell = dependencyInjector.getShell();
+        setBounds(parentFrame.getX() + parentFrame.getWidth() / 2 - parentFrame.getWidth() / 3 * 2 / 2,
+                parentFrame.getY() + parentFrame.getHeight() / 2 - parentFrame.getHeight() / 2 / 2,
+                parentFrame.getWidth() / 3 * 2,
+                parentFrame.getHeight() / 2);
         Toolkit kit = Toolkit.getDefaultToolkit();
         Image im = kit.getImage("images/teo.png");
         this.setIconImage(im);
@@ -115,7 +120,7 @@ public class ShowAbout extends JDialog {
 // spLicense_________________________________________
 
         JTextArea textArea = new JTextArea();
-        LinkedList<String> llLicense = parentFrame.getShell().getLicense();
+        LinkedList<String> llLicense = shell.getLicense();
         String s = llLicense.pollFirst();
 
         while (s != null) {
@@ -138,7 +143,7 @@ public class ShowAbout extends JDialog {
 
 // btnClose___________________________________________
 
-            JButton btnClose = new JButton(parentFrame.getTitles().get("SAbtnClose"));
+            JButton btnClose = new JButton(shell.getTitles().get("SAbtnClose"));
             btnClose.setFont(new Font(Font.DIALOG, Font.PLAIN, 12));
             btnClose.addActionListener(e -> this.dispose());
 

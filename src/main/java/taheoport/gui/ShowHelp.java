@@ -1,6 +1,7 @@
 package taheoport.gui;
 
-import taheoport.model.Manual;
+import taheoport.dispatcher.DependencyInjector;
+import taheoport.service.ManualService;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 public class ShowHelp extends JDialog {
 
     private final CardLayout cardLayout = new CardLayout();
-    private final Manual manual;
+    private final ManualService manualService;
     private final JPanel pnlViewContent;
     private final JPanel pnlToolbarDemo;
     private JScrollPane spToolbarDemo;
@@ -36,20 +37,21 @@ public class ShowHelp extends JDialog {
 
     /**
      * Constructor
-     * @param parentFrame parent MainWin
+     * @param dependencyInjector DependencyInjector
      */
-    public ShowHelp(MainWin parentFrame) {
-        super(parentFrame, parentFrame.getTitles().get("SHtitleFrame"), false);
-        HashMap<String, String> titles = parentFrame.getTitles();
-        manual = new Manual(parentFrame);
+    public ShowHelp(DependencyInjector dependencyInjector) {
+        super(dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SHtitleFrame"), false);
+        HashMap<String, String> titles = dependencyInjector.getShell().getTitles();
+        JFrame parentFrame = dependencyInjector.getMainFrame();
+        manualService = dependencyInjector.getManual();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
         setUndecorated(true);
         getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
-        setBounds(parentFrame.getX() + parentFrame.getWidth() / 2 - (parentFrame.getWidthMain() * 3 / 2) / 2,
-                parentFrame.getY() + parentFrame.getHeight() / 2 - parentFrame.getHeightMain() / 2,
-                parentFrame.getWidthMain() * 3 / 2,
-                parentFrame.getHeightMain());
+        setBounds(parentFrame.getX() + parentFrame.getWidth() / 2 - (parentFrame.getWidth() * 3 / 2) / 2,
+                parentFrame.getY() + parentFrame.getHeight() / 2 - parentFrame.getHeight() / 2,
+                parentFrame.getWidth() * 3 / 2,
+                parentFrame.getHeight());
         Toolkit kit = Toolkit.getDefaultToolkit();
         Image im = kit.getImage("images/teo.png");
         this.setIconImage(im);
@@ -57,7 +59,7 @@ public class ShowHelp extends JDialog {
 // btnClose______________________________________________________________
 
         JButton btnClose = new JButton(new ImageIcon("images/close_pane.png"));
-        btnClose.setToolTipText(parentFrame.getTitles().get("SVRbtnCloseTT"));
+        btnClose.setToolTipText(titles.get("SVRbtnCloseTT"));
         btnClose.addActionListener(e -> this.dispose());
 
         JToolBar tb = new JToolBar();
@@ -133,7 +135,7 @@ public class ShowHelp extends JDialog {
         lblIntroduction.setForeground(Color.BLUE);
         lblIntroduction.setHorizontalAlignment(JLabel.CENTER);
         pnlIntroduction.add(lblIntroduction, BorderLayout.NORTH);
-        pnlIntroduction.add(new JScrollPane(manual.getIntroduction()),BorderLayout.CENTER);
+        pnlIntroduction.add(new JScrollPane(manualService.getIntroduction()),BorderLayout.CENTER);
 
 // pnlImport________________________________________________________
 
@@ -142,7 +144,7 @@ public class ShowHelp extends JDialog {
         lblImport.setForeground(Color.BLUE);
         lblImport.setHorizontalAlignment(JLabel.CENTER);
         pnlImport.add(lblImport, BorderLayout.NORTH);
-        pnlImport.add(new JScrollPane(manual.getImport()), BorderLayout.CENTER);
+        pnlImport.add(new JScrollPane(manualService.getImport()), BorderLayout.CENTER);
 
 // pnlExtract________________________________________________________
 
@@ -151,7 +153,7 @@ public class ShowHelp extends JDialog {
         lblExtract.setForeground(Color.BLUE);
         lblExtract.setHorizontalAlignment(JLabel.CENTER);
         pnlExtract.add(lblExtract, BorderLayout.NORTH);
-        pnlExtract.add(new JScrollPane(manual.getExtract()), BorderLayout.CENTER);
+        pnlExtract.add(new JScrollPane(manualService.getExtract()), BorderLayout.CENTER);
 
 // pnlAdjustment________________________________________________________
 
@@ -160,7 +162,7 @@ public class ShowHelp extends JDialog {
         lblAdjust.setForeground(Color.BLUE);
         lblAdjust.setHorizontalAlignment(JLabel.CENTER);
         pnlAdjustment.add(lblAdjust, BorderLayout.NORTH);
-        pnlAdjustment.add(new JScrollPane(manual.getAdjustment()), BorderLayout.CENTER);
+        pnlAdjustment.add(new JScrollPane(manualService.getAdjustment()), BorderLayout.CENTER);
 
 // pnlMainMenu________________________________________________________
 
@@ -169,7 +171,7 @@ public class ShowHelp extends JDialog {
         lblMainMenu.setForeground(Color.BLUE);
         lblMainMenu.setHorizontalAlignment(JLabel.CENTER);
         pnlMainMenu.add(lblMainMenu, BorderLayout.NORTH);
-        pnlMainMenu.add(new JScrollPane(manual.getMainMenu()), BorderLayout.CENTER);
+        pnlMainMenu.add(new JScrollPane(manualService.getMainMenu()), BorderLayout.CENTER);
 
 // pnlToolbarDemo_____________________________________________________
 
@@ -180,32 +182,32 @@ public class ShowHelp extends JDialog {
 
         JButton btnNew = new JButton(new ImageIcon("images/new.png"));
         btnNew.setToolTipText(titles.get("MWbtnNewTT"));
-        btnNew.addActionListener(e -> updateToolbarDemo(manual.getToolbarNew()));
+        btnNew.addActionListener(e -> updateToolbarDemo(manualService.getToolbarNew()));
 
         JButton btnOpen = new JButton(new ImageIcon("images/open.png"));
         btnOpen.setToolTipText(titles.get("MWbtnOpenTT"));
-        btnOpen.addActionListener(e -> updateToolbarDemo(manual.getToolbarOpen()));
+        btnOpen.addActionListener(e -> updateToolbarDemo(manualService.getToolbarOpen()));
 
         JButton btnImport = new JButton(new ImageIcon("images/import.png"));
         btnImport.setToolTipText(titles.get("MWbtnImportTT"));
-        btnImport.addActionListener(e -> updateToolbarDemo(manual.getToolbarImport()));
+        btnImport.addActionListener(e -> updateToolbarDemo(manualService.getToolbarImport()));
 
         JButton btnSave = new JButton(new ImageIcon("images/save.png"));
         btnSave.setToolTipText(titles.get("MWbtnSaveTT"));
-        btnSave.addActionListener(e -> updateToolbarDemo(manual.getToolbarSave()));
+        btnSave.addActionListener(e -> updateToolbarDemo(manualService.getToolbarSave()));
 
         JButton btnRun = new JButton(new ImageIcon("images/run.png"));
         btnRun.setToolTipText(titles.get("MWbtnRunTT"));
-        btnRun.addActionListener(e -> updateToolbarDemo(manual.getToolbarRun()));
+        btnRun.addActionListener(e -> updateToolbarDemo(manualService.getToolbarRun()));
 
 
         JButton btnView = new JButton(new ImageIcon("images/view.png"));
         btnView.setToolTipText(titles.get("MWbtnVewTT"));
-        btnView.addActionListener(e -> updateToolbarDemo(manual.getToolbarView()));
+        btnView.addActionListener(e -> updateToolbarDemo(manualService.getToolbarView()));
 
         JButton btnLoadCat = new JButton(new ImageIcon("images/database.png"));
         btnLoadCat.setToolTipText(titles.get("MWbtnLoadCatTT"));
-        btnLoadCat.addActionListener(e -> updateToolbarDemo(manual.getToolbarLoadCat()));
+        btnLoadCat.addActionListener(e -> updateToolbarDemo(manualService.getToolbarLoadCat()));
 
         JLabel lblCatalog = new JLabel(titles.get("MWlblCatalog"));
         lblCatalog.setToolTipText(titles.get("MWlblCatalogTT"));
@@ -226,7 +228,7 @@ public class ShowHelp extends JDialog {
         tb.setBorder(BorderFactory.createEtchedBorder());
 
         pnlToolbarDemo.add(tb, BorderLayout.NORTH);
-        spToolbarDemo = new JScrollPane(manual.getToolbarDemo());
+        spToolbarDemo = new JScrollPane(manualService.getToolbarDemo());
         pnlToolbarDemo.add(spToolbarDemo, BorderLayout.CENTER);
 
 // pnlToolbar________________________________________________________
@@ -245,7 +247,7 @@ public class ShowHelp extends JDialog {
         lblMeasurements.setForeground(Color.BLUE);
         lblMeasurements.setHorizontalAlignment(JLabel.CENTER);
         pnlMeasurements.add(lblMeasurements, BorderLayout.NORTH);
-        pnlMeasurements.add(new JScrollPane(manual.getMeasurements()), BorderLayout.CENTER);
+        pnlMeasurements.add(new JScrollPane(manualService.getMeasurements()), BorderLayout.CENTER);
 
 // pnlPolygon________________________________________________________
 
@@ -254,7 +256,7 @@ public class ShowHelp extends JDialog {
         lblPolygon.setForeground(Color.BLUE);
         lblPolygon.setHorizontalAlignment(JLabel.CENTER);
         pnlPolygon.add(lblPolygon, BorderLayout.NORTH);
-        pnlPolygon.add(new JScrollPane(manual.getPolygon()), BorderLayout.CENTER);
+        pnlPolygon.add(new JScrollPane(manualService.getPolygon()), BorderLayout.CENTER);
 
 // pnlOptions________________________________________________________
 
@@ -263,7 +265,7 @@ public class ShowHelp extends JDialog {
         lblOptions.setForeground(Color.BLUE);
         lblOptions.setHorizontalAlignment(JLabel.CENTER);
         pnlOptions.add(lblOptions, BorderLayout.NORTH);
-        pnlOptions.add(new JScrollPane(manual.getSettings()), BorderLayout.CENTER);
+        pnlOptions.add(new JScrollPane(manualService.getSettings()), BorderLayout.CENTER);
 
 // pnlFiles________________________________________________________
 
@@ -272,7 +274,7 @@ public class ShowHelp extends JDialog {
         lblFiles.setForeground(Color.BLUE);
         lblFiles.setHorizontalAlignment(JLabel.CENTER);
         pnlFiles.add(lblFiles, BorderLayout.NORTH);
-        pnlFiles.add(new JScrollPane(manual.getFiles()), BorderLayout.CENTER);
+        pnlFiles.add(new JScrollPane(manualService.getFiles()), BorderLayout.CENTER);
 
 
 // pnlViewContent_____________________________________________________

@@ -1,8 +1,8 @@
 package taheoport.service;
 
+import taheoport.dispatcher.DependencyInjector;
 import taheoport.gui.MainWin;
 import taheoport.model.ExtractStation;
-import taheoport.gui.Shell;
 import taheoport.repository.ExtractRepository;
 import taheoport.repository.SurveyRepository;
 
@@ -13,16 +13,16 @@ import java.util.List;
  * This class encapsulates data and methods for extracting polygon from survey journal
  */
 public class ExtractServiceDefault implements ExtractService {
-    private final MainWin parentFrame;
     private final ExtractRepository extractRepository;
     private final SurveyService surveyService;
     private final SettingsService settingsService;
+    private final Shell shell;
 
-    public ExtractServiceDefault(MainWin frame) {
-        this.parentFrame = frame;
+    public ExtractServiceDefault(DependencyInjector dependencyInjector) {
         extractRepository = new ExtractRepository();
-        surveyService = frame.getSurveyService();
-        settingsService = frame.getSettingsService();
+        surveyService = dependencyInjector.getSurveyService();
+        settingsService = dependencyInjector.getSettingsService();
+        shell = dependencyInjector.getShell();
     }
 
     /**
@@ -35,7 +35,6 @@ public class ExtractServiceDefault implements ExtractService {
         extractRepository.clear();
         List<String> llPolList = new LinkedList<>();
         SurveyRepository surveyCopyRepository = new SurveyRepository();
-//        SurveyRepository parentSurveyRepository = surveyService.getSurveyRepository();
         for (int i = 0; i < surveyService.sizeRepository(); i++) {
             if (surveyService.findStationById(i).getName().charAt(0)
                     != (char) settingsService.getPrefixEX() &
@@ -105,7 +104,7 @@ public class ExtractServiceDefault implements ExtractService {
      */
     @Override
     public List<String> getExtractReport() {
-        List<String> listExtractReport = parentFrame.getShell().getTopReportExtract();
+        List<String> listExtractReport = shell.getTopReportExtract();
 
         for (ExtractStation extractStation : extractRepository) {
             listExtractReport.add("| " + new DataHandler(extractStation.getName()).toTable(10).getStr() +

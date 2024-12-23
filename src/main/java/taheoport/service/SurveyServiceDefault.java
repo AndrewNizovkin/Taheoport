@@ -1,10 +1,12 @@
 package taheoport.service;
 
-import taheoport.gui.MainWin;
+import taheoport.dispatcher.DependencyInjector;
+import taheoport.model.CatalogPoint;
 import taheoport.model.Picket;
-import taheoport.gui.Shell;
 import taheoport.model.SurveyStation;
 import taheoport.repository.SurveyRepository;
+
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,24 +16,61 @@ import java.util.NoSuchElementException;
  * This class encapsulates methods for working with survey project
  */
 public class SurveyServiceDefault implements SurveyService {
+    private final JFrame parentFrame;
     private String absoluteTahPath;
-    private final MainWin parentFrame;
     private SurveyRepository surveyRepository;
     private final IOService ioService;
     private final ImportService importService;
     private final SettingsService settingsService;
+    private final CatalogService catalogService;
+    private final Shell shell;
 
     /**
      * Constructor
-     * @param frame mainWin
+     * @param dependencyInjector DependencyInjector
      */
-    public SurveyServiceDefault(MainWin frame) {
-        parentFrame = frame;
+    public SurveyServiceDefault(DependencyInjector dependencyInjector) {
+        parentFrame = dependencyInjector.getMainFrame();
+        shell = dependencyInjector.getShell();
         absoluteTahPath = "";
         surveyRepository = new SurveyRepository();
-        ioService = frame.getIoService();
-        importService = new ImportServiceDefault();
-        settingsService = frame.getSettingsService();
+        ioService = dependencyInjector.getIoService();
+        importService = dependencyInjector.getImportService();
+        settingsService = dependencyInjector.getSettingsService();
+        catalogService = dependencyInjector.getCatalogService();
+
+    }
+
+    /**
+     * Updates basePoints
+     */
+    @Override
+    public void updateBasePoints() {
+        int q = 0;
+        for (SurveyStation surveyStation: surveyRepository) {
+            for (CatalogPoint catalogPoint: catalogService.getAllCatalogPoints()) {
+                if (surveyStation.getName().equals(catalogPoint.getName())) {
+                    surveyStation.setName(catalogPoint.getName());
+                    surveyStation.setX(catalogPoint.getX());
+                    surveyStation.setY(catalogPoint.getY());
+                    surveyStation.setZ(catalogPoint.getZ());
+                    q++;
+                }
+                if (surveyStation.getNameOr().equals(catalogPoint.getName())) {
+                    surveyStation.setNameOr(catalogPoint.getName());
+                    surveyStation.setxOr(catalogPoint.getX());
+                    surveyStation.setyOr(catalogPoint.getY());
+                    surveyStation.setzOr(catalogPoint.getZ());
+                    q++;
+                }
+            }
+        }
+        JOptionPane.showMessageDialog(parentFrame,
+                q + shell.getTitles().get("MWupdateMessage"),
+                shell.getTitles().get("MWupdateMessageTitle"),
+                JOptionPane.INFORMATION_MESSAGE);
+//        parentFrame.reloadSurveyEditor();
+
 
     }
 
@@ -150,11 +189,12 @@ public class SurveyServiceDefault implements SurveyService {
      */
     @Override
     public List<String> getReport() {
-        HashMap<String, String> titlesReports = parentFrame.getTitles();
+        HashMap<String, String> titlesReports = shell.getTitles();
+//        Shell shell = .getShell();
         Picket picket;
         SurveyStation surveyStation;
         LinkedList<String> listReport = new LinkedList<>();
-        LinkedList<String> listTopReport = parentFrame.getShell().getTopReportSurvey();
+        LinkedList<String> listTopReport = shell.getTopReportSurvey();
         String str;
 
         while ((str = listTopReport.pollFirst()) != null) {
@@ -268,10 +308,13 @@ public class SurveyServiceDefault implements SurveyService {
      */
     @Override
     public void importLeica() {
+        HashMap<String, String> titles = shell.getTitles();
+//        Shell shell = dependencyInjector.getShell();
+
         List <String>  list = ioService.readTextFile(
                 settingsService.getPathWorkDir(),
                 "gsi",
-                parentFrame.getTitles().get("MWopenFileTitle"));
+                titles.get("MWopenFileTitle"));
         if (list != null) {
             surveyRepository = importService.loadLeica(list);
         }
@@ -286,7 +329,7 @@ public class SurveyServiceDefault implements SurveyService {
         List <String>  list = ioService.readTextFile(
                 settingsService.getPathWorkDir(),
                 "raw",
-                parentFrame.getTitles().get("MWopenFileTitle"));
+                shell.getTitles().get("MWopenFileTitle"));
 
         if (list != null) {
             surveyRepository = importService.loadNicon(list);
@@ -302,7 +345,7 @@ public class SurveyServiceDefault implements SurveyService {
         List<String> list = ioService.readTextFile(
                 settingsService.getPathWorkDir(),
                 "txt",
-                parentFrame.getTitles().get("MWopenFileTitle"));
+                shell.getTitles().get("MWopenFileTitle"));
 
         if (list != null) {
             surveyRepository = importService.loadTopcon(list);
@@ -318,7 +361,7 @@ public class SurveyServiceDefault implements SurveyService {
         List<String> llTahList = ioService.readTextFile(
                 settingsService.getPathWorkDir(),
                 "tah",
-                parentFrame.getTitles().get("MWopenFileTitle"));
+                shell.getTitles().get("MWopenFileTitle"));
 
         if (llTahList != null) {
             surveyRepository = importService.loadTah(llTahList);
@@ -367,7 +410,7 @@ public class SurveyServiceDefault implements SurveyService {
                 this.getTahList(),
                 settingsService.getPathWorkDir(),
                 "tah",
-                parentFrame.getTitles().get("MWsaveTahTitle"));
+                shell.getTitles().get("MWsaveTahTitle"));
         if (s != null) {
             absoluteTahPath = s;
         }

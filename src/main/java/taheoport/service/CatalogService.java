@@ -32,12 +32,6 @@ public interface CatalogService {
     void importCatalog();
 
     /**
-     * Updates base points with current catalog
-     * @param target 0: updates surveyProject; 1: updates polygonProject
-     */
-    void updateBasePoints(int target);
-
-    /**
      * Sets the index of the selected item
      * @param choice int
      */

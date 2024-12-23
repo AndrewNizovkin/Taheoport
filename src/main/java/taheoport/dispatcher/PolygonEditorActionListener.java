@@ -2,6 +2,7 @@ package taheoport.dispatcher;
 
 import taheoport.gui.PolygonEditorRenderer;
 import taheoport.gui.ShowCatalog;
+import taheoport.model.BindType;
 import taheoport.model.CatalogPoint;
 import taheoport.model.PolygonStation;
 import taheoport.service.CatalogService;
@@ -13,16 +14,19 @@ import java.awt.event.ActionListener;
 public class PolygonEditorActionListener implements ActionListener {
     private final PolygonService polygonService;
     private final CatalogService catalogService;
+    private final DependencyInjector dependencyInjector;
     private final PolygonEditorRenderer renderer;
 
     /**
      * Constructor
-     * @param renderer
+     * @param dependencyInjector DependencyInjector
+     * @param renderer PolygonEditorRenderer
      */
-    public PolygonEditorActionListener(PolygonEditorRenderer renderer) {
+    public PolygonEditorActionListener(DependencyInjector dependencyInjector, PolygonEditorRenderer renderer) {
+        this.dependencyInjector = dependencyInjector;
         this.renderer = renderer;
-        polygonService = renderer.getParentFrame().getPolygonService();
-        catalogService = renderer.getParentFrame().getCatalogService();
+        polygonService = dependencyInjector.getPolygonService();
+        catalogService = dependencyInjector.getCatalogService();
     }
 
     /**
@@ -49,6 +53,8 @@ public class PolygonEditorActionListener implements ActionListener {
             int k = selRow;
             renderer.getModel().removeRow(selRow);
             if (k == polygonService.getSizePolygonStations()) k--;
+            polygonService.setBindType(BindType.ZZ);
+            renderer.setBindings();
             renderer.setFocusTable(k, renderer.getSelColumn());
         }
     }
@@ -69,6 +75,8 @@ public class PolygonEditorActionListener implements ActionListener {
                     "",
                     false
             });
+            polygonService.setBindType(BindType.ZZ);
+            renderer.setBindings();
             renderer.setFocusTable(renderer.getSelRow() - 1, renderer.getSelColumn());
         }
     }
@@ -91,6 +99,8 @@ public class PolygonEditorActionListener implements ActionListener {
                     "",
                     false
             });
+            polygonService.setBindType(BindType.ZZ);
+            renderer.setBindings();
             renderer.setFocusTable(selRow, renderer.getSelColumn());
         }
     }
@@ -100,7 +110,7 @@ public class PolygonEditorActionListener implements ActionListener {
      */
     private void setCoordinatesFromCatalog() {
         if (polygonService.findById(renderer.getSelRow()).getStatus()) {
-            new ShowCatalog(renderer.getParentFrame());
+            new ShowCatalog(dependencyInjector);
             if (catalogService.getChoice() >= 0) {
                 PolygonStation polygonStation = polygonService.findById(renderer.getSelRow());
                 CatalogPoint catalogPoint = catalogService.findById(catalogService.getChoice());
@@ -112,6 +122,8 @@ public class PolygonEditorActionListener implements ActionListener {
                 renderer.getModel().setValueAt(polygonStation.getX(), renderer.getSelRow(), 4);
                 renderer.getModel().setValueAt(polygonStation.getY(), renderer.getSelRow(), 5);
                 renderer.getModel().setValueAt(polygonStation.getZ(), renderer.getSelRow(), 6);
+                polygonService.setBindType(BindType.ZZ);
+                renderer.setBindings();
             }
         }
     }

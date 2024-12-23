@@ -12,6 +12,11 @@ import java.util.List;
 public interface SurveyService {
 
     /**
+     * Updates basePoints
+     */
+    void updateBasePoints();
+
+    /**
      * Sets the path to file contains measurement
      * @param absoluteTahPath path to file
      */

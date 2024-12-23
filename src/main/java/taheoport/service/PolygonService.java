@@ -12,6 +12,11 @@ import java.util.List;
 public interface PolygonService {
 
     /**
+     * Updates basePoints
+     */
+    void updateBasePoints();
+
+    /**
      * Create new polygon project
      */
     void newProject();

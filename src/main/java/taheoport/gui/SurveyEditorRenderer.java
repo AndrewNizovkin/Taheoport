@@ -25,7 +25,7 @@ public interface SurveyEditorRenderer {
      * Gets ParentFrame
      * @return MainWin
      */
-    MainWin getParentFrame();
+    JFrame getParentFrame();
 
     /**
      * Sets controls enable is true

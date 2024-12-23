@@ -13,7 +13,7 @@
 
 ## Наследование
 
-`java.lang.Object` -> `taheoport.gui.Shell`
+`java.lang.Object` -> `taheoport.service.Shell`
 
 ---
 

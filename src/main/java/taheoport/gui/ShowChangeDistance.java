@@ -1,5 +1,6 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyInjector;
 import taheoport.service.DataHandler;
 import taheoport.service.SettingsService;
 
@@ -8,6 +9,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,21 +19,25 @@ import java.util.regex.Pattern;
  * Copyright Nizovkin A.V. 2022
  */
 public class ShowChangeDistance extends JDialog implements ChangeListener, ActionListener {
-    private final MainWin parentFrame;
     private final SettingsService settingsService;
     private LinearOffsetPaintPanel pnlPaintPanel;
     private final JRadioButton rbHor = new JRadioButton();
     private final JTextField tfOffset;
 
 
-    public ShowChangeDistance(MainWin parentFrame) {
+    /**
+     * Constructor
+     * @param dependencyInjector DependencyInjector
+     */
+    public ShowChangeDistance(DependencyInjector dependencyInjector) {
 
-        super(parentFrame, parentFrame.getTitles().get("SADtitle"), true);
-        this.parentFrame = parentFrame;
-        settingsService = parentFrame.getSettingsService();
+        super(dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SADtitle"), true);
+        JFrame parentFrame = dependencyInjector.getMainFrame();
+        settingsService = dependencyInjector.getSettingsService();
         settingsService.setChanged(false);
-        setBounds(parentFrame.getX() + parentFrame.getWidthMain() / 2 - parentFrame.getWidthMain() / 3 * 2 / 2,
-                parentFrame.getY() + parentFrame.getHeightMain() / 2 - parentFrame.getHeightMain() / 2 / 2,
+        HashMap<String, String> titles = dependencyInjector.getTitles();
+        setBounds(parentFrame.getX() + parentFrame.getWidth() / 2 - parentFrame.getWidth() / 3 * 2 / 2,
+                parentFrame.getY() + parentFrame.getHeight() / 2 - parentFrame.getHeight() / 2 / 2,
                 290,
                 210);
         Toolkit kit = Toolkit.getDefaultToolkit();
@@ -49,12 +55,12 @@ public class ShowChangeDistance extends JDialog implements ChangeListener, Actio
         JPanel pnlOffset = new JPanel();
         pnlOffset.setLayout(new GridBagLayout());
 
-        pnlOffset.setBorder(BorderFactory.createTitledBorder(parentFrame.getTitles().get("SADpnlOffsetTitle")));
+        pnlOffset.setBorder(BorderFactory.createTitledBorder(titles.get("SADpnlOffsetTitle")));
 
 // rbInc____________________________________________________________
 
         JRadioButton rbInc = new JRadioButton();
-        rbInc.setText(parentFrame.getTitles().get("SADrbInc"));
+        rbInc.setText(titles.get("SADrbInc"));
         rbInc.setFocusable(false);
         rbInc.addChangeListener(this);
         if (settingsService.getOffsetDistanceType() == 1) {
@@ -66,7 +72,7 @@ public class ShowChangeDistance extends JDialog implements ChangeListener, Actio
 
 // rbHor____________________________________________________________
 
-        rbHor.setText(parentFrame.getTitles().get("SADrbHor"));
+        rbHor.setText(titles.get("SADrbHor"));
         rbHor.setFocusable(false);
         rbHor.addChangeListener(this);
         if (settingsService.getOffsetDistanceType() == 0) {
@@ -84,7 +90,7 @@ public class ShowChangeDistance extends JDialog implements ChangeListener, Actio
 
 // lblOffset________________________________________________________
 
-        JLabel lblOffset = new JLabel(parentFrame.getTitles().get("SADlblOffset"));
+        JLabel lblOffset = new JLabel(titles.get("SADlblOffset"));
 
 // tfOffset_________________________________________________________
 
@@ -163,14 +169,14 @@ public class ShowChangeDistance extends JDialog implements ChangeListener, Actio
     pnlControl.setLayout(new FlowLayout());
 
 // btnApprove________________________________________________________
-        JButton btnApprove = new JButton(parentFrame.getTitles().get("SObtnApprove"));
+        JButton btnApprove = new JButton(titles.get("SObtnApprove"));
     btnApprove.addActionListener(this);
 
     pnlControl.add(btnApprove);
 
 // btnCancel________________________________________________________
 
-        JButton btnCancel = new JButton(parentFrame.getTitles().get("SObtnCancel"));
+        JButton btnCancel = new JButton(titles.get("SObtnCancel"));
         btnCancel.addActionListener(e -> this.dispose());
 
         pnlControl.add(btnCancel);

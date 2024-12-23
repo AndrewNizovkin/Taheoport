@@ -1,22 +1,26 @@
 package taheoport.service;
 
+import taheoport.dispatcher.DependencyInjector;
 import taheoport.gui.MainWin;
 import taheoport.model.BindType;
 import taheoport.model.PolygonStation;
 import taheoport.model.SurveyStation;
 
 import javax.swing.*;
+import java.util.HashMap;
 
 /**
  * This class encapsulates data and methods for mathematics processing of polygon
  */
 public class AdjusterDefault implements Adjuster{
-    private final MainWin parentFrame;
+    private final JFrame parentFrame;
     private final PolygonService polygonService;
+    private final Shell shell;
 
-    public AdjusterDefault(MainWin frame, PolygonService polygonService) {
+    public AdjusterDefault(DependencyInjector dependencyInjector, PolygonService polygonService) {
         this.polygonService = polygonService;
-        parentFrame = frame;
+        shell = dependencyInjector.getShell();
+        parentFrame = dependencyInjector.getMainFrame();
     }
 
     /**
@@ -25,6 +29,13 @@ public class AdjusterDefault implements Adjuster{
     @Override
     public void adjustPolygon() {
         int countStations = polygonService.getSizePolygonStations();
+        if (countStations < 2) {
+            JOptionPane.showMessageDialog(parentFrame,
+                    shell.getTitles().get("TPmessageNoAdjustment"),
+                    shell.getTitles().get("TPmessageNoAdjustmentTitle"),
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         polygonService.setPerimeter(0.0);
         double sumDX = 0.0;
         double sumDY = 0.0;
@@ -37,8 +48,8 @@ public class AdjusterDefault implements Adjuster{
         PolygonStation basePointD = polygonService.findById(countStations - 1);
         switch (polygonService.getBindType()) {
             case ZZ -> JOptionPane.showMessageDialog(parentFrame,
-                    parentFrame.getTitles().get("TPmessageNoAdjustment"),
-                    parentFrame.getTitles().get("TPmessageNoAdjustmentTitle"),
+                    shell.getTitles().get("TPmessageNoAdjustment"),
+                    shell.getTitles().get("TPmessageNoAdjustmentTitle"),
                     JOptionPane.ERROR_MESSAGE);
             case TT -> {
                 iniDDs();
@@ -189,8 +200,7 @@ public class AdjusterDefault implements Adjuster{
      * set and return bindings type of current TheoProject
      */
     private void defBindType() {
-//        polygonRepository = parentFrame.getPolygonRepository();
-
+        HashMap<String,String> titles = shell.getTitles();
         polygonService.setBindType(BindType.ZZ);
         int countStations = polygonService.getSizePolygonStations();
         PolygonStation basePointA = polygonService.findById(0);
@@ -208,8 +218,8 @@ public class AdjusterDefault implements Adjuster{
                         !new DataHandler(basePointC.getHor()).isPositiveNumber()) {
                     polygonService.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(parentFrame,
-                            parentFrame.getTitles().get("TPmessageError"),
-                            parentFrame.getTitles().get("TPmessageErrorTitle"),
+                            titles.get("TPmessageError"),
+                            titles.get("TPmessageErrorTitle"),
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -221,8 +231,8 @@ public class AdjusterDefault implements Adjuster{
                 if (isValidSourceData(1, countStations - 2)) {
                     polygonService.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(null,
-                            parentFrame.getTitles().get("TPmessageError"),
-                            parentFrame.getTitles().get("TPmessageErrorTitle"),
+                            titles.get("TPmessageError"),
+                            titles.get("TPmessageErrorTitle"),
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -235,8 +245,8 @@ public class AdjusterDefault implements Adjuster{
                         !new DataHandler(basePointC.getHor()).isPositiveNumber()) {
                     polygonService.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(null,
-                            parentFrame.getTitles().get("TPmessageError"),
-                            parentFrame.getTitles().get("TPmessageErrorTitle"),
+                            titles.get("TPmessageError"),
+                            titles.get("TPmessageErrorTitle"),
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -248,8 +258,8 @@ public class AdjusterDefault implements Adjuster{
                 if (isValidSourceData(0, countStations - 2)) {
                     polygonService.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(null,
-                            parentFrame.getTitles().get("TPmessageError"),
-                            parentFrame.getTitles().get("TPmessageErrorTitle"),
+                            titles.get("TPmessageError"),
+                            titles.get("TPmessageErrorTitle"),
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -262,8 +272,8 @@ public class AdjusterDefault implements Adjuster{
                         !new DataHandler(basePointC.getHor()).isPositiveNumber()) {
                     polygonService.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(null,
-                            parentFrame.getTitles().get("TPmessageError"),
-                            parentFrame.getTitles().get("TPmessageErrorTitle"),
+                            titles.get("TPmessageError"),
+                            titles.get("TPmessageErrorTitle"),
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -276,8 +286,8 @@ public class AdjusterDefault implements Adjuster{
                         !new DataHandler(basePointC.getHor()).isPositiveNumber()) {
                     polygonService.setBindType(BindType.ZZ);
                     JOptionPane.showMessageDialog(null,
-                            parentFrame.getTitles().get("TPmessageError"),
-                            parentFrame.getTitles().get("TPmessageErrorTitle"),
+                            titles.get("TPmessageError"),
+                            titles.get("TPmessageErrorTitle"),
                             JOptionPane.ERROR_MESSAGE);
                 }
             }

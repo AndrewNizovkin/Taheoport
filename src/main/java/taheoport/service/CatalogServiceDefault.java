@@ -1,5 +1,6 @@
 package taheoport.service;
 
+import taheoport.dispatcher.DependencyInjector;
 import taheoport.gui.MainWin;
 import taheoport.model.PolygonStation;
 import taheoport.model.SurveyStation;
@@ -14,28 +15,24 @@ import java.util.List;
  * This class encapsulates data and methods for working with base point catalog
  */
 public class CatalogServiceDefault implements CatalogService {
-
-    private final MainWin parentFrame;
     private final CatalogRepository catalogRepository;
-    private final PolygonService polygonService;
-    private final SurveyService surveyService;
     private final IOService ioService;
     private final SettingsService settingsService;
+    private final Shell shell;
     private String absoluteCatalogPath;
     private int choice;
 
 
     /**
      * Constructor
-     * @param parentFrame
+     * @param dependencyInjector DependencyInjector
      */
-    public CatalogServiceDefault(MainWin parentFrame) {
-        this.parentFrame = parentFrame;
-        ioService = parentFrame.getIoService();
-        settingsService = parentFrame.getSettingsService();
-        polygonService = parentFrame.getPolygonService();
-        surveyService = parentFrame.getSurveyService();
+    public CatalogServiceDefault(DependencyInjector dependencyInjector) {
+        shell = dependencyInjector.getShell();
+        ioService = dependencyInjector.getIoService();
+        settingsService = dependencyInjector.getSettingsService();
         catalogRepository = new CatalogRepository();
+
         choice = -1;
     }
 
@@ -67,7 +64,7 @@ public class CatalogServiceDefault implements CatalogService {
         List<String> list = ioService.readTextFile(
                 settingsService.getPathWorkDir(),
                 "kat",
-                parentFrame.getTitles().get("MWloadCatalogTitle"));
+                shell.getTitles().get("MWloadCatalogTitle"));
 
         catalogRepository.clear();
         if (list != null) {
@@ -85,65 +82,6 @@ public class CatalogServiceDefault implements CatalogService {
                             new DataHandler(array[3]).commaToPoint().format(3).getStr());
                     catalogRepository.add(cPoint);
                 }
-            }
-        }
-    }
-
-    /**
-     * Updates base points with current catalog
-     * @param target 0: updates surveyProject; 1: updates polygonProject
-     */
-    @Override
-    public void updateBasePoints(int target) {
-        HashMap<String, String> titles = parentFrame.getTitles();
-        switch (target) {
-            case 0 -> {
-                    int q = 0;
-                    for (SurveyStation surveyStation: surveyService.getAllStations()) {
-                        for (CatalogPoint catalogPoint: catalogRepository) {
-                            if (surveyStation.getName().equals(catalogPoint.getName())) {
-                                surveyStation.setName(catalogPoint.getName());
-                                surveyStation.setX(catalogPoint.getX());
-                                surveyStation.setY(catalogPoint.getY());
-                                surveyStation.setZ(catalogPoint.getZ());
-                                q++;
-                            }
-                            if (surveyStation.getNameOr().equals(catalogPoint.getName())) {
-                                surveyStation.setNameOr(catalogPoint.getName());
-                                surveyStation.setxOr(catalogPoint.getX());
-                                surveyStation.setyOr(catalogPoint.getY());
-                                surveyStation.setzOr(catalogPoint.getZ());
-                                q++;
-                            }
-                        }
-                    }
-                    JOptionPane.showMessageDialog(parentFrame,
-                            q + titles.get("MWupdateMessage"),
-                            titles.get("MWupdateMessageTitle"),
-                            JOptionPane.INFORMATION_MESSAGE);
-                parentFrame.reloadSurveyEditor();
-            }
-
-            case 1 -> {
-                int q = 0;
-                for (PolygonStation polygonStation: polygonService.getAllPolygonStations()) {
-                    for (CatalogPoint catalogPoint: catalogRepository) {
-                        if (polygonStation.getName().equals(catalogPoint.getName()) &
-                                polygonStation.getStatus()) {
-                            polygonStation.setName(catalogPoint.getName());
-                            polygonStation.setX(catalogPoint.getX());
-                            polygonStation.setY(catalogPoint.getY());
-                            polygonStation.setZ(catalogPoint.getZ());
-                            q++;
-                        }
-                    }
-                }
-                JOptionPane.showMessageDialog(parentFrame,
-                        q + titles.get("MWupdateMessage"),
-                        titles.get("MWupdateMessageTitle"),
-                        JOptionPane.INFORMATION_MESSAGE);
-
-                parentFrame.reloadPolygonEditor();
             }
         }
     }

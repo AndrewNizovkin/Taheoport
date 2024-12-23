@@ -36,5 +36,10 @@ public interface MainRenderer {
      */
     void setMode(int mode);
 
+    /**
+     * Translate interface
+     */
+    void translate();
+
 
 }

@@ -1,7 +1,6 @@
-package taheoport.model;
+package taheoport.service;
 
-import taheoport.gui.MainWin;
-import taheoport.service.SettingsService;
+import taheoport.dispatcher.DependencyInjector;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,19 +10,19 @@ import java.awt.*;
  * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
-public class Manual {
-    private final MainWin parentFrame;
+public class ManualService {
+//    private final MainWin parentFrame;
     private final SettingsService settingsService;
     private final String newLine = "\n";
     private final Insets insets= new Insets(10, 10, 10, 10);
 
     /**
      * Constructor
-     * @param parentFrame MainWin
+     * @param dependencyInjector DependencyInjector
      */
-    public Manual(MainWin parentFrame) {
-        this.parentFrame = parentFrame;
-        settingsService = parentFrame.getSettingsService();
+    public ManualService(DependencyInjector dependencyInjector) {
+//        this.parentFrame = parentFrame;
+        settingsService = dependencyInjector.getSettingsService();
     }
 
     /**

@@ -1,5 +1,6 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyInjector;
 import taheoport.dispatcher.MainActionListener;
 import taheoport.service.*;
 
@@ -17,13 +18,15 @@ import java.util.Vector;
  * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
-public class MainWin extends JFrame implements MainRenderer{
+public class MainWin extends JFrame implements MainRenderer, DependencyInjector {
     private final IOService ioService;
+    private final ImportService importService;
     private final SurveyService surveyService;
     private final PolygonService polygonService;
     private final ExtractService extractService;
     private final CatalogService catalogService;
     private final SettingsService settingsService;
+    private final ManualService manualService;
     private final Security security;
     private final JTabbedPane tpMain;
     private final JPanel pnlMeasurements;
@@ -67,16 +70,19 @@ public class MainWin extends JFrame implements MainRenderer{
      */
     public MainWin() {
         super("Taheoport");
+        importService = new ImportServiceDefault();
         ioService = new IOServiceDefault(this);
         settingsService = new SettingsServiceDefault(this);
+        shell = new Shell(this);
+        catalogService = new CatalogServiceDefault(this);
         surveyService = new SurveyServiceDefault(this);
         polygonService = new PolygonServiceDefault(this);
         extractService = new ExtractServiceDefault(this);
-        catalogService = new CatalogServiceDefault(this);
+        manualService = new ManualService(this);
         security = new SecurityImpl();
-        shell = new Shell(settingsService);
         titles = shell.getTitles();
-        ActionListener actionListener = new MainActionListener(this);
+        ActionListener actionListener = new MainActionListener(this,this);
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         wMain = 640;
@@ -368,73 +374,77 @@ public class MainWin extends JFrame implements MainRenderer{
     }
 
     /**
-     * gets width of MainWin
-     * @return wMain
+     * Gets reference to main frame
+     *
+     * @return JFrame
      */
-    public int getWidthMain() {
-        return wMain;
+    @Override
+    public JFrame getMainFrame() {
+        return this;
     }
 
     /**
-     * gets height
-     * @return hMain
-     */
-    public int getHeightMain() {
-        return hMain;
-    }
-
-    /**
-     * Gets this.ioController
-     * @return IOController
+     * Gets IOService
+     * @return instance of IOService
      */
     public IOService getIoService() {
-        return this.ioService;
+        return ioService;
     }
 
+    /**
+     * Gets ImportService
+     * @return instance of ImportService
+     */
+    public ImportService getImportService() {
+        return importService;
+    }
+
+    /**
+     * Gets CatalogService
+     * @return instance of CatalogService
+     */
     public CatalogService getCatalogService() {
         return catalogService;
     }
 
     /**
-     * Gets this.surveyController
-     * @return SurveyController
+     * Gets SurveyService
+     * @return instance of SurveyService
      */
     public SurveyService getSurveyService() {
         return surveyService;
     }
 
     /**
-     * Gets this.polygonController
-     * @return PolygonController
+     * Gets PolygonService
+     * @return instance of PolygonService
      */
     public PolygonService getPolygonService() {
         return polygonService;
     }
 
     /**
-     * Gets this.extractController
-     * @return ExtractController
+     * Gets ExtractService
+     * @return instance of ExtractService
      */
     public ExtractService getExtractService() {
         return extractService;
     }
 
-
+    /**
+     * Gets SettingsService
+     * @return instance of SettingService
+     */
     public SettingsService getSettingsService() {
         return settingsService;
     }
-
-    /**
-     * Return sp
-     * @return SurveyProject sp
-     */
 
     /**
      * gets HashMap titles
      * @return titles
      */
     public HashMap<String, String> getTitles() {
-        return titles;
+        return shell.getTitles();
     }
 
     /**
@@ -446,15 +456,13 @@ public class MainWin extends JFrame implements MainRenderer{
     }
 
     /**
-     * Return is Catalog
-     * @return Boolean
+     * Gets manual
+     *
+     * @return manual
      */
-    public Boolean hasCatalog() {
-        return !catalogService.isEmpty();
-    }
-
-    public String getPathWorkDir() {
-        return settingsService.getPathWorkDir();
+    @Override
+    public ManualService getManual() {
+        return manualService;
     }
 
     /**

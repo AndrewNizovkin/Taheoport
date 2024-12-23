@@ -8,12 +8,6 @@ import javax.swing.*;
 public interface PolygonEditorRenderer {
 
     /**
-     * Gets parentFrame
-     * @return MainWin
-     */
-    MainWin getParentFrame();
-
-    /**
      * Gets polygon stations table
      * @return JTable
      */
@@ -41,5 +35,10 @@ public interface PolygonEditorRenderer {
      * set focus on tblStations
      */
     void setFocusTable(int row, int column);
+
+    /**
+     * sets bindings value
+     */
+    void setBindings();
 
     }

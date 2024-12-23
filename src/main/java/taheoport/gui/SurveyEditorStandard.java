@@ -1,8 +1,11 @@
 package taheoport.gui;
+import taheoport.dispatcher.DependencyInjector;
 import taheoport.dispatcher.SurveyEditorActionListener;
 import taheoport.repository.SurveyRepository;
+import taheoport.service.CatalogService;
 import taheoport.service.DataHandler;
 import taheoport.model.SurveyStation;
+import taheoport.service.Shell;
 import taheoport.service.SurveyService;
 
 import javax.swing.*;
@@ -13,6 +16,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,7 +42,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
     private JLabel lblStationI;
     private JList<String> lstStations;
     private Vector<Component> order;
-    private MainWin parentFrame;
+    private JFrame parentFrame;
     private JPanel pnlPickets;
     private JPanel pnlStation;
     private JPanel pnlStations;
@@ -57,21 +61,27 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
     private JTable tblPickets;
     private TmodelPickets tmodelPickets;
     private final ActionListener surveyEditorActionListener;
+    private final DependencyInjector dependencyInjector;
     private final SurveyService surveyService;
+    private final CatalogService catalogService;
+    private final Shell shell;
 
     /**
      * Constructor
-     * @param parentFrame parent parentFrame
+     * @param dependencyInjector DependencyInjector
      * @param index int index of current SurveyStation of SurveyProject
      */
-    public SurveyEditorStandard(MainWin parentFrame, int index) {
+    public SurveyEditorStandard(DependencyInjector dependencyInjector, int index) {
         super();
-        surveyService = parentFrame.getSurveyService();
-//        if (!(parentFrame == null)) {
-            currentStationIndex = index;
+        this.dependencyInjector = dependencyInjector;
+        surveyService = dependencyInjector.getSurveyService();
+        catalogService = dependencyInjector.getCatalogService();
+        shell = dependencyInjector.getShell();
+        currentStationIndex = index;
+        parentFrame = dependencyInjector.getMainFrame();
+        surveyEditorActionListener = new SurveyEditorActionListener(dependencyInjector,this);
+        HashMap<String, String> titles = dependencyInjector.getTitles();
 
-            this.parentFrame = parentFrame;
-            surveyEditorActionListener = new SurveyEditorActionListener(this);
             ImageIcon imageDeleteRow = new ImageIcon("images/delete_row.png");
             ImageIcon imageInsertRowBefore = new ImageIcon("images/insert_row.png");
             ImageIcon imageInsertRowAfter = new ImageIcon("images/insert_row_after.png");
@@ -80,7 +90,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
             pnlStations = new JPanel();
             pnlStations.setLayout(new BorderLayout());
             pnlStations.setBorder(BorderFactory.createTitledBorder(null,
-                    this.parentFrame.getTitles().get("TAHlblStationListTitle"),
+                    titles.get("TAHlblStationListTitle"),
                     TitledBorder.CENTER,
                     TitledBorder.TOP,
                     new Font(Font.DIALOG, Font.PLAIN, 12),
@@ -90,13 +100,13 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
             pnlStation = new JPanel(new GridBagLayout());
             pnlStation.setBorder(BorderFactory.createTitledBorder(null,
-                    this.parentFrame.getTitles().get("TAHlblStationTitle"),
+                    titles.get("TAHlblStationTitle"),
                     TitledBorder.CENTER,
                     TitledBorder.TOP,
                     new Font(Font.DIALOG, Font.PLAIN, 12),
                     Color.BLUE));
-            pnlStation.setPreferredSize(new Dimension(this.parentFrame.getWidthMain() / 2,
-                    this.parentFrame.getHeightMain()));
+            pnlStation.setPreferredSize(new Dimension(this.parentFrame.getWidth() / 2,
+                    parentFrame.getHeight()));
 //endregion
 
 //region btnStationName
@@ -105,8 +115,8 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
             btnStationName.setActionCommand("btnStationName");
             btnStationName.addActionListener(surveyEditorActionListener);
             btnStationName.setBorder(BorderFactory.createEtchedBorder());
-            btnStationName.setText(this.parentFrame.getTitles().get("TAHbtnStationName"));
-            btnStationName.setToolTipText(this.parentFrame.getTitles().get("TAHbtnStationNameTT"));
+            btnStationName.setText(titles.get("TAHbtnStationName"));
+            btnStationName.setToolTipText(titles.get("TAHbtnStationNameTT"));
 
             pnlStation.add(btnStationName, new GridBagConstraints(0, 0, 1, 1, 0, 1,
                     GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 10, 0));
@@ -354,7 +364,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
 //region lblStationI
 
-            lblStationI = new JLabel(this.parentFrame.getTitles().get("TAHlblStationI"), JLabel.RIGHT);
+            lblStationI = new JLabel(titles.get("TAHlblStationI"), JLabel.RIGHT);
 
             pnlStation.add(lblStationI, new GridBagConstraints(0, 4, 1, 1, 0, 0,
                     GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
@@ -426,8 +436,8 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
             btnOrName.setActionCommand("btnOrName");
             btnOrName.addActionListener(surveyEditorActionListener);
             btnOrName.setBorder(BorderFactory.createEtchedBorder());
-            btnOrName.setText(this.parentFrame.getTitles().get("TAHbtnOrName"));
-            btnOrName.setToolTipText(this.parentFrame.getTitles().get("TAHbtnOrNameTT"));
+            btnOrName.setText(titles.get("TAHbtnOrName"));
+            btnOrName.setToolTipText(titles.get("TAHbtnOrNameTT"));
 
             pnlStation.add(btnOrName, new GridBagConstraints(
                     0,
@@ -663,7 +673,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
                 btnDeleteStation = new JButton(imageDeleteRow);
                 btnDeleteStation.setActionCommand("btnDeleteStation");
-                btnDeleteStation.setToolTipText(this.parentFrame.getTitles().get("TAHbtnDeleteStationTT"));
+                btnDeleteStation.setToolTipText(titles.get("TAHbtnDeleteStationTT"));
                 btnDeleteStation.addActionListener(surveyEditorActionListener);
 //endregion
 
@@ -671,7 +681,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
                 btnInsertStationBefore = new JButton(imageInsertRowBefore);
                 btnInsertStationBefore.setActionCommand("btnInsertStationBefore");
-                btnInsertStationBefore.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertStationBeforeTT"));
+                btnInsertStationBefore.setToolTipText(titles.get("TAHbtnInsertStationBeforeTT"));
                 btnInsertStationBefore.addActionListener(surveyEditorActionListener);
 //endregion
 
@@ -679,7 +689,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
                 btnInsertStationAfter = new JButton(imageInsertRowAfter);
                 btnInsertStationAfter.setActionCommand("btnInsertStationAfter");
-                btnInsertStationAfter.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertStationAfterTT"));
+                btnInsertStationAfter.setToolTipText(titles.get("TAHbtnInsertStationAfterTT"));
                 btnInsertStationAfter.addActionListener(surveyEditorActionListener);
 //endregion
 
@@ -726,7 +736,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
             pnlPickets.setLayout(new BorderLayout());
             pnlPickets.setBorder(BorderFactory.createTitledBorder(
                     null,
-                    this.parentFrame.getTitles().get("TAHlblPicketsTitle"),
+                    titles.get("TAHlblPicketsTitle"),
                     TitledBorder.CENTER,
                     TitledBorder.TOP,
                     new Font(Font.DIALOG, Font.PLAIN, 12),
@@ -736,7 +746,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
             btnDeleteRow = new JButton(new ImageIcon("images/delete_row.png"));
             btnDeleteRow.setActionCommand("btnDeleteRow");
-            btnDeleteRow.setToolTipText(this.parentFrame.getTitles().get("TAHbtnDeleteRowTT"));
+            btnDeleteRow.setToolTipText(titles.get("TAHbtnDeleteRowTT"));
             btnDeleteRow.addActionListener(surveyEditorActionListener);
 //endregion
 
@@ -744,7 +754,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
             btnInsertRowBefore = new JButton(new ImageIcon("images/insert_row.png"));
             btnInsertRowBefore.setActionCommand("btnInsertRowBefore");
-            btnInsertRowBefore.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertRowBeforeTT"));
+            btnInsertRowBefore.setToolTipText(titles.get("TAHbtnInsertRowBeforeTT"));
             btnInsertRowBefore.addActionListener(surveyEditorActionListener);
 //endregion
 
@@ -752,7 +762,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
             btnInsertRowAfter = new JButton(new ImageIcon("images/insert_row_after.png"));
             btnInsertRowAfter.setActionCommand("btnInsertRowAfter");
-            btnInsertRowAfter.setToolTipText(this.parentFrame.getTitles().get("TAHbtnInsertRowAfterTT"));
+            btnInsertRowAfter.setToolTipText(titles.get("TAHbtnInsertRowAfterTT"));
             btnInsertRowAfter.addActionListener(surveyEditorActionListener);
 //endregion
 
@@ -760,7 +770,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
             btnChangeDistance = new JButton(new ImageIcon("images/rearrange.png"));
             btnChangeDistance.setActionCommand("btnChangeDistance");
-            btnChangeDistance.setToolTipText(this.parentFrame.getTitles().get("TAHbtnAddDistanceTT"));
+            btnChangeDistance.setToolTipText(titles.get("TAHbtnAddDistanceTT"));
             btnChangeDistance.addActionListener(surveyEditorActionListener);
 //endregion
 
@@ -768,7 +778,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
             btnChangeDirection = new JButton(new ImageIcon("images/change_direction.png"));
             btnChangeDirection.setActionCommand("btnChangeDirection");
-            btnChangeDirection.setToolTipText(this.parentFrame.getTitles().get("TAHbtnChangeDirectionTT"));
+            btnChangeDirection.setToolTipText(titles.get("TAHbtnChangeDirectionTT"));
             btnChangeDirection.addActionListener(surveyEditorActionListener);
 //endregion
 
@@ -776,7 +786,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
             btnChangeTilt = new JButton(new ImageIcon("images/change_tilt.png"));
             btnChangeTilt.setActionCommand("btnChangeTilt");
-            btnChangeTilt.setToolTipText(this.parentFrame.getTitles().get("TAHbtnChangeTiltAngleTT"));
+            btnChangeTilt.setToolTipText(titles.get("TAHbtnChangeTiltAngleTT"));
             btnChangeTilt.addActionListener(surveyEditorActionListener);
 //endregion
 
@@ -830,32 +840,33 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
      * Updates text elements of GUI.
      */
     public void translate() {
+        HashMap<String, String> titles = shell.getTitles();
         pnlStation.setBorder(BorderFactory.createTitledBorder(null,
-                parentFrame.getTitles().get("TAHlblStationTitle"),
+                titles.get("TAHlblStationTitle"),
                 TitledBorder.CENTER, TitledBorder.TOP,
                 new Font(Font.DIALOG, Font.PLAIN, 12), Color.BLUE));
         pnlStations.setBorder(BorderFactory.createTitledBorder(null,
-                parentFrame.getTitles().get("TAHlblStationListTitle"),
+                titles.get("TAHlblStationListTitle"),
                 TitledBorder.CENTER, TitledBorder.TOP,
                 new Font(Font.DIALOG, Font.PLAIN, 12), Color.BLUE));
         pnlPickets.setBorder(BorderFactory.createTitledBorder(null,
-                parentFrame.getTitles().get("TAHlblPicketsTitle"),
+                titles.get("TAHlblPicketsTitle"),
                 TitledBorder.CENTER, TitledBorder.TOP, new Font(Font.DIALOG,
                         Font.PLAIN, 12), Color.BLUE));
-        lblStationI.setText(parentFrame.getTitles().get("TAHlblStationI"));
-        btnStationName.setText(parentFrame.getTitles().get("TAHbtnStationName"));
-        btnStationName.setToolTipText(parentFrame.getTitles().get("TAHbtnStationNameTT"));
-        btnOrName.setText(parentFrame.getTitles().get("TAHbtnOrName"));
-        btnOrName.setToolTipText(parentFrame.getTitles().get("TAHbtnOrNameTT"));
-        btnDeleteStation.setToolTipText(parentFrame.getTitles().get("TAHbtnDeleteStationTT"));
-        btnInsertStationBefore.setToolTipText(parentFrame.getTitles().get("TAHbtnInsertStationBeforeTT"));
-        btnInsertStationAfter.setToolTipText(parentFrame.getTitles().get("TAHbtnInsertStationAfterTT"));
-        btnDeleteRow.setToolTipText(parentFrame.getTitles().get("TAHbtnDeleteRowTT"));
-        btnInsertRowBefore.setToolTipText(parentFrame.getTitles().get("TAHbtnInsertRowBeforeTT"));
-        btnInsertRowAfter.setToolTipText(parentFrame.getTitles().get("TAHbtnInsertRowAfterTT"));
-        btnChangeDistance.setToolTipText(parentFrame.getTitles().get("TAHbtnAddDistanceTT"));
-        btnChangeDirection.setToolTipText(parentFrame.getTitles().get("TAHbtnChangeDirectionTT"));
-        btnChangeTilt.setToolTipText(parentFrame.getTitles().get("TAHbtnChangeTiltAngleTT"));
+        lblStationI.setText(titles.get("TAHlblStationI"));
+        btnStationName.setText(titles.get("TAHbtnStationName"));
+        btnStationName.setToolTipText(titles.get("TAHbtnStationNameTT"));
+        btnOrName.setText(titles.get("TAHbtnOrName"));
+        btnOrName.setToolTipText(titles.get("TAHbtnOrNameTT"));
+        btnDeleteStation.setToolTipText(titles.get("TAHbtnDeleteStationTT"));
+        btnInsertStationBefore.setToolTipText(titles.get("TAHbtnInsertStationBeforeTT"));
+        btnInsertStationAfter.setToolTipText(titles.get("TAHbtnInsertStationAfterTT"));
+        btnDeleteRow.setToolTipText(titles.get("TAHbtnDeleteRowTT"));
+        btnInsertRowBefore.setToolTipText(titles.get("TAHbtnInsertRowBeforeTT"));
+        btnInsertRowAfter.setToolTipText(titles.get("TAHbtnInsertRowAfterTT"));
+        btnChangeDistance.setToolTipText(titles.get("TAHbtnAddDistanceTT"));
+        btnChangeDirection.setToolTipText(titles.get("TAHbtnChangeDirectionTT"));
+        btnChangeTilt.setToolTipText(titles.get("TAHbtnChangeTiltAngleTT"));
 
         reloadStationPickets(currentStationIndex);
 
@@ -888,7 +899,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
      * @return MainWin
      */
     @Override
-    public MainWin getParentFrame() {
+    public JFrame getParentFrame() {
         return parentFrame;
     }
 
@@ -933,7 +944,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
         scpStations = new JScrollPane(lstStations);
         pnlStations.add(scpStations,BorderLayout.CENTER);
 
-        if (parentFrame.hasCatalog()) {
+        if (!catalogService.isEmpty()) {
             controlOn();
         } else {
             controlOff();
@@ -1051,7 +1062,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
             pnlPickets.remove(scpPickets);
         }
 
-        tmodelPickets = new TmodelPickets(parentFrame, currentStationIndex);
+        tmodelPickets = new TmodelPickets(dependencyInjector, currentStationIndex);
         tblPickets = new JTable(tmodelPickets);
         String[] str;
         for (int i = 0; i < surveyStation.sizePickets(); i++) {

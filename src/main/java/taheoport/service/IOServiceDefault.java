@@ -1,5 +1,6 @@
 package taheoport.service;
 
+import taheoport.dispatcher.DependencyInjector;
 import taheoport.gui.MainWin;
 
 import javax.swing.*;
@@ -12,10 +13,15 @@ import java.util.List;
  * This class encapsulates methods for working with file system
  */
 public class IOServiceDefault implements IOService {
-    private final MainWin parentFrame;
+    private final JFrame parentFrame;
+//    private final SettingsService settingsService;
+    private final DependencyInjector injector;
 
-    public IOServiceDefault(MainWin parentFrame) {
-        this.parentFrame = parentFrame;
+    public IOServiceDefault(DependencyInjector dependencyInjector) {
+        injector = dependencyInjector;
+        parentFrame = dependencyInjector.getMainFrame();
+//        settingsService = dependencyInjector.getSettingsService();
+
     }
 
     /**
@@ -77,8 +83,7 @@ public class IOServiceDefault implements IOService {
      */
     @Override
     public String writeTextFile(List<String> list, String... args) {
-        SettingsService settingsService = parentFrame.getSettingsService();
-        String absolutePath = settingsService.getPathWorkDir();
+        String absolutePath = injector.getSettingsService().getPathWorkDir();
         if (args.length != 0) {
             switch (args.length) {
                 case 1 -> {

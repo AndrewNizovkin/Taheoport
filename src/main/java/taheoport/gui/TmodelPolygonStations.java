@@ -1,26 +1,30 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyInjector;
 import taheoport.model.PolygonStation;
 import taheoport.service.DataHandler;
 import taheoport.service.PolygonService;
+import taheoport.service.Shell;
 import taheoport.service.SurveyService;
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 
 public class TmodelPolygonStations extends AbstractTableModel {
     private final ArrayList<Object []> dataArrayList;
-    private final MainWin parentFrame;
     private final PolygonService polygonService;
+    private final Shell shell;
 
     /**
      * Constructor
+     * @param dependencyInjector DependencyInjector
      */
-    public TmodelPolygonStations(MainWin frame) {
+    public TmodelPolygonStations(DependencyInjector dependencyInjector) {
         super();
-        polygonService = frame.getPolygonService();
+        polygonService = dependencyInjector.getPolygonService();
+        shell = dependencyInjector.getShell();
         dataArrayList = new ArrayList<>();
-        parentFrame = frame;
     }
     /**
      * Returns the number of rows in the model. A
@@ -66,14 +70,14 @@ public class TmodelPolygonStations extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         return switch (column) {
-            case 0 -> parentFrame.getTitles().get("THEOtmColumnName0");
-            case 1 -> parentFrame.getTitles().get("THEOtmColumnName1");
-            case 2 -> parentFrame.getTitles().get("THEOtmColumnName2");
-            case 3 -> parentFrame.getTitles().get("THEOtmColumnName3");
+            case 0 -> shell.getTitles().get("THEOtmColumnName0");
+            case 1 -> shell.getTitles().get("THEOtmColumnName1");
+            case 2 -> shell.getTitles().get("THEOtmColumnName2");
+            case 3 -> shell.getTitles().get("THEOtmColumnName3");
             case 4 -> "X";
             case 5 -> "Y";
             case 6 -> "Z";
-            case 7 -> parentFrame.getTitles().get("THEOtmColumnName7");
+            case 7 -> shell.getTitles().get("THEOtmColumnName7");
             default -> "";
         };
     }
@@ -208,6 +212,7 @@ public class TmodelPolygonStations extends AbstractTableModel {
                     if ((Boolean) object) {
                         if (polygonStation.getX().equals("Not")) {
                             row[4] = "0.000";
+                            polygonStation.setX("0.000");
                             dataArrayList.set(rowIndex, row);
                         } else {
                             row[4] = polygonStation.getX();
@@ -215,6 +220,7 @@ public class TmodelPolygonStations extends AbstractTableModel {
                         }
                         if (polygonStation.getY().equals("Not")) {
                             row[5] = "0.000";
+                            polygonStation.setY("0.000");
                             dataArrayList.set(rowIndex, row);
                         } else {
                             row[5] = polygonStation.getY();
@@ -222,6 +228,7 @@ public class TmodelPolygonStations extends AbstractTableModel {
                         }
                         if (polygonStation.getZ().equals("Not")) {
                             row[6] = "0.000";
+                            polygonStation.setZ("0.000");
                             dataArrayList.set(rowIndex, row);
                         } else {
                             row[6] = polygonStation.getZ();

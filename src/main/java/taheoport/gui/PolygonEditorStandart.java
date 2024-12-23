@@ -1,5 +1,6 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyInjector;
 import taheoport.dispatcher.PolygonEditorActionListener;
 import taheoport.model.PolygonStation;
 import taheoport.service.DataHandler;
@@ -25,7 +26,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
     private final JLabel lblFRelativeResidue;
     private final JLabel lblPerValue;
     private final JLabel lblHeightResidue;
-    private final MainWin parentFrame;
+//    private final JFrame parentFrame;
     private int selColumn;
     private int selRow;
     private final JTable tblStations;
@@ -36,17 +37,17 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
 
     /**
      * Constructor
-     * @param frame parent MainWin
+     * @param dependencyInjector DependencyInjector
      */
-    public PolygonEditorStandart(MainWin frame) {
+    public PolygonEditorStandart(DependencyInjector dependencyInjector) {
         super();
-        parentFrame = frame;
-        polygonService = frame.getPolygonService();
-        settingsService = frame.getSettingsService();
-        titles = frame.getTitles();
-        tmPolygonStations = new TmodelPolygonStations(frame);
+//        parentFrame = dependencyInjector.getMainFrame();
+        polygonService = dependencyInjector.getPolygonService();
+        settingsService = dependencyInjector.getSettingsService();
+        titles = dependencyInjector.getShell().getTitles();
+        tmPolygonStations = new TmodelPolygonStations(dependencyInjector);
         tblStations = new JTable(tmPolygonStations);
-        ActionListener polygonActionListener = new PolygonEditorActionListener(this);
+        ActionListener polygonActionListener = new PolygonEditorActionListener(dependencyInjector,this);
         setLayout(new BorderLayout());
 
 //region btnDeleteRow
@@ -54,7 +55,7 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
         JButton btnDeleteRow = new JButton(new ImageIcon("images/delete_row.png"));
         btnDeleteRow.setActionCommand("btnDeleteRow");
         btnDeleteRow.setEnabled(true);
-        btnDeleteRow.setToolTipText(parentFrame.getTitles().get("TAHbtnDeleteRowTT"));
+        btnDeleteRow.setToolTipText(titles.get("TAHbtnDeleteRowTT"));
         btnDeleteRow.addActionListener(polygonActionListener);
 
         //endregion
@@ -340,12 +341,25 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
         switch (polygonService.getBindType()) {
             case ZZ -> {
                 lblAngleResidue.setText("-.-");
+                lblAngleResidue.setForeground(Color.BLACK);
+
                 lblHeightResidue.setText("-.-");
+                lblHeightResidue.setForeground(Color.BLACK);
+
                 lblFXResidue.setText("-.-");
+                lblFXResidue.setForeground(Color.BLACK);
+
                 lblFYResidue.setText("-.-");
+                lblFYResidue.setForeground(Color.BLACK);
+
                 lblFAbsoluteResidue.setText("-.-");
+                lblFAbsoluteResidue.setForeground(Color.BLACK);
+
                 lblFRelativeResidue.setText("-.-");
+                lblFRelativeResidue.setForeground(Color.BLACK);
+
                 lblPerValue.setText("-.-");
+                lblPerValue.setForeground(Color.BLACK);
             }
             case TT -> {
                 if (settingsService.getValueFHor() *
@@ -426,15 +440,6 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
                 lblPerValue.setText(new DataHandler(polygonService.getPerimeter()).format(3).getStr());
             }
         }
-    }
-
-    /**
-     * Gets parentFrame
-     * @return MainWin
-     */
-    @Override
-    public MainWin getParentFrame() {
-        return parentFrame;
     }
 
     /**

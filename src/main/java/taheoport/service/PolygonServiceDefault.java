@@ -1,11 +1,13 @@
 package taheoport.service;
 
+import taheoport.dispatcher.DependencyInjector;
 import taheoport.gui.MainWin;
 import taheoport.model.BindType;
+import taheoport.model.CatalogPoint;
 import taheoport.repository.PolygonRepository;
 import taheoport.model.PolygonStation;
-import taheoport.gui.Shell;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,21 +18,49 @@ import java.util.List;
  * This class encapsulates methods for working with polygon project
  */
 public class PolygonServiceDefault implements PolygonService {
-
+    private final JFrame parentFrame;
     private final PolygonRepository polygonRepository;
     private String absolutePolPath;
-    private final MainWin parentFrame;
     private final Adjuster adjuster;
     private final IOService ioService;
     private final SettingsService settingsService;
+    private final CatalogService catalogService;
+    private final Shell shell;
 
-    public PolygonServiceDefault(MainWin frame) {
-        parentFrame = frame;
-        settingsService = frame.getSettingsService();
-        ioService = new IOServiceDefault(parentFrame);
+    public PolygonServiceDefault(DependencyInjector dependencyInjector) {
+        parentFrame = dependencyInjector.getMainFrame();
+        shell = dependencyInjector.getShell();
+        settingsService = dependencyInjector.getSettingsService();
+        ioService = dependencyInjector.getIoService();
+        catalogService = dependencyInjector.getCatalogService();
         polygonRepository = new PolygonRepository();
         absolutePolPath = "";
-        adjuster = new AdjusterDefault(frame, this);
+        adjuster = new AdjusterDefault(dependencyInjector,this);
+    }
+
+    /**
+     * Updates basePoints
+     */
+    @Override
+    public void updateBasePoints() {
+        int q = 0;
+        for (PolygonStation polygonStation: polygonRepository) {
+            for (CatalogPoint catalogPoint: catalogService.getAllCatalogPoints()) {
+                if (polygonStation.getName().equals(catalogPoint.getName()) &
+                        polygonStation.getStatus()) {
+                    polygonStation.setName(catalogPoint.getName());
+                    polygonStation.setX(catalogPoint.getX());
+                    polygonStation.setY(catalogPoint.getY());
+                    polygonStation.setZ(catalogPoint.getZ());
+                    q++;
+                }
+            }
+        }
+        JOptionPane.showMessageDialog(parentFrame,
+                q + shell.getTitles().get("MWupdateMessage"),
+                shell.getTitles().get("MWupdateMessageTitle"),
+                JOptionPane.INFORMATION_MESSAGE);
+
     }
 
     /**
@@ -51,7 +81,7 @@ public class PolygonServiceDefault implements PolygonService {
         List<String> list = ioService.readTextFile(
                 settingsService.getPathWorkDir(),
                 "pol",
-                parentFrame.getTitles().get("MWopenFileTitle"));
+                shell.getTitles().get("MWopenFileTitle"));
         if (list != null) {
             loadPolList(list);
         }
@@ -85,7 +115,7 @@ public class PolygonServiceDefault implements PolygonService {
                 getPolList(),
                 settingsService.getPathWorkDir(),
                 "pol",
-                parentFrame.getTitles().get("MWsavePolTitle"));
+                shell.getTitles().get("MWsavePolTitle"));
         if (s != null) {
             absolutePolPath = s;
         }
@@ -178,8 +208,8 @@ public class PolygonServiceDefault implements PolygonService {
      */
     @Override
     public List<String> getReportXY() {
-        List<String> llTopReportXY = parentFrame.getShell().getTopReportXY();
-        HashMap<String, String> titlesReports = parentFrame.getShell().getTitlesReports();
+        List<String> llTopReportXY = shell.getTopReportXY();
+        HashMap<String, String> titlesReports = shell.getTitlesReports();
         List<String> llReportXY = new LinkedList<>(llTopReportXY);
         PolygonStation firstPolygonStation = findById(0);
         switch (getBindType()) {
@@ -328,9 +358,9 @@ public class PolygonServiceDefault implements PolygonService {
         int start = 0;
         int finish = getSizePolygonStations() - 1;
 
-        LinkedList<String> llTopReportZ = parentFrame.getShell().getTopReportZ();
+        LinkedList<String> llTopReportZ = shell.getTopReportZ();
         LinkedList<String> llReportZ = new LinkedList<>(llTopReportZ);
-        HashMap<String, String> titlesReports = parentFrame.getShell().getTitlesReports();
+        HashMap<String, String> titlesReports = shell.getTitlesReports();
 
         if (getBindType() == BindType.TT |
                 getBindType() == BindType.TO |
