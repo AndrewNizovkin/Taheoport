@@ -25,15 +25,15 @@ public class MainActionListener implements ActionListener {
     private final CatalogService catalogService;
     private final ExtractService extractService;
     private final MainRenderer renderer;
-    private final DependencyInjector dependencyInjector;
+
     /**
      * Constructor
      * @param mainRenderer MainRenderer
      */
     public MainActionListener(MainRenderer mainRenderer) {
-        dependencyInjector = DependencyContainer.getInstance();
+        DependencyInjector dependencyInjector = DependencyContainer.getInstance();
         renderer = mainRenderer;
-        parentFrame = renderer.getParentFrame();
+        parentFrame = dependencyInjector.getMainFrame();
         surveyService = dependencyInjector.getSurveyService();
         polygonService = dependencyInjector.getPolygonService();
         catalogService = dependencyInjector.getCatalogService();
@@ -60,9 +60,9 @@ public class MainActionListener implements ActionListener {
             case "tRun", "btnRun" -> processSourceData();
             case "tView", "btnView" -> viewResult();
             case "tExtractPol" -> extractPol();
-            case "tOptions" -> new ShowSettings(dependencyInjector, renderer);
-            case "hAbout" -> new ShowAbout(dependencyInjector);
-            case "hHelp" -> new ShowHelp(dependencyInjector);
+            case "tOptions" -> new ShowSettings(renderer);
+            case "hAbout" -> new ShowAbout();
+            case "hHelp" -> new ShowHelp();
         }
     }
 
@@ -97,7 +97,7 @@ public class MainActionListener implements ActionListener {
                 renderer.setMode(1);
                 polygonService.setBindType(BindType.ZZ);
                 renderer.reloadPolygonEditor();
-                new ShowViewExtractPol(dependencyInjector);
+                new ShowViewExtractPol();
             } else {
                 JOptionPane.showMessageDialog(
                         parentFrame,
@@ -120,7 +120,7 @@ public class MainActionListener implements ActionListener {
             case 1 -> {
                 processSourceData();
                 if (polygonService.getPerimeter() > 0.0) {
-                    new ShowViewAdjustment(dependencyInjector);
+                    new ShowViewAdjustment();
                 }
             }
         }

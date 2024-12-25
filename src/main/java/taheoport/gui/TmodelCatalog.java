@@ -1,4 +1,5 @@
 package taheoport.gui;
+import taheoport.model.CatalogPoint;
 import taheoport.repository.CatalogRepository;
 
 import javax.swing.table.AbstractTableModel;
@@ -11,17 +12,17 @@ import java.util.ArrayList;
  */
 public class TmodelCatalog extends AbstractTableModel {
     private int columnCount = 4;
-    private ArrayList<String []> dataArrayList;
+    private final ArrayList<String []> dataArrayList;
 
     public TmodelCatalog(CatalogRepository catalogRepository) {
         dataArrayList = new ArrayList<String[]>();
-        if (!(catalogRepository == null)) {
-            for (int i = 0; i < catalogRepository.getSizeCatalog(); i++) {
+        if (!catalogRepository.isEmpty()) {
+            for (CatalogPoint catalogPoint: catalogRepository) {
                 String[] array = new String[4];
-                array[0] = catalogRepository.findById(i).getName();
-                array[1] = catalogRepository.findById(i).getX();
-                array[2] = catalogRepository.findById(i).getY();
-                array[3] = catalogRepository.findById(i).getZ();
+                array[0] = catalogPoint.getName();
+                array[1] = catalogPoint.getX();
+                array[2] = catalogPoint.getY();
+                array[3] = catalogPoint.getZ();
                 dataArrayList.add(array);
             }
             fireTableDataChanged();

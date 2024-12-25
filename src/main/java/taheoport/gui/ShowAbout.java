@@ -1,5 +1,6 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyContainer;
 import taheoport.dispatcher.DependencyInjector;
 import taheoport.service.Shell;
 
@@ -16,10 +17,18 @@ public class ShowAbout extends JDialog {
 
     /**
      * Constructor
-     * @param dependencyInjector DependencyInjector
      */
-    public ShowAbout(DependencyInjector dependencyInjector) {
-        super(dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SAdialogTitle"), true);
+    public ShowAbout() {
+        super( DependencyContainer
+                        .getInstance()
+                        .getMainFrame(),
+                DependencyContainer
+                        .getInstance()
+                        .getTitles()
+                        .get("SAdialogTitle"),
+                true);
+        DependencyInjector dependencyInjector = DependencyContainer.getInstance();
+//        super(dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SAdialogTitle"), true);
         JFrame parentFrame = dependencyInjector.getMainFrame();
         Shell shell = dependencyInjector.getShell();
         setBounds(parentFrame.getX() + parentFrame.getWidth() / 2 - parentFrame.getWidth() / 3 * 2 / 2,

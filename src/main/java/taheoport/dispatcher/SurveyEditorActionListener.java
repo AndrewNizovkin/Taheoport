@@ -60,7 +60,7 @@ public class SurveyEditorActionListener implements ActionListener {
      * Sets station coordinates from catalog
      */
     private void setStationFromCatalog() {
-        new ShowCatalog(dependencyInjector);
+        new ShowCatalog();
         if (catalogService.getChoice() >=0) {
             SurveyStation surveyStation = surveyService.findStationById(renderer.getCurrentStationIndex());
             CatalogPoint catalogPoint = catalogService.findById(catalogService.getChoice());
@@ -77,7 +77,7 @@ public class SurveyEditorActionListener implements ActionListener {
      */
     private void setOrFromCatalog() {
 //        catalogService.setChoice(-1);
-        new ShowCatalog(dependencyInjector);
+        new ShowCatalog();
         if (catalogService.getChoice() >=0) {
             SurveyStation surveyStation = surveyService.findStationById(renderer.getCurrentStationIndex());
             CatalogPoint catalogPoint = catalogService.findById(catalogService.getChoice());
@@ -173,7 +173,7 @@ public class SurveyEditorActionListener implements ActionListener {
      */
     private void changeDistance() {
         TmodelPickets tmodelPickets = (TmodelPickets) renderer.getTablePickets().getModel();
-        new ShowChangeDistance(dependencyInjector);
+        new ShowChangeDistance();
         if (settingsService.isChanged()) {
             String str;
             double line = Double.parseDouble((String) tmodelPickets.getValueAt(renderer.getSelRow(), 1));
@@ -198,7 +198,7 @@ public class SurveyEditorActionListener implements ActionListener {
      */
     private void changeDirection() {
         TmodelPickets tmodelPickets = (TmodelPickets) renderer.getTablePickets().getModel();
-        new ShowChangeAngle(dependencyInjector,shell.getTitles().get("SCAtitleChangeDirection"));
+        new ShowChangeAngle(shell.getTitles().get("SCAtitleChangeDirection"));
         if (settingsService.isChanged()) {
             switch (settingsService.getOffsetDirectionType()) {
                 case 0 -> {
@@ -233,7 +233,7 @@ public class SurveyEditorActionListener implements ActionListener {
     private void changeTilt() {
         TmodelPickets tmodelPickets = (TmodelPickets) renderer.getTablePickets().getModel();
         int selRow = renderer.getSelRow();
-        new ShowChangeAngle(dependencyInjector, shell.getTitles().get("SCAtitleChangeTiltAngle"));
+        new ShowChangeAngle(shell.getTitles().get("SCAtitleChangeTiltAngle"));
         if (settingsService.isChanged()) {
             double line = Double.parseDouble((String) tmodelPickets.getValueAt(selRow, 1));
             double tilt = new DataHandler((String) tmodelPickets.getValueAt(selRow, 3)).dmsToRad();

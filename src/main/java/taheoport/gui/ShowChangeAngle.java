@@ -1,5 +1,6 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyContainer;
 import taheoport.dispatcher.DependencyInjector;
 import taheoport.service.DataHandler;
 import taheoport.service.SettingsService;
@@ -33,11 +34,16 @@ public class ShowChangeAngle extends JDialog implements ChangeListener, ActionLi
 
     /**
      * Constructor
-     * @param dependencyInjector DependencyInjector
      * @param titleMode dialogs title
      */
-    public ShowChangeAngle(DependencyInjector dependencyInjector, String titleMode) {
-        super(dependencyInjector.getMainFrame(), titleMode, true);
+    public ShowChangeAngle(String titleMode) {
+        super( DependencyContainer
+                        .getInstance()
+                        .getMainFrame(),
+                titleMode,
+                true);
+        DependencyInjector dependencyInjector = DependencyContainer.getInstance();
+//        super(dependencyInjector.getMainFrame(), titleMode, true);
         settingsService = dependencyInjector.getSettingsService();
         parentFrame  = dependencyInjector.getMainFrame();
         shell = dependencyInjector.getShell();

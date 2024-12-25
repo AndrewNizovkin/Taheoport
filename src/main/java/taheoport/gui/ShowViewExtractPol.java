@@ -1,6 +1,7 @@
     package taheoport.gui;
 
 
+    import taheoport.dispatcher.DependencyContainer;
     import taheoport.dispatcher.DependencyInjector;
     import taheoport.service.ExtractService;
     import taheoport.service.IOService;
@@ -25,10 +26,18 @@
 
         /**
          * Constructor
-         * @param dependencyInjector DependencyInjector
          */
-        public ShowViewExtractPol(DependencyInjector dependencyInjector) {
-            super(dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SVEdialogTitle"), true);
+        public ShowViewExtractPol() {
+            super( DependencyContainer
+                            .getInstance()
+                            .getMainFrame(),
+                    DependencyContainer
+                            .getInstance()
+                            .getTitles()
+                            .get("SVEdialogTitle"),
+                    true);
+//            super(dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SVEdialogTitle"), true);
+            DependencyInjector dependencyInjector = DependencyContainer.getInstance();
             extractService = dependencyInjector.getExtractService();
             settingsService = dependencyInjector.getSettingsService();
             ioService = dependencyInjector.getIoService();

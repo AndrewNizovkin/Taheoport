@@ -19,23 +19,16 @@ import java.util.Vector;
  * @author Andrew Nizovkin
  * Copyright Nizovkin A.V. 2022
  */
-public class MainWin extends JFrame implements MainRenderer, DependencyInjector {
-    private final IOService ioService;
-    private final ImportService importService;
+public class MainWin extends JFrame implements MainRenderer {
     private final SurveyService surveyService;
     private final PolygonService polygonService;
-    private final ExtractService extractService;
     private final CatalogService catalogService;
-    private final SettingsService settingsService;
-    private final ManualService manualService;
     private final Security security;
     private final JTabbedPane tpMain;
     private final JPanel pnlMeasurements;
     private final JPanel pnlPolygon;
     private final Shell shell;
     private HashMap<String, String> titles;
-    private final int wMain;
-    private final int hMain;
     private final JMenu mFile;
     private final JMenu mTools;
     private final JMenu mHelp;
@@ -74,36 +67,18 @@ public class MainWin extends JFrame implements MainRenderer, DependencyInjector 
 
         DependencyContainer dependencyContainer = DependencyContainer.getInstance();
         dependencyContainer.initDependencyContainer(this);
-
-        importService = dependencyContainer.getImportService();
-        ioService = dependencyContainer.getIoService();
-        settingsService = dependencyContainer.getSettingsService();
+        titles = dependencyContainer.getTitles();
         shell = dependencyContainer.getShell();
         catalogService = dependencyContainer.getCatalogService();
         surveyService = dependencyContainer.getSurveyService();
         polygonService = dependencyContainer.getPolygonService();
-        extractService = dependencyContainer.getExtractService();
-        manualService = dependencyContainer.getManual();
-
-
-//        importService = new ImportServiceDefault();
-//        ioService = new IOServiceDefault(this);
-//        settingsService = new SettingsServiceDefault(this);
-//        shell = new Shell(this);
-//        catalogService = new CatalogServiceDefault(this);
-//        surveyService = new SurveyServiceDefault(this);
-//        polygonService = new PolygonServiceDefault(this);
-//        extractService = new ExtractServiceDefault(this);
-//        manualService = new ManualService(this);
-
         security = new SecurityImpl();
-        titles = shell.getTitles();
         ActionListener actionListener = new MainActionListener(this);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        wMain = 640;
-        hMain = 650;
+        int wMain = 640;
+        int hMain = 650;
         setBounds((screenSize.width - wMain) / 2, (screenSize.height - hMain) / 2, wMain, hMain);
         setResizable(false);
 
@@ -391,98 +366,6 @@ public class MainWin extends JFrame implements MainRenderer, DependencyInjector 
     }
 
     /**
-     * Gets reference to main frame
-     *
-     * @return JFrame
-     */
-    @Override
-    public JFrame getMainFrame() {
-        return this;
-    }
-
-    /**
-     * Gets IOService
-     * @return instance of IOService
-     */
-    public IOService getIoService() {
-        return ioService;
-    }
-
-    /**
-     * Gets ImportService
-     * @return instance of ImportService
-     */
-    public ImportService getImportService() {
-        return importService;
-    }
-
-    /**
-     * Gets CatalogService
-     * @return instance of CatalogService
-     */
-    public CatalogService getCatalogService() {
-        return catalogService;
-    }
-
-    /**
-     * Gets SurveyService
-     * @return instance of SurveyService
-     */
-    public SurveyService getSurveyService() {
-        return surveyService;
-    }
-
-    /**
-     * Gets PolygonService
-     * @return instance of PolygonService
-     */
-    public PolygonService getPolygonService() {
-        return polygonService;
-    }
-
-    /**
-     * Gets ExtractService
-     * @return instance of ExtractService
-     */
-    public ExtractService getExtractService() {
-        return extractService;
-    }
-
-    /**
-     * Gets SettingsService
-     * @return instance of SettingService
-     */
-    public SettingsService getSettingsService() {
-        return settingsService;
-    }
-
-    /**
-     * gets HashMap titles
-     * @return titles
-     */
-    public HashMap<String, String> getTitles() {
-        return shell.getTitles();
-    }
-
-    /**
-     * Gets object translating shell
-     * @return shell
-     */
-    public Shell getShell() {
-        return shell;
-    }
-
-    /**
-     * Gets manual
-     *
-     * @return manual
-     */
-    @Override
-    public ManualService getManual() {
-        return manualService;
-    }
-
-    /**
      * Translate interface
      */
     public void translate() {
@@ -566,7 +449,7 @@ public class MainWin extends JFrame implements MainRenderer, DependencyInjector 
         if (polygonEditor != null) {
             pnlPolygon.remove(polygonEditor);
         }
-        polygonEditor = new PolygonEditorStandart(this);
+        polygonEditor = new PolygonEditorStandart();
         pnlPolygon.add(polygonEditor);
         setControlsOn();
         setTitle("Taheoport: " + polygonService.getAbsolutePolPath());
@@ -632,15 +515,6 @@ public class MainWin extends JFrame implements MainRenderer, DependencyInjector 
             lblCatalog.setText("Каталог не установлен");
         }
 
-    }
-
-    /**
-     * Gets parentFrame
-     * @return MainWin
-     */
-    @Override
-    public MainWin getParentFrame() {
-        return this;
     }
 
     /**

@@ -1,4 +1,5 @@
 package taheoport.gui;
+import taheoport.dispatcher.DependencyContainer;
 import taheoport.dispatcher.DependencyInjector;
 import taheoport.service.CatalogService;
 
@@ -20,10 +21,18 @@ public class ShowCatalog extends JDialog {
 
     /**
      * Constructor
-     * @param dependencyInjector DependencyInjector
      */
-    public ShowCatalog(DependencyInjector dependencyInjector) {
-        super( dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SCdialogTitle"), true);
+    public ShowCatalog() {
+        super( DependencyContainer
+                        .getInstance()
+                        .getMainFrame(),
+                DependencyContainer
+                        .getInstance()
+                        .getTitles()
+                        .get("SCdialogTitle"),
+                true);
+        DependencyInjector dependencyInjector = DependencyContainer.getInstance();
+//        super( dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SCdialogTitle"), true);
         catalogService = dependencyInjector.getCatalogService();
         catalogService.setChoice(-1);
         JFrame parentFrame = dependencyInjector.getMainFrame();

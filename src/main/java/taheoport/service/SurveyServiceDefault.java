@@ -69,9 +69,6 @@ public class SurveyServiceDefault implements SurveyService {
                 q + shell.getTitles().get("MWupdateMessage"),
                 shell.getTitles().get("MWupdateMessageTitle"),
                 JOptionPane.INFORMATION_MESSAGE);
-//        parentFrame.reloadSurveyEditor();
-
-
     }
 
     /**
@@ -250,7 +247,6 @@ public class SurveyServiceDefault implements SurveyService {
      */
     @Override
     public void processSourceData() {
-        GeoCalculator geoCalculator = new GeoCalculator();
         SurveyStation llStation;
         double dirBase;
         double dirPicket;
@@ -262,7 +258,7 @@ public class SurveyServiceDefault implements SurveyService {
 
         for (int i = 0; i < surveyRepository.sizeStations(); i++) {
             llStation = surveyRepository.findById(i);
-            dirBase = geoCalculator.getDirAB(
+            dirBase = GeoCalculator.getDirAB(
                     llStation.getX(),
                     llStation.getY(),
                     llStation.getxOr(),
@@ -285,9 +281,9 @@ public class SurveyServiceDefault implements SurveyService {
                 while (dirPicket > 2 * Math.PI) {
                     dirPicket -= 2 * Math.PI;
                 }
-                horLine = geoCalculator.getHorLine(picket.getLine(), picket.getVert());
-                dX = geoCalculator.getDX(horLine, dirPicket);
-                dY = geoCalculator.getDY(horLine, dirPicket);
+                horLine = GeoCalculator.getHorLine(picket.getLine(), picket.getVert());
+                dX = GeoCalculator.getDX(horLine, dirPicket);
+                dY = GeoCalculator.getDY(horLine, dirPicket);
                 dZ = Double.parseDouble(llStation.getVi()) -
                         Double.parseDouble(llStation.getPicket(j).getV()) +
                         Double.parseDouble(picket.getLine()) * Math.sin(new DataHandler(picket.getVert()).dmsToRad());

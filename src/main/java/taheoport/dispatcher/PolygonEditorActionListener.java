@@ -14,7 +14,6 @@ import java.awt.event.ActionListener;
 public class PolygonEditorActionListener implements ActionListener {
     private final PolygonService polygonService;
     private final CatalogService catalogService;
-    private final DependencyInjector dependencyInjector;
     private final PolygonEditorRenderer renderer;
 
     /**
@@ -22,7 +21,7 @@ public class PolygonEditorActionListener implements ActionListener {
      * @param renderer PolygonEditorRenderer
      */
     public PolygonEditorActionListener(PolygonEditorRenderer renderer) {
-        dependencyInjector = DependencyContainer.getInstance();
+        DependencyInjector dependencyInjector = DependencyContainer.getInstance();
         this.renderer = renderer;
         polygonService = dependencyInjector.getPolygonService();
         catalogService = dependencyInjector.getCatalogService();
@@ -109,7 +108,7 @@ public class PolygonEditorActionListener implements ActionListener {
      */
     private void setCoordinatesFromCatalog() {
         if (polygonService.findById(renderer.getSelRow()).getStatus()) {
-            new ShowCatalog(dependencyInjector);
+            new ShowCatalog();
             if (catalogService.getChoice() >= 0) {
                 PolygonStation polygonStation = polygonService.findById(renderer.getSelRow());
                 CatalogPoint catalogPoint = catalogService.findById(catalogService.getChoice());

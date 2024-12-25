@@ -1,5 +1,6 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyContainer;
 import taheoport.dispatcher.DependencyInjector;
 import taheoport.service.DataHandler;
 import taheoport.service.SettingsService;
@@ -27,11 +28,18 @@ public class ShowChangeDistance extends JDialog implements ChangeListener, Actio
 
     /**
      * Constructor
-     * @param dependencyInjector DependencyInjector
      */
-    public ShowChangeDistance(DependencyInjector dependencyInjector) {
-
-        super(dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SADtitle"), true);
+    public ShowChangeDistance() {
+        super( DependencyContainer
+                        .getInstance()
+                        .getMainFrame(),
+                DependencyContainer
+                        .getInstance()
+                        .getTitles()
+                        .get("SADtitle"),
+                true);
+        DependencyInjector dependencyInjector = DependencyContainer.getInstance();
+//        super(dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SADtitle"), true);
         JFrame parentFrame = dependencyInjector.getMainFrame();
         settingsService = dependencyInjector.getSettingsService();
         settingsService.setChanged(false);

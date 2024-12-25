@@ -1,5 +1,6 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyContainer;
 import taheoport.dispatcher.DependencyInjector;
 import taheoport.model.PolygonStation;
 import taheoport.repository.CatalogRepository;
@@ -28,10 +29,17 @@ public class ShowViewAdjustment extends JDialog {
 
     /**
      * Constructor
-     * @param dependencyInjector DependencyInjector
      */
-    public ShowViewAdjustment(DependencyInjector dependencyInjector) {
-        super(dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SVAdialogTitle"), true);
+    public ShowViewAdjustment() {
+        super( DependencyContainer
+                        .getInstance()
+                        .getMainFrame(),
+                DependencyContainer
+                        .getInstance()
+                        .getTitles()
+                        .get("SVAdialogTitle"),
+                true);
+        DependencyInjector dependencyInjector = DependencyContainer.getInstance();
         polygonService = dependencyInjector.getPolygonService();
         settingsService = dependencyInjector.getSettingsService();
         ioService = dependencyInjector.getIoService();

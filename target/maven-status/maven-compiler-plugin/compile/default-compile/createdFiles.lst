@@ -25,7 +25,6 @@ taheoport/gui/MainWin$TahEditorFocusTransversalPolicy.class
 taheoport/gui/ShowChangeAngle$1.class
 taheoport/gui/PolygonPaintPanel.class
 taheoport/gui/LinearOffsetPaintPanel.class
-taheoport/model/Manual.class
 taheoport/model/CatalogPoint.class
 taheoport/model/SurveyStation.class
 taheoport/Program.class

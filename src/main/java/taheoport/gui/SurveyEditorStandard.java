@@ -28,41 +28,38 @@ import java.util.regex.Pattern;
  * Copyright Nizovkin A.V. 2022
  */
 public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer {
-    private JButton btnDeleteRow;
-    private JButton btnInsertRowBefore;
-    private JButton btnInsertRowAfter;
-    private JButton btnChangeDistance,
+    private final JButton btnDeleteRow;
+    private final JButton btnInsertRowBefore;
+    private final JButton btnInsertRowAfter;
+    private final JButton btnChangeDistance,
             btnChangeDirection,
             btnChangeTilt;
-    private JButton btnDeleteStation;
-    private JButton btnInsertStationBefore;
-    private JButton btnInsertStationAfter;
-    private JButton btnStationName;
-    private JButton btnOrName;
+    private final JButton btnDeleteStation;
+    private final JButton btnInsertStationBefore;
+    private final JButton btnInsertStationAfter;
+    private final JButton btnStationName;
+    private final JButton btnOrName;
     private int currentStationIndex;
-    private JLabel lblStationI;
+    private final JLabel lblStationI;
     private JList<String> lstStations;
-    private Vector<Component> order;
-    private JFrame parentFrame;
-    private JPanel pnlPickets;
-    private JPanel pnlStation;
-    private JPanel pnlStations;
+    private final Vector<Component> order;
+    private final JFrame parentFrame;
+    private final JPanel pnlPickets;
+    private final JPanel pnlStation;
+    private final JPanel pnlStations;
     private int selRow;
     private int selColumn;
     private JScrollPane scpPickets;
     private JScrollPane scpStations;
-    private JTextField tfStationName,
-            tfStationX,
-            tfStationY,
-            tfStationZ,
-            tfStationI,
-            tfOrName,
-            tfOrX,
-            tfOrY;
+    private JTextField tfStationName;
+    private JTextField tfStationX;
+    private JTextField tfStationY;
+    private JTextField tfStationZ;
+    private JTextField tfStationI;
+    private JTextField tfOrName;
+    private JTextField tfOrX;
+    private JTextField tfOrY;
     private JTable tblPickets;
-    private TmodelPickets tmodelPickets;
-    private final ActionListener surveyEditorActionListener;
-    private final DependencyInjector dependencyInjector;
     private final SurveyService surveyService;
     private final CatalogService catalogService;
     private final Shell shell;
@@ -73,13 +70,13 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
      */
     public SurveyEditorStandard(int index) {
         super();
-        dependencyInjector = DependencyContainer.getInstance();
+        DependencyInjector dependencyInjector = DependencyContainer.getInstance();
         surveyService = dependencyInjector.getSurveyService();
         catalogService = dependencyInjector.getCatalogService();
         shell = dependencyInjector.getShell();
         currentStationIndex = index;
         parentFrame = dependencyInjector.getMainFrame();
-        surveyEditorActionListener = new SurveyEditorActionListener(this);
+        ActionListener surveyEditorActionListener = new SurveyEditorActionListener(this);
         HashMap<String, String> titles = dependencyInjector.getTitles();
 
             ImageIcon imageDeleteRow = new ImageIcon("images/delete_row.png");
@@ -1062,7 +1059,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
             pnlPickets.remove(scpPickets);
         }
 
-        tmodelPickets = new TmodelPickets(currentStationIndex);
+        TmodelPickets tmodelPickets = new TmodelPickets(currentStationIndex);
         tblPickets = new JTable(tmodelPickets);
         String[] str;
         for (int i = 0; i < surveyStation.sizePickets(); i++) {

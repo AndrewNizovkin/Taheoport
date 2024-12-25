@@ -9,12 +9,6 @@ public interface MainRenderer {
     void setCurrentCatalog(boolean turnOn);
 
     /**
-     * Gets parentFrame
-     * @return MainWin
-     */
-    MainWin getParentFrame();
-
-    /**
      * Reload surveyEditor
      */
     void reloadSurveyEditor();

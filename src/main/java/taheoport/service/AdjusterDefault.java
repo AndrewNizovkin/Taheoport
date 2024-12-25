@@ -1,5 +1,6 @@
 package taheoport.service;
 
+import taheoport.dispatcher.DependencyContainer;
 import taheoport.dispatcher.DependencyInjector;
 import taheoport.gui.MainWin;
 import taheoport.model.BindType;
@@ -17,7 +18,8 @@ public class AdjusterDefault implements Adjuster{
     private final PolygonService polygonService;
     private final Shell shell;
 
-    public AdjusterDefault(DependencyInjector dependencyInjector, PolygonService polygonService) {
+    public AdjusterDefault(PolygonService polygonService) {
+        DependencyInjector dependencyInjector = DependencyContainer.getInstance();
         this.polygonService = polygonService;
         shell = dependencyInjector.getShell();
         parentFrame = dependencyInjector.getMainFrame();
@@ -40,7 +42,7 @@ public class AdjusterDefault implements Adjuster{
         double sumDX = 0.0;
         double sumDY = 0.0;
         double sumDZ = 0.0;
-        GeoCalculator geoCalculator = new GeoCalculator();
+//        GeoCalculator geoCalculator = new GeoCalculator();
         defBindType();
         PolygonStation basePointA = polygonService.findById(0);
         PolygonStation basePointB = polygonService.findById(1);
@@ -54,12 +56,12 @@ public class AdjusterDefault implements Adjuster{
             case TT -> {
                 iniDDs();
                 defPerimeter(1, countStations - 3);
-                basePointA.setDirection(Math.toDegrees(geoCalculator.getDirAB(
+                basePointA.setDirection(Math.toDegrees(GeoCalculator.getDirAB(
                         basePointA.getX(),
                         basePointA.getY(),
                         basePointB.getX(),
                         basePointB.getY())));
-                basePointC.setDirection(Math.toDegrees(geoCalculator.getDirAB(
+                basePointC.setDirection(Math.toDegrees(GeoCalculator.getDirAB(
                         basePointC.getX(),
                         basePointC.getY(),
                         basePointD.getX(),

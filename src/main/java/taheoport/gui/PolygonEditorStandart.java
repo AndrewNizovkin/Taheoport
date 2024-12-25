@@ -1,5 +1,6 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyContainer;
 import taheoport.dispatcher.DependencyInjector;
 import taheoport.dispatcher.PolygonEditorActionListener;
 import taheoport.model.PolygonStation;
@@ -37,11 +38,10 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
 
     /**
      * Constructor
-     * @param dependencyInjector DependencyInjector
      */
-    public PolygonEditorStandart(DependencyInjector dependencyInjector) {
+    public PolygonEditorStandart() {
         super();
-//        parentFrame = dependencyInjector.getMainFrame();
+        DependencyInjector dependencyInjector = DependencyContainer.getInstance();
         polygonService = dependencyInjector.getPolygonService();
         settingsService = dependencyInjector.getSettingsService();
         titles = dependencyInjector.getShell().getTitles();
@@ -116,84 +116,46 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
                 Color.BLUE));
 //endregion
 
-//region lblHeight
+//region pnlAdjustment content
 
         JLabel lblHeight = new JLabel(titles.get("THEOlblHeight"), JLabel.RIGHT);
         pnlAdjustment.add(lblHeight);
-//endregion
-
-//region lblHeightResidue
 
         lblHeightResidue = new JLabel("-.-");
         pnlAdjustment.add(lblHeightResidue);
-//endregion
 
-//region lblAngle
         JLabel lblAngle = new JLabel(titles.get("THEOlblAngle"), JLabel.RIGHT);
         pnlAdjustment.add(lblAngle);
-//endregion
-
-//region lblAngleResidue
 
         lblAngleResidue = new JLabel("-.-");
         pnlAdjustment.add(lblAngleResidue);
-//endregion
-
-//region lblFX
 
         JLabel lblFX = new JLabel(titles.get("THEOlblFX"), JLabel.RIGHT);
         pnlAdjustment.add(lblFX);
-//endregion
-
-//region lblFXResidue
 
         lblFXResidue = new JLabel("-.-");
         pnlAdjustment.add(lblFXResidue);
-//endregion
-
-//region lblFY
 
         JLabel lblFY = new JLabel(titles.get("THEOlblFY"), JLabel.RIGHT);
         pnlAdjustment.add(lblFY);
-//endregion
-
-//region lblFYResidue
 
         lblFYResidue = new JLabel("-.-");
         pnlAdjustment.add(lblFYResidue);
-//endregion
-
-//region lblFAbsolute
 
         JLabel lblFAbsolute = new JLabel(titles.get("THEOlblFAbsolute"), JLabel.RIGHT);
         pnlAdjustment.add(lblFAbsolute);
-//endregion
-
-//region lblFAbsoluteResidue
 
         lblFAbsoluteResidue = new JLabel("-.-");
         pnlAdjustment.add(lblFAbsoluteResidue);
-//endregion
-
-//region lblFRelative
 
         JLabel lblFRelative = new JLabel(titles.get("THEOlblRelative"), JLabel.RIGHT);
         pnlAdjustment.add(lblFRelative);
-//endregion
-
-//region lblFRelativeResidue
 
         lblFRelativeResidue = new JLabel("-.-");
         pnlAdjustment.add(lblFRelativeResidue);
-//endregion
-
-//region lblPer
 
         JLabel lblPer = new JLabel(titles.get("THEOlblPer"), JLabel.RIGHT);
         pnlAdjustment.add(lblPer);
-//endregion
-
-//region lblPerValue
 
         lblPerValue = new JLabel("-.-");
         pnlAdjustment.add(lblPerValue);
@@ -331,7 +293,6 @@ public class PolygonEditorStandart extends JPanel implements PolygonEditorRender
         tblStations.getSelectionModel().setSelectionInterval(selRow, selRow);
         tblStations.getColumnModel().getSelectionModel().setSelectionInterval(selColumn, selColumn);
         tblStations.requestFocusInWindow();
-
     }
 
     /**

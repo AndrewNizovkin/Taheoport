@@ -35,7 +35,7 @@ public class PolygonServiceDefault implements PolygonService {
         catalogService = dependencyInjector.getCatalogService();
         polygonRepository = new PolygonRepository();
         absolutePolPath = "";
-        adjuster = new AdjusterDefault(dependencyInjector,this);
+        adjuster = new AdjusterDefault(this);
     }
 
     /**

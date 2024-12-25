@@ -15,7 +15,7 @@ public class GeoCalculator {
      * @param yB y-coordinate of B-point
      * @return double direction
      */
-    public double getDirAB(String xA, String yA, String xB, String yB) {
+    public static double getDirAB(String xA, String yA, String xB, String yB) {
         double dir = 0.0;
         double dX = Double.parseDouble(xB) - Double.parseDouble(xA);
         double dY = Double.parseDouble(yB) - Double.parseDouble(yA);
@@ -59,7 +59,7 @@ public class GeoCalculator {
      * @param vert tilt angle of line
      * @return double length of line
      */
-    public double getHorLine(String line, String vert) {
+    public static double getHorLine(String line, String vert) {
         return Double.parseDouble(line) * Math.cos(new DataHandler(vert).dmsToRad());
     }
 
@@ -69,7 +69,7 @@ public class GeoCalculator {
      * @param direction direction in radians
      * @return double DX
      */
-    public double getDX(double horLine, double direction) {
+    public static double getDX(double horLine, double direction) {
         return horLine * Math.cos(direction);
     }
 
@@ -79,7 +79,7 @@ public class GeoCalculator {
      * @param direction direction in radians
      * @return double DY
      */
-    public double getDY(double horLine, double direction) {
+    public static double getDY(double horLine, double direction) {
         return horLine * Math.sin(direction);
     }
 

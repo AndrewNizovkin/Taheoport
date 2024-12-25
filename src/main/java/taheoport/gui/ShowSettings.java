@@ -1,5 +1,6 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyContainer;
 import taheoport.dispatcher.DependencyInjector;
 import taheoport.service.SettingsService;
 import taheoport.service.Shell;
@@ -47,10 +48,18 @@ public class ShowSettings extends JDialog {
 
     /**
      * Constructor
-     * @param dependencyInjector DependencyInjector
      */
-    public ShowSettings(DependencyInjector dependencyInjector, MainRenderer mainRenderer) {
-        super(dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SOtitle"), true);
+    public ShowSettings(MainRenderer mainRenderer) {
+        super( DependencyContainer
+                        .getInstance()
+                        .getMainFrame(),
+                DependencyContainer
+                        .getInstance()
+                        .getTitles()
+                        .get("SOtitle"),
+                true);
+//        super(dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SOtitle"), true);
+        DependencyInjector dependencyInjector = DependencyContainer.getInstance();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         parentFrame = dependencyInjector.getMainFrame();
         settingsService = dependencyInjector.getSettingsService();

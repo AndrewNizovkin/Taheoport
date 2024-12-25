@@ -40,7 +40,6 @@ public class ShowViewResults extends JDialog {
                         .getMainFrame(),
                 DependencyContainer
                         .getInstance()
-                        .getShell()
                         .getTitles()
                         .get("SVRdialogTitle"),
                 true);

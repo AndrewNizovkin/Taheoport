@@ -1,5 +1,6 @@
 package taheoport.gui;
 
+import taheoport.dispatcher.DependencyContainer;
 import taheoport.dispatcher.DependencyInjector;
 import taheoport.service.ManualService;
 
@@ -37,10 +38,18 @@ public class ShowHelp extends JDialog {
 
     /**
      * Constructor
-     * @param dependencyInjector DependencyInjector
      */
-    public ShowHelp(DependencyInjector dependencyInjector) {
-        super(dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SHtitleFrame"), false);
+    public ShowHelp() {
+        super( DependencyContainer
+                        .getInstance()
+                        .getMainFrame(),
+                DependencyContainer
+                        .getInstance()
+                        .getTitles()
+                        .get("SOtitle"),
+                true);
+        DependencyInjector dependencyInjector = DependencyContainer.getInstance();
+//        super(dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SHtitleFrame"), false);
         HashMap<String, String> titles = dependencyInjector.getShell().getTitles();
         JFrame parentFrame = dependencyInjector.getMainFrame();
         manualService = dependencyInjector.getManual();
