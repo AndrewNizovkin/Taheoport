@@ -43,7 +43,6 @@ public class ShowChangeAngle extends JDialog implements ChangeListener, ActionLi
                 titleMode,
                 true);
         DependencyInjector dependencyInjector = DependencyContainer.getInstance();
-//        super(dependencyInjector.getMainFrame(), titleMode, true);
         settingsService = dependencyInjector.getSettingsService();
         parentFrame  = dependencyInjector.getMainFrame();
         shell = dependencyInjector.getShell();

@@ -124,14 +124,6 @@ public class PaintPoint {
         return Double.parseDouble(yOr);
     }
 
-    public String getxOr() {
-        return xOr;
-    }
-
-    public String getyOr() {
-        return yOr;
-    }
-
     public boolean getStatus() {
         return status;
     }

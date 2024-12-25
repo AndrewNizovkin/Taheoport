@@ -39,7 +39,6 @@ public class ShowChangeDistance extends JDialog implements ChangeListener, Actio
                         .get("SADtitle"),
                 true);
         DependencyInjector dependencyInjector = DependencyContainer.getInstance();
-//        super(dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SADtitle"), true);
         JFrame parentFrame = dependencyInjector.getMainFrame();
         settingsService = dependencyInjector.getSettingsService();
         settingsService.setChanged(false);

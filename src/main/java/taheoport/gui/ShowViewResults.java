@@ -6,7 +6,6 @@ import taheoport.model.Picket;
 import taheoport.model.SurveyStation;
 import taheoport.repository.CatalogRepository;
 import taheoport.model.CatalogPoint;
-import taheoport.repository.SurveyRepository;
 import taheoport.service.IOService;
 import taheoport.service.SettingsService;
 import taheoport.service.SurveyService;
@@ -23,7 +22,7 @@ import java.util.List;
  */
 public class ShowViewResults extends JDialog {
 
-    private PaintPanel pnlView;
+    private SurveyPaintPanel pnlView;
     private int sellRow;
     private final JTable tblView;
     private JTabbedPane tpSurvey;
@@ -129,7 +128,7 @@ public class ShowViewResults extends JDialog {
 
 //pnlView__________________________________________________
 
-        pnlView = new PaintPanel(surveyService.getAllStations(), -1);
+        pnlView = new SurveyPaintPanel(surveyService.getAllStations(), -1);
 
 // pnlKatalog________________________________________________
 

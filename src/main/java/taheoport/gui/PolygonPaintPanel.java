@@ -1,9 +1,8 @@
 package taheoport.gui;
 
 import taheoport.model.PaintPoint;
-import taheoport.model.PaintProject;
+import taheoport.repository.PaintPointRepository;
 import taheoport.model.PolygonStation;
-import taheoport.repository.PolygonRepository;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,8 +34,8 @@ public class PolygonPaintPanel extends JPanel {
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        PaintProject ppTheoPaintPoints = new PaintProject();
-        ppTheoPaintPoints.createPolygonPaintProject(polygonStations, this.getWidth(), this.getHeight());
+        PaintPointRepository ppTheoPaintPoints = new PaintPointRepository();
+        ppTheoPaintPoints.createPolygonPaintRepository(polygonStations, this.getWidth(), this.getHeight());
         if (ppTheoPaintPoints.getScale() < 10) {
             g.setColor(Color.BLUE);
             for (PaintPoint ppTheoPintPoint : ppTheoPaintPoints) {

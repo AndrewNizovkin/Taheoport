@@ -9,10 +9,10 @@
  * and height of the measurements
  */
     public class CatalogPoint {
-    private String name = "Not";   // Point name
-    private String x = "0.000";    // x coordinate of the point
-    private String y = "0.000";    // y coordinate of the point
-    private String z = "0.000";    // z coordinate of the point
+    private String name;
+    private String x;
+    private String y;
+    private String z;
 
     /**
      * Constructor
