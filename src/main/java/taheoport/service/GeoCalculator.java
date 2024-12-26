@@ -20,32 +20,32 @@ public class GeoCalculator {
         double dX = Double.parseDouble(xB) - Double.parseDouble(xA);
         double dY = Double.parseDouble(yB) - Double.parseDouble(yA);
 
-        if (dX == 0.0) {
-            if (dY > 0) {
-                dir = Math.PI / 2;
+        if (Math.signum(dX) == 0) {
+            if (Math.signum(dY) == 1) {
+                return Math.PI / 2;
             }
-            if (dY < 0) {
-                dir = Math.PI + Math.PI / 2;
+            if (Math.signum(dY) == -1) {
+                return Math.PI + Math.PI / 2;
             }
 
         } else {
             dir = Math.atan(dY / dX);
-            if (dY == 0) {
-                if (dX < 0) {
-                    dir = Math.PI;
+            if (Math.signum(dY) == 0) {
+                if (Math.signum(dX) == -1) {
+                    return Math.PI;
                 } else {
-                    dir = 0.0;
+                    return 0.0;
                 }
 
-            } if ( dY < 0) {
-                if (dX < 0) {
+            } if ( Math.signum(dY) == -1) {
+                if (Math.signum(dX) == -1) {
                     dir += Math.PI;
                 } else {
-                    dir += 2 *Math.PI;
+                    dir += 2 * Math.PI;
                 }
 
             } else {
-                if (dX < 0) {
+                if (dX < 0.0) {
                     dir += Math.PI;
                 }
             }
@@ -56,7 +56,7 @@ public class GeoCalculator {
     /**
      * gets horizontal line projection
      * @param line measured inclined length
-     * @param vert tilt angle of line
+     * @param vert tilt angle of line in DMS
      * @return double length of line
      */
     public static double getHorLine(String line, String vert) {
