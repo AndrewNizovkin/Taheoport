@@ -40,13 +40,9 @@ public class DataHandler {
      * @return this
      */
     public DataHandler format(int f) {
-//        if (new DataHandler(str).isNumber()) {
-            BigDecimal bd = new BigDecimal(str);
-            bd = bd.setScale(f, RoundingMode.HALF_EVEN);
-            str = bd.toString();
-//            str = String.valueOf(bd.setScale(f, RoundingMode.HALF_EVEN));
-//            str = bd.setScale(f, RoundingMode.HALF_EVEN).toString();
-//        }
+        BigDecimal bd = new BigDecimal(str);
+        bd = bd.setScale(f, RoundingMode.HALF_EVEN);
+        str = bd.toString();
         return this;
     }
 

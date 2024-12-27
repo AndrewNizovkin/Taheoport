@@ -1,6 +1,5 @@
 package taheoport.service;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,19 +34,53 @@ class GeoCalculatorTest {
             "0, 0.0000, 0",
             "100.315, 0.0245, 100.3149679",
             "100.315, -0.0245, 100.3149679",
+            "100.315, 2.0245, 100.2510582",
+            "100.315, -2.0245, 100.2510582",
+            "100.315, 90.00000, 0"
     })
-    void getHorLineTest(String line, String vert, double expectResult) {
+    void getHorLineTest(String line, String vert, double expectHorLine) {
 
-        double actualResult = GeoCalculator.getHorLine(line, vert);
+        double actualHorLine = GeoCalculator.getHorLine(line, vert);
 
-        assertEquals(expectResult, actualResult, 0.000001);
+        assertEquals(expectHorLine, actualHorLine, 0.000001);
     }
 
-    @Test
-    void getDX() {
+    @ParameterizedTest
+    @CsvSource({
+            "0, 0, 0",
+            "100.456, 0, 100.456",
+            "100.456, 1.570796327, 0",
+            "100.456, 3.141592654, -100.456",
+            "100.456, 4.71238898, 0",
+            "100.456, 0.798706298, 70.08153822",
+            "100.456, 2.859135355, -96.4752752",
+            "100.456, 4.496748703, -21.49486368",
+            "100.456, 5.706126127, 84.18922724"
+    })
+    void getDXTest(double horLine, double direction, double expectDX) {
+
+        double actualDX = GeoCalculator.getDX(horLine, direction);
+
+        assertEquals(expectDX, actualDX, 0.000001);
+
     }
 
-    @Test
-    void getDY() {
+    @ParameterizedTest
+    @CsvSource({
+            "0, 0, 0",
+            "100.456, 0, 0",
+            "100.456, 1.570796327, 100.456",
+            "100.456, 3.141592654, 0",
+            "100.456, 4.71238898, -100.456",
+            "100.456, 0.798706298, 71.9721191",
+            "100.456, 2.859135355, 27.99873588",
+            "100.456, 4.496748703, -98.1293981",
+            "100.456, 5.706126127, -54.80494459"
+    })
+    void getDYTest(double horLine, double direction, double expectDY) {
+
+        double actualDY = GeoCalculator.getDY(horLine, direction);
+
+        assertEquals(expectDY, actualDY, 0.0000001);
     }
 }

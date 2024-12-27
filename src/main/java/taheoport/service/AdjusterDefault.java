@@ -323,7 +323,6 @@ public class AdjusterDefault implements Adjuster{
      * @return boolen
      */
     private boolean noNeed() {
-//        polygonRepository = parentFrame.getPolygonRepository();
         for (int i = 0; i < polygonService.getSizePolygonStations(); i++) {
             if (!polygonService.findById(i).getStatus()) {
                 return false;
@@ -350,7 +349,6 @@ public class AdjusterDefault implements Adjuster{
      * initializes ddHor, ddX, ddY, ddZ for all listPolygonStations
      */
     private void iniDDs() {
-//        for (PolygonStation station : listPolygonStatons) {
         PolygonStation station;
         for (int i = 0; i < polygonService.getSizePolygonStations(); i++) {
             station = polygonService.findById(i);

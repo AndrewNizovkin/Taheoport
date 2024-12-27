@@ -13,16 +13,16 @@ class DataHandlerTest {
             "1.235, 1.2345677, 3",
             "1.235, 1.234789, 3",
             "1, 1.4345, 0"})
-    void format(String actual, String expect, int format) {
-        DataHandler expectHandler = new DataHandler(expect);
+    void formatTest(String expectNumber, String rawNumber, int format) {
+        DataHandler dataHandler = new DataHandler(rawNumber);
 
-        DataHandler actualHandler = expectHandler.format(format);
+        String actualString = dataHandler.format(format).getStr();
 
-        assertEquals(actual, actualHandler.getStr());
+        assertEquals(expectNumber, actualString);
     }
 
     @Test
-    void toTable() {
+    void toTableTest() {
         DataHandler dataHandler = new DataHandler("5.3456");
         String expect = "  5.3456";
 
@@ -32,7 +32,7 @@ class DataHandlerTest {
     }
 
     @Test
-    void compress() {
+    void compressTest() {
         DataHandler dataHandler = new DataHandler("124    23   345");
         String expect = "124 23 345";
 
@@ -42,7 +42,7 @@ class DataHandlerTest {
     }
 
     @Test
-    void commaToPoint() {
+    void commaToPointTest() {
         DataHandler dataHandler = new DataHandler("1,234");
         String expect = "1.234";
 
@@ -51,65 +51,70 @@ class DataHandlerTest {
         assertEquals(expect, actual);
     }
 
-    @Test
-    void isValidNameTrue() {
+    @ParameterizedTest
+    @CsvSource({
+            "name1",
+            "NAME@%&*()$#@",
+            "111123567089968745"
+    })
+    void isValidNameTrueTest(String actualName) {
         DataHandler dataHandler = new DataHandler("name1");
 
-        boolean expect = dataHandler.isValidName();
+        boolean actualResult = dataHandler.isValidName();
 
-        assertTrue(expect);
+        assertTrue(actualResult);
     }
 
     @ParameterizedTest
     @CsvSource({"name 1",
-            "name /"})
+            "name/"})
     void isValidNameFalse(String string) {
         DataHandler dataHandler = new DataHandler(string);
 
-        boolean expect = dataHandler.isValidName();
+        boolean actualResult = dataHandler.isValidName();
 
-        assertFalse(expect);
+        assertFalse(actualResult);
     }
 
     @ParameterizedTest
     @CsvSource({"1.345",
             "0", "1", "1000.2332"})
-    void isPositiveNumberTrue(String str) {
-        DataHandler dataHandler = new DataHandler(str);
+    void isPositiveNumberTrue(String actualNumber) {
+        DataHandler dataHandler = new DataHandler(actualNumber);
 
-        boolean expect = dataHandler.isPositiveNumber();
+        boolean actualCheckResult = dataHandler.isPositiveNumber();
 
-        assertTrue(expect);
+        assertTrue(actualCheckResult);
     }
 
     @ParameterizedTest
     @CsvSource({"-1.345", "1/", "-100"})
-    void isPositiveNumberFalse(String str) {
-        DataHandler dataHandler = new DataHandler(str);
+    void isPositiveNumberFalse(String actualNumber) {
+        DataHandler dataHandler = new DataHandler(actualNumber);
 
-        boolean expect = dataHandler.isPositiveNumber();
+        boolean actualCheckResult = dataHandler.isPositiveNumber();
 
-        assertFalse(expect);
+        assertFalse(actualCheckResult);
     }
 
     @ParameterizedTest
     @CsvSource({"1.345", "0", "1", "1000.2332", "-1.345", "-1", "-1000.2332"})
-    void isNumberTrueTest(String str) {
-        DataHandler dataHandler = new DataHandler(str);
+    void isNumberTrueTest(String actualNumber) {
+        DataHandler dataHandler = new DataHandler(actualNumber);
 
-        boolean actual = dataHandler.isNumber();
+        boolean actualCheckResult = dataHandler.isNumber();
 
-        assertTrue(actual);
+        assertTrue(actualCheckResult);
     }
 
     @ParameterizedTest
     @CsvSource({"1.345a", "sdf", "//1"})
-    void isNumberTrueFalse(String str) {
-        DataHandler dataHandler = new DataHandler(str);
+    void isNumberTrueFalse(String actualNumber) {
+        DataHandler dataHandler = new DataHandler(actualNumber);
 
-        boolean actual = dataHandler.isNumber();
+        boolean actualCheckResult = dataHandler.isNumber();
 
-        assertFalse(actual);
+        assertFalse(actualCheckResult);
     }
 
     @ParameterizedTest

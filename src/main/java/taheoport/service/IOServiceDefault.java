@@ -14,13 +14,11 @@ import java.util.List;
  */
 public class IOServiceDefault implements IOService {
     private final JFrame parentFrame;
-//    private final SettingsService settingsService;
     private final DependencyInjector injector;
 
     public IOServiceDefault(DependencyInjector dependencyInjector) {
         injector = dependencyInjector;
         parentFrame = dependencyInjector.getMainFrame();
-//        settingsService = dependencyInjector.getSettingsService();
 
     }
 
