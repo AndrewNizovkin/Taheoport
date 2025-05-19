@@ -2,7 +2,6 @@ package taheoport.service;
 
 import taheoport.dispatcher.DependencyContainer;
 import taheoport.dispatcher.DependencyInjector;
-import taheoport.gui.MainWin;
 import taheoport.model.BindType;
 import taheoport.model.PolygonStation;
 import taheoport.model.SurveyStation;
@@ -42,7 +41,6 @@ public class AdjusterDefault implements Adjuster{
         double sumDX = 0.0;
         double sumDY = 0.0;
         double sumDZ = 0.0;
-//        GeoCalculator geoCalculator = new GeoCalculator();
         defBindType();
         PolygonStation basePointA = polygonService.findById(0);
         PolygonStation basePointB = polygonService.findById(1);
@@ -320,7 +318,7 @@ public class AdjusterDefault implements Adjuster{
 
     /**
      * checks the need for adjustment
-     * @return boolen
+     * @return boolean
      */
     private boolean noNeed() {
         for (int i = 0; i < polygonService.getSizePolygonStations(); i++) {
