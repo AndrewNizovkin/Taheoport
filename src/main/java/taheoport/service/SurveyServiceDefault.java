@@ -186,7 +186,7 @@ public class SurveyServiceDefault implements SurveyService {
      */
     @Override
     public List<String> getReport() {
-        HashMap<String, String> titlesReports = shell.getTitles();
+        HashMap<String, String> titlesReports = shell.getTitlesReports();
 //        Shell shell = .getShell();
         Picket picket;
         SurveyStation surveyStation;

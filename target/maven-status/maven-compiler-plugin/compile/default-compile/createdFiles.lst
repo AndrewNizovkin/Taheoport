@@ -5,7 +5,6 @@ taheoport/gui/PolygonEditorStandart$1.class
 taheoport/gui/ShowViewAdjustment.class
 taheoport/gui/TmodelCatalog.class
 taheoport/model/Settings.class
-taheoport/gui/PaintPanel.class
 taheoport/model/PaintPoint.class
 taheoport/gui/ShowChangeDistance.class
 taheoport/gui/MainWin.class
@@ -14,7 +13,6 @@ taheoport/gui/ShowHelp.class
 taheoport/gui/ShowAbout.class
 taheoport/gui/ShowChangeAngle$2.class
 taheoport/gui/ShowSettings$1.class
-taheoport/model/PaintProject.class
 taheoport/gui/ShowChangeDistance$1.class
 taheoport/gui/ShowSettings.class
 taheoport/gui/ShowCatalog.class

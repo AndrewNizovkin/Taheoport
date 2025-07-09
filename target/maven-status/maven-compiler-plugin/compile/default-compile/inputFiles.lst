@@ -7,7 +7,6 @@
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/LinearOffsetPaintPanel.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/MainRenderer.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/MainWin.java
-/home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/PaintPanel.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/PolygonEditorRenderer.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/PolygonEditorStandart.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/PolygonPaintPanel.java
@@ -22,6 +21,7 @@
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/ShowViewResults.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/SurveyEditorRenderer.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/SurveyEditorStandard.java
+/home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/SurveyPaintPanel.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/TmodelCatalog.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/TmodelPickets.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/gui/TmodelPolygonStations.java
@@ -29,13 +29,13 @@
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/model/CatalogPoint.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/model/ExtractStation.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/model/PaintPoint.java
-/home/andrew/MyJava/Taheoport/src/main/java/taheoport/model/PaintProject.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/model/Picket.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/model/PolygonStation.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/model/Settings.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/model/SurveyStation.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/repository/CatalogRepository.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/repository/ExtractRepository.java
+/home/andrew/MyJava/Taheoport/src/main/java/taheoport/repository/PaintPointRepository.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/repository/PolygonRepository.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/repository/SurveyRepository.java
 /home/andrew/MyJava/Taheoport/src/main/java/taheoport/service/Adjuster.java

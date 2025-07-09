@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="taheoport.service.DataHandlerTest" time="0.516" tests="80" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="taheoport.service.GeoCalculatorTest" time="0.147" tests="37" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -52,84 +52,41 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="degToDmsTest(double, String)[1]" classname="taheoport.service.DataHandlerTest" time="0.052"/>
-  <testcase name="degToDmsTest(double, String)[2]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="degToDmsTest(double, String)[3]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="degToDmsTest(double, String)[4]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="degToDmsTest(double, String)[5]" classname="taheoport.service.DataHandlerTest" time="0.006"/>
-  <testcase name="degToDmsTest(double, String)[6]" classname="taheoport.service.DataHandlerTest" time="0.003"/>
-  <testcase name="degToDmsTest(double, String)[7]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="degToDmsTest(double, String)[8]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="degToDmsTest(double, String)[9]" classname="taheoport.service.DataHandlerTest" time="0.003"/>
-  <testcase name="dmsToDegTest(String, double)[1]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="dmsToDegTest(String, double)[2]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="dmsToDegTest(String, double)[3]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="dmsToDegTest(String, double)[4]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="dmsToDegTest(String, double)[5]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="dmsToDegTest(String, double)[6]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="dmsToDegTest(String, double)[7]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="dmsToDegTest(String, double)[8]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="dmsToDegTest(String, double)[9]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="removeFirstZeroTest(String, String)[1]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="removeFirstZeroTest(String, String)[2]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="removeFirstZeroTest(String, String)[3]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="removeFirstZeroTest(String, String)[4]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="removeFirstZeroTest(String, String)[5]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="removeFirstZeroTest(String, String)[6]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="isValidNameFalse(String)[1]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="isValidNameFalse(String)[2]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="isValidNameTrueTest(String)[1]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="isValidNameTrueTest(String)[2]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="isValidNameTrueTest(String)[3]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="getDbl(String, double)[1]" classname="taheoport.service.DataHandlerTest" time="0.003"/>
-  <testcase name="getDbl(String, double)[2]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="getDbl(String, double)[3]" classname="taheoport.service.DataHandlerTest" time="0.003"/>
-  <testcase name="radToDmsTest(double, String)[1]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="radToDmsTest(double, String)[2]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="radToDmsTest(double, String)[3]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="radToDmsTest(double, String)[4]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="radToDmsTest(double, String)[5]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="zenithToVertTest(String, String)[1]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="zenithToVertTest(String, String)[2]" classname="taheoport.service.DataHandlerTest" time="0.003"/>
-  <testcase name="zenithToVertTest(String, String)[3]" classname="taheoport.service.DataHandlerTest" time="0.003"/>
-  <testcase name="zenithToVertTest(String, String)[4]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="getStrTest(String)[1]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="getStrTest(String)[2]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="getStrTest(String)[3]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="getStrTest(String)[4]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="getStrTest(String)[5]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="isPositiveNumberTrue(String)[1]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="isPositiveNumberTrue(String)[2]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="isPositiveNumberTrue(String)[3]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="isPositiveNumberTrue(String)[4]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="isNumberTrueFalse(String)[1]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="isNumberTrueFalse(String)[2]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="isNumberTrueFalse(String)[3]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="isNumberTrueTest(String)[1]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="isNumberTrueTest(String)[2]" classname="taheoport.service.DataHandlerTest" time="0.003"/>
-  <testcase name="isNumberTrueTest(String)[3]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="isNumberTrueTest(String)[4]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="isNumberTrueTest(String)[5]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="isNumberTrueTest(String)[6]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="isNumberTrueTest(String)[7]" classname="taheoport.service.DataHandlerTest" time="0.005"/>
-  <testcase name="formatTest(String, String, int)[1]" classname="taheoport.service.DataHandlerTest" time="0.003"/>
-  <testcase name="formatTest(String, String, int)[2]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="formatTest(String, String, int)[3]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="formatTest(String, String, int)[4]" classname="taheoport.service.DataHandlerTest" time="0.003"/>
-  <testcase name="setPointPositionTest(String, int, String)[1]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="setPointPositionTest(String, int, String)[2]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="setPointPositionTest(String, int, String)[3]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="setPointPositionTest(String, int, String)[4]" classname="taheoport.service.DataHandlerTest" time="0.003"/>
-  <testcase name="setPointPositionTest(String, int, String)[5]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="compressTest" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="isPositiveNumberFalse(String)[1]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="isPositiveNumberFalse(String)[2]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="isPositiveNumberFalse(String)[3]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="toTableTest" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="commaToPointTest" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="dmsToRadTest(String, double)[1]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="dmsToRadTest(String, double)[2]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="dmsToRadTest(String, double)[3]" classname="taheoport.service.DataHandlerTest" time="0.001"/>
-  <testcase name="dmsToRadTest(String, double)[4]" classname="taheoport.service.DataHandlerTest" time="0.002"/>
-  <testcase name="dmsToRadTest(String, double)[5]" classname="taheoport.service.DataHandlerTest" time="0.003"/>
+  <testcase name="getDirABTest(String, String, String, String, double)[1]" classname="taheoport.service.GeoCalculatorTest" time="0.004"/>
+  <testcase name="getDirABTest(String, String, String, String, double)[2]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDirABTest(String, String, String, String, double)[3]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDirABTest(String, String, String, String, double)[4]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDirABTest(String, String, String, String, double)[5]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDirABTest(String, String, String, String, double)[6]" classname="taheoport.service.GeoCalculatorTest" time="0.002"/>
+  <testcase name="getDirABTest(String, String, String, String, double)[7]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDirABTest(String, String, String, String, double)[8]" classname="taheoport.service.GeoCalculatorTest" time="0.005"/>
+  <testcase name="getDirABTest(String, String, String, String, double)[9]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDirABTest(String, String, String, String, double)[10]" classname="taheoport.service.GeoCalculatorTest" time="0.002"/>
+  <testcase name="getDirABTest(String, String, String, String, double)[11]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDirABTest(String, String, String, String, double)[12]" classname="taheoport.service.GeoCalculatorTest" time="0.003"/>
+  <testcase name="getDirABTest(String, String, String, String, double)[13]" classname="taheoport.service.GeoCalculatorTest" time="0.008"/>
+  <testcase name="getHorLineTest(String, String, double)[1]" classname="taheoport.service.GeoCalculatorTest" time="0.002"/>
+  <testcase name="getHorLineTest(String, String, double)[2]" classname="taheoport.service.GeoCalculatorTest" time="0.003"/>
+  <testcase name="getHorLineTest(String, String, double)[3]" classname="taheoport.service.GeoCalculatorTest" time="0.002"/>
+  <testcase name="getHorLineTest(String, String, double)[4]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getHorLineTest(String, String, double)[5]" classname="taheoport.service.GeoCalculatorTest" time="0.004"/>
+  <testcase name="getHorLineTest(String, String, double)[6]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDXTest(double, double, double)[1]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDXTest(double, double, double)[2]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDXTest(double, double, double)[3]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDXTest(double, double, double)[4]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDXTest(double, double, double)[5]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDXTest(double, double, double)[6]" classname="taheoport.service.GeoCalculatorTest" time="0.003"/>
+  <testcase name="getDXTest(double, double, double)[7]" classname="taheoport.service.GeoCalculatorTest" time="0.002"/>
+  <testcase name="getDXTest(double, double, double)[8]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDXTest(double, double, double)[9]" classname="taheoport.service.GeoCalculatorTest" time="0.003"/>
+  <testcase name="getDYTest(double, double, double)[1]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDYTest(double, double, double)[2]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDYTest(double, double, double)[3]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDYTest(double, double, double)[4]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDYTest(double, double, double)[5]" classname="taheoport.service.GeoCalculatorTest" time="0.0"/>
+  <testcase name="getDYTest(double, double, double)[6]" classname="taheoport.service.GeoCalculatorTest" time="0.004"/>
+  <testcase name="getDYTest(double, double, double)[7]" classname="taheoport.service.GeoCalculatorTest" time="0.0"/>
+  <testcase name="getDYTest(double, double, double)[8]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
+  <testcase name="getDYTest(double, double, double)[9]" classname="taheoport.service.GeoCalculatorTest" time="0.001"/>
 </testsuite>
