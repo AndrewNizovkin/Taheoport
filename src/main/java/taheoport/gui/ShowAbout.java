@@ -3,7 +3,6 @@ package taheoport.gui;
 import taheoport.dispatcher.DependencyContainer;
 import taheoport.dispatcher.DependencyInjector;
 import taheoport.service.Shell;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
@@ -28,7 +27,6 @@ public class ShowAbout extends JDialog {
                         .get("SAdialogTitle"),
                 true);
         DependencyInjector dependencyInjector = DependencyContainer.getInstance();
-//        super(dependencyInjector.getMainFrame(), dependencyInjector.getShell().getTitles().get("SAdialogTitle"), true);
         JFrame parentFrame = dependencyInjector.getMainFrame();
         Shell shell = dependencyInjector.getShell();
         setBounds(parentFrame.getX() + parentFrame.getWidth() / 2 - parentFrame.getWidth() / 3 * 2 / 2,
@@ -73,7 +71,7 @@ public class ShowAbout extends JDialog {
                 1,
                 1,
                 1,
-                0,
+                    0,
                 GridBagConstraints.NORTHWEST,
                 GridBagConstraints.BOTH,
                 new Insets(
@@ -84,7 +82,7 @@ public class ShowAbout extends JDialog {
                 0,
                 0));
 
-        label = new JLabel("Version 2022.11.1 (build november 2022)");
+        label = new JLabel("Version 2025.07.1 (build july 2025)");
         label.setFont(new Font(Font.DIALOG, Font.PLAIN, 12));
 
         pnlCopyright.add(label, new GridBagConstraints(
