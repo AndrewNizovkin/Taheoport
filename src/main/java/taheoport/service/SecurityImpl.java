@@ -11,7 +11,7 @@ public class SecurityImpl implements Security{
      */
     @Override
     public boolean pass() {
-        GregorianCalendar barrier = new GregorianCalendar(2026, Calendar.JANUARY, 1);
+        GregorianCalendar barrier = new GregorianCalendar(2027, Calendar.JANUARY, 1);
         GregorianCalendar now = new GregorianCalendar();
         return now.before(barrier);
     }
