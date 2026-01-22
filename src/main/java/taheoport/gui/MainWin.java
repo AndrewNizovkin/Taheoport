@@ -77,7 +77,7 @@ public class MainWin extends JFrame implements MainRenderer {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        int wMain = 640;
+        int wMain = 700;
         int hMain = 650;
         setBounds((screenSize.width - wMain) / 2, (screenSize.height - hMain) / 2, wMain, hMain);
         setResizable(false);

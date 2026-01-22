@@ -115,7 +115,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
             btnStationName.setText(titles.get("TAHbtnStationName"));
             btnStationName.setToolTipText(titles.get("TAHbtnStationNameTT"));
 
-            pnlStation.add(btnStationName, new GridBagConstraints(0, 0, 1, 1, 0, 1,
+            pnlStation.add(btnStationName, new GridBagConstraints(0, 0, 1, 1, 0, 0,
                     GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 10, 0));
 //endregion
 
@@ -442,7 +442,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
                     1,
                     1,
                     0,
-                    1,
+                    0,
                     GridBagConstraints.EAST,
                     GridBagConstraints.NONE,
                     new Insets(0, 0, 0, 0), 0, 0));
