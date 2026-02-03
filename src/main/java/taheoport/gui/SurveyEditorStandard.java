@@ -598,7 +598,7 @@ public class SurveyEditorStandard extends JPanel implements SurveyEditorRenderer
 
 //region tfOrY
 
-            tfOrY = new JTextField(surveyService.findStationById(currentStationIndex).getY());
+            tfOrY = new JTextField(surveyService.findStationById(currentStationIndex).getyOr());
             tfOrY.setBorder(BorderFactory.createEtchedBorder());
             tfOrY.addFocusListener(new FocusListener() {
                 @Override

@@ -110,7 +110,7 @@ public class MainWin extends JFrame implements MainRenderer {
                 iLeica.setActionCommand("iLeica");
                 iLeica.addActionListener(actionListener);
 
-                JMenuItem iNicon = new JMenuItem("Nicon");
+                JMenuItem iNicon = new JMenuItem("Nikon");
                 iNicon.setActionCommand("iNicon");
                 iNicon.addActionListener(actionListener);
 
@@ -241,15 +241,15 @@ public class MainWin extends JFrame implements MainRenderer {
             btnImport.setActionCommand("btnImport");
             btnImport.setToolTipText(titles.get("MWbtnImportTT"));
             btnImport.addActionListener(e -> ppImport.show(this,
-                    btnImport.getX(),
-                    btnImport.getY() + 20));
+                    btnImport.getX() + 5,
+                    btnImport.getY() + 80));
 
         ppImport = new JPopupMenu();
         JMenuItem ppiLeica = new JMenuItem("Leica");
         ppiLeica.setActionCommand("ppiLeica");
         ppiLeica.addActionListener(actionListener);
 
-        JMenuItem ppiNicon = new JMenuItem("Nicon");
+        JMenuItem ppiNicon = new JMenuItem("Nikon");
         ppiNicon.setActionCommand("ppiNicon");
         ppiNicon.addActionListener(actionListener);
 
