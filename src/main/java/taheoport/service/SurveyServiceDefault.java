@@ -165,6 +165,14 @@ public class SurveyServiceDefault implements SurveyService {
         try {
             for (int i = 0; i < surveyRepository.sizeStations(); i++) {
                 surveyStation = surveyRepository.findById(i);
+                list.add(surveyStation.getName() + sep +
+                        surveyStation.getX() + sep +
+                        surveyStation.getY() + sep +
+                        surveyStation.getZ());
+                list.add(surveyStation.getNameOr() + sep +
+                        surveyStation.getxOr() + sep +
+                        surveyStation.getyOr() + sep +
+                        "0.000");
                 for (int j = 0; j < surveyStation.sizePickets(); j++) {
                     picket = surveyStation.getPicket(j);
                     list.add(picket.getpName() + sep +
