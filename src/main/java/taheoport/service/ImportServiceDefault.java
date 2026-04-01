@@ -97,21 +97,21 @@ public class ImportServiceDefault implements ImportService {
                     case "11" -> {
                         for (String str : array) {
                             switch (str.substring(0, 2)) {
-                                case "11":
+                                case "11": //targetNumber
                                     lineHandlers[6] = new DataHandler(str.substring(7)).removeFirstZero();
-                                case "31":
+                                case "31": //targetInclinedDistance
                                     lineHandlers[1] = new DataHandler(str.substring(7)).setPointPosition(5).format(3);
                                     break;
-                                case "21":
+                                case "21": //targetDirection
                                     lineHandlers[2] = new DataHandler(str.substring(7)).setPointPosition(3).format(4);
                                     break;
-                                case "22":
+                                case "22": //targetTiltAngle
                                     lineHandlers[3] = new DataHandler(str.substring(7)).setPointPosition(3).ZenithToVert().format(4);
                                     break;
-                                case "87":
+                                case "87": //targetHeight
                                     lineHandlers[4] = new DataHandler(str.substring(7)).setPointPosition(5).format(3);
                                     break;
-                                case "88":
+                                case "88": //stationHeight
                                     lineHandlers[5] = new DataHandler(str.substring(7)).setPointPosition(5).format(3);
                                     break;
                             }
@@ -122,7 +122,8 @@ public class ImportServiceDefault implements ImportService {
                             lineHandlers[0] = lineHandlers[6];
                         }
                         if (lineHandlers[5].getStr().equals(currentToolHeight)) {
-                            surveyStation.addPicket(lineHandlers[0].getStr(),
+                            surveyStation.addPicket(
+                                    lineHandlers[0].getStr(),
                                     lineHandlers[1].getStr(),
                                     lineHandlers[2].getStr(),
                                     lineHandlers[3].getStr(),
@@ -167,9 +168,9 @@ public class ImportServiceDefault implements ImportService {
             Matcher m = Pattern.compile("^.+?\\+").matcher(row);
             if (m.find()) {
                 surveyStation = surveyRepository.addStation(new SurveyStation());
-                surveyStation.setName(row.substring(0, row.indexOf("_", 0)));
-                surveyStation.setVi(new DataHandler(row.substring(row.indexOf(")", 0) + 1,
-                        row.indexOf("_", row.indexOf(")", 0)))).format(3).getStr());
+                surveyStation.setName(row.substring(0, row.indexOf("_")));
+                surveyStation.setVi(new DataHandler(row.substring(row.indexOf(")") + 1,
+                        row.indexOf("_", row.indexOf(")")))).format(3).getStr());
                 measurements = row.substring(m.end()).split("_\\+");
                 for (String record : measurements) {
                     picket = surveyStation.addPicket();
