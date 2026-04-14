@@ -177,7 +177,7 @@ public class DataHandler {
         } else {
             sb.append(s);
         }
-        str = String.valueOf(sb);
+        str = sb.toString();
         sb = null;
         return this;
     }

@@ -236,7 +236,7 @@ public class PolygonServiceDefault implements PolygonService {
                 llReportXY.add("|            |          | " +
                         new DataHandler(firstPolygonStation.getLine()).toTable(8).getStr() +
                         " |         | " +
-                        new DataHandler(firstPolygonStation.getDirection()).format(4).toTable(8).getStr() +
+                        new DataHandler().degToDms(firstPolygonStation.getDirection()).toTable(8).getStr() +
                         " | " +
                         new DataHandler(firstPolygonStation.getDX()).format(3).toTable(8).getStr() +
                         " | " +
@@ -264,7 +264,7 @@ public class PolygonServiceDefault implements PolygonService {
             llReportXY.add("|            |          | " +
                     new DataHandler(polygonStation.getLine()).toTable(8).getStr() +
                     " |         | " +
-                    new DataHandler(polygonStation.getDirection()).format(4).toTable(8).getStr() +
+                    new DataHandler().degToDms(polygonStation.getDirection()).toTable(8).getStr() +
                     " | " +
                     new DataHandler(polygonStation.getDX()).format(3).toTable(8).getStr() +
                     " | " +
@@ -291,7 +291,7 @@ public class PolygonServiceDefault implements PolygonService {
             case OO, TO, TZ -> llReportXY.add("|            |          | " +
                     new DataHandler(beforeLastPolygonStation.getLine()).toTable(8).getStr() +
                     " |         | " +
-                    new DataHandler(beforeLastPolygonStation.getDirection()).format(4).toTable(8).getStr() +
+                    new DataHandler().degToDms(beforeLastPolygonStation.getDirection()).toTable(8).getStr() +
                     " | " +
                     new DataHandler(beforeLastPolygonStation.getDX()).format(3).toTable(8).getStr() +
                     " | " +
