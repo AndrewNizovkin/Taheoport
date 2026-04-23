@@ -220,7 +220,11 @@ public class PolygonServiceDefault implements PolygonService {
                         " | " +
                         new DataHandler(firstPolygonStation.getY()).toTable(12).getStr() +
                         " |");
-                llReportXY.add("|            |          |          |         |          |          |        |          |        |              |              |");
+                llReportXY.add("|            |          |          |         | " +
+                                new DataHandler().degToDms(firstPolygonStation.getDirection()).toTable(8).getStr() +
+                        " |          |        |          |        |              |              |"
+                        );
+//                llReportXY.add("|            |          |          |         |          |          |        |          |        |              |              |");
             }
             case ZT, OT, OO -> {
                 llReportXY.add("| " + new DataHandler(firstPolygonStation.getName()).toTable(10).getStr() +
@@ -301,7 +305,13 @@ public class PolygonServiceDefault implements PolygonService {
                     " | " +
                     new DataHandler(beforeLastPolygonStation.getDDY()).format(3).toTable(6).getStr() +
                     " |              |              |");
-            case TT, ZT, OT -> llReportXY.add("|            |          |          |         |          |          |        |          |        |              |              |");
+            case TT, ZT, OT -> {
+                llReportXY.add("|            |          |          |         | " +
+                        new DataHandler().degToDms(beforeLastPolygonStation.getDirection()).toTable(8).getStr() +
+                        " |          |        |          |        |              |              |"
+                );
+//                llReportXY.add("|            |          |          |         |          |          |        |          |        |              |              |");
+            }
         }
         PolygonStation lastPolygonStation = findById(getSizePolygonStations() - 1);
         llReportXY.add("| " + new DataHandler(lastPolygonStation.getName()).toTable(10).getStr() +
